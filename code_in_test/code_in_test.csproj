@@ -136,9 +136,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\Documents\Visual Studio 2013\Addins\code_in_test - For Testing.AddIn">
-      <Link>code_in_test - For Testing.AddIn</Link>
-    </Content>
     <Content Include="code_in_test.AddIn" />
   </ItemGroup>
   <ItemGroup>
