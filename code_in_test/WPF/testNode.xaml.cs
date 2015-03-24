@@ -20,9 +20,24 @@ namespace code_in_test.WPF
     /// </summary>
     public partial class testNode : UserControl
     {
-        public testNode()
+        Grid _win;
+
+        public testNode(Grid win, double posX, double posY)
         {
             InitializeComponent();
+            this._win = win;
+            node.Margin = new Thickness(posX, posY, 0, 0);
         }
+
+        
+
+        private void onCLickDelete(object sender, RoutedEventArgs e)
+        {
+            this._win.Children.Remove(this);
+        }
+
+
+
+        
     }
 }

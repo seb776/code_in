@@ -23,68 +23,76 @@ namespace code_in_test
     [ClassInterface(ClassInterfaceType.None)]
     public partial class UserControl1 : UserControl
     {
+        List<Line> list = new List<Line>();
+      //  public WPF.testNode _node;
+
         public UserControl1()
         {
             InitializeComponent();
-            this.grid_win.Children.Add(new WPF.testNode());
+           // _node = new WPF.testNode(this.grid_win);
             //this.MouseMove += UserControl1_MouseMove;
             //this.grid_win.Children.Add(new Line())
             anchor = new Tuple<float, float>(10, 25);
-            this.grid_win.Focus();
+            //this.grid_win.Focus();
         }
         Tuple<float, float> anchor;
 
         void UserControl1_MouseMove(object sender, MouseEventArgs e)
         {
-            //MessageBox.Show("toto");
-            Tuple<float, float> dep = new Tuple<float, float>(0, 0);
-            Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
-            Tuple<float, float> lastPoint = dep;
-            this.grid_win.Children.Clear();
-            Line ll = new Line();
-            ll.IsEnabled = true;
-            ll.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
-            ll.StrokeThickness = 2;
-            ll.X1 = dep.Item1;
-            ll.Y1 = dep.Item2;
-            ll.X2 = anchor.Item1;
-            ll.Y2 = anchor.Item2;
-            this.grid_win.Children.Add(ll);
-            Line ll2 = new Line();
-            ll2.IsEnabled = true;
-            ll2.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
-            ll2.StrokeThickness = 2;
-            ll2.X1 = anchor.Item1;
-            ll2.Y1 = anchor.Item2;
-            ll2.X2 = mouse.Item1;
-            ll2.Y2 = mouse.Item2;
-            this.grid_win.Children.Add(ll2);
-            for (float p = 0; p <= 1; p += 0.05F)
-            {
-                Tuple<float, float> pointA = CalcPoint(dep, anchor, p);
-                Tuple<float, float> pointB = CalcPoint(anchor, mouse, p);
-                Tuple<float, float> pointFinal = CalcPoint(pointA, pointB, p);
-                Line l = new Line();
-                l.IsEnabled = true;
-                l.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
-                l.StrokeThickness = 2;
-                l.X1 = lastPoint.Item1;
-                l.Y1 = lastPoint.Item2;
-                l.X2 = pointFinal.Item1;
-                l.Y2 = pointFinal.Item2;
-                this.grid_win.Children.Add(l);
-                lastPoint = pointFinal;
-            }
-            Line lFinal = new Line();
-            lFinal.IsEnabled = true;
-            lFinal.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
-            lFinal.StrokeThickness = 2;
-            lFinal.X1 = lastPoint.Item1;
-            lFinal.Y1 = lastPoint.Item2;
-            lFinal.X2 = mouse.Item1;
-            lFinal.Y2 = mouse.Item2;
-            this.grid_win.Children.Add(lFinal);
-
+       //     //MessageBox.Show("toto");
+       //     Tuple<float, float> dep = new Tuple<float, float>(0, 0);
+       //     Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
+       //     Tuple<float, float> lastPoint = dep;
+       //     foreach (Line item in list)
+       //         this.grid_win.Children.Remove(item);
+       ////     this.grid_win.Children.Clear();
+       //     Line ll = new Line();
+       //     ll.IsEnabled = true;
+       //     ll.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
+       //     ll.StrokeThickness = 2;
+       //     ll.X1 = dep.Item1;
+       //     ll.Y1 = dep.Item2;
+       //     ll.X2 = anchor.Item1;
+       //     ll.Y2 = anchor.Item2;
+       //     this.grid_win.Children.Add(ll);
+       //     Line ll2 = new Line();
+       //     ll2.IsEnabled = true;
+       //     ll2.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
+       //     ll2.StrokeThickness = 2;
+       //     ll2.X1 = anchor.Item1;
+       //     ll2.Y1 = anchor.Item2;
+       //     ll2.X2 = mouse.Item1;
+       //     ll2.Y2 = mouse.Item2;
+       //     this.grid_win.Children.Add(ll2);
+       //     for (float p = 0; p <= 1; p += 0.05F)
+       //     {
+       //         Tuple<float, float> pointA = CalcPoint(dep, anchor, p);
+       //         Tuple<float, float> pointB = CalcPoint(anchor, mouse, p);
+       //         Tuple<float, float> pointFinal = CalcPoint(pointA, pointB, p);
+       //         Line l = new Line();
+       //         l.IsEnabled = true;
+       //         l.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
+       //         l.StrokeThickness = 2;
+       //         l.X1 = lastPoint.Item1;
+       //         l.Y1 = lastPoint.Item2;
+       //         l.X2 = pointFinal.Item1;
+       //         l.Y2 = pointFinal.Item2;
+       //         this.grid_win.Children.Add(l);
+       //         lastPoint = pointFinal;
+       //         list.Add(l);
+       //     }
+       //     Line lFinal = new Line();
+       //     lFinal.IsEnabled = true;
+       //     lFinal.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
+       //     lFinal.StrokeThickness = 2;
+       //     lFinal.X1 = lastPoint.Item1;
+       //     lFinal.Y1 = lastPoint.Item2;
+       //     lFinal.X2 = mouse.Item1;
+       //     lFinal.Y2 = mouse.Item2;
+       //     this.grid_win.Children.Add(lFinal);
+       //     list.Add(lFinal);
+       //     list.Add(ll);
+       //     list.Add(ll2);
         }
 
         Tuple<float, float> CalcPoint(Tuple<float, float> a, Tuple<float, float> b, float percent)
@@ -113,5 +121,15 @@ namespace code_in_test
             }
 
         }
+
+        private void onClickCreate(object sender, RoutedEventArgs e)
+        {
+         
+            Point pt = PointToScreen(Mouse.GetPosition(this.grid_win));
+           // MessageBox.Show("X ==> " + pt.X.ToString());
+          //  MessageBox.Show("Y ==> " + pt.Y.ToString());
+            this.grid_win.Children.Add(new WPF.testNode(this.grid_win, pt.X, pt.Y));
+        }
+
     }
 }

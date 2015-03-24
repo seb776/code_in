@@ -5,7 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="grid_win" Background="Black" Width="500" Height="500" MouseMove="UserControl1_MouseMove" KeyDown="grid_win_KeyDown" Focusable="True">
-            
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" x:Name="scroll">
+
+    <Grid x:Name="grid_win" Background="Black" Width="1000" Height="1000" MouseMove="UserControl1_MouseMove" KeyDown="grid_win_KeyDown" Focusable="True">
+            <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Create node" Click="onClickCreate">
+                </MenuItem>
+            </ContextMenu>
+        </Grid.ContextMenu>
     </Grid>
+    </ScrollViewer>
 </UserControl>
