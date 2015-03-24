@@ -147,6 +147,7 @@ namespace code_in_test
                         ref myUC);
                     //(myUC as UserControl1).Window = myWindow;
                     myWindow.Visible = true;
+                    myWindow.IsFloating = false;
 					handled = true;
 					return;
 				}
