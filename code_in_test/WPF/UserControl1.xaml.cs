@@ -124,8 +124,8 @@ namespace code_in_test
 
         private void onClickCreate(object sender, RoutedEventArgs e)
         {
-         
-            Point pt = PointToScreen(Mouse.GetPosition(this.grid_win));
+
+            Point pt = this.MenuItemNode.TranslatePoint(new Point(0, 0), this.grid_win);
            // MessageBox.Show("X ==> " + pt.X.ToString());
           //  MessageBox.Show("Y ==> " + pt.Y.ToString());
             this.grid_win.Children.Add(new WPF.testNode(this.grid_win, pt.X, pt.Y));

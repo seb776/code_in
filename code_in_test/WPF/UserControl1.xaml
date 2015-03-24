@@ -10,7 +10,7 @@
     <Grid x:Name="grid_win" Background="Black" Width="1000" Height="1000" MouseMove="UserControl1_MouseMove" KeyDown="grid_win_KeyDown" Focusable="True">
             <Grid.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Create node" Click="onClickCreate">
+                <MenuItem Header="Create node" Click="onClickCreate" x:Name="MenuItemNode">
                 </MenuItem>
             </ContextMenu>
         </Grid.ContextMenu>
