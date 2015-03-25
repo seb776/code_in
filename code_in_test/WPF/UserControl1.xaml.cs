@@ -24,6 +24,8 @@ namespace code_in_test
     public partial class UserControl1 : UserControl
     {
         List<Line> list = new List<Line>();
+        private static Grid isSelected = null;
+       // public static Boolean justClicked = false;
       //  public WPF.testNode _node;
 
         public UserControl1()
@@ -39,6 +41,14 @@ namespace code_in_test
 
         void UserControl1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (isSelected != null)
+            {
+                Point pt = e.GetPosition(this.grid_win);
+                isSelected.Margin = new Thickness(pt.X, pt.Y, 0, 0);
+            }
+
+
+
        //     //MessageBox.Show("toto");
        //     Tuple<float, float> dep = new Tuple<float, float>(0, 0);
        //     Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
@@ -129,6 +139,23 @@ namespace code_in_test
            // MessageBox.Show("X ==> " + pt.X.ToString());
           //  MessageBox.Show("Y ==> " + pt.Y.ToString());
             this.grid_win.Children.Add(new WPF.testNode(this.grid_win, pt.X, pt.Y));
+        }
+
+        public static void nodeIsSelected(Grid g)
+        {
+            isSelected = g;
+
+            //isSelected.Margin = new Thickness(0);
+        }
+
+        private void clickMoveNode(object sender, MouseButtonEventArgs e)
+        {
+            if (isSelected != null)
+            {
+               // Point pt = e.GetPosition(this.grid_win);
+                //isSelected.Margin = new Thickness(pt.X, pt.Y, 0, 0);
+                isSelected = null;
+            }
         }
 
     }

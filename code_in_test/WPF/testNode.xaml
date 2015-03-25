@@ -6,9 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="125" d:DesignWidth="250"
              xmlns:custom="clr-namespace:code_in_test.WPF">
-        <Grid Width="250" Height="125" Background="DimGray" x:Name="node" VerticalAlignment="Top" HorizontalAlignment="Left">
+    <Grid Width="250" Height="125" Background="Gray" x:Name="node" VerticalAlignment="Top" HorizontalAlignment="Left">
         <Grid.ContextMenu>
             <ContextMenu>
+                <MenuItem Header="Move" Click="onClickMove"></MenuItem>
                 <MenuItem Header="Delete" Click="onCLickDelete"></MenuItem>
             </ContextMenu>
         </Grid.ContextMenu>

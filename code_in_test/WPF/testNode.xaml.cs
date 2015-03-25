@@ -26,7 +26,7 @@ namespace code_in_test.WPF
         {
             InitializeComponent();
             this._win = win;
-            node.Margin = new Thickness(posX, posY, 0, 0);
+            this.node.Margin = new Thickness(posX, posY, 0, 0);
         }
 
         
@@ -36,8 +36,20 @@ namespace code_in_test.WPF
             this._win.Children.Remove(this);
         }
 
+        private void onClickMove(object sender, RoutedEventArgs e)
+        {
+           // UserControl1.justClicked = true;
+           UserControl1.nodeIsSelected(this.node);
+        }
 
-
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+         //   MessageBox.Show("ok");
+            Grid g = sender as Grid;
+           // UserControl1.isSelected = g;
+          //  UserControl1.justClicked = true;
+            UserControl1.nodeIsSelected(g);
+        }
         
     }
 }
