@@ -69,6 +69,7 @@
     <Compile Include="winforms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Bezier.cs" />
     <Compile Include="WPF\ItemNode.xaml.cs">
       <DependentUpon>ItemNode.xaml</DependentUpon>
     </Compile>

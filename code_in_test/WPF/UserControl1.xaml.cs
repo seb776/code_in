@@ -28,9 +28,11 @@ namespace code_in_test
        // public static Boolean justClicked = false;
       //  public WPF.testNode _node;
 
+        WPF.Bezier bezier;
         public UserControl1()
         {
             InitializeComponent();
+            bezier = new WPF.Bezier(this.grid_win, new Point(0, 0), new Point(50, 50));
            // _node = new WPF.testNode(this.grid_win);
             //this.MouseMove += UserControl1_MouseMove;
             //this.grid_win.Children.Add(new Line())
@@ -41,15 +43,15 @@ namespace code_in_test
 
         void UserControl1_MouseMove(object sender, MouseEventArgs e)
         {
+            Point pt = e.GetPosition(this.grid_win);
+
             if (isSelected != null)
             {
-                Point pt = e.GetPosition(this.grid_win);
                 isSelected.Margin = new Thickness(pt.X, pt.Y, 0, 0);
             }
+            bezier.setPositions(new Point(0, 0), pt);
 
 
-
-       //     //MessageBox.Show("toto");
        //     Tuple<float, float> dep = new Tuple<float, float>(0, 0);
        //     Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
        //     Tuple<float, float> lastPoint = dep;
@@ -109,27 +111,6 @@ namespace code_in_test
         {
             Tuple<float, float> p = new Tuple<float, float>(a.Item1 + (b.Item1 - a.Item1) * percent, a.Item2 + (b.Item2 - a.Item2) * percent);
             return p;
-        }
-
-        private void grid_win_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Up)
-            {
-                anchor = new Tuple<float, float>(anchor.Item1, anchor.Item2 - 10);
-            }
-            if (e.Key == Key.Down)
-            {
-                anchor = new Tuple<float, float>(anchor.Item1, anchor.Item2 + 10);
-            }
-            if (e.Key == Key.Left)
-            {
-                anchor = new Tuple<float, float>(anchor.Item1 - 10, anchor.Item2);
-            }
-            if (e.Key == Key.Right)
-            {
-                anchor = new Tuple<float, float>(anchor.Item1 + 10, anchor.Item2);
-            }
-
         }
 
         private void onClickCreate(object sender, RoutedEventArgs e)

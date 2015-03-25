@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" x:Name="scroll">
 
-    <Grid x:Name="grid_win" Background="#424242" Width="2000" Height="2000" MouseMove="UserControl1_MouseMove" KeyDown="grid_win_KeyDown" Focusable="True" MouseDown="clickMoveNode">
+    <Grid x:Name="grid_win" Background="#424242" Width="2000" Height="2000" MouseMove="UserControl1_MouseMove" Focusable="True" MouseDown="clickMoveNode">
             <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Create node" Click="onClickCreate" x:Name="MenuItemNode">
