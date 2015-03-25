@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace code_in_test.WPF
 {
-    class Bezier
+    public class Bezier
     {
         private Panel rootLayout_;
         PathFigure pthFigure;
@@ -50,9 +50,18 @@ namespace code_in_test.WPF
 
         }
 
+
         public void setPositions(Point a, Point b)
         {
-            pthFigure.StartPoint = a;
+            if (a.X >= 0)
+            {
+                pthFigure.StartPoint = a;
+
+            }
+            else
+            {
+                a = pthFigure.StartPoint;
+            }
             qbzSeg = new PolyBezierSegment();
             qbzSeg.Points.Add(new Point(a.X + 100, a.Y));
             qbzSeg.Points.Add(new Point(b.X - 100, b.Y));

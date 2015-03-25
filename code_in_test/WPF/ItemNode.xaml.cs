@@ -46,5 +46,17 @@ namespace code_in_test.WPF
                 }
             }
         }
+
+        public static WPF.Bezier bezier = null;
+        
+        private void Circle_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Point ptDepart = this.Circle.TranslatePoint(new Point(15, 15), UserControl1._grid_win);
+
+            if (bezier == null)
+                bezier = new WPF.Bezier(UserControl1._grid_win, ptDepart, e.GetPosition(UserControl1._grid_win));
+            
+
+        }
     }
 }

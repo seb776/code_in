@@ -25,18 +25,18 @@ namespace code_in_test
     {
         List<Line> list = new List<Line>();
         private static Grid isSelected = null;
+        public static Grid _grid_win;
        // public static Boolean justClicked = false;
       //  public WPF.testNode _node;
 
-        WPF.Bezier bezier;
         public UserControl1()
         {
             InitializeComponent();
-            bezier = new WPF.Bezier(this.grid_win, new Point(0, 0), new Point(50, 50));
            // _node = new WPF.testNode(this.grid_win);
             //this.MouseMove += UserControl1_MouseMove;
             //this.grid_win.Children.Add(new Line())
             anchor = new Tuple<float, float>(10, 25);
+            _grid_win = this.grid_win;
             //this.grid_win.Focus();
         }
         Tuple<float, float> anchor;
@@ -49,9 +49,11 @@ namespace code_in_test
             {
                 isSelected.Margin = new Thickness(pt.X, pt.Y, 0, 0);
             }
-            bezier.setPositions(new Point(0, 0), pt);
 
+            if (WPF.ItemNode.bezier != null)
+                WPF.ItemNode.bezier.setPositions(new Point(-1, 0), pt);
 
+            
        //     Tuple<float, float> dep = new Tuple<float, float>(0, 0);
        //     Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
        //     Tuple<float, float> lastPoint = dep;
