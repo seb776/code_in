@@ -23,23 +23,24 @@ namespace code_in_test
     [ClassInterface(ClassInterfaceType.None)]
     public partial class UserControl1 : UserControl
     {
+        public static Dictionary<WPF.ItemNode, WPF.Bezier> Links;
+
         List<Line> list = new List<Line>();
-        private static Grid isSelected = null;
+        private static WPF.testNode isSelected = null;
         public static Grid _grid_win;
        // public static Boolean justClicked = false;
       //  public WPF.testNode _node;
 
         public UserControl1()
         {
+            Links = new Dictionary<WPF.ItemNode, WPF.Bezier>();
             InitializeComponent();
            // _node = new WPF.testNode(this.grid_win);
             //this.MouseMove += UserControl1_MouseMove;
             //this.grid_win.Children.Add(new Line())
-            anchor = new Tuple<float, float>(10, 25);
             _grid_win = this.grid_win;
-            //this.grid_win.Focus();
+            this.grid_win.Focus();
         }
-        Tuple<float, float> anchor;
 
         void UserControl1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -48,71 +49,28 @@ namespace code_in_test
             if (isSelected != null)
             {
                 isSelected.Margin = new Thickness(pt.X, pt.Y, 0, 0);
+                foreach (var input in isSelected.spLeft.Children)
+                {
+                     WPF.ItemNode _in = (input as WPF.ItemNode);
+                    if (UserControl1.Links.ContainsKey(_in))
+                    {
+                        Point ptEnd = _in.Circle.TranslatePoint(new Point(15, 15), UserControl1._grid_win);
+                        UserControl1.Links[_in].setPositions(new Point(-1, 0), ptEnd);
+                    }
+                }
+                foreach (var output in isSelected.spRight.Children)
+                {
+                    WPF.ItemNode _out = (output as WPF.ItemNode);
+                    if (UserControl1.Links.ContainsKey(_out))
+                    {
+                        Point ptStart = _out.Circle.TranslatePoint(new Point(15, 15), UserControl1._grid_win);
+                        UserControl1.Links[_out].setPositions(ptStart, new Point(-1, 0));
+                    }
+                }
             }
-
+            pt.X = pt.X - 1;
             if (WPF.ItemNode.bezier != null)
                 WPF.ItemNode.bezier.setPositions(new Point(-1, 0), pt);
-
-            
-       //     Tuple<float, float> dep = new Tuple<float, float>(0, 0);
-       //     Tuple<float, float> mouse = new Tuple<float, float>((float)e.GetPosition(this.grid_win).X, (float)e.GetPosition(this.grid_win).Y);
-       //     Tuple<float, float> lastPoint = dep;
-       //     foreach (Line item in list)
-       //         this.grid_win.Children.Remove(item);
-       ////     this.grid_win.Children.Clear();
-       //     Line ll = new Line();
-       //     ll.IsEnabled = true;
-       //     ll.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
-       //     ll.StrokeThickness = 2;
-       //     ll.X1 = dep.Item1;
-       //     ll.Y1 = dep.Item2;
-       //     ll.X2 = anchor.Item1;
-       //     ll.Y2 = anchor.Item2;
-       //     this.grid_win.Children.Add(ll);
-       //     Line ll2 = new Line();
-       //     ll2.IsEnabled = true;
-       //     ll2.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
-       //     ll2.StrokeThickness = 2;
-       //     ll2.X1 = anchor.Item1;
-       //     ll2.Y1 = anchor.Item2;
-       //     ll2.X2 = mouse.Item1;
-       //     ll2.Y2 = mouse.Item2;
-       //     this.grid_win.Children.Add(ll2);
-       //     for (float p = 0; p <= 1; p += 0.05F)
-       //     {
-       //         Tuple<float, float> pointA = CalcPoint(dep, anchor, p);
-       //         Tuple<float, float> pointB = CalcPoint(anchor, mouse, p);
-       //         Tuple<float, float> pointFinal = CalcPoint(pointA, pointB, p);
-       //         Line l = new Line();
-       //         l.IsEnabled = true;
-       //         l.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
-       //         l.StrokeThickness = 2;
-       //         l.X1 = lastPoint.Item1;
-       //         l.Y1 = lastPoint.Item2;
-       //         l.X2 = pointFinal.Item1;
-       //         l.Y2 = pointFinal.Item2;
-       //         this.grid_win.Children.Add(l);
-       //         lastPoint = pointFinal;
-       //         list.Add(l);
-       //     }
-       //     Line lFinal = new Line();
-       //     lFinal.IsEnabled = true;
-       //     lFinal.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 255));
-       //     lFinal.StrokeThickness = 2;
-       //     lFinal.X1 = lastPoint.Item1;
-       //     lFinal.Y1 = lastPoint.Item2;
-       //     lFinal.X2 = mouse.Item1;
-       //     lFinal.Y2 = mouse.Item2;
-       //     this.grid_win.Children.Add(lFinal);
-       //     list.Add(lFinal);
-       //     list.Add(ll);
-       //     list.Add(ll2);
-        }
-
-        Tuple<float, float> CalcPoint(Tuple<float, float> a, Tuple<float, float> b, float percent)
-        {
-            Tuple<float, float> p = new Tuple<float, float>(a.Item1 + (b.Item1 - a.Item1) * percent, a.Item2 + (b.Item2 - a.Item2) * percent);
-            return p;
         }
 
         private void onClickCreate(object sender, RoutedEventArgs e)
@@ -124,7 +82,7 @@ namespace code_in_test
             this.grid_win.Children.Add(new WPF.testNode(this.grid_win, pt.X, pt.Y));
         }
 
-        public static void nodeIsSelected(Grid g)
+        public static void nodeIsSelected(WPF.testNode g)
         {
             isSelected = g;
 

@@ -47,16 +47,26 @@ namespace code_in_test.WPF
             }
         }
 
+        public static ItemNode last = null;
         public static WPF.Bezier bezier = null;
-        
-        private void Circle_MouseDown(object sender, MouseButtonEventArgs e)
+
+        private void Circle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point ptDepart = this.Circle.TranslatePoint(new Point(15, 15), UserControl1._grid_win);
 
-            if (bezier == null)
-                bezier = new WPF.Bezier(UserControl1._grid_win, ptDepart, e.GetPosition(UserControl1._grid_win));
-            
 
+            if (bezier == null)
+            {
+                bezier = new WPF.Bezier(UserControl1._grid_win, ptDepart, e.GetPosition(UserControl1._grid_win));
+                ItemNode.last = this;
+            }
+            else
+            {
+                bezier.setPositions(new Point(-1, 0), ptDepart);
+                UserControl1.Links[last] = bezier;
+                UserControl1.Links[this] = bezier;
+                bezier = null;
+            }
         }
     }
 }

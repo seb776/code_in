@@ -34,6 +34,24 @@ namespace code_in_test.WPF
         private void onCLickDelete(object sender, RoutedEventArgs e)
         {
             this._win.Children.Remove(this);
+            foreach (var input in this.spLeft.Children)
+            {
+                WPF.ItemNode _in = (input as WPF.ItemNode);
+                if (UserControl1.Links.ContainsKey(_in))
+                {
+                    UserControl1.Links[_in].Delete();
+                    UserControl1.Links.Remove(_in);
+                }
+            }
+            foreach (var output in this.spRight.Children)
+            {
+                WPF.ItemNode _out = (output as WPF.ItemNode);
+                if (UserControl1.Links.ContainsKey(_out))
+                {
+                    UserControl1.Links[_out].Delete();
+                    UserControl1.Links.Remove(_out);
+                }
+            }
         }
 
         private void onClickMove(object sender, RoutedEventArgs e)
@@ -45,10 +63,10 @@ namespace code_in_test.WPF
         private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
          //   MessageBox.Show("ok");
-            Grid g = sender as Grid;
+            //Grid g = sender as Grid;
            // UserControl1.isSelected = g;
           //  UserControl1.justClicked = true;
-            UserControl1.nodeIsSelected(g);
+            UserControl1.nodeIsSelected(this);
         }
         
     }

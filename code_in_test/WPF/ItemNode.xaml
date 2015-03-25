@@ -10,7 +10,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Ellipse x:Name="Circle" Width="30" Height="30" Grid.Column="0" Fill="LightSkyBlue" MouseDown="Circle_MouseDown"/>
+        <Ellipse x:Name="Circle" x:FieldModifier="public" Width="30" Height="30" Grid.Column="0" Fill="LightSkyBlue" MouseLeftButtonDown="Circle_MouseLeftButtonDown"/>
         <TextBlock x:Name="Text" Grid.Column="1" Foreground="White" VerticalAlignment="Center" Margin="10">ItemNode</TextBlock>
     </Grid>
 </UserControl>

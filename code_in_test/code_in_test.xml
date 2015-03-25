@@ -81,6 +81,11 @@
             ItemNode
             </summary>
         </member>
+        <member name="F:code_in_test.WPF.ItemNode.Circle">
+            <summary>
+            Circle Name Field
+            </summary>
+        </member>
         <member name="M:code_in_test.WPF.ItemNode.InitializeComponent">
             <summary>
             InitializeComponent
@@ -92,6 +97,16 @@
             </summary>
             <summary>
             testNode
+            </summary>
+        </member>
+        <member name="F:code_in_test.WPF.testNode.spLeft">
+            <summary>
+            spLeft Name Field
+            </summary>
+        </member>
+        <member name="F:code_in_test.WPF.testNode.spRight">
+            <summary>
+            spRight Name Field
             </summary>
         </member>
         <member name="M:code_in_test.WPF.testNode.InitializeComponent">

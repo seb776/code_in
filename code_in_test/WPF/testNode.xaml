@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="125" d:DesignWidth="250"
-             xmlns:custom="clr-namespace:code_in_test.WPF">
-    <Grid Width="250" Height="125" Background="Gray" x:Name="node" VerticalAlignment="Top" HorizontalAlignment="Left">
+             xmlns:custom="clr-namespace:code_in_test.WPF" x:Name="node">
+    <Grid Width="250" Height="125" Background="Gray" VerticalAlignment="Top" HorizontalAlignment="Left">
         <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Move" Click="onClickMove"></MenuItem>
@@ -19,12 +19,12 @@
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Background="LightSalmon">Salut</TextBox>
         <DockPanel Grid.Row="1" LastChildFill="False" Margin="-15, 0, -15, 0">
-            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Left" x:Name="spLeft" x:FieldModifier="public">
                 <custom:ItemNode Width="150" Height="30"></custom:ItemNode>
                 <custom:ItemNode Width="150" Height="30"></custom:ItemNode>
                 <custom:ItemNode Width="150" Height="30"></custom:ItemNode>
             </StackPanel>
-            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Right" x:Name="spRight" x:FieldModifier="public">
                 <custom:ItemNode Width="150" Height="30" Orientation="1"></custom:ItemNode>
                 <custom:ItemNode Width="150" Height="30" Orientation="1"></custom:ItemNode>
             </StackPanel>

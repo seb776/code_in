@@ -18,9 +18,11 @@ namespace code_in_test.WPF
         PathSegmentCollection myPathSegmentCollection;
         PathFigureCollection pthFigureCollection;
         PathGeometry pthGeometry;
-
+        Point b_;
+        Path arcPath;
         public Bezier(Panel rootLayout, Point a, Point b)
         {
+            b_ = b;
             rootLayout_ = rootLayout;
             pthFigure = new PathFigure();
             pthFigure.StartPoint = a;
@@ -42,7 +44,7 @@ namespace code_in_test.WPF
 
             pthGeometry = new PathGeometry();
             pthGeometry.Figures = pthFigureCollection;
-            Path arcPath = new Path();
+            arcPath = new Path();
             arcPath.Stroke = new SolidColorBrush(Colors.Cyan);
             arcPath.StrokeThickness = 1;
             arcPath.Data = pthGeometry;
@@ -53,6 +55,10 @@ namespace code_in_test.WPF
 
         public void setPositions(Point a, Point b)
         {
+            if (b.X >= 0)
+            {
+                b_ = b;
+            }
             if (a.X >= 0)
             {
                 pthFigure.StartPoint = a;
@@ -64,10 +70,15 @@ namespace code_in_test.WPF
             }
             qbzSeg = new PolyBezierSegment();
             qbzSeg.Points.Add(new Point(a.X + 100, a.Y));
-            qbzSeg.Points.Add(new Point(b.X - 100, b.Y));
-            qbzSeg.Points.Add(b);
+            qbzSeg.Points.Add(new Point(b_.X - 100, b_.Y));
+            qbzSeg.Points.Add(b_);
             myPathSegmentCollection.Clear();
             myPathSegmentCollection.Add(qbzSeg);
+        }
+
+        public void Delete()
+        {
+            rootLayout_.Children.Remove(arcPath);
         }
     }
 }
