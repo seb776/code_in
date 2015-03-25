@@ -43,7 +43,7 @@ namespace code_in_test.WPF
             pthGeometry = new PathGeometry();
             pthGeometry.Figures = pthFigureCollection;
             Path arcPath = new Path();
-            arcPath.Stroke = new SolidColorBrush(Colors.Black);
+            arcPath.Stroke = new SolidColorBrush(Colors.Cyan);
             arcPath.StrokeThickness = 1;
             arcPath.Data = pthGeometry;
             rootLayout.Children.Add(arcPath);
