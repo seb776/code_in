@@ -13,7 +13,7 @@ namespace code_in
 	/// <seealso class='IDTExtensibility2' />
 	public class Connect : IDTExtensibility2, IDTCommandTarget
 	{
-        CodeIn code_inInstance;
+        static public CodeIn code_inInstance;
 		/// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
 		public Connect()
 		{
@@ -146,22 +146,28 @@ namespace code_in
                     {
                         //_applicationObject.ItemOperations.NewFile();
                         Windows2 vsWindows = _applicationObject.ItemOperations.DTE.Windows as Windows2;
+
                         Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
                             Assembly.GetExecutingAssembly().Location,
                             typeof(UserControl1).FullName,
                             fileDialog.SafeFileName,
                             Guid.NewGuid().ToString(),
                             ref myUC);
-                        //(myUC as UserControl1).Window = myWindow;
                         myWindow.Visible = true;
                         myWindow.IsFloating = false;
+                        myWindow.Linkable = false;
+
+                        //EnvDTE80.Window2 winFrame;
+                        //_applicationObject.MainWindow.Collection.
+                        //winFrame = (EnvDTE80.Window2)_applicationObject.Windows.CreateLinkedWindowFrame(myWindow, _applicationObject.MainWindow, vsLinkedWindowType.vsLinkedWindowTypeVertical);
+
                         handled = true;
                         if (myUC == null)
-                            throw new Exception("batard");
+                            throw new Exception("Cannot get a reference to the UI");
                         code_inInstance = new CodeIn((UserControl1)myUC, fileDialog.FileName);
-                        CodeManager.Test a = new CodeManager.Test();
 
-                        a.TestAST();
+                        //CodeManager.Test a = new CodeManager.Test();
+                        //a.TestAST();
                     }
 					return;
 				}

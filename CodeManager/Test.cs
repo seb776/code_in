@@ -24,7 +24,15 @@ namespace CodeManager
             args.Add(new TestAntlr.CST.BinaryOp("+", new TestAntlr.CST.Constant("42"), new TestAntlr.CST.FuncCall("zbam", null)));
             call._arguments.Add(new TestAntlr.CST.FuncCall("titi", args));
             funcMain._expressions.Add(call);
-            
+
+            TestAntlr.CST.IfBlock ifBlock = new TestAntlr.CST.IfBlock();
+
+            TestAntlr.CST.IfStmt ifStmt = new TestAntlr.CST.IfStmt(TestAntlr.CST.IfStmt.CompType.IF, null);
+            ifStmt._expressions.Add(call);
+            ifBlock._statements.Add(ifStmt);
+            ifBlock._statements.Add(new TestAntlr.CST.IfStmt(TestAntlr.CST.IfStmt.CompType.ELSEIF, null));
+            ifBlock._statements.Add(new TestAntlr.CST.IfStmt(TestAntlr.CST.IfStmt.CompType.ELSE, null));
+            funcMain._expressions.Add(ifBlock);
 
             StringBuilder builder = new StringBuilder();
 

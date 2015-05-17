@@ -18,7 +18,7 @@ namespace TestAntlr.CST
         public IfStmt(CompType t, ComparisonStmt stmt = null)
         {
             _compType = t;
-            _comp = stmt;
+            _comp = (stmt == null ? new ComparisonStmt() : stmt);
             _expressions = new List<Expression>();
         }
 
@@ -28,9 +28,17 @@ namespace TestAntlr.CST
 
         public override void GenerateCode(StringBuilder builder)
         {
-            builder.Append("If ");
+            if (_compType >= CompType.ELSEIF)
+                builder.Append("Else");
+            if (_compType <= CompType.ELSEIF)
+                builder.Append("If ");
+            if (_compType == CompType.ELSE)
+                builder.Append(" ");
             _comp.GenerateCode(builder);
-            builder.Append("Then\n");
+            if (_compType != CompType.ELSE)
+                builder.Append(" Then\n");
+            if (_expressions.Count == 0)
+                builder.Append("\n");
             foreach (Expression e in _expressions)
             {
                 e.GenerateCode(builder);

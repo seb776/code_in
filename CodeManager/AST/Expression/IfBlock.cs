@@ -10,12 +10,17 @@ namespace TestAntlr.CST
     {
         public List<IfStmt> _statements;
 
+        public IfBlock()
+        {
+            _statements = new List<IfStmt>();
+        }
         public override void GenerateCode(StringBuilder builder)
         {
             foreach (IfStmt s in _statements)
             {
                 s.GenerateCode(builder);
             }
+            builder.Append("End If\n");
         }
     }
 }

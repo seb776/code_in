@@ -75,6 +75,9 @@
     <Compile Include="WPF\ItemNode.xaml.cs">
       <DependentUpon>ItemNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\PromptDialog.xaml.cs">
+      <DependentUpon>PromptDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\testNode.xaml.cs">
       <DependentUpon>testNode.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="WPF\ItemNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\PromptDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

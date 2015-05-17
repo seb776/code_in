@@ -100,5 +100,41 @@ namespace code_in
             }
         }
 
+        private void MenuItem_AddImports(object sender, RoutedEventArgs e)
+        {
+            Point pt = this.MenuItemNode.TranslatePoint(new Point(0, 0), this.grid_win);
+            string imp = WPF.PromptDialog.Prompt("Please type the name of the Import", "Imports");
+            if (imp.Length != 0)
+            {
+                Connect.code_inInstance._parser.vbcst._imports.Add(new TestAntlr.CST.Imports(imp));
+                WPF.testNode n = new WPF.testNode(this.grid_win, pt.X, pt.Y);
+                n.Title.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.AliceBlue);
+                n.Title.Text = "Imports";
+                n.spLeft.Children.Clear();
+                n.spRight.Children.Clear();
+                WPF.ItemNode itemImport = new WPF.ItemNode();
+
+                itemImport.Text.Text = imp;
+                n.spLeft.Children.Add(itemImport);
+                this.grid_win.Children.Add(n);
+            }
+        }
+
+        private void Button_Save(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog();
+
+            bool? result = fileDialog.ShowDialog();
+            if (result == true)
+            {
+                System.IO.StreamWriter file = new System.IO.StreamWriter(fileDialog.FileName);
+                StringBuilder builder = new StringBuilder();
+
+                Connect.code_inInstance._parser.vbcst.GenerateCode(builder);
+                file.Write(builder.ToString());
+
+                file.Close();
+            }
+        }
     }
 }

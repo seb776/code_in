@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="125" d:DesignWidth="250"
              xmlns:custom="clr-namespace:code_in.WPF" x:Name="node">
-    <Grid Width="250" Height="125" Background="Gray" VerticalAlignment="Top" HorizontalAlignment="Left">
+    <Grid Width="250" Height="125" Background="Gray" x:Name="Grid" VerticalAlignment="Top" HorizontalAlignment="Left">
         <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Move" Click="onClickMove"></MenuItem>
