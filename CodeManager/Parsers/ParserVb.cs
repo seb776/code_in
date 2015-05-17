@@ -176,6 +176,7 @@ namespace TestAntlr
                                        {
                                            // nom de la variable
                                            bin._arguments[0] = new CST.Constant(locTree.GetChild(j).GetChild(0).GetChild(k).GetText());
+                                           stmt._expressions.Add(bin);
                                        }
 
                                        if (locTree.GetChild(j).GetChild(0).GetChild(k).GetType().Equals(typeof(VisualBasic6Parser.VsLiteralContext)))
@@ -199,7 +200,7 @@ namespace TestAntlr
                     if (tree.GetChild(0).GetChild(0).GetChild(i).GetType().Equals(typeof(VisualBasic6Parser.BlockStmtContext)))
                     {
                         CST.Imports import = new CST.Imports();
-                        System.Windows.Forms.MessageBox.Show(tree.GetChild(0).GetChild(0).GetChild(i).GetType().ToString());
+                        //System.Windows.Forms.MessageBox.Show(tree.GetChild(0).GetChild(0).GetChild(i).GetType().ToString());
                         import.Name = getImport(tree.GetChild(0).GetChild(0).GetChild(i));
                         vbcst._imports.Add(import);
                     }
