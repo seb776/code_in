@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace TestAntlr.CST
 {
-    public class Type : CSTNode
+    public class ComparisonStmt : Expression
     {
-        public Type _subType;
-        public Type(string type)
+        public override void GenerateCode(StringBuilder builder)
         {
-            Name = type;
+            builder.Append("0 = 0");
         }
     }
 }

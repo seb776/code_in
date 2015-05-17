@@ -159,6 +159,9 @@ namespace code_in
                         if (myUC == null)
                             throw new Exception("batard");
                         code_inInstance = new CodeIn((UserControl1)myUC, fileDialog.FileName);
+                        CodeManager.Test a = new CodeManager.Test();
+
+                        a.TestAST();
                     }
 					return;
 				}
