@@ -18,6 +18,13 @@ namespace TestAntlr.CST
             kind = kindDecl;
         }
 
+        public Declaration()
+        {
+            _type = new Type("");
+            Name = "";
+            kind = "";
+        }
+
         public override void GenerateCode(StringBuilder builder)
         {
             builder.Append(kind).Append(" ").Append(Name).Append(" As ").Append(_type.Name);

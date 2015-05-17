@@ -9,6 +9,11 @@ namespace TestAntlr.CST
     public class Type : CSTNode
     {
         public Type _subType;
+
+        public Type()
+        {
+            Name = "UnknownType";
+        }
         public Type(string type)
         {
             Name = type;
