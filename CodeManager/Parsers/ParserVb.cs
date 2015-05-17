@@ -76,7 +76,50 @@ namespace TestAntlr
                     if (locTree.GetType().Equals(typeof(VisualBasic6Parser.AmbiguousIdentifierContext)))
                     {
                         stmt.Name = locTree.GetText();
-                        break;
+                    }
+
+                    else if (locTree.GetType().Equals(typeof(VisualBasic6Parser.ArgListContext)))
+                    {
+                        for (int j = 0; j != locTree.ChildCount; ++j)
+                        {
+                            if (locTree.GetChild(j).GetType().Equals(typeof(VisualBasic6Parser.ArgContext)))
+                            {
+                                for (int k = 0; k != locTree.GetChild(j).ChildCount; ++k)
+                                {
+                                    CST.Declaration dec = new CST.Declaration();
+                                    stmt._parameters.Add(dec);
+                                    if (locTree.GetChild(j).GetChild(k).GetType().Equals(typeof(VisualBasic6Parser.AmbiguousIdentifierContext)))
+                                    {
+                                        // Stock le nom 
+                                        dec.Name = locTree.GetChild(j).GetChild(k).GetText();
+                                    }
+                                    if (locTree.GetChild(j).GetChild(k).GetType().Equals(typeof(VisualBasic6Parser.AsTypeClauseContext)))
+                                    {
+                                        for (int l = 0; l != locTree.GetChild(j).GetChild(k).ChildCount; ++l)
+                                        {
+                                            if (locTree.GetChild(j).GetChild(k).GetChild(l).GetType().Equals(typeof(VisualBasic6Parser.TypeContext)))
+                                            {
+                                                // Stock le type
+                                                dec._type.Name = locTree.GetChild(j).GetChild(k).GetChild(l).GetText();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    else if (locTree.GetType().Equals(typeof(VisualBasic6Parser.AsTypeClauseContext)))
+                    {
+                        for (int j = 0; j != locTree.ChildCount; ++j )
+                        {
+                            if (locTree.GetChild(j).GetType().Equals(typeof(VisualBasic6Parser.TypeContext)))
+                            {
+                                stmt._returnType = new CST.Type();
+                                stmt._returnType.Name = locTree.GetChild(j).GetText();
+                                break;
+                            }
+                        }
                     }
                 }
                 vbcst._statements.Add(stmt);
