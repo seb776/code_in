@@ -12,7 +12,7 @@ namespace TestAntlr.CST
         {
             Name = name;
             _returnType = returnType;
-            _parameters = parameters;
+            _parameters = (parameters == null ? new List<Declaration>() : parameters);
             _expressions = new List<Expression>();
         }
         public CST.Type _returnType;
@@ -37,8 +37,10 @@ namespace TestAntlr.CST
                         builder.Append(", ");
                 }
             }
-            builder.Append(")\n");
-
+            builder.Append(")");
+            if (_returnType != null)
+                builder.Append(" As ").Append(_returnType.Name);
+            builder.Append("\n");
             foreach (Expression e in _expressions)
             {
                 e.GenerateCode(builder);

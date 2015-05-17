@@ -50,12 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AST\BlockStatement.cs" />
+    <Compile Include="AST\BlockStmt\BlockStatement.cs" />
     <Compile Include="AST\Constant.cs" />
     <Compile Include="AST\CSTNode.cs" />
     <Compile Include="AST\Declaration.cs" />
-    <Compile Include="AST\Expression.cs" />
-    <Compile Include="AST\FuncBlockStmt.cs" />
+    <Compile Include="AST\Expression\BinaryOp.cs" />
+    <Compile Include="AST\Expression\ComparisonStmt.cs" />
+    <Compile Include="AST\Expression\Expression.cs" />
+    <Compile Include="AST\BlockStmt\FuncBlockStmt.cs" />
+    <Compile Include="AST\Expression\FuncCall.cs" />
+    <Compile Include="AST\Expression\IfBlock.cs" />
+    <Compile Include="AST\Expression\IfStmt.cs" />
     <Compile Include="AST\Imports.cs" />
     <Compile Include="AST\Operand.cs" />
     <Compile Include="AST\Type.cs" />
@@ -67,6 +72,7 @@
     <Compile Include="Parsers\ParserVb.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
