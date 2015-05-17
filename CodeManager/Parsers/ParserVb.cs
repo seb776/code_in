@@ -59,7 +59,6 @@ namespace TestAntlr
             }
             else
             {
-                Console.WriteLine(tree.GetText());
                 convertModuleBodyElementContext(tree);
             }
         }
@@ -84,9 +83,16 @@ namespace TestAntlr
             }
             else if (tree.GetChild(0).GetType().Equals(typeof(VisualBasic6Parser.ModuleBlockContext)))
             {
-                CST.Imports import = new CST.Imports();
-                import.Name = getImport(tree);
-                vbcst._imports.Add(import);
+                for (int i = 0; i != tree.GetChild(0).GetChild(0).ChildCount; ++i)
+                {
+                    if (tree.GetChild(0).GetChild(0).GetChild(i).GetType().Equals(typeof(VisualBasic6Parser.BlockStmtContext)))
+                    {
+                        CST.Imports import = new CST.Imports();
+                        System.Windows.Forms.MessageBox.Show(tree.GetChild(0).GetChild(0).GetChild(i).GetType().ToString());
+                        import.Name = getImport(tree.GetChild(0).GetChild(0).GetChild(i));
+                        vbcst._imports.Add(import);
+                    }
+                }
             }
         }
 
