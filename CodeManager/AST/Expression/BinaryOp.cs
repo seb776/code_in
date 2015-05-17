@@ -21,7 +21,8 @@ namespace TestAntlr.CST
         {
             _arguments[0].GenerateCode(builder);
             builder.Append(" ").Append(Name).Append(" ");
-            _arguments[1].GenerateCode(builder);
+            if (_arguments[1] != null)
+                _arguments[1].GenerateCode(builder);
         }
     }
 }
