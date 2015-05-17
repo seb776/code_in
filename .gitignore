@@ -181,6 +181,3 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
-
-# Config file for Visual Studio location
-pathDevEnv.cfg

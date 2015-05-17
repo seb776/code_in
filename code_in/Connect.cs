@@ -7,12 +7,13 @@ using System.Resources;
 using System.Reflection;
 using System.Globalization;
 
-namespace code_in_test
+namespace code_in
 {
 	/// <summary>The object for implementing an Add-in.</summary>
 	/// <seealso class='IDTExtensibility2' />
 	public class Connect : IDTExtensibility2, IDTCommandTarget
 	{
+        CodeIn code_inInstance;
 		/// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
 		public Connect()
 		{
@@ -46,7 +47,7 @@ namespace code_in_test
 				try
 				{
 					//Add a command to the Commands collection:
-					Command command = commands.AddNamedCommand2(_addInInstance, "code_in_test", "code_in_test", "Executes the command for code_in_test", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported+(int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+					Command command = commands.AddNamedCommand2(_addInInstance, "code_in", "code_in", "Executes the command for code_in", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported+(int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
 
 					//Add a control for the command to the tools menu:
 					if((command != null) && (toolsPopup != null))
@@ -102,7 +103,7 @@ namespace code_in_test
 		{
 			if(neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
 			{
-				if(commandName == "code_in_test.Connect.code_in_test")
+				if(commandName == "code_in.Connect.code_in")
 				{
 					status = (vsCommandStatus)vsCommandStatus.vsCommandStatusSupported|vsCommandStatus.vsCommandStatusEnabled;
 					return;
@@ -122,7 +123,7 @@ namespace code_in_test
 			handled = false;
 			if(executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
 			{
-				if(commandName == "code_in_test.Connect.code_in_test")
+				if(commandName == "code_in.Connect.code_in")
 				{
                     //Object myUC = null;
                     ////_applicationObject.ItemOperations.NewFile();
@@ -136,19 +137,29 @@ namespace code_in_test
                     //(myUC as Form1).Window = myWindow;
                     //myWindow.Visible = true;
 
-                    Object myUC = null;
-                    //_applicationObject.ItemOperations.NewFile();
-                    Windows2 vsWindows = _applicationObject.ItemOperations.DTE.Windows as Windows2;
-                    Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
-                        Assembly.GetExecutingAssembly().Location,
-                        typeof(UserControl1).FullName,
-                        "Ma fenetre a moi (WPF)",
-                        Guid.NewGuid().ToString(),
-                        ref myUC);
-                    //(myUC as UserControl1).Window = myWindow;
-                    myWindow.Visible = true;
-                    myWindow.IsFloating = false;
-					handled = true;
+                    object myUC = null;
+                    Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+
+                    bool? result = fileDialog.ShowDialog();
+
+                    if (result == true)
+                    {
+                        //_applicationObject.ItemOperations.NewFile();
+                        Windows2 vsWindows = _applicationObject.ItemOperations.DTE.Windows as Windows2;
+                        Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
+                            Assembly.GetExecutingAssembly().Location,
+                            typeof(UserControl1).FullName,
+                            fileDialog.SafeFileName,
+                            Guid.NewGuid().ToString(),
+                            ref myUC);
+                        //(myUC as UserControl1).Window = myWindow;
+                        myWindow.Visible = true;
+                        myWindow.IsFloating = false;
+                        handled = true;
+                        if (myUC == null)
+                            throw new Exception("batard");
+                        code_inInstance = new CodeIn((UserControl1)myUC, fileDialog.FileName);
+                    }
 					return;
 				}
 			}

@@ -1,4 +1,4 @@
-﻿namespace code_in_test
+﻿namespace code_in
 {
     partial class Form1
     {

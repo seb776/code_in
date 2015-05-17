@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace code_in_test.WPF
+namespace code_in.WPF
 {
     public class Bezier
     {

@@ -14,14 +14,15 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 
-namespace code_in_test
+namespace code_in
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class UserControl1 : UserControl
+    [GuidAttribute("9ED54F84-A89D-4fcd-A854-44251E925F09")]
+    public partial class UserControl1 : UserControl, stdole.IDispatch
     {
         public static Dictionary<WPF.ItemNode, WPF.Bezier> Links;
 

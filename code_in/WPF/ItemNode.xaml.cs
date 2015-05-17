@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in_test.WPF
+namespace code_in.WPF
 {
     /// <summary>
     /// Interaction logic for ItemNode.xaml

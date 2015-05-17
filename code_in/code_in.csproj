@@ -10,7 +10,7 @@
     <StartupObject>
     </StartupObject>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>code_in_test</AssemblyName>
+    <AssemblyName>code_in</AssemblyName>
     <DeploymentDirectory>.\bin\</DeploymentDirectory>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
@@ -25,6 +25,7 @@
     <IncrementalBuild>false</IncrementalBuild>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>code_in_test.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -38,7 +39,7 @@
     <DocumentationFile>code_in_test.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>code_in_test</RootNamespace>
+    <RootNamespace>code_in</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -60,6 +61,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="code_in.cs" />
     <Compile Include="Connect.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,7 +139,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="code_in_test.AddIn" />
+    <Content Include="code_in.AddIn">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="winforms\Form1.resx">
@@ -157,6 +161,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeManager\CodeManager.csproj">
+      <Project>{8d65fafd-2621-44f1-8248-e2d77d5924db}</Project>
+      <Name>CodeManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>
