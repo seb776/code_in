@@ -6,14 +6,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Ellipse Fill="CornflowerBlue">
+        <Rectangle Fill="GreenYellow">
             
-        </Ellipse>
-        <Ellipse Fill="Gray">
+        </Rectangle>
+        <!--<Ellipse Fill="CornflowerBlue">
+            
+        </Ellipse>-->
+        <!--<Ellipse Fill="Gray">
             
         </Ellipse>
         <Ellipse Fill="BlueViolet">
             
-        </Ellipse>
+        </Ellipse>-->
     </Grid>
 </UserControl>

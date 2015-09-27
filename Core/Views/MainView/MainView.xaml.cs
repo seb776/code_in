@@ -39,6 +39,12 @@ namespace code_in.Views.MainView
             this.MouseWheel += MainView_MouseWheel;
             this.MouseDown += MainView_MouseDown;
             this.KeyDown += MainView_KeyDown;
+            this.MouseUp += MainView_MouseUp;
+        }
+
+        void MainView_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Nodes.TransformingNode.TransformingObject = null;
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
@@ -68,6 +74,29 @@ namespace code_in.Views.MainView
 
         void MainView_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+        }
+
+        Point lastPosition = new Point(0,0);
+
+        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            Vector diff;
+            if ((lastPosition.X + lastPosition.Y) < 0.01)
+                diff = new Vector(0, 0);
+            else
+            {
+                diff = lastPosition - e.GetPosition(null);
+            }
+            lastPosition = e.GetPosition(null);
+            if (Nodes.TransformingNode.TransformingObject != null)
+            {
+                double sizeX = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualWidth").GetValue(Nodes.TransformingNode.TransformingObject);
+                double sizeY = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualHeight").GetValue(Nodes.TransformingNode.TransformingObject);
+                //MessageBox.Show((sizeX + diff.X).ToString());
+                Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Width").SetValue(Nodes.TransformingNode.TransformingObject, sizeX - diff.X);
+                Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Height").SetValue(Nodes.TransformingNode.TransformingObject, sizeY - diff.Y);
+                //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
+            }
         }
     }
 }

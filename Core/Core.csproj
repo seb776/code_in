@@ -67,6 +67,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\MainView\Nodes\IOItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView\Nodes\NodeAnchor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,6 +81,9 @@
     </Compile>
     <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView\Nodes\IOItem.xaml.cs">
+      <DependentUpon>IOItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\Nodes\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>

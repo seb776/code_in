@@ -30,7 +30,7 @@
     </UserControl.Resources>
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-            <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid">
+            <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove">
                 <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
             </Grid>
         </ScrollViewer>

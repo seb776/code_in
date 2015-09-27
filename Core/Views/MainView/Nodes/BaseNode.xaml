@@ -5,24 +5,47 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="250"
-             Width="250" Height="150">
+             MinWidth="250" MinHeight="150"
+             xmlns:my="clr-namespace:code_in.Views.MainView.Nodes">
     <UserControl.Resources>
     </UserControl.Resources>
-    <Border BorderThickness="2" BorderBrush="Black">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Foreground="GreenYellow">BaseNode</Label>
-        <Grid Grid.Row="1" Background="#424242">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Rectangle Grid.Row="0" Fill="GreenYellow"/>
-            <Label Grid.Row="0" FontWeight="Bold">NodeName</Label>
-        </Grid>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <Label Foreground="GreenYellow">Modifier1</Label>
+            <Label Foreground="GreenYellow">Modifier2</Label>
+        </StackPanel>
+        <Border Grid.Row="1" BorderThickness="2" BorderBrush="GreenYellow">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25"/>
+            </Border.Effect>
+            <Grid Background="#424242">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Row="0" Fill="GreenYellow"/>
+                <Label Grid.Row="0" FontWeight="Bold">NodeName</Label>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <my:IOItem x:Name="InFlow"></my:IOItem>
+                        <my:IOItem></my:IOItem>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <my:IOItem x:Name="OutFlow" Orientation="1"></my:IOItem>
+                        <my:IOItem Orientation="1"></my:IOItem>
+                    </StackPanel>
+                    <Polygon Grid.Column="1" Fill="GreenYellow" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                    <!--<Rectangle Fill="GreenYellow" Grid.Column="1"/>-->
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
-    </Border>
 </UserControl>
