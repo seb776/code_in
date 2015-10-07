@@ -10,16 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
 
 namespace code_in.Views.ConfigView
 {
     /// <summary>
     /// Logique d'interaction pour ConfigView.xaml
     /// </summary>
-    public partial class ConfigView : Window
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.None)]
+    public partial class ConfigView : UserControl, stdole.IDispatch
     {
         public ConfigView()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             InitializeComponent();
         }
