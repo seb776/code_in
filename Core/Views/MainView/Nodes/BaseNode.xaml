@@ -8,6 +8,11 @@
              MinWidth="250" MinHeight="150"
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes">
     <UserControl.Resources>
+        <SolidColorBrush x:Key="BaseNodeColor" Color="GreenYellow"/>
+        <SolidColorBrush x:Key="BaseNodeColorBack" Color="#424242"/>
+        <SolidColorBrush x:Key="NamespaceNodeColor" Color="BlueViolet"/>
+        <SolidColorBrush x:Key="FuncNodeColor" Color="IndianRed"/>
+        
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -15,20 +20,25 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Vertical">
-            <Label Foreground="GreenYellow">Modifier1</Label>
-            <Label Foreground="GreenYellow">Modifier2</Label>
+            <Label Foreground="{DynamicResource BaseNodeColor}">Modifier1</Label>
+            <Label Foreground="{DynamicResource BaseNodeColor}">Modifier2</Label>
         </StackPanel>
-        <Border Grid.Row="1" BorderThickness="2" BorderBrush="GreenYellow">
+        <Border Grid.Row="1" BorderThickness="2" BorderBrush="{DynamicResource BaseNodeColor}">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="25"/>
             </Border.Effect>
-            <Grid Background="#424242">
+            <Grid Background="{DynamicResource BaseNodeColorBack}" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Cursor="ScrollAll">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Rectangle Grid.Row="0" Fill="GreenYellow"/>
+                <Rectangle x:FieldModifier="public" x:Name="NodeHeader" Grid.Row="0" Fill="{DynamicResource BaseNodeColor}"/>
                 <Label Grid.Row="0" FontWeight="Bold">NodeName</Label>
+                <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" MouseLeftButtonDown="Grid_MouseLeftButtonDown_1" Cursor="Arrow" Width="Auto" Height="Auto">
+                    <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="2" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    </Line>
+                    <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="2" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -42,8 +52,7 @@
                         <my:IOItem x:Name="OutFlow" Orientation="1"></my:IOItem>
                         <my:IOItem Orientation="1"></my:IOItem>
                     </StackPanel>
-                    <Polygon Grid.Column="1" Fill="GreenYellow" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
-                    <!--<Rectangle Fill="GreenYellow" Grid.Column="1"/>-->
+                    <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource BaseNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
                 </Grid>
             </Grid>
         </Border>

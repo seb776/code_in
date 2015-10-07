@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace code_in.CodeMgr.Tree
+namespace TranslationTier
 {
-    public class Variable : ADecl 
+    public class Class1
     {
-        override public void GenerateCode(StringBuilder sb) { }
     }
 }

@@ -8,11 +8,17 @@ namespace code_in.ViewModels
 {
     public class code_inMgr
     {
-        public CodeMgr.ACodeMgr _codeMgr;
-
-        public code_inMgr()
+        Views.MainView.MainView  _mainView;
+        CodeMgr _codeMgr;
+        public code_inMgr(Views.MainView.MainView mainView)
         {
-            _codeMgr = (new CSharpCodeMgr.CSharpCodeMgr()) as CodeMgr.ACodeMgr;
+            _codeMgr = new CodeMgr();
+            _mainView = mainView;
+        }
+
+        public void LoadFile(String filePath)
+        {
+            _codeMgr.LoadFile(filePath, _mainView.MainGrid);
         }
     }
 }

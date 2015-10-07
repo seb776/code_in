@@ -28,13 +28,15 @@ namespace code_in.Views.MainView
         public void OpenFile(String filePath)
         {
             //MessageBox.Show(filePath);
-            _code_inMgr._codeMgr.GenerateTreeFromFile(filePath);
+            _code_inMgr.LoadFile(filePath);
+
         }
+
         public MainView()
         {
             InitializeComponent();
 
-            _code_inMgr = new ViewModels.code_inMgr();
+            _code_inMgr = new ViewModels.code_inMgr(this);
 
             this.MouseWheel += MainView_MouseWheel;
             this.MouseDown += MainView_MouseDown;
@@ -45,6 +47,7 @@ namespace code_in.Views.MainView
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Nodes.TransformingNode.TransformingObject = null;
+            Nodes.TransformingNode.Transformation = Nodes.TransformingNode.TransformationMode.NONE;
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
@@ -88,14 +91,29 @@ namespace code_in.Views.MainView
                 diff = lastPosition - e.GetPosition(null);
             }
             lastPosition = e.GetPosition(null);
+
             if (Nodes.TransformingNode.TransformingObject != null)
             {
-                double sizeX = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualWidth").GetValue(Nodes.TransformingNode.TransformingObject);
-                double sizeY = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualHeight").GetValue(Nodes.TransformingNode.TransformingObject);
-                //MessageBox.Show((sizeX + diff.X).ToString());
-                Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Width").SetValue(Nodes.TransformingNode.TransformingObject, sizeX - diff.X);
-                Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Height").SetValue(Nodes.TransformingNode.TransformingObject, sizeY - diff.Y);
-                //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
+                //((ScrollViewer)((Grid)sender).Parent).ScrollToHorizontalOffset(((ScrollViewer)((Grid)sender).Parent).HorizontalOffset + (diff.X < 0 ? -.1 : .1));
+                if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.RESIZE)
+                {
+                    double sizeX = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualWidth").GetValue(Nodes.TransformingNode.TransformingObject);
+                    double sizeY = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualHeight").GetValue(Nodes.TransformingNode.TransformingObject);
+                    //MessageBox.Show((sizeX + diff.X).ToString());
+                    Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Width").SetValue(Nodes.TransformingNode.TransformingObject, sizeX - diff.X);
+                    Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Height").SetValue(Nodes.TransformingNode.TransformingObject, sizeY - diff.Y);
+                    //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
+                }
+                else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.MOVE)
+                {
+                    Thickness margin = (Thickness)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Margin").GetValue(Nodes.TransformingNode.TransformingObject);
+                    double marginLeft = margin.Left;
+                    double marginTop = margin.Top;
+                    Thickness newMargin = margin;
+                    newMargin.Left -= diff.X;
+                    newMargin.Top -= diff.Y;
+                    Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Margin").SetValue(Nodes.TransformingNode.TransformingObject, newMargin);
+                }
             }
         }
     }

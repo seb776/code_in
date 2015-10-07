@@ -47,8 +47,8 @@ namespace code_in
 				try
 				{
 					//Add a command to the Commands collection:
-					Command command = commands.AddNamedCommand2(_addInInstance, "code_in", "code_in", "Executes the command for code_in", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported+(int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
-
+                    Command command = commands.AddNamedCommand2(_addInInstance, "code_in", "code_in", "Executes the command for code_in", false, TranslationTier.Resources._1, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+                    
 					//Add a control for the command to the tools menu:
 					if((command != null) && (toolsPopup != null))
 					{
