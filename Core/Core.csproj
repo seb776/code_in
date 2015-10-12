@@ -110,6 +110,7 @@
     <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\FuncDeclNode.cs" />
     <Compile Include="Views\MainView\Nodes\IOItem.xaml.cs">
       <DependentUpon>IOItem.xaml</DependentUpon>
     </Compile>

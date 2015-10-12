@@ -39,7 +39,8 @@
                     </Line>
                     <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="2" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" x:Name="NodeGrid">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -53,6 +54,7 @@
                         <my:IOItem Orientation="1"></my:IOItem>
                     </StackPanel>
                     <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource BaseNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                </Grid>
                 </Grid>
             </Grid>
         </Border>
