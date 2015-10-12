@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace code_in.Views.ConfigView
 {
@@ -24,11 +27,6 @@ namespace code_in.Views.ConfigView
     public partial class ConfigView : UserControl, stdole.IDispatch
     {
         public ConfigView()
-        {
-            InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
         {
             InitializeComponent();
         }
