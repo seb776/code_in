@@ -4,30 +4,69 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="800" Width="1000">
 
     <Grid>
         <!-- Code un peu plus propre, je n'arrive juste pas encore a utiliser le treeview comme je veux :/ -->
-    <!-- Treeview du menu = Sommaire ^^ #first try tree -->
-        <TreeView  Margin="0,50,0,0" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="#ebebeb" FontSize="18">
-            <TreeViewItem Header="Général" Foreground="#424242" />
-            <TreeViewItem Header="Thèmes" IsExpanded="True" Foreground="#424242" >
-                <TreeViewItem Header="Changer de thème" Foreground="#424242"/>
-                <TreeViewItem Header="Créer un thème" Foreground="#424242"/>
-            </TreeViewItem>
-            <TreeViewItem Header="Erreurs" Foreground="#424242" />
-            <TreeViewItem Header="Raccourcis" Foreground="#424242"/>
-            <TreeViewItem Header="Performances" Foreground="#424242"/>
-        </TreeView>
-       <!-- Panneau de droite = contenu des menus -->
-        <StackPanel Margin="200, 50, 0, 0" Background="#424242" VerticalAlignment="Stretch">
-            
-        </StackPanel>
         
+        <!-- Treeview du menu = Sommaire ^^ #first try tree -->
+        <TreeView  Margin="0,50,0,0" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="#ebebeb" FontSize="18">
+            <TreeViewItem Name="Général" Header="Général" Foreground="#424242" IsSelected="True" />
+            <TreeViewItem Name="Thèmes" Header="Thèmes" IsExpanded="True" Foreground="#424242" >
+                <TreeViewItem Name="ChangeTheme" Header="Changer de thème" Foreground="#424242"/>
+                <TreeViewItem Name="CréerTheme" Header="Créer un thème" Foreground="#424242"/>
+            </TreeViewItem>
+            <TreeViewItem Name="Erreurs" Header="Erreurs" Foreground="#424242" />
+            <TreeViewItem Name="Raccourcis" Header="Raccourcis" Foreground="#424242"/>
+            <TreeViewItem Name="Performances" Header="Performances" Foreground="#424242"/>
+        </TreeView>
+        
+        <!-- DES stacks panels = Panneau de droite = contenu des menus (plusieurs stackPanel qui seront set à Visible/Hidden si sélectionnés ou non)-->
+        
+        <!-- Contenu du menu "Général" -->
+        <StackPanel Name="Général_layout" Margin="200, 50, 0, 0" Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Visible">
+            
+            <!-- "Activer Tuto" -->
+            <CheckBox Content="Activer le mode tutoriel" Margin="50, 100, 0, 0" Foreground="#ebebeb" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20"/>
+            
+            <!-- Màj menu déroulant -->
+            <TextBlock Margin="50,60,160,0" Text="Mises à jour du menu déroulant" Foreground="#ebebeb" FontSize="20"/>
+            <ComboBox  Width="200" HorizontalAlignment="Left" Margin="50, 10, 0, 0">
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="Au démarrage"/>
+                <ComboBoxItem Content="Journalier"/>
+                <ComboBoxItem Content="Mensuel"/>
+                <ComboBoxItem Content="Jamais"/>
+            </ComboBox>
+            <Button Name="maj_menu" Margin="50, 20, 0, 0" Width="150" HorizontalAlignment="Left" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
+            
+            <!-- Dossier du fichier de conf -->
+            <TextBlock Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
+            <TextBlock Name="Path" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
+            <Button x:Name="Parcour_file" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
+            
+            <!-- Les deux boutons Valider/Annuler :p -->
+            <Button Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Valider"/>
+            <Button Content="Annuler" Height="30" Width="100" Margin="100, -30, -100, 0" Click="Button_Annuler"/>
+        </StackPanel>
+        <!-- Fin du contenu du menu "Général" -->
+
+        <!-- Début du contenu du menu ...-->
+        <!-- Fin du contenu du menu ... -->
+
+        <!-- Début du contenu du menu ...-->
+        <!-- Fin du contenu du menu ... -->
+
+        <!-- Début du contenu du menu ...-->
+        <!-- Fin du contenu du menu ... -->
+
+        <!-- Début du contenu du menu ...-->
+        <!-- Fin du contenu du menu ... -->
+
         <!-- Bannière de haut de page = information sur la catégorie séléctionnée, faite en 2 textblock pour pouvoir changer dynamiquement le nom de la catégorie séléctionnée -->
         <StackPanel Margin="0, 0, 0, 0" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#424242">
             <TextBlock Text="Configuration :" FontSize="20" Foreground="#ebebeb" Width="200" HorizontalAlignment="Left"/>
-            <TextBlock Text="DYNAMIC !" Margin="200,-25,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50" FontSize="20" Foreground="#ebebeb"/>
+            <TextBlock Name="Dynamic_content" Text="DYNAMIC TEXT !" Margin="200,-25,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="#ebebeb"/>
         </StackPanel>
     </Grid>
 </UserControl>
