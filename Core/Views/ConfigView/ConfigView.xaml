@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Treeview du menu = Sommaire ^^ #first try tree -->
+        <!-- Treeview of the menu = Summary -->
         <TreeView Grid.Column="0" Margin="0,0,0,0" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="#ebebeb" FontSize="18" SelectedItemChanged="myTreeView_SelectedItemChanged">
             <TreeViewItem x:Name="General" Header="Général" Foreground="#424242" IsSelected="True"/>
             <TreeViewItem x:Name="Themes" Header="Thèmes" IsExpanded="True" Foreground="#424242" >
@@ -26,7 +26,7 @@
             <TreeViewItem x:Name="Performances" Header="Performances" Foreground="#424242"/>
         </TreeView>
 
-        <!-- Right Panel (All layouts are aready loaded, waiting for being visible when usefull !) -->
+        <!-- Right Panel (All layouts are aready loaded, waiting for being visible/enabled when usefull !) -->
         <Grid x:Name="RightPanel" Grid.Column="1" Loaded="Grid_Loaded">
             <my:GeneralLayout x:Name="GenMenu" IsEnabled="True" Visibility="Visible"/>
             <my:ThemeLayout x:Name="TheMenu" IsEnabled="False" Visibility="Hidden"/>
