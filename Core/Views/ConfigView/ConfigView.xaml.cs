@@ -24,86 +24,40 @@ namespace code_in.Views.ConfigView
     [ClassInterface(ClassInterfaceType.None)]
     public partial class ConfigView : UserControl, stdole.IDispatch
     {
-        private TreeViewItem curr_item = new TreeViewItem();
+        private UserControl currentMenu;
+        private Dictionary<string, UserControl> menu = new Dictionary<string, UserControl>();
         public ConfigView()
         {
             InitializeComponent();
-            curr_item = Général;
-            Dynamic_content.Text = "Général";
-
-        }
-
-        // Les 3 fonctions suivantes sont pour la check box de "Général->Activer tuto"
-        //if box checked -> send
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Handle(sender as CheckBox);
-        }
-        // if box unchecked -> send
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Handle(sender as CheckBox);
-        }
-        // reçoit l'event(?), vérifie si coché ou non -> different comportement en fonction du résultat
-        void Handle(CheckBox checkBox)
-        {
-            // Use IsChecked.
-            bool flag = checkBox.IsChecked.Value;
-            if (flag == true)
-            {
-                MessageBox.Show("Hello ! You just checked the tutorial mode !", "Confirmation"); // Juste une petite fenêtre qui s'ouvre pour vérifier que la checkbox fonctionne bien ;)
-                // si la box est cochée --> do something (but not my part)
-            }
-                // Si elle est décochée (Ne fonctionne pas si elle n'a pas été cochée avant)
-            else
-            {
-                MessageBox.Show("Oh, enough of the tutorial ? I hope it have helped you :D");
-            }
+            menu.Add("Général", GenMenu);
+            menu.Add("Thèmes", TheMenu);
+            menu.Add("Erreurs", ErrMenu);
+            menu.Add("Raccourcis", ShortMenu);
+            menu.Add("Performances", PerfMenu);
         }
         
-        // Event pour le boutton maj du menu Général (pour le menu déroulant) les messages box seront a virer, c'était seulement pour les tests
-        private void maj_menu_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Votre version est à jour :D (ou pas ?)");
-        }
-
-        // Méthode pour ouvrir une fenêtre pour parcourir les dossiers (dans le but de choisir un fichier)
-        private void bOpenFileDialog_Click(object sender, RoutedEventArgs e)
-        {
-           Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();          
- 
-            // Set filter for file extension and default file extension
-            dlg.DefaultExt = ".txt"; // à changer en fonction du nom de nos extensions de fichier #1
-            dlg.Filter = "Text documents (.txt)|*.txt"; // same than #1
- 
-            // Display OpenFileDialog by calling ShowDialog method
-            Nullable<bool> result = dlg.ShowDialog();
- 
-            if (result == true)
-                {
-                    // Open document
-                    string filename = dlg.FileName;
-                    Path.Text = filename;
-                // filename = le path du fichier
-                }
-        }
-
-        // Méthodes des deux boutons Valider/Annuler
-        private void Button_Valider(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Vous avez validé votre choix !");
-        }
-        private void Button_Annuler(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Vous avez annulé votre choix !");
-        }
-
-        // Pour handle le changement de l'item du menu (quand on change de catégori dans le menu)
+        // Pour handle le changement de l'item du menu (quand on change de catégorie dans le menu)
         private void myTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (RightPanel.IsLoaded)
+            {
+                // Set the new Item to visible/enabled
+                //((UserControl)sender).Visibility = System.Windows.Visibility.Visible;
+                //((UserControl)sender).IsEnabled = true;
+                TheMenu.Visibility = System.Windows.Visibility.Visible;
+                TheMenu.IsEnabled = true;
+                // Set the ancien item to hidden/disabled
+                currentMenu.Visibility = System.Windows.Visibility.Hidden;
+                currentMenu.IsEnabled = false;
 
-//            TreeViewItem selectedItem = (TreeViewItem)myTreeView.SelectedItem;
-            // do stuff
+                // The new item is now our current item
+                currentMenu = TheMenu;//((UserControl)e.NewValue);
+            }
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            currentMenu = GenMenu;
         }
     }
 }

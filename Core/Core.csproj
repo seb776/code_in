@@ -68,6 +68,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +88,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConfigView\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ErrorsLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\GeneralLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\PerformancesLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -110,6 +132,21 @@
     <Compile Include="ViewModels\code_inMgr.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
+      <DependentUpon>ErrorsLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\GeneralLayout.xaml.cs">
+      <DependentUpon>GeneralLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\PerformancesLayout.xaml.cs">
+      <DependentUpon>PerformancesLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
+      <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+      <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
