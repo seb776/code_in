@@ -43,7 +43,7 @@
             <!-- Dossier du fichier de conf -->
             <TextBlock Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
             <TextBlock Name="Path" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
-            <Button x:Name="Parcour_file" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
+            <Button x:Name="FileConf" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
             
             <!-- Les deux boutons Valider/Annuler :p -->
             <Button Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Valider"/>
@@ -51,19 +51,30 @@
         </StackPanel>
         <!-- Fin du contenu du menu "Général" -->
 
-        <!-- Début du contenu du menu ...-->
-        <!-- Fin du contenu du menu ... -->
+        <!-- Début du contenu du menu "Thèmes" -->
+        <!-- Fin du contenu du menu "Thèmes" -->
 
-        <!-- Début du contenu du menu ...-->
-        <!-- Fin du contenu du menu ... -->
+        <!-- Début du contenu du menu "Erreurs"-->
+        <!-- Fin du contenu du menu "Erreurs" -->
 
-        <!-- Début du contenu du menu ...-->
-        <!-- Fin du contenu du menu ... -->
+        <!-- Début du contenu du menu "Raccourcis" -->
+        <StackPanel Name="Raccourcis_layout" Margin="200, 50, 0, 0" Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden">
 
-        <!-- Début du contenu du menu ...-->
-        <!-- Fin du contenu du menu ... -->
+            <!-- "Sélection du set" -->
+            <TextBlock Margin="50,20,160,0" Text="Sélectionner un set" Foreground="#ebebeb" FontSize="20"/>
+            <TextBlock Name="PathSC" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
+            <Button x:Name="SelectSet" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
 
-        <!-- Bannière de haut de page = information sur la catégorie séléctionnée, faite en 2 textblock pour pouvoir changer dynamiquement le nom de la catégorie séléctionnée -->
+        <!-- "Créer set" -->
+            <Button x:Name="CreateSet" HorizontalAlignment="Left" Margin="50,50, 300,0" Height="40" Width="120" Content="Créer un set" Background="#ebebeb"/>
+
+        </StackPanel>
+        <!-- Fin du contenu du menu "Raccourcis" -->
+
+        <!-- Début du contenu du menu "Performances" -->
+        <!-- Fin du contenu du menu "Performances" -->
+
+        <!-- Bannière de haut de page = information sur la catégorie séléctionnée, faite en 2 textblock pour pouvoir changer dynamiquement le nom de la catégorie courante -->
         <StackPanel Margin="0, 0, 0, 0" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#424242">
             <TextBlock Text="Configuration :" FontSize="20" Foreground="#ebebeb" Width="200" HorizontalAlignment="Left"/>
             <TextBlock Name="Dynamic_content" Text="DYNAMIC TEXT !" Margin="200,-25,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Foreground="#ebebeb"/>
