@@ -28,47 +28,51 @@ namespace code_in.Views.ConfigView
         {
             InitializeComponent();
         }
-        // Les 3 fonctions suivantes sont pour la check box de "Général->Activer tuto"
+        // The next 3 functions are for the wheckbox of the catégory "General->Activate tutorial"
+
         //if box checked -> send
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Handle(sender as CheckBox);
         }
-        // if box unchecked -> send
+        // if box unchecked -> send anyway ^^
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Handle(sender as CheckBox);
         }
-        // reçoit l'event(?), vérifie si coché ou non -> different comportement en fonction du résultat
+
+        // receive event, verify if checked or not -> different behaviour depending on result
         void Handle(CheckBox checkBox)
         {
             // Use IsChecked.
             bool flag = checkBox.IsChecked.Value;
+
+            // if box checked --> do something (but not my part)
             if (flag == true)
             {
                 MessageBox.Show("Hello ! You just checked the tutorial mode !", "Confirmation"); // Juste une petite fenêtre qui s'ouvre pour vérifier que la checkbox fonctionne bien ;)
-                // si la box est cochée --> do something (but not my part)
             }
-            // Si elle est décochée (Ne fonctionne pas si elle n'a pas été cochée avant)
+            
+            // if box unchecked (doesn't work if it wasn't checked before)
             else
             {
                 MessageBox.Show("Oh, enough of the tutorial ? I hope it have helped you :D");
             }
         }
 
-        // Event pour le boutton maj du menu Général (pour le menu déroulant) les messages box seront a virer, c'était seulement pour les tests
+        // Event for maj button of "General" menu, mboxes only for testing :)
         private void maj_menu_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Votre version est à jour :D (ou pas ?)");
         }
 
-        // Méthode pour ouvrir une fenêtre pour parcourir les dossiers (dans le but de choisir un fichier)
+        // Here we open a windows where we can lookinf for a file (file browsing)
         private void bOpenFileDialog_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
             // Set filter for file extension and default file extension
-            dlg.DefaultExt = ".txt"; // à changer en fonction du nom de nos extensions de fichier #1
+            dlg.DefaultExt = ".txt"; // change filter with our proper extensions #1
             dlg.Filter = "Text documents (.txt)|*.txt"; // same than #1
 
             // Display OpenFileDialog by calling ShowDialog method
@@ -79,11 +83,11 @@ namespace code_in.Views.ConfigView
                 // Open document
                 string filename = dlg.FileName;
                 Path.Text = filename;
-                // filename = le path du fichier
+                // filename = the path of the choosen file
             }
         }
 
-        // Méthodes des deux boutons Valider/Annuler
+        // The two Cancel/Confirm buttons
         private void Button_Confirm(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Vous avez validé votre choix !");

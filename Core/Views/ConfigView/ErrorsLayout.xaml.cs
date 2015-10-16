@@ -28,5 +28,15 @@ namespace code_in.Views.ConfigView
         {
             InitializeComponent();
         }
+
+        private void Button_Confirm(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Cancel(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

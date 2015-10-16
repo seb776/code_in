@@ -33,6 +33,8 @@
             <my:ErrorsLayout x:Name="ErrMenu" IsEnabled="False" Visibility="Hidden"/>
             <my:ShortcutsLayout x:Name="ShortMenu" IsEnabled="False" Visibility="Hidden"/>
             <my:PerformancesLayout x:Name="PerfMenu" IsEnabled="False" Visibility="Hidden"/>
+            <my:ChangeTheme x:Name="ChangeThemeMenu" IsEnabled="False" Visibility="Hidden" />
+            <my:CreateTheme x:Name="CreateThemeMenu" IsEnabled="False" Visibility="Hidden" />
         </Grid>
         
     </Grid>

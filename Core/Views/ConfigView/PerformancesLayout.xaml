@@ -5,8 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Background="#424242">
+        <!-- Tried to do something for the resize by defining some rows (doesn't work very well :/) -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
         <Label HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20">Performances</Label>
 
+        <!-- Content of the "Performances" category, every line is a checkbox ;) -->
+        <CheckBox Grid.Row="1" Content="Stocker l'AST dans le fichier de projet avec le checksum (Peut augmenter les performances si le fichier n'est pas modifié entre-temps)" HorizontalAlignment="Stretch" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Stretch" Checked="StorAst_Checked" Unchecked="StorAst_Unchecked" Margin="50, 0, 0, 0"/>
+        <CheckBox Grid.Row="2" Content="Activer Multithreading" HorizontalAlignment="Stretch" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Stretch" Checked="MultiThread_Checked" Unchecked="MultiThread_Unchecked" Margin="50, 0, 0, 0"/>
+        <CheckBox Grid.Row="3" Content="Désactiver DropShadow" HorizontalAlignment="Stretch" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Stretch" Checked="DropShadow_Checked" Unchecked="DropShadow_Unchecked" Margin="50, 0, 0, 0"/>
+        <CheckBox Grid.Row="4" Content="Autoriser Code_in à charger les fichiers du projet en tâche de fond" HorizontalAlignment="Left" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Stretch" Checked="BgTask_Checked" Unchecked="BgTask_Unchecked" Margin="50, 0, 0, 0"/>
+        <CheckBox Grid.Row="5" Content="Fermer par défaut les appels de fonction (fonction expand)" HorizontalAlignment="Left" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Stretch" Checked="Expand_Checked" Unchecked="Expand_Unchecked" Margin="50, 0, 0, 0"/>
+
+        <!-- The two buttons Confirm/Cancel as always -->
+        <Button Grid.Row="6" Content="Valider" Height="30" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0, 0, 0, 100" Click="Button_Confirm"/>
+        <Button Grid.Row="6" Content="Annuler" Height="30" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="250, 0, 0, 100" Click="Button_Cancel"/>
     </Grid>
 </UserControl>

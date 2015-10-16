@@ -8,7 +8,5 @@
     
     <Grid x:Name="Theme_layout" Background="#424242">
         <Label HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20">Thèmes</Label>
-        <Button Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Changer thème"/>
-        <Button Width="100" Height="30" Content="Créer thème" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

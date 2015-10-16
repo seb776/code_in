@@ -6,13 +6,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-        <!-- Contenu du menu "Général" -->
+        <!-- Content of "General" menu -->
         <StackPanel x:Name="General_layout" Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Label HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20"> Général </Label>
-            <!-- "Activer Tuto" -->
+
+            <!-- "Activate Tutorial" -->
             <CheckBox Content="Activer le mode tutoriel" Margin="50, 100, 0, 0" Foreground="#ebebeb" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20"/>
 
-            <!-- Màj -->
+            <!-- "Updates" -->
             <TextBlock Margin="50,60,160,0" Text="Mises à jour" Foreground="#ebebeb" FontSize="20"/>
             <ComboBox  Width="200" HorizontalAlignment="Left" Margin="50, 10, 0, 0">
                 <ComboBoxItem Content="Au démarrage"/>
@@ -22,15 +23,15 @@
             </ComboBox>
             <Button Name="maj_menu" Margin="50, 20, 0, 0" Width="150" HorizontalAlignment="Left" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
 
-            <!-- Dossier du fichier de conf -->
+            <!-- configuration file's directory -->
             <TextBlock Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
             <TextBlock Name="Path" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
             <Button x:Name="FileConf" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
 
-            <!-- Les deux boutons Valider/Annuler :p -->
+            <!-- Confirm/Cancel buttons ;) :p -->
             <Button Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Confirm"/>
             <Button Content="Annuler" Height="30" Width="100" Margin="100, -30, -100, 0" Click="Button_Cancel"/>
         </StackPanel>
-        <!-- Fin du contenu du menu "Général" -->
+        <!-- End of "General" menu content -->
 
 </UserControl>

@@ -34,25 +34,29 @@ namespace code_in.Views.ConfigView
             menu.Add("Erreurs", ErrMenu);
             menu.Add("Raccourcis", ShortMenu);
             menu.Add("Performances", PerfMenu);
+            menu.Add("Changer de thème", ChangeThemeMenu);
+            menu.Add("Créer un thème", CreateThemeMenu);
         }
         
-        // Pour handle le changement de l'item du menu (quand on change de catégorie dans le menu)
+        // For handling the changement of the menu item (moving from a category to another)
         private void myTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (RightPanel.IsLoaded)
+            if (RightPanel != null)
             {
+                TreeViewItem newItem = ((TreeViewItem)e.NewValue);
+
                 // Set the new Item to visible/enabled
-                //((UserControl)sender).Visibility = System.Windows.Visibility.Visible;
-                //((UserControl)sender).IsEnabled = true;
-                TheMenu.Visibility = System.Windows.Visibility.Visible;
-                TheMenu.IsEnabled = true;
+                menu[newItem.Header.ToString()].Visibility = System.Windows.Visibility.Visible;
+                menu[newItem.Header.ToString()].IsEnabled = true;
+
                 // Set the ancien item to hidden/disabled
                 currentMenu.Visibility = System.Windows.Visibility.Hidden;
                 currentMenu.IsEnabled = false;
 
                 // The new item is now our current item
-                currentMenu = TheMenu;//((UserControl)e.NewValue);
+                currentMenu = menu[newItem.Header.ToString()];
             }
+                return;
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
