@@ -110,10 +110,12 @@
     <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\FlowNodeAnchor.cs" />
     <Compile Include="Views\MainView\Nodes\FuncDeclNode.cs" />
     <Compile Include="Views\MainView\Nodes\IOItem.xaml.cs">
       <DependentUpon>IOItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\NamespaceNode.cs" />
     <Compile Include="Views\MainView\Nodes\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>

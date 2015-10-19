@@ -33,6 +33,7 @@
             <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
                 <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
                 <my:FuncDeclNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <my:NamespaceNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </Grid>
         </ScrollViewer>
         <Slider Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20"></Slider>

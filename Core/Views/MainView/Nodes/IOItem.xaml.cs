@@ -26,7 +26,7 @@ namespace code_in.Views.MainView.Nodes
             _orientation = 0;
         }
         private int _orientation;
-        public int Orientation
+        public int Orientation // TODO define an enum Orientation.Right .Left
         {
             get
             {

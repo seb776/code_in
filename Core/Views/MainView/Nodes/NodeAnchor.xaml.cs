@@ -20,9 +20,15 @@ namespace code_in.Views.MainView.Nodes
     /// </summary>
     public partial class NodeAnchor : UserControl
     {
+        protected BaseNode _parentNode;
         public NodeAnchor()
         {
+            _parentNode = null;
+        }
+        public NodeAnchor(BaseNode parent)
+        {
             InitializeComponent();
+            _parentNode = parent;
         }
     }
 }
