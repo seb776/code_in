@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 namespace code_in.Views.MainView.Nodes
 {
+    // This is used for managing these actions: Resize, Move
     public static class TransformingNode
     {
         public static Object TransformingObject = null; // Used to move or resize nodes
@@ -27,7 +28,8 @@ namespace code_in.Views.MainView.Nodes
         public static TransformationMode Transformation;
     }
     /// <summary>
-    /// Interaction logic for BaseNode.xaml
+    /// The visual representation of an AST node.
+    /// This class contains all the features that may be used by all the other kind of nodes.
     /// </summary>
     public partial class BaseNode : UserControl
     {
@@ -35,34 +37,32 @@ namespace code_in.Views.MainView.Nodes
         public BaseNode()
         {
             InitializeComponent();
-            //this.InFlow.Label.SetValue(Label.ContentProperty, "Input flow");
-            //this.OutFlow.Label.SetValue(Label.ContentProperty, "Output flow");
-            //this.InFlow.Label.Foreground = new SolidColorBrush(Colors.GreenYellow);
-            //this.OutFlow.Label.Foreground = new SolidColorBrush(Colors.GreenYellow);
-            int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
-            this._features = new bool[maxEFeaturesVal + 1];
-            for (int i = 0; i <= maxEFeaturesVal; i++)
-                this._features[i] = true;
+            { // We set all the features to true
+                int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
+                this._features = new bool[maxEFeaturesVal + 1];
+                for (int i = 0; i <= maxEFeaturesVal; i++)
+                    this._features[i] = true;
+            }
         }
 
         private void Polygon_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TransformingNode.TransformingObject = this;
             TransformingNode.Transformation = TransformingNode.TransformationMode.RESIZE;
-            e.Handled = true; // To avoid bubbling
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TransformingNode.TransformingObject = this;
             TransformingNode.Transformation = TransformingNode.TransformationMode.MOVE;
-            e.Handled = true;
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
         private void Grid_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
             ((Panel)this.Parent).Children.Remove(this);
-            e.Handled = true; // To avoid bubbling
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
         public enum EFeatures
@@ -127,10 +127,17 @@ namespace code_in.Views.MainView.Nodes
 
         public void AddNodeModifiers(String type)
         {
-            Label lblType = new Label();
-            lblType.Content = type;
-            lblType.Foreground = this._currentResource; // TODO does not work yet
-            this.NodeModifiers.Children.Add(lblType);
+            if (this._features[(int)EFeatures.CONTAINSMODIFIERS])
+            {
+                Label lblType = new Label();
+                lblType.Content = type;
+                lblType.Foreground = this._currentResource; // TODO does not work yet
+                this.NodeModifiers.Children.Add(lblType);
+            }
+            else
+            {
+                throw new Exception("Trying to add a modifier on a node that does not allow it (" + type + ").");
+            }
         }
 
         public void AddInput(IOItem item)

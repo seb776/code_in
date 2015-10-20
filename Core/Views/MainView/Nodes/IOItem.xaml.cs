@@ -24,8 +24,10 @@ namespace code_in.Views.MainView.Nodes
         {
             InitializeComponent();
             _orientation = 0;
+            _parentNode = null;
         }
         private int _orientation;
+        protected BaseNode _parentNode;
         public int Orientation // TODO define an enum Orientation.Right .Left
         {
             get

@@ -42,15 +42,23 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" x:Name="NodeType" FontWeight="Bold">NodeType</Label>
                     <Label Grid.Column="1">::</Label>
                     <Label Grid.Column="2" x:Name="NodeName">Example</Label>
-                    <Grid Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" MouseLeftButtonDown="Grid_MouseLeftButtonDown_1" Cursor="Arrow" Width="Auto" Height="Auto">
+                    <!--<Rectangle x:Name="CollapseButton" Grid.Column="4" Width="20" Height="5" Fill="{DynamicResource BaseNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>-->
+                    <Grid x:Name="ExpandButton" Grid.Column="4" VerticalAlignment="Center">
+                        <Rectangle Fill="{DynamicResource BaseNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{DynamicResource BaseNodeColorBack}" StrokeThickness="2"/>
+                    </Grid>
+                    <Grid Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" MouseLeftButtonDown="Grid_MouseLeftButtonDown_1" Cursor="Arrow" Width="Auto" Height="Auto">
                         <!--IsRemovable feature -->
                         <Grid x:Name="RemoveButton">
-                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="2" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="2" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </Grid>
                 </Grid>
