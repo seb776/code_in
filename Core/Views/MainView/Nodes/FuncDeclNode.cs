@@ -18,6 +18,11 @@ namespace code_in.Views.MainView.Nodes
             this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
         }
 
-        public FuncDeclNode(MainView view) : base(view) { }
+        public FuncDeclNode(MainView view, String name) : base(view) {
+            this.SetColorResource("FuncDeclNodeColor");
+            this.SetNodeType("FunctionDecl");
+            this.SetNodeName(name);
+            this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
+        }
     }
 }
