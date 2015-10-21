@@ -34,6 +34,7 @@ namespace code_in.Views.MainView.Nodes
     public partial class BaseNode : UserControl
     {
         protected System.Windows.Media.Brush _currentResource;
+        public MainView MainView;
         public BaseNode()
         {
             InitializeComponent();
@@ -43,6 +44,13 @@ namespace code_in.Views.MainView.Nodes
                 for (int i = 0; i <= maxEFeaturesVal; i++)
                     this._features[i] = true;
             }
+
+            MainView = null;
+        }
+
+        public BaseNode(MainView view) : this()
+        {
+            MainView = view;
         }
 
         private void Polygon_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -94,6 +102,12 @@ namespace code_in.Views.MainView.Nodes
                         {
                             break;
                         }
+                    case EFeatures.EXPENDABLES:
+                        {
+                            this.ExpandButton.Visibility = this.CollapseButton.Visibility = System.Windows.Visibility.Hidden;
+                            this.ExpandButton.IsEnabled = this.CollapseButton.IsEnabled = false;
+                            break;
+                        }
                 }
                 _features[(int)f] = false;
             }
@@ -117,7 +131,16 @@ namespace code_in.Views.MainView.Nodes
                         }
                     case EFeatures.ISFLOWNODE:
                         {
-
+                            this.AddInput(new FlowItem(this));
+                            ((IOItem)this.Inputs.Children[0]).SetItemName("Input flow");
+                            this.AddOutput(new FlowItem(this));
+                            ((IOItem)this.Outputs.Children[0]).SetItemName("Output flow");
+                            break;
+                        }
+                    case EFeatures.EXPENDABLES:
+                        {
+                            this.ExpandButton.IsEnabled = true;
+                            this.ExpandButton.Visibility = System.Windows.Visibility.Visible;
                             break;
                         }
                 }
@@ -127,17 +150,11 @@ namespace code_in.Views.MainView.Nodes
 
         public void AddNodeModifiers(String type)
         {
-            if (this._features[(int)EFeatures.CONTAINSMODIFIERS])
-            {
-                Label lblType = new Label();
-                lblType.Content = type;
-                lblType.Foreground = this._currentResource; // TODO does not work yet
-                this.NodeModifiers.Children.Add(lblType);
-            }
-            else
-            {
-                throw new Exception("Trying to add a modifier on a node that does not allow it (" + type + ").");
-            }
+            System.Diagnostics.Debug.Assert(this._features[(int)EFeatures.CONTAINSMODIFIERS], "The node cannot contain modifiers.");
+            Label lblType = new Label();
+            lblType.Content = type;
+            lblType.Foreground = this._currentResource;
+            this.NodeModifiers.Children.Add(lblType);
         }
 
         public void AddInput(IOItem item)
@@ -148,7 +165,7 @@ namespace code_in.Views.MainView.Nodes
 
         public void RemoveInput(int idx)
         {
-            System.Diagnostics.Debug.Assert(idx >= 0);
+            System.Diagnostics.Debug.Assert(idx >= 0 && idx < this.Outputs.Children.Count, "Trying to remove an input that does not exist " + idx.ToString() + ".");
             this.Inputs.Children.RemoveAt(idx);
         }
 
@@ -160,23 +177,30 @@ namespace code_in.Views.MainView.Nodes
 
         public void RemoveOutput(int idx)
         {
-            System.Diagnostics.Debug.Assert(idx >= 0);
+            System.Diagnostics.Debug.Assert(idx >= 0 && idx < this.Outputs.Children.Count, "Trying to remove an output that does not exist " + idx.ToString() + ".");
             this.Outputs.Children.RemoveAt(idx);
         }
 
         /// <summary>
-        /// This function is used to set the resource that will be used by the node. Usefull to distinguish different nodes.
+        /// This function is used to set the resource that will be used as the main color of the node. Usefull to distinguish different nodes.
+        /// This function have to be called before setting any value as the resource is used for each modification.
         /// </summary>
         /// <param name="resourceName">The name of the resource that have to be used</param>
         public void SetColorResource(String resourceName)
         {
             System.Windows.Media.Brush resource = (System.Windows.Media.Brush)this.Resources[resourceName];
-            System.Diagnostics.Debug.Assert(resource != null);
+            System.Diagnostics.Debug.Assert(resource != null); // Just to check if the resource exists
 
             _currentResource = resource;
-            this.NodeBorder.BorderBrush = resource;
-            this.NodeHeader.Background = resource;
-            this.ResizeControl.Fill = resource;
+            this.NodeBorder.SetResourceReference(BorderBrushProperty, resourceName);
+            this.NodeHeader.SetResourceReference(BackgroundProperty, resourceName);
+            this.ResizeControl.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, resourceName);
+            ColorResource = resourceName;
+        }
+        // Gets the ColorResource String of the currentNode
+        public String ColorResource
+        {
+            private set;
         }
 
         public void SetNodeType(String type)

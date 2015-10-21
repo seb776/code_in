@@ -27,7 +27,6 @@ namespace code_in.Views.MainView
 
         public void OpenFile(String filePath)
         {
-            //MessageBox.Show(filePath);
             _code_inMgr.LoadFile(filePath);
 
         }

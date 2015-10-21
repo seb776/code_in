@@ -8,9 +8,16 @@ namespace code_in.Views.MainView.Nodes
 {
     public class FuncDeclNode : BaseNode
     {
-        public FuncDeclNode() : base()
+        public FuncDeclNode()
+            : base()
         {
-            this.NodeGrid.Children.Add(new BaseNode());
+            this.NodeGrid.Children.Add(new BaseNode()); // Example of nodeception
+            this.SetColorResource("FuncDeclNodeColor");
+            this.SetNodeType("FunctionDecl");
+            this.SetNodeName("Func1");
+            this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
         }
+
+        public FuncDeclNode(MainView view) : base(view) { }
     }
 }

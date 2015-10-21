@@ -38,7 +38,6 @@ namespace code_in.ViewModels
                 offsetX = 0;
                 offsetY += 200;
             }
-
             visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             mainGrid.Children.Add(visualNode);
