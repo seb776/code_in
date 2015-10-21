@@ -42,7 +42,7 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 200;
                 }
-                var foo = new IOItem();
+                var foo = new IOItem(null);
                 foo.Label.Content = node.EndLocation;
                 visualNode.SetNodeName(namespaceDecl.Name);
                 visualNode.AddInput(foo);
@@ -63,7 +63,7 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 200;
                 }
-                var foo = new IOItem();
+                var foo = new IOItem(null);
                 foo.Label.Content = node;
                 ;
                 visualNode.AddInput(foo);
