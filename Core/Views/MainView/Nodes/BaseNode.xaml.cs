@@ -198,10 +198,7 @@ namespace code_in.Views.MainView.Nodes
             ColorResource = resourceName;
         }
         // Gets the ColorResource String of the currentNode
-        public String ColorResource
-        {
-            private set;
-        }
+        public String ColorResource;
 
         public void SetNodeType(String type)
         {

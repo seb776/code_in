@@ -11,7 +11,7 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-            <my:NodeAnchor x:Name="Anchor"  Grid.Column="0" Width="10" Height="20" Margin="-12,0,0,0"></my:NodeAnchor>
+            <my:NodeAnchor x:Name="Anchor" Grid.Column="0" Width="10" Height="20" Margin="-12,0,0,0"></my:NodeAnchor>
             <Label x:Name="Label" Grid.Column="1" VerticalAlignment="Center">IOItem</Label>
     </Grid>
 </UserControl>
