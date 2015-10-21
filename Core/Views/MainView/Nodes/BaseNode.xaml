@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="250"
-             MinWidth="250" MinHeight="150"
+             MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top"
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BaseNodeColor" Color="GreenYellow"/>
@@ -49,7 +49,7 @@
                     <Label Grid.Column="0" x:Name="NodeType" FontWeight="Bold">NodeType</Label>
                     <Label Grid.Column="1">::</Label>
                     <Label Grid.Column="2" x:Name="NodeName">Example</Label>
-                    <!--<Rectangle x:Name="CollapseButton" Grid.Column="4" Width="20" Height="5" Fill="{DynamicResource BaseNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>-->
+                    <Rectangle IsEnabled="False" Visibility="Hidden" x:Name="CollapseButton" Grid.Column="4" Width="20" Height="5" Fill="{DynamicResource BaseNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
                     <Grid x:Name="ExpandButton" Grid.Column="4" VerticalAlignment="Center">
                         <Rectangle Fill="{DynamicResource BaseNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{DynamicResource BaseNodeColorBack}" StrokeThickness="2"/>
@@ -63,9 +63,6 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid x:Name="NodeGrid" Margin="20,20,20,20">
-                        
-                    </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -76,6 +73,9 @@
                         <StackPanel x:Name="Outputs" Grid.Column="1">
                         </StackPanel>
                         <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource BaseNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                    </Grid>
+                    <Grid x:Name="NodeGrid" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto">
+                        
                     </Grid>
                 </Grid>
             </Grid>

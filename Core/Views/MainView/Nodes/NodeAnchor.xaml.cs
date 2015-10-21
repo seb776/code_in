@@ -23,6 +23,7 @@ namespace code_in.Views.MainView.Nodes
         protected BaseNode _parentNode;
         public NodeAnchor()
         {
+            InitializeComponent();
             _parentNode = null;
         }
         public NodeAnchor(BaseNode parent)
