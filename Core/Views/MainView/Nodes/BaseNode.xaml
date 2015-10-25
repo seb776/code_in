@@ -8,16 +8,11 @@
              MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top"
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BaseNodeColor" Color="GreenYellow"/>
-        <SolidColorBrush x:Key="BaseNodeColorBack" Color="#424242"/>
-        <SolidColorBrush x:Key="NamespaceNodeColor" Color="BlueViolet"/>
-        <SolidColorBrush x:Key="FuncDeclNodeColor" Color="IndianRed"/>
-        <SolidColorBrush x:Key="PreprocessColor" Color="ForestGreen"/>
-
-        <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
-        <SolidColorBrush x:Key="CharColor" Color="LightSalmon"/>
-        <SolidColorBrush x:Key="FloatingColor" Color="BlueViolet"/>
-
+        <!--<ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../ResourcesDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>-->
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

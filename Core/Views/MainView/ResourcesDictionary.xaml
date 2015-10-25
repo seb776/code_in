@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <SolidColorBrush x:Key="BaseNodeColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="BaseNodeColorBack" Color="#424242"/>
+    <SolidColorBrush x:Key="NamespaceNodeColor" Color="BlueViolet"/>
+    <SolidColorBrush x:Key="FuncDeclNodeColor" Color="IndianRed"/>
+    <SolidColorBrush x:Key="PreprocessColor" Color="ForestGreen"/>
+
+    <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="CharColor" Color="LightSalmon"/>
+    <SolidColorBrush x:Key="FloatingColor" Color="BlueViolet"/>
+
+    <Rect x:Key="RectDims" X="0" Y="0" Width="30" Height="30"></Rect>
+    <DrawingBrush x:Name="GridTileBrush" x:Key="GridTile" Stretch="None" TileMode="Tile"
+              Viewport="0,0 30,30" ViewportUnits="Absolute">
+        <!-- ^^^^^^^^^^^ set the size of the tile-->
+        <DrawingBrush.Drawing>
+            <GeometryDrawing Brush="#344c56">
+                <GeometryDrawing.Geometry>
+                    <!-- draw a single X -->
+                    <GeometryGroup>
+                        <RectangleGeometry Rect="{DynamicResource RectDims}"></RectangleGeometry>
+                    </GeometryGroup>
+                </GeometryDrawing.Geometry>
+                <GeometryDrawing.Pen>
+                    <!-- set color and thickness of lines -->
+                    <Pen Thickness="1" Brush="#506871">
+                    </Pen>
+                </GeometryDrawing.Pen>
+            </GeometryDrawing>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+</ResourceDictionary>

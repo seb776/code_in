@@ -37,6 +37,7 @@ namespace code_in.Views.MainView.Nodes
         public MainView MainView;
         public BaseNode()
         {
+            this.Resources.MergedDictionaries.Add(SharedDictionaryManager.SharedDictionary);
             InitializeComponent();
             { // We set all the features to true
                 int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
