@@ -8,12 +8,14 @@ namespace code_in.ViewModels
 {
     public class code_inMgr
     {
-        Views.MainView.MainView  _mainView;
+        public Views.MainView.MainView  _mainView;
+        ThemeMgr _themeMgr;
         CodeMgr _codeMgr;
         public code_inMgr(Views.MainView.MainView mainView)
         {
             _codeMgr = new CodeMgr();
             _mainView = mainView;
+            _themeMgr = new ThemeMgr(this);
         }
 
         public void LoadFile(String filePath)
