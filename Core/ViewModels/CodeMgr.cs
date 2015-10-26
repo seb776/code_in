@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using code_in.Views.MainView.Nodes;
 
 namespace code_in.ViewModels
 {
@@ -28,24 +29,52 @@ namespace code_in.ViewModels
         int offsetY = 0;
         void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid)
         {
-            Views.MainView.Nodes.BaseNode visualNode = new Views.MainView.Nodes.BaseNode();
-            visualNode.Width = 300;
-            visualNode.Height = 250;
-            visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
-            offsetX += 300;
-            if (offsetX > 4000)
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                offsetX = 0;
-                offsetY += 200;
+                var namespaceDecl = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
+                Views.MainView.Nodes.NamespaceNode visualNode = new Views.MainView.Nodes.NamespaceNode();
+                visualNode.Width = 300;
+                visualNode.Height = 250;
+                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
+                offsetX += 300;
+                if (offsetX > 4000)
+                {
+                    offsetX = 0;
+                    offsetY += 200;
+                }
+                var foo = new IOItem(null);
+                foo.Label.Content = node.EndLocation;
+                visualNode.SetNodeName(namespaceDecl.Name);
+                visualNode.AddInput(foo);
+                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                mainGrid.Children.Add(visualNode);
             }
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
+            {
 
-            visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            mainGrid.Children.Add(visualNode);
+                Views.MainView.Nodes.FuncDeclNode visualNode = new Views.MainView.Nodes.FuncDeclNode();
+                visualNode.Width = 300;
+                visualNode.Height = 250;
+                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
+                offsetX += 300;
+                if (offsetX > 4000)
+                {
+                    offsetX = 0;
+                    offsetY += 200;
+                }
+                var foo = new IOItem(null);
+                foo.Label.Content = node;
+                ;
+                visualNode.AddInput(foo);
+                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                mainGrid.Children.Add(visualNode);
+            }
             // BIG SWITCH-CASE
             if (node.Children != null)
             {
-                foreach(var n in node.Children)
+                foreach (var n in node.Children)
                 {
                     _generateVisualASTRecur(n, mainGrid);
                 }
