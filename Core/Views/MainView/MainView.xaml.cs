@@ -30,7 +30,7 @@ namespace code_in.Views.MainView
             _code_inMgr.LoadFile(filePath);
 
         }
-        //ResourceDictionary
+
         public MainView()
         {
             this.Resources.MergedDictionaries.Add(SharedDictionaryManager.SharedDictionary);
@@ -41,9 +41,6 @@ namespace code_in.Views.MainView
             this.MouseWheel += MainView_MouseWheel;
             this.KeyDown += MainView_KeyDown;
             this.MouseUp += MainView_MouseUp;
-            //var t = new ResourceDictionary();
-            //t.Source = new Uri("/Core;component/Views/MainView/ResourcesDictionary.xaml", UriKind.RelativeOrAbsolute);
-
 
         }
 
@@ -56,7 +53,7 @@ namespace code_in.Views.MainView
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
             int step = 2;
-            Rect tmp = (Rect)this.Resources["RectDims"];   
+            Rect tmp = (Rect)SharedDictionaryManager.SharedDictionary["RectDims"];   
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -69,9 +66,6 @@ namespace code_in.Views.MainView
             }
             SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
             ((DrawingBrush)SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
-            if (e.Key == Key.T)
-                _code_inMgr._themeMgr.setTheme();
-            //MessageBox.Show("Do you want to close this window?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
         }
 
         void MainView_MouseWheel(object sender, MouseWheelEventArgs e)
