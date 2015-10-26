@@ -47,6 +47,7 @@ namespace code_in.Views.MainView.Nodes
             }
 
             MainView = null;
+            SetColorResource("BaseNodeColor");
         }
 
         public BaseNode(MainView view) : this()

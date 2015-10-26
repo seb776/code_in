@@ -13,6 +13,9 @@
                 <ResourceDictionary Source="../ResourcesDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>-->
+        <!--These values are only meant to have color in the designer-->
+        <SolidColorBrush x:Key="LocalNodeColor" Color="GreenYellow"/>
+        <SolidColorBrush x:Key="LocalNodeColorBack" Color="#424242"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -21,16 +24,16 @@
         </Grid.RowDefinitions>
         <StackPanel x:Name="NodeModifiers" Grid.Row="0" Orientation="Vertical">
         </StackPanel>
-        <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="2" BorderBrush="{DynamicResource BaseNodeColor}">
+        <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="2" BorderBrush="{DynamicResource LocalNodeColor}">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="25"/>
             </Border.Effect>
-            <Grid Background="{DynamicResource BaseNodeColorBack}" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Cursor="ScrollAll">
+            <Grid Background="{DynamicResource LocalNodeColorBack}" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Cursor="ScrollAll">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" x:Name="NodeHeader" Background="{DynamicResource BaseNodeColor}">
+                <Grid Grid.Row="0" x:Name="NodeHeader" Background="{DynamicResource LocalNodeColor}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -44,16 +47,16 @@
                     <Label Grid.Column="0" x:Name="NodeType" FontWeight="Bold">NodeType</Label>
                     <Label Grid.Column="1">::</Label>
                     <Label Grid.Column="2" x:Name="NodeName">Example</Label>
-                    <Rectangle IsEnabled="False" Visibility="Hidden" x:Name="CollapseButton" Grid.Column="4" Width="20" Height="5" Fill="{DynamicResource BaseNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
+                    <Rectangle IsEnabled="False" Visibility="Hidden" x:Name="CollapseButton" Grid.Column="4" Width="20" Height="5" Fill="{DynamicResource LocalNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
                     <Grid x:Name="ExpandButton" Grid.Column="4" VerticalAlignment="Center">
-                        <Rectangle Fill="{DynamicResource BaseNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{DynamicResource BaseNodeColorBack}" StrokeThickness="2"/>
+                        <Rectangle Fill="{DynamicResource LocalNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{DynamicResource LocalNodeColorBack}" StrokeThickness="2"/>
                     </Grid>
                     <Grid Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" MouseLeftButtonDown="Grid_MouseLeftButtonDown_1" Cursor="Arrow" Width="Auto" Height="Auto">
                         <!--IsRemovable feature -->
                         <Grid x:Name="RemoveButton">
-                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Line Stroke="{DynamicResource BaseNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Line Stroke="{DynamicResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Line Stroke="{DynamicResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -67,7 +70,7 @@
                         </StackPanel>
                         <StackPanel x:Name="Outputs" Grid.Column="1">
                         </StackPanel>
-                        <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource BaseNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                        <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
                     </Grid>
                     <Grid x:Name="NodeGrid" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto">
                         
