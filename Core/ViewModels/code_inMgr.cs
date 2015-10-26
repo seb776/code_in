@@ -9,7 +9,7 @@ namespace code_in.ViewModels
     public class code_inMgr
     {
         public Views.MainView.MainView  _mainView;
-        ThemeMgr _themeMgr;
+        public ThemeMgr _themeMgr;
         CodeMgr _codeMgr;
         public code_inMgr(Views.MainView.MainView mainView)
         {

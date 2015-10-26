@@ -69,6 +69,8 @@ namespace code_in.Views.MainView
             }
             SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
             ((DrawingBrush)SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
+            if (e.Key == Key.T)
+                _code_inMgr._themeMgr.setTheme();
             //MessageBox.Show("Do you want to close this window?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
         }
 
