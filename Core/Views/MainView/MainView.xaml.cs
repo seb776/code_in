@@ -64,6 +64,8 @@ namespace code_in.Views.MainView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
+            if (e.Key == Key.T)
+                this._code_inMgr._themeMgr.setTheme();
             SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
             ((DrawingBrush)SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
         }
