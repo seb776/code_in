@@ -102,6 +102,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Models\CodeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
+    <Compile Include="Models\Theme\IThemeData.cs" />
     <Compile Include="ViewModels\CodeMgr.cs" />
     <Compile Include="ViewModels\code_inMgr.cs" />
     <Compile Include="Views\MainView\MainView.xaml.cs">
