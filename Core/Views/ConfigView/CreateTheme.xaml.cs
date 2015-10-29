@@ -38,7 +38,7 @@ namespace code_in.Views.ConfigView
                    true);
         }
 
-        private void SupprTheme(object sender, RoutedEventArgs e)
+        private void DeleteTheme(object sender, RoutedEventArgs e)
         {
             if (BoxTheme.SelectedItem.ToString() != null)
             {

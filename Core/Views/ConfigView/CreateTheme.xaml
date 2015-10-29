@@ -29,7 +29,7 @@
         </ComboBox>
         
         <!-- For removing a theme -->
-        <Button Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="150" Height="40" Content="Supprimer" FontSize="16" TextBlock.TextAlignment="Center" Click="SupprTheme"/>
+        <Button Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="150" Height="40" Content="Supprimer" FontSize="16" TextBlock.TextAlignment="Center" Click="DeleteTheme"/>
 
         <!-- The two buttons import/export -->
         <Button Grid.Row="1" Grid.Column="1" Content="Importer thème" Height="30" Width="120" VerticalAlignment="Top" HorizontalAlignment="Center"/>
