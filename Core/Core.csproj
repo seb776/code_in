@@ -83,6 +83,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Views\SharedResourceDictionary.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\MainView\Nodes\CommentNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView\Nodes\IOItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,8 +141,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Models\CodeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
+    <Compile Include="Models\Theme\IThemeData.cs" />
     <Compile Include="ViewModels\CodeMgr.cs" />
     <Compile Include="ViewModels\code_inMgr.cs" />
+    <Compile Include="ViewModels\ThemeMgr.cs" />
     <Compile Include="Views\ConfigView\ChangeTheme.xaml.cs">
       <DependentUpon>ChangeTheme.xaml</DependentUpon>
     </Compile>
@@ -168,12 +176,22 @@
     <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\CommentNode.xaml.cs">
+      <DependentUpon>CommentNode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView\Nodes\FlowItem.cs" />
+    <Compile Include="Views\MainView\Nodes\FuncDeclNode.cs" />
     <Compile Include="Views\MainView\Nodes\IOItem.xaml.cs">
       <DependentUpon>IOItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\NamespaceNode.cs" />
     <Compile Include="Views\MainView\Nodes\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\MainView\ResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

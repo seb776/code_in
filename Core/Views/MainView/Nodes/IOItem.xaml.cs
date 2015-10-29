@@ -20,13 +20,20 @@ namespace code_in.Views.MainView.Nodes
     /// </summary>
     public partial class IOItem : UserControl
     {
-        public IOItem()
+        public void SetItemName(String name)
+        {
+            this.Label.Content = name;
+        }
+        public IOItem(BaseNode parent)
         {
             InitializeComponent();
             _orientation = 0;
+            _parentNode = parent;
         }
-        private int _orientation;
-        public int Orientation
+
+        private int _orientation; // Used to set the orientation of the node (left = 0, right = 1) TODO replace by an enum
+        protected BaseNode _parentNode; // Used to access current node informations
+        public int Orientation // TODO define an enum Orientation.Right .Left
         {
             get
             {

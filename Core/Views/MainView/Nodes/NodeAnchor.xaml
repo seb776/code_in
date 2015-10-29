@@ -6,9 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Rectangle Fill="GreenYellow">
-            
-        </Rectangle>
+        <Rectangle x:Name="AnchorBox" Fill="GreenYellow"/>
         <!--<Ellipse Fill="CornflowerBlue">
             
         </Ellipse>-->

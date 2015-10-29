@@ -16,20 +16,13 @@ using System.Windows.Shapes;
 namespace code_in.Views.MainView.Nodes
 {
     /// <summary>
-    /// Interaction logic for NodeAnchor.xaml
+    /// Interaction logic for CommentNode.xaml
     /// </summary>
-    public partial class NodeAnchor : UserControl
+    public partial class CommentNode : UserControl
     {
-        protected BaseNode _parentNode;
-        public NodeAnchor()
+        public CommentNode()
         {
             InitializeComponent();
-            _parentNode = null;
-        }
-        public NodeAnchor(BaseNode parent)
-        {
-            InitializeComponent();
-            _parentNode = parent;
         }
     }
 }
