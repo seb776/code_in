@@ -81,6 +81,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Views\SharedResourceDictionary.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
