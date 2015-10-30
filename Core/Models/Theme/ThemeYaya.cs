@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 namespace code_in.Models.Theme
 {
-    public class DefaultThemeData: IThemeData
+    public class ThemeYaya : IThemeData
     {
 
-        SolidColorBrush ForegroundColor = new SolidColorBrush(Colors.GreenYellow);
-        SolidColorBrush BackgroundColor = new SolidColorBrush(Colors.Gray);
-        SolidColorBrush NodeTitleColor = new SolidColorBrush(Colors.Green);
-        SolidColorBrush NodeItemColor = new SolidColorBrush(Colors.Honeydew);
-        
+        SolidColorBrush ForegroundColor = new SolidColorBrush(Colors.Crimson);
+        SolidColorBrush BackgroundColor = new SolidColorBrush(Colors.Orchid);
+        SolidColorBrush NodeTitleColor = new SolidColorBrush(Colors.Black);
+        SolidColorBrush NodeItemColor = new SolidColorBrush(Colors.LimeGreen);
+
 
         public SolidColorBrush getNodeForegroundColor()
         {
@@ -32,6 +32,6 @@ namespace code_in.Models.Theme
         {
             return NodeItemColor;
         }
-       //public int getIntColor();
+        //public int getIntColor();
     }
 }
