@@ -7,8 +7,6 @@ using System.Windows.Media;
 
 namespace code_in.ViewModels
 {
-    interface IThemeData { }
-
     public class ThemeMgr
     {
         private code_inMgr _mainMgr;
@@ -29,15 +27,16 @@ namespace code_in.ViewModels
             System.Diagnostics.Debug.Assert(Views.SharedDictionaryManager.SharedDictionary["FloatingColor"] != null, "No FloatingColor in dictionnary");
         }
 
-        public void setTheme() {
+
+        public void setTheme(Models.Theme.IThemeData data) {
 
             checkResourceTheme();
 
             // Put random color to each resources of the dictionary
             // Have to take by the next colors in the given class code_inMgr
 
-            Views.SharedDictionaryManager.SharedDictionary["BaseNodeColor"] = new SolidColorBrush(Colors.Red);
-            Views.SharedDictionaryManager.SharedDictionary["BaseNodeColorBack"] = new SolidColorBrush(Colors.Orange);
+            Views.SharedDictionaryManager.SharedDictionary["BaseNodeColor"] = data.getNodeForegroundColor();
+            Views.SharedDictionaryManager.SharedDictionary["BaseNodeColorBack"] = data.getNodeBackgroundColor();
             Views.SharedDictionaryManager.SharedDictionary["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
             Views.SharedDictionaryManager.SharedDictionary["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
             Views.SharedDictionaryManager.SharedDictionary["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);

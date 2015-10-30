@@ -41,8 +41,14 @@ namespace code_in.Views.MainView
             this.MouseWheel += MainView_MouseWheel;
             this.KeyDown += MainView_KeyDown;
             this.MouseUp += MainView_MouseUp;
-
+            themeSelect = true;
+            themeA = new Models.Theme.DefaultThemeData();
+            themeB = new Models.Theme.ThemeYaya();
         }
+        bool themeSelect;
+        Models.Theme.DefaultThemeData themeA;
+        Models.Theme.ThemeYaya themeB;
+
 
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -65,7 +71,11 @@ namespace code_in.Views.MainView
                 tmp.Height -= step;
             }
             if (e.Key == Key.T)
-                this._code_inMgr._themeMgr.setTheme();
+            {
+
+                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
+                themeSelect = !themeSelect;
+            }
             SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
             ((DrawingBrush)SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
         }

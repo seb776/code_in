@@ -32,6 +32,45 @@ namespace code_in.Models.Theme
         {
             return NodeItemColor;
         }
-        //public int getIntColor();
+        public SolidColorBrush getIntColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getFloatColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getShortColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getCharColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getBoolColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getEnumColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getClassColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getFuncDeclColor()
+        {
+            return null;
+        }
+        public SolidColorBrush getDeclColor()
+        {
+            return null;
+        }
+        public ILinkDraw getLinkDrawer()
+        {
+            return null;
+        }
     }
 }
