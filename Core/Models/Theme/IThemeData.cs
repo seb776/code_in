@@ -13,13 +13,20 @@ namespace code_in.Models.Theme
        SolidColorBrush getNodeBackgroundColor();
        SolidColorBrush getNodeTitleColor();
        SolidColorBrush getNodeItemColor();
-   //    int getIntColor();
+       SolidColorBrush getDeclColor();
+       SolidColorBrush getIntColor();
+       SolidColorBrush getFloatColor();
+       SolidColorBrush getShortColor();
+       SolidColorBrush getCharColor();
+       SolidColorBrush getBoolColor();
+       SolidColorBrush getEnumColor();
+       SolidColorBrush getClassColor();
+       SolidColorBrush getFuncDeclColor();
+       ILinkDraw getLinkDrawer();
+       
         /*
-getdouble/float/short/char/bool/enum/class..color
-getDeclColor
-getFuncDecl
-getGridBackground/foreground/thickness/dottedDistance/xSize/ySize
-getLinkDrawer return ILinkDraw*/
+        getGridBackground/foreground/thickness/dottedDistance/xSize/ySize
+         */
 
     }
 }
