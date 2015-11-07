@@ -65,5 +65,19 @@ namespace code_in.Views.ConfigView
             }
         }
 
+        private void Button_Save(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Cancel(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

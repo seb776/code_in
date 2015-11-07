@@ -7,10 +7,9 @@
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:ap="clr-namespace:code_in.Views.MainView" >
     
-    <Grid Background="#424242">
+    <!-- Grid n°1 = the entire screen -->
+    <Grid x:Name="Grid1" Background="#424242">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="70"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -23,27 +22,80 @@
         <!-- Label of the category -->
         <Label Content="Créer un thème" FontSize="20" Foreground="#ebebeb" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
 
-        <!-- For the choice of the theme, dynamic combobox -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Choix du thème" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Center"/>
-        <ComboBox x:Name="BoxTheme" Grid.Row="1" Grid.Column="0" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">
-        </ComboBox>
+        <!-- Grid n°2, the 1st column of the grid n°1 = All parameters -->
+        <Grid x:Name="Grid2" Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- For the choice of the theme, dynamic combobox -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Choix du thème" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="BoxTheme" Grid.Row="0" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+
+            <!-- For removing a theme -->
+            <Button Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" Height="30" Content="Supprimer" FontSize="16" TextBlock.TextAlignment="Center" Click="DeleteTheme"/>
+
+            <!-- Choice of the theme name-->
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Nom du thème" FontSize="20" Foreground="#ebebeb" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox x:Name="ThemeName" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Background="White" Foreground="#424242" TextInput="ThemeName_TextInput_1" Height="30" Width="150" MaxLines="1" TextAlignment="Center"/>
+
+            <!-- Parameters of the theme -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Paramètres" FontSize="20" Foreground="#ebebeb" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TreeView Grid.Row="3" Grid.ColumnSpan="2" Background="#424242" Foreground="#ebebeb">
+                <TreeViewItem Foreground="#ebebeb" Header="Général" FontSize="20" IsExpanded="True">
+                    <TreeViewItem Foreground="#ebebeb" Header="Police/Typographie" FontSize="20"/>
+                </TreeViewItem>
+                <TreeViewItem Foreground="#ebebeb" Header="Fond" FontSize="20" IsExpanded="True">
+                    <RadioButton Content="Image" Foreground="#ebebeb" FontSize="20" IsEnabled="True"/>
+                    <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock Text="Chemin" Foreground="#ebebeb" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button FontSize="18" Content="Parcourir" Click="Button_Click" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="100" Height="30" Margin="20, 0, 0, 0" />
+                    </StackPanel>
+                    <ComboBox Text="Format" Width="150" Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20, 0, 0, 0">
+                        <ComboBoxItem Content="Mosaïque"/>
+                        <ComboBoxItem Content="Etiré"/>
+                        <ComboBoxItem Content="Remplissage"/>
+                        <ComboBoxItem Content="Ajuster"/>
+                        <ComboBoxItem Content="Centrer"/>
+                    </ComboBox>
+                    <RadioButton Content="Grille" Foreground="#ebebeb" FontSize="20" />
+                </TreeViewItem>
+            </TreeView>
+        </Grid>
         
-        <!-- For removing a theme -->
-        <Button Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="150" Height="40" Content="Supprimer" FontSize="16" TextBlock.TextAlignment="Center" Click="DeleteTheme"/>
-
-        <!-- The two buttons import/export -->
-        <Button Grid.Row="1" Grid.Column="1" Content="Importer thème" Height="30" Width="120" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-        <Button Grid.Row="1" Grid.Column="1" Content="Exporter thème" Height="30" Width="120" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-
-        <!-- For the preview of the choosen theme -->
-        <TextBlock x:Name="PreviewName" Grid.Row="2" Grid.Column="1" FontSize="20" Foreground="#ebebeb" Text="Aperçu de " HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <ap:MainView x:Name="previewTheme" Grid.Row="3" Grid.Column="1" BorderThickness="2" BorderBrush="Gray" />
-
-        <!-- Parameters of the choosen theme-->
-        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Vertical">
-            <TextBlock Grid.ColumnSpan="2" Text="Nom du thème" FontSize="20" Foreground="#ebebeb" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-            <TextBox x:Name="ThemeName" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="White" Foreground="#424242" TextInput="ThemeName_TextInput_1" Height="30" Width="150" MaxLines="1"/>
+        <!-- Grid n°3, the 2nd column of the grid n°1 = Import/export + Preview -->
+        <Grid x:Name="Grid3" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
             
-        </StackPanel>
+            <!-- The two buttons import/export -->
+            <Button Grid.Row="0" Grid.Column="0" Content="Importer thème" Height="30" Width="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Grid.Row="0" Grid.Column="1" Content="Exporter thème" Height="30" Width="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            
+            <!-- For the preview of the choosen theme -->
+            <TextBlock x:Name="PreviewName" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" Foreground="#ebebeb" Text="Aperçu de " HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />
+
+            <!-- Confirm/Cancel buttons ;) :p -->
+            <Button Grid.Column="1" Grid.Row="4" Content="Valider" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Save"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="Annuler" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Cancel"/>
+
+        </Grid>
+
     </Grid>
 </UserControl>
