@@ -5,22 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace code_in.Views
+namespace code_in.Resources
 {
-    internal static class SharedDictionaryManager
+    public static class SharedDictionaryManager
     {
-        internal static ResourceDictionary SharedDictionary
+        public static ResourceDictionary SharedDictionary
         {
             get
             {
                 if (_sharedDictionary == null)
                 {
-                    System.Uri resourceLocater =
-                        new System.Uri("/code_inCore;component/Views/MainView/ResourcesDictionary.xaml",
+                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/ResourcesDictionary.xaml",
                                         System.UriKind.Relative);
-
-                    _sharedDictionary =
-                        (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                    _sharedDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
                 }
 
                 return _sharedDictionary;
