@@ -126,9 +126,9 @@ namespace code_in
 				if(commandName == "code_in.Connect.code_in")
 				{
                     object myUC = null;
-                    Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+                    //Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
 
-                    bool? result = fileDialog.ShowDialog();
+                    bool? result = true;//fileDialog.ShowDialog();
 
                     if (result == true)
                     {
@@ -137,8 +137,8 @@ namespace code_in
 
                         Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
                             "bin/code_inCore.dll",//Assembly.GetExecutingAssembly().Location, // This path is used to get the dll where the Window is contained
-                            typeof(MainView).FullName,
-                            fileDialog.SafeFileName,
+                            typeof(code_in.Views.ConfigView.ConfigView).FullName,
+                           "toto", //fileDialog.SafeFileName,
                             Guid.NewGuid().ToString(),
                             ref myUC);
                         myWindow.Visible = true;
@@ -149,7 +149,7 @@ namespace code_in
                         if (myUC == null)
                             throw new Exception("Cannot get a reference to the UI");
 
-                        ((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
+                        //((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
                     }
 					return;
 				}
