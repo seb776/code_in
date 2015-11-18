@@ -7,6 +7,7 @@ using System.Resources;
 using System.Reflection;
 using System.Globalization;
 using code_in.Views.MainView;
+using System.Windows.Controls;
 
 namespace code_in
 {
@@ -47,16 +48,43 @@ namespace code_in
 				try
 				{
 					//Add a command to the Commands collection:
-                    Command command = commands.AddNamedCommand2(_addInInstance, "code_in", "code_in", "Executes the command for code_in", false, TranslationTier.Resources._1, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
-                    
+                    Command command = commands.AddNamedCommand2(_addInInstance, "code_in", "code_in", "Executes the command for code_in",
+                        false, TranslationTier.Resources._1, ref contextGUIDS,
+                        (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled,
+                        (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+                    Command menuConfig = commands.AddNamedCommand2(_addInInstance, "Parameters", "Parameters", "Parameters for code_in",
+                        false, TranslationTier.Resources._1, ref contextGUIDS,
+                        (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled,
+                        (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+                    CommandBar oBar = null;
+                    for (int iloop = 1; iloop <= toolsPopup.CommandBar.Controls.Count; iloop++)
+                    {
+                        if (toolsPopup.CommandBar.Controls[iloop].Caption ==
+                                               "Code_in")
+                        {
+                            CommandBarPopup op =
+                                (CommandBarPopup)toolsPopup.CommandBar.Controls[iloop];
+                            oBar = op.CommandBar;
+                            break;
+                        }
+                    }
+                    if (oBar == null)
+                        oBar = (CommandBar)commands.AddCommandBar("Code_in", vsCommandBarType.vsCommandBarTypeMenu, toolsPopup.CommandBar, 1);
+
 					//Add a control for the command to the tools menu:
-					if((command != null) && (toolsPopup != null))
-					{
-						command.AddControl(toolsPopup.CommandBar, 1);
-					}
+                    if ((command != null) && (toolsPopup != null))
+                    {
+                        //command.AddControl(toolsPopup.CommandBar, 1);
+                        command.AddControl(oBar, 1);
+                    }
+                    if (menuConfig != null)
+                    {
+                        menuConfig.AddControl(oBar, 2);
+                    }
 				}
-				catch(System.ArgumentException)
+				catch(System.ArgumentException e)
 				{
+                    //MessageBox.Show(e.ToString());
 					//If we are here, then the exception is probably because a command with that name
 					//  already exists. If so there is no need to recreate the command and we can 
                     //  safely ignore the exception.
@@ -103,7 +131,7 @@ namespace code_in
 		{
 			if(neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
 			{
-				if(commandName == "code_in.Connect.code_in")
+                if (commandName == "code_in.Connect.code_in" || commandName == "code_in.Connect.Parameters")
 				{
 					status = (vsCommandStatus)vsCommandStatus.vsCommandStatusSupported|vsCommandStatus.vsCommandStatusEnabled;
 					return;
@@ -123,12 +151,31 @@ namespace code_in
 			handled = false;
 			if(executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
 			{
-				if(commandName == "code_in.Connect.code_in")
+                if (commandName == "code_in.Connect.Parameters")
+                {
+                    object myUC = null;
+                    Windows2 vsWindows = _applicationObject.ItemOperations.DTE.Windows as Windows2;
+
+                    Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
+                        "bin/code_inCore.dll",//Assembly.GetExecutingAssembly().Location, // This path is used to get the dll where the Window is contained
+                        typeof(Views.ConfigView.ConfigView).FullName,
+                        "Code_in - Parameters",
+                        Guid.NewGuid().ToString(),
+                        ref myUC);
+                    myWindow.Visible = true;
+                    myWindow.IsFloating = false;
+                    myWindow.Linkable = false;
+                    handled = true;
+
+                    if (myUC == null)
+                        throw new Exception("Cannot get a reference to the UI");
+                }
+				else if(commandName == "code_in.Connect.code_in")
 				{
                     object myUC = null;
-                    //Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+                    Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
 
-                    bool? result = true;//fileDialog.ShowDialog();
+                    bool? result = fileDialog.ShowDialog();
 
                     if (result == true)
                     {
@@ -137,8 +184,8 @@ namespace code_in
 
                         Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
                             "bin/code_inCore.dll",//Assembly.GetExecutingAssembly().Location, // This path is used to get the dll where the Window is contained
-                            typeof(code_in.Views.ConfigView.ConfigView).FullName,
-                           "toto", //fileDialog.SafeFileName,
+                            typeof(MainView).FullName,
+                            fileDialog.SafeFileName,
                             Guid.NewGuid().ToString(),
                             ref myUC);
                         myWindow.Visible = true;
@@ -149,7 +196,7 @@ namespace code_in
                         if (myUC == null)
                             throw new Exception("Cannot get a reference to the UI");
 
-                        //((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
+                        ((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
                     }
 					return;
 				}
