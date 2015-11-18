@@ -13,23 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.MainView.Nodes
+namespace code_in.Views.MainView.Nodes.Items.ScopeIco
 {
     /// <summary>
-    /// Interaction logic for NodeAnchor.xaml
+    /// Interaction logic for ProtectedItem.xaml
     /// </summary>
-    public partial class NodeAnchor : UserControl
+    public partial class ProtectedItem : UserControl
     {
-        protected BaseNode _parentNode;
-        public NodeAnchor()
+        public ProtectedItem()
         {
             InitializeComponent();
-            _parentNode = null;
-        }
-        public NodeAnchor(BaseNode parent)
-        {
-            InitializeComponent();
-            _parentNode = parent;
         }
     }
 }

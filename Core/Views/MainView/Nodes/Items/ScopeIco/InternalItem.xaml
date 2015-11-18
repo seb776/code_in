@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="code_in.Views.MainView.Nodes.Items.ScopeIco.InternalItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="35">
+    <Grid x:Name="InternalIco">
+        <Rectangle Fill="#FF4ACB00"/>
+        <Label Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">{~}</Label>
+    </Grid>
+</UserControl>
