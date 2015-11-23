@@ -13,15 +13,10 @@ namespace code_in.Views.MainView.Nodes.Items
         public ClassItem() :
             base()
         {
-            Type[] scopes = {
-                                typeof(ScopeIco.InternalItem),
-                                typeof(ScopeIco.PublicItem),
-                                typeof(ScopeIco.ProtectedItem),
-                                typeof(ScopeIco.PrivateItem)
-            };
-            
-            this.Container.Children.Remove(this.Anchor);
-            this.Container.Children.Insert(0, (FrameworkElement)Activator.CreateInstance(scopes[r.Next(0,4)]));
+            ScopeItem si = new ScopeItem();
+            si.Scope = (ScopeItem.EScope)r.Next(0, 4);
+            this.Container.Children.Insert(0, si);
+            this.SetItemType("Int");
         }
     }
 }

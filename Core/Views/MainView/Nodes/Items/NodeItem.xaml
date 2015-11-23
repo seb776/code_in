@@ -7,11 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="31" d:DesignWidth="300" Padding="0,3,0,3">
     <StackPanel x:Name="Container" Orientation="Horizontal">
-        <my:NodeAnchor x:Name="Anchor" Width="10" Height="20" VerticalAlignment="Center"/>
-        <!--<Rectangle Width="2" Fill="Black" Stretch="Fill"/>-->
         <TextBox x:Name="ItemName" Margin="2,2,0,0"  BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
             NodeItem
         </TextBox>
-        <my:TypeInfo x:Name="TypeField"/>
     </StackPanel>
 </UserControl>

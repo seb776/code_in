@@ -69,6 +69,7 @@
     </UserControl.Resources>
     <Grid x:Name="WinGrid">
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000">
             <!-- The resource will be resolved at runtime (see TranslationTier.SharedResourceDictionary -->
             <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
                 <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
@@ -76,7 +77,8 @@
                 <my:NamespaceNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <my:ClassDeclNode HorizontalAlignment="Left" VerticalAlignment="Top" Margin="451,69,0,0"/>
             </Grid>
+            </Viewbox>
         </ScrollViewer>
-        <Slider Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20"></Slider>
+        <Slider Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" ValueChanged="Slider_ValueChanged" Minimum="0.1" Maximum="2" Value="1"></Slider>
     </Grid>
 </UserControl>

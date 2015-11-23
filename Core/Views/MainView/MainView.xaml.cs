@@ -151,19 +151,26 @@ namespace code_in.Views.MainView
                 m1.Click += m1_Click;
                 cm.Items.Add(m1);
             }
-            cm.IsOpen = true;
             cm.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
-            //this.WinGrid.Children.Add(cm);
+            cm.IsOpen = true;
         }
 
         void m1_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("fail");
             var node = new Nodes.BaseNode();
 //            node.Margin = new Thickness(e.GetPosition(this.MainGrid).X, e.GetPosition(this.MainGrid).Y, 0, 0);
             node.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             node.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.MainGrid.Children.Add(node);
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (((int)(e.NewValue * 10.0) % 2) == 0)
+            {
+                this.ZoomPanel.Width = this.MainGrid.Width * e.NewValue;
+                this.ZoomPanel.Height = this.MainGrid.Height * e.NewValue;
+            }
         }
     }
 }

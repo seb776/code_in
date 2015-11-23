@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.MainView.Nodes.Items
 {
-    class FlowNodeItem : IOItem
+    public class DataFlowItem : IOItem
     {
-        public FlowNodeItem() :
+        public DataFlowItem() :
             base()
         {
-            this.SetName("FlowNode");
+            this.SetItemType("test");
         }
     }
 }

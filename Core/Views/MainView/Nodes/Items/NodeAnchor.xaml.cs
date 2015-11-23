@@ -16,20 +16,24 @@ using System.Windows.Shapes;
 namespace code_in.Views.MainView.Nodes.Items
 {
     /// <summary>
-    /// Interaction logic for NodeAnchor.xaml
+    /// This class is used to represent the bind box to which the links will be attached
+    /// It triggers the event for creating the links.
     /// </summary>
     public partial class NodeAnchor : UserControl
     {
-        protected BaseNode _parentNode;
+        protected IOItem _parentItem;
         public NodeAnchor()
         {
+            // We need a default constructor to centralize the call to InitializeComponent();
+            // and also to be able to create controls from XAML without passing parameters
+            // and then be able to preview in the XAML editor
             InitializeComponent();
-            _parentNode = null;
+            _parentItem = null;
         }
-        public NodeAnchor(BaseNode parent)
+        public NodeAnchor(IOItem parent) :
+            this() // Mandatory to have a call to InitializeComponent();
         {
-            InitializeComponent();
-            _parentNode = parent;
+            _parentItem = parent;
         }
     }
 }

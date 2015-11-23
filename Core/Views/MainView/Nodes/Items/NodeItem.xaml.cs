@@ -20,9 +20,24 @@ namespace code_in.Views.MainView.Nodes.Items
     /// </summary>
     public partial class NodeItem : UserControl, INodeItem
     {
+        protected BaseNode _parentNode;
         public NodeItem()
         {
             InitializeComponent();
+            _parentNode = null;
+        }
+
+        public NodeItem(BaseNode parent) :
+            this()
+        {
+            System.Diagnostics.Debug.Assert(parent != null, "The parentNode is null");
+            _parentNode = parent;
+        }
+
+        // TODO: Temporary may be replaced by a binding
+        public void SetName(String n)
+        {
+            this.ItemName.Text = n;
         }
 
         public enum EOrientation
@@ -30,18 +45,37 @@ namespace code_in.Views.MainView.Nodes.Items
             LEFT = 0,
             RIGHT = 1,
         }
+        public void SetItemType(String type)
+        {
+            if (this.Container.FindName("TypeField") == null)
+            {
+                TypeInfo ti = new TypeInfo();
+
+                ti.Name = "TypeField"; // Not necessary but to be clean ;)
+                this.Container.RegisterName(ti.Name, ti); // To allow TypeField to be found through FindName
+                this.Container.Children.Add(ti);
+            }
+            else
+            {
+                // nothing for now
+            }
+        }
+
+        
         private EOrientation _orientation;
         public EOrientation Orientation
         {
-            get
-            { return _orientation; }
+            get { return _orientation; }
             set
             {
                 this.Container.FlowDirection = (value == EOrientation.LEFT ?
                     System.Windows.FlowDirection.LeftToRight :
                     System.Windows.FlowDirection.RightToLeft);
-                // to avoid the type to be reversed recursively
-                this.TypeField.TypePanel.FlowDirection = System.Windows.FlowDirection.LeftToRight;
+                
+                TypeInfo ti = (TypeInfo)this.Container.FindName("TypeField");
+                if (this.Container.FindName("TypeField") != null) // TypeField is not always part of an item
+                    ti.TypePanel.FlowDirection = System.Windows.FlowDirection.LeftToRight; // to avoid the type visual control to be reversed recursively
+
                 _orientation = value;
             }
         }

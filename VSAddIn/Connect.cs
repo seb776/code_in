@@ -129,7 +129,7 @@ namespace code_in
 		/// <seealso class='Exec' />
 		public void QueryStatus(string commandName, vsCommandStatusTextWanted neededText, ref vsCommandStatus status, ref object commandText)
 		{
-			if(neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
+			if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
 			{
                 if (commandName == "code_in.Connect.code_in" || commandName == "code_in.Connect.Parameters")
 				{

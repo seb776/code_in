@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     
+    <!-- These are the colors for the nodes -->    
     <SolidColorBrush x:Key="BaseNodeColor" Color="GreenYellow"/>
     <SolidColorBrush x:Key="BaseNodeColorBack" Color="#424242"/>
     <SolidColorBrush x:Key="NamespaceNodeColor" Color="BlueViolet"/>
@@ -8,9 +10,44 @@
     <SolidColorBrush x:Key="PreprocessColor" Color="ForestGreen"/>
     <SolidColorBrush x:Key="ClassDeclColor" Color="Gold"/>
 
+    <!-- These are the colors for the input-output -->
     <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
     <SolidColorBrush x:Key="CharColor" Color="LightSalmon"/>
+    <SolidColorBrush x:Key="ShortColor" Color="LightSalmon"/>
+    <SolidColorBrush x:Key="BoolColor" Color="GreenYellow"/>
     <SolidColorBrush x:Key="FloatingColor" Color="BlueViolet"/>
+    <SolidColorBrush x:Key="ObjectColor" Color="LightSalmon"/>
+    <SolidColorBrush x:Key="OtherTypesColor" Color="LightSalmon"/>
+    
+    <!-- These are the resources for the scopes -->
+    <LinearGradientBrush x:Key="ScopePublicColor" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF0098F0" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </LinearGradientBrush>
+    <!--<SolidColorBrush x:Key="ScopePublicColor" Color="#FF0098F0"/>-->
+    <LinearGradientBrush x:Key="ScopeInternalColor" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF4ACB00" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ScopeProtectedColor" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FFFFA200" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ScopePrivateColor" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FFF00041" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </LinearGradientBrush>
+    <!--<SolidColorBrush x:Key="ScopeInternalColor" Color="#FF4ACB00"/>-->
+    <!--<SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFFA200"/>-->
+    <!--<SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00041"/>-->
+    <sys:String x:Key="ScopePublicString">}+{</sys:String>
+    <sys:String x:Key="ScopeInternalString">{~}</sys:String>
+    <sys:String x:Key="ScopeProtectedString">{#}</sys:String>
+    <sys:String x:Key="ScopePrivateString">{-}</sys:String>
+    
+    <!-- These are the offset for the anchors -->
+    <Thickness x:Key="AnchorOffsetLeft"  Left="-13" Bottom="0" Top="0" Right="0"/>
+    <Thickness x:Key="AnchorOffsetRight"  Right="-13" Bottom="0" Top="0" Left="0"/>
 
     <Rect x:Key="RectDims" X="0" Y="0" Width="30" Height="30"></Rect>
     <DrawingBrush x:Name="GridTileBrush" x:Key="GridTile" Stretch="None" TileMode="Tile"

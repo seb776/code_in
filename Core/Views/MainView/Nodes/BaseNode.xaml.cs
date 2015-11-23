@@ -165,8 +165,8 @@ namespace code_in.Views.MainView.Nodes
         public void AddInput(Items.NodeItem item)
         {
             item.Orientation = Items.NodeItem.EOrientation.LEFT;
-            if (item.GetType() != typeof(Items.ClassItem))
-                item.Margin = new Thickness(-13, 0, 0, 0); // TODO: store the offset somewhere
+            if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
+                item.Margin = new Thickness(-13, 0, 0, 0); // TODO: apply resources.AnchorOffsetLeft
             this.Inputs.Children.Add(item);
         }
 
@@ -179,8 +179,8 @@ namespace code_in.Views.MainView.Nodes
         public void AddOutput(Items.NodeItem item)
         {
             item.Orientation = Items.NodeItem.EOrientation.RIGHT;
-            if (item.GetType() != typeof(Items.ClassItem))
-                item.Margin = new Thickness(0, 0, -13, 0);
+            if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
+                item.Margin = new Thickness(0, 0, -13, 0); // TODO: apply resources.AnchorOffsetLeft
             this.Outputs.Children.Add(item);
         }
 

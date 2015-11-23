@@ -86,22 +86,15 @@
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ThemeYaya.cs" />
     <Compile Include="Views\MainView\Nodes\Items\ClassItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\DataFlowItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\FlowNodeItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\INodeItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\IOItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\NodeItem.xaml.cs">
       <DependentUpon>NodeItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ScopeIco\InternalItem.xaml.cs">
-      <DependentUpon>InternalItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ScopeIco\PrivateItem.xaml.cs">
-      <DependentUpon>PrivateItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ScopeIco\ProtectedItem.xaml.cs">
-      <DependentUpon>ProtectedItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ScopeIco\PublicItem.xaml.cs">
-      <DependentUpon>PublicItem.xaml</DependentUpon>
+    <Compile Include="Views\MainView\Nodes\Items\ScopeItem.xaml.cs">
+      <DependentUpon>ScopeItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\Nodes\Items\TypeInfo.xaml.cs">
       <DependentUpon>TypeInfo.xaml</DependentUpon>
@@ -207,19 +200,7 @@
     <Compile Include="Views\MainView\Nodes\Items\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainView\Nodes\Items\ScopeIco\InternalItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\Nodes\Items\ScopeIco\PrivateItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\Nodes\Items\ScopeIco\ProtectedItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\Nodes\Items\ScopeIco\PublicItem.xaml">
+    <Page Include="Views\MainView\Nodes\Items\ScopeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
