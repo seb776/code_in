@@ -13,5 +13,11 @@ namespace code_in.Views.MainView.Nodes.Items
         {
             this.SetName("FlowNode");
         }
+
+        public FlowNodeItem(BaseNode parent) :
+            this()
+        {
+            this._parentNode = parent;
+        }
     }
 }

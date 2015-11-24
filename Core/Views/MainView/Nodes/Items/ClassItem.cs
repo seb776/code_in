@@ -18,5 +18,11 @@ namespace code_in.Views.MainView.Nodes.Items
             this.Container.Children.Insert(0, si);
             this.SetItemType("Int");
         }
+
+        public ClassItem(BaseNode parent) :
+            this()
+        {
+            this._parentNode = parent;
+        }
     }
 }

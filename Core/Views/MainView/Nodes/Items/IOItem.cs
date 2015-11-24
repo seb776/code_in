@@ -11,7 +11,7 @@ namespace code_in.Views.MainView.Nodes.Items
         public IOItem() :
             base()
         {
-            NodeAnchor na = new NodeAnchor();
+            NodeAnchor na = new NodeAnchor(this);
 
             na.Name = "Anchor"; // Not necessary but to be clean
             this.Container.RegisterName("Anchor", na); // To be able to find it through container.FindName(String)
@@ -19,6 +19,12 @@ namespace code_in.Views.MainView.Nodes.Items
             na.Width = 10;
             na.Height = 20;
             this.Container.Children.Insert(0, na);
+        }
+
+        public IOItem(BaseNode parent) :
+            this()
+        {
+            this._parentNode = parent;
         }
     }
 }

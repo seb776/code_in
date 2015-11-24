@@ -13,5 +13,11 @@ namespace code_in.Views.MainView.Nodes.Items
         {
             this.SetItemType("test");
         }
+
+        public DataFlowItem(BaseNode parent) :
+            this()
+        {
+            this._parentNode = parent;
+        }
     }
 }

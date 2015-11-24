@@ -94,9 +94,9 @@ namespace code_in.Views.MainView
                 diff = new Vector(0, 0);
             else
             {
-                diff = lastPosition - e.GetPosition(null);
+                diff = lastPosition - e.GetPosition(this.MainGrid);
             }
-            lastPosition = e.GetPosition(null);
+            lastPosition = e.GetPosition(this.MainGrid);
 
             if (Nodes.TransformingNode.TransformingObject != null)
             {
