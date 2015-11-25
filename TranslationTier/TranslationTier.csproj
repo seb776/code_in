@@ -68,6 +68,13 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\back.png" />
+    <Resource Include="Resources\SpritesMainBtn\blue.png" />
+    <Resource Include="Resources\SpritesMainBtn\green.png" />
+    <Resource Include="Resources\SpritesMainBtn\pink.png" />
+    <Resource Include="Resources\SpritesMainBtn\Top.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

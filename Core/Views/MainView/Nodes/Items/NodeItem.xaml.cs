@@ -21,6 +21,17 @@ namespace code_in.Views.MainView.Nodes.Items
     public partial class NodeItem : UserControl, INodeItem
     {
         protected BaseNode _parentNode;
+        public BaseNode ParentNode
+        {
+            get
+            {
+                return _parentNode;
+            }
+            set
+            {
+                _parentNode = value;
+            }
+        }
         public NodeItem()
         {
             InitializeComponent();

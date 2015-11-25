@@ -85,6 +85,9 @@
   <ItemGroup>
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ThemeYaya.cs" />
+    <Compile Include="Views\MainView\MainButton.xaml.cs">
+      <DependentUpon>MainButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView\Nodes\Items\ClassItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\DataFlowItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\FlowNodeItem.cs" />
@@ -132,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\ThemeLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\MainButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -167,6 +167,7 @@ namespace code_in.Views.MainView.Nodes
             item.Orientation = Items.NodeItem.EOrientation.LEFT;
             if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
                 item.Margin = new Thickness(-13, 0, 0, 0); // TODO: apply resources.AnchorOffsetLeft
+            item.ParentNode = this;
             this.Inputs.Children.Add(item);
         }
 
@@ -181,6 +182,7 @@ namespace code_in.Views.MainView.Nodes
             item.Orientation = Items.NodeItem.EOrientation.RIGHT;
             if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
                 item.Margin = new Thickness(0, 0, -13, 0); // TODO: apply resources.AnchorOffsetLeft
+            item.ParentNode = this;
             this.Outputs.Children.Add(item);
         }
 

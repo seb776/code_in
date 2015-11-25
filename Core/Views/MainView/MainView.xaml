@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes"
+             xmlns:cur="clr-namespace:code_in.Views.MainView"
              mc:Ignorable="d" 
              d:DesignWidth="1024" d:DesignHeight="768">
     <UserControl.Resources>
@@ -79,6 +80,7 @@
             </Grid>
             </Viewbox>
         </ScrollViewer>
+        <cur:MainButton VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="False" Visibility="Hidden"/>
         <Slider Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" ValueChanged="Slider_ValueChanged" Minimum="0.1" Maximum="2" Value="1"></Slider>
     </Grid>
 </UserControl>
