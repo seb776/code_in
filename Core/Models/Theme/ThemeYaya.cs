@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Serialization;
 namespace code_in.Models.Theme
 {
     public class ThemeYaya : IThemeData
@@ -71,6 +73,19 @@ namespace code_in.Models.Theme
         public ILinkDraw getLinkDrawer()
         {
             return null;
+        }
+
+        public void serializeTheme(string filename)
+        {
+            // Creates an instance of the XmlSerializer class;
+            // specifies the type of object to serialize.
+            XmlSerializer serializer =
+            new XmlSerializer(typeof(ThemeYaya));
+            TextWriter writer = new StreamWriter(filename);
+           ThemeYaya def = new ThemeYaya();
+            // Serializes and closes the TextWriter.
+            serializer.Serialize(writer, def);
+            writer.Close();
         }
     }
 }

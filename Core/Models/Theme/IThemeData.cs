@@ -23,6 +23,9 @@ namespace code_in.Models.Theme
        SolidColorBrush getClassColor();
        SolidColorBrush getFuncDeclColor();
        ILinkDraw getLinkDrawer();
+
+       void serializeTheme(string filename);
+      // void deserializeTheme(string filename);
        
         /*
         getGridBackground/foreground/thickness/dottedDistance/xSize/ySize
