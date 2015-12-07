@@ -86,6 +86,8 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 200;
                 }
+                var foo = new code_in.Views.MainView.Nodes.Items.NodeItem();
+                foo.ItemName.Text = node.EndLocation.ToString();
                 visualNode.SetNodeName(namespaceDecl.Name);
                 visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -106,8 +108,8 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 200;
                 }
-                var foo = new IOItem(null);
-                foo.Label.Content = node;
+                var foo = new code_in.Views.MainView.Nodes.Items.NodeItem();
+                foo.ItemName.Text = node.ToString();
                 ;
                 visualNode.AddInput(foo);
                 visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;

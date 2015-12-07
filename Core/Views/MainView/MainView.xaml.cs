@@ -33,7 +33,7 @@ namespace code_in.Views.MainView
 
         public MainView()
         {
-            this.Resources.MergedDictionaries.Add(SharedDictionaryManager.SharedDictionary);
+            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.SharedDictionary);
             InitializeComponent();
 
             _code_inMgr = new ViewModels.code_inMgr(this);
@@ -59,7 +59,7 @@ namespace code_in.Views.MainView
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
             int step = 2;
-            Rect tmp = (Rect)SharedDictionaryManager.SharedDictionary["RectDims"];   
+            Rect tmp = (Rect)code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"];   
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -76,8 +76,8 @@ namespace code_in.Views.MainView
                 this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
                 themeSelect = !themeSelect;
             }
-            SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
-            ((DrawingBrush)SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
+            code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
+            ((DrawingBrush)code_in.Resources.SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
         }
 
         void MainView_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -94,9 +94,9 @@ namespace code_in.Views.MainView
                 diff = new Vector(0, 0);
             else
             {
-                diff = lastPosition - e.GetPosition(null);
+                diff = lastPosition - e.GetPosition(this.MainGrid);
             }
-            lastPosition = e.GetPosition(null);
+            lastPosition = e.GetPosition(this.MainGrid);
 
             if (Nodes.TransformingNode.TransformingObject != null)
             {
@@ -131,24 +131,46 @@ namespace code_in.Views.MainView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // This automatically updates the list of accessible nodes
+            // Need to be optimized (compute only the first time, as it uses reflection)
+            // Make the click on the Item Creates the right instance
+            List<Type> listOfBs = new List<Type>();
+            foreach (var t in typeof(Nodes.BaseNode).Assembly.GetTypes())
+            {
+
+                if (t.IsSubclassOf(typeof(Nodes.BaseNode)))
+                {
+                    listOfBs.Add(t);
+                }
+            }
             var cm = new ContextMenu();
-            var m1 = new MenuItem();
-            m1.Header = "New BaseNode";
-            m1.Click += m1_Click;
-            cm.Items.Add(m1);
-            cm.IsOpen = true;
+            foreach (var t in listOfBs)
+            {
+                var m1 = new MenuItem();
+                m1.Header = t.Name;
+                m1.Click += m1_Click;
+                cm.Items.Add(m1);
+            }
             cm.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
-            //this.WinGrid.Children.Add(cm);
+            cm.IsOpen = true;
         }
 
         void m1_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("fail");
             var node = new Nodes.BaseNode();
 //            node.Margin = new Thickness(e.GetPosition(this.MainGrid).X, e.GetPosition(this.MainGrid).Y, 0, 0);
             node.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             node.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.MainGrid.Children.Add(node);
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (((int)(e.NewValue * 10.0) % 2) == 0)
+            {
+                this.ZoomPanel.Width = this.MainGrid.Width * e.NewValue;
+                this.ZoomPanel.Height = this.MainGrid.Height * e.NewValue;
+            }
         }
     }
 }

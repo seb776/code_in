@@ -4,23 +4,83 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes"
+             xmlns:cur="clr-namespace:code_in.Views.MainView"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignWidth="1024" d:DesignHeight="768">
     <UserControl.Resources>
-        <!--<ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourcesDictionary.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>-->
+        <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="false"/>
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Polygon Name="ThumbIco" Fill="GreenYellow" Points="0,10 10,10 10,-10 5,-15 0,-10" VerticalAlignment="Bottom"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ThumbIco" Property="Fill" Value="#DFFFB8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Slider" x:Key="SliderStyle">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" Name="row" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" Name="column" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border Name="PART_Border"
+                           BorderBrush="Black" BorderThickness="1"
+                           Padding="2"
+                          Grid.Row="1" Grid.Column="1"
+                           Width="{TemplateBinding Width}"
+                           Height="5"
+                           Background="Black"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" />
+                            <Track Name="PART_Track"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Grid.Row="1" Grid.Column="1"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid x:Name="WinGrid">
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000">
+            <!-- The resource will be resolved at runtime (see TranslationTier.SharedResourceDictionary -->
             <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
                 <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
                 <my:FuncDeclNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <my:NamespaceNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <my:ClassDeclNode HorizontalAlignment="Left" VerticalAlignment="Top" Margin="451,69,0,0"/>
             </Grid>
+            </Viewbox>
         </ScrollViewer>
-        <Slider Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20"></Slider>
+        <cur:MainButton VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="False" Visibility="Hidden"/>
+        <Slider Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" ValueChanged="Slider_ValueChanged" Minimum="0.1" Maximum="2" Value="1"></Slider>
     </Grid>
 </UserControl>

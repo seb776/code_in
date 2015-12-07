@@ -37,7 +37,7 @@ namespace code_in.Views.MainView.Nodes
         public MainView MainView;
         public BaseNode()
         {
-            this.Resources.MergedDictionaries.Add(SharedDictionaryManager.SharedDictionary);
+            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.SharedDictionary);
             InitializeComponent();
             { // We set all the features to true
                 int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
@@ -133,10 +133,13 @@ namespace code_in.Views.MainView.Nodes
                         }
                     case EFeatures.ISFLOWNODE:
                         {
-                            this.AddInput(new FlowItem(this));
-                            ((IOItem)this.Inputs.Children[0]).SetItemName("Input flow");
-                            this.AddOutput(new FlowItem(this));
-                            ((IOItem)this.Outputs.Children[0]).SetItemName("Output flow");
+                            Items.FlowNodeItem input = new Items.FlowNodeItem();
+                            input.ItemName.Text = "Input flow"; // TODO make a function
+                            this.AddInput(input);
+
+                            Items.FlowNodeItem output = new Items.FlowNodeItem();
+                            output.ItemName.Text = "Output flow"; // TODO make a function
+                            this.AddOutput(output);
                             break;
                         }
                     case EFeatures.EXPENDABLES:
@@ -159,9 +162,12 @@ namespace code_in.Views.MainView.Nodes
             this.NodeModifiers.Children.Add(lblType);
         }
 
-        public void AddInput(IOItem item)
+        public void AddInput(Items.NodeItem item)
         {
-            item.Orientation = 0;
+            item.Orientation = Items.NodeItem.EOrientation.LEFT;
+            if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
+                item.Margin = new Thickness(-13, 0, 0, 0); // TODO: apply resources.AnchorOffsetLeft
+            item.ParentNode = this;
             this.Inputs.Children.Add(item);
         }
 
@@ -171,9 +177,12 @@ namespace code_in.Views.MainView.Nodes
             this.Inputs.Children.RemoveAt(idx);
         }
 
-        public void AddOutput(IOItem item)
+        public void AddOutput(Items.NodeItem item)
         {
-            item.Orientation = 1;
+            item.Orientation = Items.NodeItem.EOrientation.RIGHT;
+            if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
+                item.Margin = new Thickness(0, 0, -13, 0); // TODO: apply resources.AnchorOffsetLeft
+            item.ParentNode = this;
             this.Outputs.Children.Add(item);
         }
 
@@ -209,7 +218,7 @@ namespace code_in.Views.MainView.Nodes
 
         public void SetNodeName(String name)
         {
-            this.NodeName.Content = name;
+            this.NodeName.Text = name;
         }
 
 

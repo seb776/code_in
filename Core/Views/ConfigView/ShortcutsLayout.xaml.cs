@@ -12,24 +12,31 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using System.Collections.ObjectModel;
 
-namespace code_in.Views.MainView.Nodes
+namespace code_in.Views.ConfigView
 {
     /// <summary>
-    /// Interaction logic for NodeAnchor.xaml
+    /// Logique d'interaction pour ShortcutsLayout.xaml
     /// </summary>
-    public partial class NodeAnchor : UserControl
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.None)]
+    public partial class ShortcutsLayout : UserControl, stdole.IDispatch
     {
-        protected BaseNode _parentNode;
-        public NodeAnchor()
+        public ShortcutsLayout()
         {
             InitializeComponent();
-            _parentNode = null;
         }
-        public NodeAnchor(BaseNode parent)
+
+        private void Button_Confirm(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            _parentNode = parent;
+
+        }
+
+        private void Button_Cancel(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
