@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using code_in.Views.MainView.Nodes;
+using ICSharpCode.NRefactory.TypeSystem;
 
 namespace code_in.ViewModels
 {
@@ -28,18 +29,14 @@ namespace code_in.ViewModels
         int offsetX = 0;
         int offsetY = 0;
 
-        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid, ICSharpCode.NRefactory.CSharp.AstNode parent = null)
+        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid,  Views.MainView.Nodes.BaseNode parent = null)
         {
-            ICSharpCode.NRefactory.CSharp.AstNode newParent = null;
+            Views.MainView.Nodes.BaseNode newParent = null;
             if (node.Children == null)
                 return;
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                StringBuilder b = new StringBuilder();
-                b.Append(node.Role.ToString());
-                b.Append(":");
-                b.Append(node.GetType().Name);
                 Views.MainView.Nodes.NamespaceNode visualNode = new Views.MainView.Nodes.NamespaceNode();
                 visualNode.Width = 400;
                 visualNode.Height = 250;
@@ -50,17 +47,41 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 250;
                 }
-                visualNode.SetNodeName(b.ToString());
+                var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
+                visualNode.SetNodeName(tmpNode.Name);
                 visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 if (newParent == null)
                     mainGrid.Children.Add(visualNode);
-               // else
-                 //   newParent.Children.Add(visualNode);
-                newParent = node;
+                else
+                    newParent.NodeGrid.Children.Add(visualNode);
+                newParent = visualNode;
             }
             #endregion
             #region Class
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.TypeSystem.ITypeDefinition))
+            {
+
+                Views.MainView.Nodes.ClassDeclNode visualNode = new Views.MainView.Nodes.ClassDeclNode();
+                visualNode.Width = 400;
+                visualNode.Height = 250;
+                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
+                offsetX += 400;
+                if (offsetX > 4000)
+                {
+                    offsetX = 0;
+                    offsetY += 250;
+                }
+                var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
+                visualNode.SetNodeName(tmpNode.Name);
+                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                if (newParent == null)
+                    mainGrid.Children.Add(visualNode);
+                else
+                    newParent.NodeGrid.Children.Add(visualNode);
+                newParent = visualNode;
+            }
             #endregion
             #region Method
             #endregion
