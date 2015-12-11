@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:code_in.Views.MainView.Nodes"
+             xmlns:search="clr-namespace:code_in.Views.MainView"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -22,5 +23,8 @@
             </Grid>
         </ScrollViewer>
         <Slider Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20"></Slider>
+        <!-- Put a user control for the search_bar -->
+        <search:SearchBar Width="auto" HorizontalAlignment="Left" IsEnabled="True" Visibility="Visible"/>
+            
     </Grid>
 </UserControl>

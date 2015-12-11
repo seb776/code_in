@@ -83,6 +83,9 @@
   <ItemGroup>
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ThemeYaya.cs" />
+    <Compile Include="Views\MainView\SearchBar.xaml.cs">
+      <DependentUpon>SearchBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SharedResourceDictionary.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -133,6 +136,10 @@
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainView\ResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\SearchBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
