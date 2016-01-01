@@ -83,7 +83,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Line.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ThemeYaya.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
