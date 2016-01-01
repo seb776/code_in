@@ -18,14 +18,21 @@ namespace code_in.Views.MainView.Nodes
     // This is used for managing these actions: Resize, Move
     public static class TransformingNode
     {
-        public static Object TransformingObject = null; // Used to move or resize nodes
+        public static Object TransformingObject = null; // Used to move, resize or link nodes
         public enum TransformationMode
         {
             NONE = 0,
             RESIZE = 1,
-            MOVE = 2
+            MOVE = 2,
+            LINE = 3
         }
         public static TransformationMode Transformation;
+
+        /*public static Point begin;
+        public static Line lineInput;
+        public static Line lineOutput;
+        public static int orientationStart = 0; // 0 : none, 1 : input, 2 : output
+        */
     }
     /// <summary>
     /// The visual representation of an AST node.
@@ -35,6 +42,10 @@ namespace code_in.Views.MainView.Nodes
     {
         protected System.Windows.Media.Brush _currentResource;
         public MainView MainView;
+
+        public Line lineInput;
+        public Line lineOutput;
+
         public BaseNode()
         {
             this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.SharedDictionary);
@@ -50,7 +61,8 @@ namespace code_in.Views.MainView.Nodes
             SetColorResource("BaseNodeColor");
         }
 
-        public BaseNode(MainView view) : this()
+        public BaseNode(MainView view)
+            : this()
         {
             MainView = view;
         }
@@ -72,9 +84,27 @@ namespace code_in.Views.MainView.Nodes
         private void Grid_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
             ((Panel)this.Parent).Children.Remove(this);
+            MainView.MainGrid.Children.Remove(lineInput);
+            MainView.MainGrid.Children.Remove(lineOutput);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
+        public void CreateLink(Nodes.Items.NodeAnchor n)
+        {
+            TransformingNode.TransformingObject = n;
+            TransformingNode.Transformation = TransformingNode.TransformationMode.LINE;
+            MainView.MainGrid.Children.Remove(n.IOLine);
+            n.IOLine = new Line();
+            n.IOLine.Stroke = System.Windows.Media.Brushes.Red;
+            n.IOLine.StrokeThickness = 5;
+            if (n._parentItem.Orientation == Nodes.Items.NodeItem.EOrientation.LEFT)
+                lineInput = n.IOLine;
+            else
+                lineOutput = n.IOLine;
+            Canvas.SetZIndex(n.IOLine, -1);
+            
+            MainView.MainGrid.Children.Add(n.IOLine);
+        }
         public enum EFeatures
         {
             MOVABLE = 0, // The node is Movable
@@ -168,6 +198,7 @@ namespace code_in.Views.MainView.Nodes
             if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
                 item.Margin = new Thickness(-13, 0, 0, 0); // TODO: apply resources.AnchorOffsetLeft
             item.ParentNode = this;
+
             this.Inputs.Children.Add(item);
         }
 
@@ -183,6 +214,7 @@ namespace code_in.Views.MainView.Nodes
             if (item.GetType().IsSubclassOf(typeof(Items.IOItem)))
                 item.Margin = new Thickness(0, 0, -13, 0); // TODO: apply resources.AnchorOffsetLeft
             item.ParentNode = this;
+
             this.Outputs.Children.Add(item);
         }
 
@@ -223,5 +255,6 @@ namespace code_in.Views.MainView.Nodes
 
 
         private bool[] _features;
+
     } // Class BaseNode
 } // Namespace
