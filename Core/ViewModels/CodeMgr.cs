@@ -29,6 +29,14 @@ namespace code_in.ViewModels
         int offsetX = 0;
         int offsetY = 0;
 
+        // (z0rg)TODO: Big refacto
+        // - Create Node through mainview
+        // - Improve code interface of nodes management
+        // - Make this function more generic
+        //      - avoid setting the name of each node depending of it's type, almost all nodes have a name
+        //      - improve interface to make the parent totally transparent
+        //      - ...
+        // - Improve design to make the node alignement after the parsing
         void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid,  Views.MainView.Nodes.BaseNode parent = null)
         {
             Views.MainView.Nodes.BaseNode newParent = null;
@@ -59,9 +67,9 @@ namespace code_in.ViewModels
             }
             #endregion
             #region Class
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.TypeSystem.ITypeDefinition))
-            {
 
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration))
+            {
                 Views.MainView.Nodes.ClassDeclNode visualNode = new Views.MainView.Nodes.ClassDeclNode();
                 visualNode.Width = 400;
                 visualNode.Height = 250;
@@ -72,7 +80,21 @@ namespace code_in.ViewModels
                     offsetX = 0;
                     offsetY += 250;
                 }
-                var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
+                var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
+                switch (tmpNode.Modifiers.ToString()) // Puts the right scope
+                {
+                    case "Public":
+                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                        break;
+                    case "Private":
+                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                        break;
+                    case "Protected":
+                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                        break;
+                    default:
+                        break;
+                }
                 visualNode.SetNodeName(tmpNode.Name);
                 visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -88,77 +110,24 @@ namespace code_in.ViewModels
             #region Attribute
             #endregion
             foreach (var n in node.Children)
-            _generateVisualASTRecur(n, mainGrid, newParent);
+                _generateVisualASTRecur(n, mainGrid, newParent);
         }
-        /*void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid)
-        {
-#region Namespace Node
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)) //Namespace Node
-                /*Possibilité d'utiliser des BlockStatement pour délimiter les Namespaces* /
-            {
-                var namespaceDecl = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
-                Views.MainView.Nodes.NamespaceNode visualNode = new Views.MainView.Nodes.NamespaceNode();
-                visualNode.Width = 300;
-                visualNode.Height = 250;
-                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
-                offsetX += 300;
-                if (offsetX > 4000)
-                {
-                    offsetX = 0;
-                    offsetY += 200;
-                }
-                var foo = new code_in.Views.MainView.Nodes.Items.NodeItem();
-                foo.ItemName.Text = node.EndLocation.ToString();
-                visualNode.SetNodeName(namespaceDecl.Name);
-                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                mainGrid.Children.Add(visualNode);
-            }
-#endregion
-#region Methode declaration Node
-            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)) //Method declaration Node
-            {
 
-                Views.MainView.Nodes.FuncDeclNode visualNode = new Views.MainView.Nodes.FuncDeclNode();
-                visualNode.Width = 300;
-                visualNode.Height = 250;
-                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
-                offsetX += 300;
-                if (offsetX > 4000)
-                {
-                    offsetX = 0;
-                    offsetY += 200;
-                }
-                var foo = new code_in.Views.MainView.Nodes.Items.NodeItem();
-                foo.ItemName.Text = node.ToString();
-                ;
-                visualNode.AddInput(foo);
-                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                mainGrid.Children.Add(visualNode);
-            }
-#endregion
-            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.))
-
-            // BIG SWITCH-CASE
-            if (node.Children != null)
-            {
-                foreach (var n in node.Children)
-                {
-                    _generateVisualASTRecur(n, mainGrid);
-                }
-            }
-        }
-*/
         public void LoadFile(String filePath, System.Windows.Controls.Grid mainGrid)
         {
             _codeData.AST = _parseFile(filePath);
             _generateVisualAST(mainGrid);
+            // Do node placement:
+            // - auto
+            // - from file
         }
 
         public void SaveFile(String filePath)
         {
-
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(filePath);
+            String code = "// Generated by Visual Studio's Code_in.";
+            sw.WriteLine(code);
+            sw.Write(_codeData.AST.ToString());
         }
     }
 }

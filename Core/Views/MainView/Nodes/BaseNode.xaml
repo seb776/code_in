@@ -45,7 +45,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
-                    <items:ScopeItem Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>
+                    <items:ScopeItem x:Name="NodeScope" Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>
                     <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
                         <Label.Effect>
                             <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>

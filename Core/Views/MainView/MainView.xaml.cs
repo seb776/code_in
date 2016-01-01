@@ -76,6 +76,14 @@ namespace code_in.Views.MainView
                 this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
                 themeSelect = !themeSelect;
             }
+            if (e.Key == Key.S)
+            {
+
+                System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    _code_inMgr._codeMgr.SaveFile(dialog.FileName);
+            }
             code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
             ((DrawingBrush)code_in.Resources.SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
         }
