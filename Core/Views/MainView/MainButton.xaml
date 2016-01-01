@@ -7,15 +7,16 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Width="300" Height="300">
     <Grid>
-        <Image Source="/TranslationTier;component/Resources/SpritesMainBtn/back.png"/>
 
+        <Image Source="/TranslationTier;component/Resources/SpritesMainBtn/back.png"/>
+        
         <Image x:Name="GreenBtn" Source="/TranslationTier;component/Resources/SpritesMainBtn/blue.png" IsEnabled="False" Visibility="Hidden"/>
         <Image x:Name="PinkBtn" Source="/TranslationTier;component/Resources/SpritesMainBtn/pink.png" IsEnabled="False" Visibility="Hidden"/>
         <Image x:Name="BlueBtn" Source="/TranslationTier;component/Resources/SpritesMainBtn/green.png" IsEnabled="False" Visibility="Hidden"/>
 
         <Image Source="/TranslationTier;component/Resources/SpritesMainBtn/Top.png"/>
-        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Beige" VerticalAlignment="Top" HorizontalAlignment="Left" MouseEnter="Polygon_MouseEnter" MouseLeave="Polygon_MouseLeave"/>
-        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Beige" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,-21,0,0" MouseEnter="Polygon_MouseEnter_1" MouseLeave="Polygon_MouseLeave_1"/>
-        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Beige" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="71,-40,0,0" MouseEnter="Polygon_MouseEnter_2" MouseLeave="Polygon_MouseLeave_2"/>
+        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Transparent" VerticalAlignment="Top" HorizontalAlignment="Left" MouseEnter="Polygon_MouseEnter_2" MouseLeave="Polygon_MouseLeave_2"/>
+        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Transparent" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,-21,0,0" MouseEnter="Polygon_MouseEnter_1" MouseLeave="Polygon_MouseLeave_1"/>
+        <Polygon Points="123,133 150,120 150,230 123,253" Fill="Transparent" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="71,-40,0,0" MouseEnter="Polygon_MouseEnter" MouseLeave="Polygon_MouseLeave"/>
     </Grid>
 </UserControl>
