@@ -28,6 +28,7 @@ namespace code_in.Views.MainView
         public Nodes.Items.NodeAnchor enterOutput = null;
 
         private ViewModels.code_inMgr _code_inMgr;
+        private Point _newNodePos;
 
         public void OpenFile(String filePath)
         {
@@ -251,16 +252,16 @@ namespace code_in.Views.MainView
             }
             cm.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
             cm.IsOpen = true;
-
+            // Setting the position of the node if we create one to the place the menu has been opened
+            _newNodePos.X = e.GetPosition(this).X;
+            _newNodePos.Y = e.GetPosition(this).Y;
         }
 
         void m1_Click(object sender, RoutedEventArgs e)
         {
 
             var node = new Nodes.FuncDeclNode(this, "test");
-            //            node.Margin = new Thickness(e.GetPosition(this.MainGrid).X, e.GetPosition(this.MainGrid).Y, 0, 0);
-            node.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            node.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
             this.MainGrid.Children.Add(node);
         }
 
