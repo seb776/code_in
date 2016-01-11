@@ -42,6 +42,7 @@ namespace code_in.Views.MainView.Nodes.Items
             _parentItem = null;
             IOLine = null;
         }
+
         public NodeAnchor(IOItem parent) :
             this() // Mandatory to have a call to InitializeComponent();
         {
