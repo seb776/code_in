@@ -22,15 +22,6 @@ namespace code_in.Views.MainView.Nodes
             this.SetColorResource("ClassDeclColor");
             this.SetNodeType("ClassDecl");
             this.SetNodeName("Class1");
-            var item = new Items.ClassItem();
-            item.ItemName.Text = "myVar1";
-            this.AddInput(item);
-            item = new Items.ClassItem();
-            item.ItemName.Text = "myVar2";
-            this.AddInput(item);
-            item = new Items.ClassItem();
-            item.ItemName.Text = "myVar3";
-            this.AddInput(item);
             _type = EType.CLASS;
         }
 

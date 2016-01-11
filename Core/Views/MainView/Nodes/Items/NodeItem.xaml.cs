@@ -66,9 +66,11 @@ namespace code_in.Views.MainView.Nodes.Items
                 this.Container.RegisterName(ti.Name, ti); // To allow TypeField to be found through FindName
                 this.Container.Children.Add(ti);
             }
-            else
+            object typeField = this.FindName("TypeField");
+            if (typeField != null)
             {
-                // nothing for now
+                var tF = typeField as TypeInfo;
+                tF.Content = type;
             }
         }
 
