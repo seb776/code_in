@@ -10,11 +10,13 @@ namespace code_in.ViewModels
 {
     public class CodeMgr
     {
+        private code_inMgr _code_inMgr;
         private Models.CodeData _codeData;
 
-        public CodeMgr()
+        public CodeMgr(code_inMgr ciMgr)
         {
             _codeData = new Models.CodeData();
+            _code_inMgr = ciMgr;
         }
         private ICSharpCode.NRefactory.CSharp.SyntaxTree _parseFile(String filePath)
         {
@@ -24,7 +26,7 @@ namespace code_in.ViewModels
 
         private void _generateVisualAST(System.Windows.Controls.Grid mainGrid)
         {
-            _generateVisualASTRecur(_codeData.AST, mainGrid);
+            _generateVisualASTRecur(_codeData.AST, this._code_inMgr._mainView);
         }
         int offsetX = 0;
         int offsetY = 0;
@@ -37,18 +39,20 @@ namespace code_in.ViewModels
         //      - improve interface to make the parent totally transparent
         //      - ...
         // - Improve design to make the node alignement after the parsing
-        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, System.Windows.Controls.Grid mainGrid,  Views.MainView.Nodes.BaseNode parent = null)
+        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, Views.MainView.IVisualNodeContainer parentContainer)
         {
-            Views.MainView.Nodes.BaseNode newParent = null;
+            bool goDeeper = true;
+            Views.MainView.Nodes.BaseNode visualNode = null;
             if (node.Children == null)
                 return;
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                Views.MainView.Nodes.NamespaceNode visualNode = new Views.MainView.Nodes.NamespaceNode();
-                visualNode.Width = 400;
-                visualNode.Height = 250;
-                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
+                visualNode = new Views.MainView.Nodes.NamespaceNode();
+                Views.MainView.Nodes.NamespaceNode namespaceNode = visualNode as Views.MainView.Nodes.NamespaceNode;
+
+                namespaceNode.SetSize(400, 250);
+                //namespaceNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
                 offsetX += 400;
                 if (offsetX > 4000)
                 {
@@ -56,24 +60,18 @@ namespace code_in.ViewModels
                     offsetY += 250;
                 }
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
-                visualNode.SetNodeName(tmpNode.Name);
-                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                if (newParent == null)
-                    mainGrid.Children.Add(visualNode);
-                else
-                    newParent.NodeGrid.Children.Add(visualNode);
-                newParent = visualNode;
+                namespaceNode.SetNodeName(tmpNode.Name);
             }
             #endregion
             #region Class
 
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration))
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
-                Views.MainView.Nodes.ClassDeclNode visualNode = new Views.MainView.Nodes.ClassDeclNode();
-                visualNode.Width = 400;
-                visualNode.Height = 250;
-                visualNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
+                visualNode = new Views.MainView.Nodes.ClassDeclNode();
+                Views.MainView.Nodes.ClassDeclNode classDeclNode = visualNode as Views.MainView.Nodes.ClassDeclNode;
+                classDeclNode.SetSize(400, 250);
+
+                //classDeclNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
                 offsetX += 400;
                 if (offsetX > 4000)
                 {
@@ -81,36 +79,78 @@ namespace code_in.ViewModels
                     offsetY += 250;
                 }
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
+
+                classDeclNode.SetNodeName(tmpNode.Name);
+                // TODO protected internal
                 switch (tmpNode.Modifiers.ToString()) // Puts the right scope
                 {
                     case "Public":
-                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
                         break;
                     case "Private":
-                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
                         break;
                     case "Protected":
-                        visualNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
                         break;
                     default:
                         break;
                 }
-                visualNode.SetNodeName(tmpNode.Name);
-                visualNode.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                visualNode.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                if (newParent == null)
-                    mainGrid.Children.Add(visualNode);
-                else
-                    newParent.NodeGrid.Children.Add(visualNode);
-                newParent = visualNode;
+                //goDeeper = false;
+                foreach (var n in node.Children)
+                {
+                    if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+                    {
+                        ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
+
+
+                        var item = new code_in.Views.MainView.Nodes.Items.ClassItem(classDeclNode);
+                        classDeclNode.AddInput(item);
+                        item.SetName(field.Variables.FirstOrNullObject().Name);
+                        item.SetItemType(field.ReturnType.ToString());
+                        switch (field.Modifiers.ToString()) // Puts the right scope
+                        {
+                            case "Public":
+                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                                break;
+                            case "Private":
+                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
+                                break;
+                            case "Protected":
+                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
             #endregion
             #region Method
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
+            {
+                FuncDeclNode funcDecl = new FuncDeclNode(this._code_inMgr._mainView, "Func");
+                visualNode = funcDecl;
+                ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+
+                var parameters = method.Parameters.ToList();
+                for (int i = 0; i < parameters.Count; ++i)
+                {
+                    var item = new code_in.Views.MainView.Nodes.Items.DataFlowItem(funcDecl);
+                    item.SetName(parameters[i].Name);
+                    item.SetItemType(parameters[i].Type.ToString());
+                    funcDecl.AddInput(item);
+                }
+                funcDecl.SetNodeName(method.Name);
+            }
             #endregion
             #region Attribute
             #endregion
-            foreach (var n in node.Children)
-                _generateVisualASTRecur(n, mainGrid, newParent);
+            if (visualNode != null)
+                parentContainer.AddNode(visualNode);
+            if (goDeeper)
+                foreach (var n in node.Children) if (node.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+                    _generateVisualASTRecur(n, (visualNode != null ? visualNode : parentContainer));
         }
 
         public void LoadFile(String filePath, System.Windows.Controls.Grid mainGrid)

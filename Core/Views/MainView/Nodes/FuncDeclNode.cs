@@ -11,7 +11,6 @@ namespace code_in.Views.MainView.Nodes
         public FuncDeclNode()
             : base()
         {
-            this.NodeGrid.Children.Add(new BaseNode()); // Example of nodeception
             this.SetColorResource("FuncDeclNodeColor");
             this.SetNodeType("FunctionDecl");
             this.SetNodeName("Func1");
@@ -23,6 +22,18 @@ namespace code_in.Views.MainView.Nodes
             this.SetNodeType("FunctionDecl");
             this.SetNodeName(name);
             this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
+        }
+
+        /// <summary>
+        /// A function declaration holds flying representation of the code so we do not 
+        /// </summary>
+        /// <param name="n"></param>
+        public override void AddNode(BaseNode n)
+        {
+            System.Diagnostics.Debug.Assert(MainView != null && n != null && n != this);
+            n.SetMainView(MainView);
+            n.SetParent(this);
+            this.FlyingContent.Children.Add(n);
         }
     }
 }

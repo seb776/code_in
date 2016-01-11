@@ -22,7 +22,7 @@ namespace code_in.Views.MainView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class MainView : UserControl, stdole.IDispatch
+    public partial class MainView : UserControl, stdole.IDispatch, IVisualNodeContainer
     {
         public Nodes.Items.NodeAnchor enterInput = null;
         public Nodes.Items.NodeAnchor enterOutput = null;
@@ -39,6 +39,13 @@ namespace code_in.Views.MainView
         {
             _code_inMgr.LoadFile(filePath);
 
+        }
+
+        void IVisualNodeContainer.AddNode(Nodes.BaseNode n)
+        {
+            System.Diagnostics.Debug.Assert(n != null);
+            n.SetMainView(this);
+            this.MainGrid.Children.Add(n);
         }
 
         public MainView()
@@ -271,6 +278,7 @@ namespace code_in.Views.MainView
 
         void m1_Click(object sender, RoutedEventArgs e)
         {
+
             var node = new Nodes.FuncDeclNode(this, "test");
             node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
             this.MainGrid.Children.Add(node);
