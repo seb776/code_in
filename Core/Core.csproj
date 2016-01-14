@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Theme\ILinkDraw.cs" />
+    <Compile Include="Views\MainView\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
     </Compile>

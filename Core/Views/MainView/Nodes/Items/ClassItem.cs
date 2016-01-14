@@ -10,11 +10,13 @@ namespace code_in.Views.MainView.Nodes.Items
     public class ClassItem : NodeItem
     {
         static Random r = new Random();
+        public ScopeItem ItemScope;
         public ClassItem() :
             base()
         {
             ScopeItem si = new ScopeItem();
             si.Scope = (ScopeItem.EScope)r.Next(0, 4);
+            ItemScope = si;
             this.Container.Children.Insert(0, si);
             this.SetItemType("Int");
         }

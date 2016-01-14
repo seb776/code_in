@@ -29,12 +29,15 @@ namespace code_in.Views.MainView
         {
             this.GreenBtn.IsEnabled = true;
             this.GreenBtn.Visibility = System.Windows.Visibility.Visible;
+            e.Handled = true;
         }
 
         private void Polygon_MouseLeave(object sender, MouseEventArgs e)
         {
             this.GreenBtn.IsEnabled = false;
             this.GreenBtn.Visibility = System.Windows.Visibility.Hidden;
+            e.Handled = true;
+
         }
 
         private void Polygon_MouseEnter_1(object sender, MouseEventArgs e)

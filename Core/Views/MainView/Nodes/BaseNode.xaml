@@ -45,7 +45,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
-                    <items:ScopeItem Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>
+                    <items:ScopeItem x:Name="NodeScope" Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>
                     <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
                         <Label.Effect>
                             <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
@@ -73,20 +73,25 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid>
+                    <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel x:Name="Inputs" Grid.Column="0">
                         </StackPanel>
-                        <StackPanel x:Name="Outputs" Grid.Column="1">
+                        <StackPanel x:Name="OrderedContent" Grid.Column="1">
+                            <!-- For class, namespaces, enum... -->
                         </StackPanel>
-                        <Polygon x:Name="ResizeControl" Grid.Column="1" Fill="{DynamicResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                        <Grid x:Name="FlyingContent" Grid.Column="1">
+                            <!-- For functions -->
+
+                        </Grid>
+                        <StackPanel x:Name="Outputs" Grid.Column="2">
+                        </StackPanel>
                     </Grid>
-                    <Grid x:Name="NodeGrid" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto">
-                        
-                    </Grid>
+                    <Polygon x:Name="ResizeControl" Fill="{DynamicResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
                 </Grid>
             </Grid>
         </Border>

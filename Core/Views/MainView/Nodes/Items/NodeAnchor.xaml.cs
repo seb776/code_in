@@ -21,7 +21,18 @@ namespace code_in.Views.MainView.Nodes.Items
     /// </summary>
     public partial class NodeAnchor : UserControl
     {
-        protected IOItem _parentItem;
+
+        // protected to public?
+        public IOItem _parentItem;
+
+        // Line of the NodeAnchor
+        public Line IOLine;
+
+        // Position begin for the Line
+        public Point lineBegin;
+
+      //  public ILinkDraw line;
+
         public NodeAnchor()
         {
             // We need a default constructor to centralize the call to InitializeComponent();
@@ -29,11 +40,35 @@ namespace code_in.Views.MainView.Nodes.Items
             // and then be able to preview in the XAML editor
             InitializeComponent();
             _parentItem = null;
+            IOLine = null;
         }
+
         public NodeAnchor(IOItem parent) :
             this() // Mandatory to have a call to InitializeComponent();
         {
             _parentItem = parent;
+        }
+
+        private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // preview
+            _parentItem.ParentNode.CreateLink(this);
+            lineBegin = e.GetPosition(_parentItem.ParentNode.MainView.MainGrid);
+            e.Handled = true;
+        }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_parentItem.Orientation == NodeItem.EOrientation.LEFT)
+                _parentItem.ParentNode.MainView.enterInput = this;
+            else
+                _parentItem.ParentNode.MainView.enterOutput = this;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _parentItem.ParentNode.MainView.enterInput = null;
+            _parentItem.ParentNode.MainView.enterOutput = null;
         }
     }
 }

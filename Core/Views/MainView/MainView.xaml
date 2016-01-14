@@ -73,14 +73,14 @@
             <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000">
             <!-- The resource will be resolved at runtime (see TranslationTier.SharedResourceDictionary -->
             <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-                <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
+               <!-- <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
                 <my:FuncDeclNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <my:NamespaceNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <my:ClassDeclNode HorizontalAlignment="Left" VerticalAlignment="Top" Margin="451,69,0,0"/>
+                <my:ClassDeclNode HorizontalAlignment="Left" VerticalAlignment="Top" Margin="451,69,0,0"/> -->
             </Grid>
             </Viewbox>
         </ScrollViewer>
-        <cur:MainButton VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="False" Visibility="Hidden"/>
+        <!--<cur:MainButton VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" Height="300"/>-->
         <Slider Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" ValueChanged="Slider_ValueChanged" Minimum="0.1" Maximum="2" Value="1"></Slider>
     </Grid>
 </UserControl>
