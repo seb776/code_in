@@ -42,12 +42,11 @@ namespace code_in.Views.MainView
             this.KeyDown += MainView_KeyDown;
             this.MouseUp += MainView_MouseUp;
             themeSelect = true;
-            themeA = new Models.Theme.DefaultThemeData();
-            themeB = new Models.Theme.ThemeYaya();
-        }
+            themeA = new Models.Theme.ThemeData();
+            }
         bool themeSelect;
-        Models.Theme.DefaultThemeData themeA;
-        Models.Theme.ThemeYaya themeB;
+        Models.Theme.ThemeData themeA;
+        
 
 
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
@@ -73,7 +72,7 @@ namespace code_in.Views.MainView
             if (e.Key == Key.T)
             {
 
-                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
+                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
                 themeSelect = !themeSelect;
             }
             code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
