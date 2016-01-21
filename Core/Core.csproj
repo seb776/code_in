@@ -68,6 +68,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -82,14 +84,66 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Theme\ILinkDraw.cs" />
-    <Compile Include="Models\Theme\ThemeYaya.cs" />
+    <Compile Include="Views\MainView\IVisualNodeContainer.cs" />
+    <Compile Include="Views\MainView\MainButton.xaml.cs">
+      <DependentUpon>MainButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SharedResourceDictionary.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\ClassItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\DataFlowItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\FlowNodeItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\INodeItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\IOItem.cs" />
+    <Compile Include="Views\MainView\Nodes\Items\NodeItem.xaml.cs">
+      <DependentUpon>NodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView\Nodes\Items\ScopeItem.xaml.cs">
+      <DependentUpon>ScopeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView\Nodes\Items\TypeInfo.xaml.cs">
+      <DependentUpon>TypeInfo.xaml</DependentUpon>
+    </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ConfigView\ChangeTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\CreateTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ErrorsLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\GeneralLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\PerformancesLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigView\ThemeLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\MainButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -103,39 +157,63 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView\Nodes\IOItem.xaml">
+    <Page Include="Views\MainView\Nodes\Items\NodeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView\Nodes\NodeAnchor.xaml">
+    <Page Include="Views\MainView\Nodes\Items\NodeAnchor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Models\CodeData.cs" />
-    <Compile Include="Models\Theme\DefaultThemeData.cs" />
-    <Compile Include="Models\Theme\IThemeData.cs" />
+    <Compile Include="Models\Theme\ThemeData.cs" />
     <Compile Include="ViewModels\CodeMgr.cs" />
     <Compile Include="ViewModels\code_inMgr.cs" />
     <Compile Include="ViewModels\ThemeMgr.cs" />
+    <Compile Include="Views\ConfigView\ChangeTheme.xaml.cs">
+      <DependentUpon>ChangeTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\CreateTheme.xaml.cs">
+      <DependentUpon>CreateTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
+      <DependentUpon>ErrorsLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\GeneralLayout.xaml.cs">
+      <DependentUpon>GeneralLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\PerformancesLayout.xaml.cs">
+      <DependentUpon>PerformancesLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
+      <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+      <DependentUpon>ThemeLayout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainView\Nodes\ClassDeclNode.cs" />
     <Compile Include="Views\MainView\Nodes\CommentNode.xaml.cs">
       <DependentUpon>CommentNode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\FlowItem.cs" />
     <Compile Include="Views\MainView\Nodes\FuncDeclNode.cs" />
-    <Compile Include="Views\MainView\Nodes\IOItem.xaml.cs">
-      <DependentUpon>IOItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainView\Nodes\NamespaceNode.cs" />
-    <Compile Include="Views\MainView\Nodes\NodeAnchor.xaml.cs">
+    <Compile Include="Views\MainView\Nodes\Items\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainView\ResourcesDictionary.xaml">
+    <Page Include="Views\MainView\Nodes\Items\ScopeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\Nodes\Items\TypeInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,6 +256,7 @@
       <Name>TranslationTier</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
