@@ -68,24 +68,24 @@ namespace code_in.Views.MainView
             themeSelect = true;
             themeA = new Models.Theme.ThemeData();
 
-            var node = new Nodes.FuncDeclNode(this.ResourceDict);
-            node.Margin = new Thickness(300, 300, 0, 0);
-            this.MainGrid.Children.Add(node);
+            //var node = new Nodes.FuncDeclNode(this.ResourceDict);
+            //node.Margin = new Thickness(300, 300, 0, 0);
+            //this.MainGrid.Children.Add(node);
 
-            var node1 = new Nodes.FuncDeclNode(this.ResourceDict);
-            node1.Margin = new Thickness(500, 500, 0, 0);
-            this.MainGrid.Children.Add(node1);
+            //var node1 = new Nodes.FuncDeclNode(this.ResourceDict);
+            //node1.Margin = new Thickness(500, 500, 0, 0);
+            //this.MainGrid.Children.Add(node1);
 
             
 
-            foreach (var t in node.Outputs.Children) {
-                tmp1 = (Nodes.Items.IOItem)t;
-            }
+            //foreach (var t in node.Outputs.Children) {
+            //    tmp1 = (Nodes.Items.IOItem)t;
+            //}
 
-            foreach (var t in node1.Inputs.Children)
-            {
-                tmp2 = (Nodes.Items.IOItem)t;
-            }
+            //foreach (var t in node1.Inputs.Children)
+            //{
+            //    tmp2 = (Nodes.Items.IOItem)t;
+            //}
                 
             
 
@@ -163,7 +163,7 @@ namespace code_in.Views.MainView
                 this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
                 themeSelect = !themeSelect;
             }
-            if (e.Key == Key.S)
+            if (false && e.Key == Key.S) // to not show this feature during follow up
             {
 
                 System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
@@ -172,8 +172,8 @@ namespace code_in.Views.MainView
                     _code_inMgr._codeMgr.SaveFile(dialog.FileName);
             }
 
-            if (e.Key == Key.L)
-                tmp1.createLink(tmp2);
+            //if (e.Key == Key.L)
+            //    tmp1.createLink(tmp2);
 
             code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"] = tmp;
             ((DrawingBrush)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["GridTile"]).Viewport = tmp;
