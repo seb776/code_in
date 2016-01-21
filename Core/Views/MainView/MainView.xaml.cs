@@ -52,7 +52,8 @@ namespace code_in.Views.MainView
             this.MainGrid.Children.Add(n);
         }
 
-
+        Nodes.Items.IOItem tmp1 = null;
+        Nodes.Items.IOItem tmp2 = null;
         public MainView(ResourceDictionary resourceDict)
         {
             this.ResourceDict = resourceDict;
@@ -67,11 +68,11 @@ namespace code_in.Views.MainView
             themeSelect = true;
             themeA = new Models.Theme.ThemeData();
 
-            var node = new Nodes.FuncDeclNode(this, "test");
+            var node = new Nodes.FuncDeclNode(this.ResourceDict);
             node.Margin = new Thickness(300, 300, 0, 0);
             this.MainGrid.Children.Add(node);
 
-            var node1 = new Nodes.FuncDeclNode(this, "other test");
+            var node1 = new Nodes.FuncDeclNode(this.ResourceDict);
             node1.Margin = new Thickness(500, 500, 0, 0);
             this.MainGrid.Children.Add(node1);
 
