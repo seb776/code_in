@@ -20,9 +20,17 @@ namespace code_in.Views.MainView.Nodes.Items
     /// </summary>
     public partial class TypeInfo : UserControl
     {
-        public TypeInfo()
+        public TypeInfo(ResourceDictionary resDict)
         {
             InitializeComponent();
+        }
+        public TypeInfo() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
+        }
+        public void SetTypeFromString(String type)
+        {
+            // Not implemented yet
         }
     }
 }

@@ -73,10 +73,7 @@
             <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000">
             <!-- The resource will be resolved at runtime (see TranslationTier.SharedResourceDictionary -->
             <Grid Background="{DynamicResource GridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-               <!-- <my:BaseNode HorizontalAlignment="Left" Margin="39,45,0,0" VerticalAlignment="Top"/>
-                <my:FuncDeclNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <my:NamespaceNode HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <my:ClassDeclNode HorizontalAlignment="Left" VerticalAlignment="Top" Margin="451,69,0,0"/> -->
+                <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
             </Grid>
             </Viewbox>
         </ScrollViewer>

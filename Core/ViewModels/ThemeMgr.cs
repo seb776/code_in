@@ -17,32 +17,31 @@ namespace code_in.ViewModels
 
         private void checkResourceTheme()
         {
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["BaseNodeColor"] != null, "No BaseNodeColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["BaseNodeColorBack"] != null, "No BaseNodeColorBack in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["NamespaceNodeColor"] != null, "No NamespaceNodeColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["FuncDeclNodeColor"] != null, "No FuncDeclNodeColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["PreprocessColor"] != null, "No PreprocessColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["IntColor"] != null, "No IntColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["CharColor"] != null, "No CharColor in dictionnary");
-            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.SharedDictionary["FloatingColor"] != null, "No FloatingColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColor"] != null, "No BaseNodeColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColorBack"] != null, "No BaseNodeColorBack in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["NamespaceNodeColor"] != null, "No NamespaceNodeColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["FuncDeclNodeColor"] != null, "No FuncDeclNodeColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["PreprocessColor"] != null, "No PreprocessColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["IntColor"] != null, "No IntColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["CharColor"] != null, "No CharColor in dictionnary");
+            System.Diagnostics.Debug.Assert(Resources.SharedDictionaryManager.MainResourceDictionary["FloatingColor"] != null, "No FloatingColor in dictionnary");
         }
 
 
         public void setTheme(Models.Theme.IThemeData data) {
-
             checkResourceTheme();
 
             // Put random color to each resources of the dictionary
             // Have to take by the next colors in the given class code_inMgr
 
-            Resources.SharedDictionaryManager.SharedDictionary["BaseNodeColor"] = data.getNodeForegroundColor();
-            Resources.SharedDictionaryManager.SharedDictionary["BaseNodeColorBack"] = data.getNodeBackgroundColor();
-            Resources.SharedDictionaryManager.SharedDictionary["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
-            Resources.SharedDictionaryManager.SharedDictionary["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
-            Resources.SharedDictionaryManager.SharedDictionary["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
-            Resources.SharedDictionaryManager.SharedDictionary["IntColor"] = new SolidColorBrush(Colors.OliveDrab);
-            Resources.SharedDictionaryManager.SharedDictionary["CharColor"] = new SolidColorBrush(Colors.Bisque);
-            Resources.SharedDictionaryManager.SharedDictionary["FloatingColor"] = new SolidColorBrush(Colors.HotPink);
+            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColor"] = data.getNodeForegroundColor();
+            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColorBack"] = data.getNodeBackgroundColor();
+            Resources.SharedDictionaryManager.MainResourceDictionary["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
+            Resources.SharedDictionaryManager.MainResourceDictionary["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
+            Resources.SharedDictionaryManager.MainResourceDictionary["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
+            Resources.SharedDictionaryManager.MainResourceDictionary["IntColor"] = new SolidColorBrush(Colors.OliveDrab);
+            Resources.SharedDictionaryManager.MainResourceDictionary["CharColor"] = new SolidColorBrush(Colors.Bisque);
+            Resources.SharedDictionaryManager.MainResourceDictionary["FloatingColor"] = new SolidColorBrush(Colors.HotPink);
         } 
     }
 }

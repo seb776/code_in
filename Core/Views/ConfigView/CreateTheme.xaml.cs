@@ -22,6 +22,7 @@ namespace code_in.Views.ConfigView
     {
         private List<string> themeList = new List<string>();
         private string name = "";
+        static private MainView.MainView preview = new MainView.MainView(code_in.Resources.SharedDictionaryManager.ThemePreviewResourceDictionary);
         public CreateTheme()
         {
             int i = 0;
@@ -36,6 +37,7 @@ namespace code_in.Views.ConfigView
             ThemeName.AddHandler(TextBox.TextInputEvent,
                    new TextCompositionEventHandler(ThemeName_TextInput_1),
                    true);
+            this.previewThemeLayout.Children.Add(preview);
         }
 
         private void DeleteTheme(object sender, RoutedEventArgs e)

@@ -251,7 +251,8 @@
             
             <!-- For the preview of the choosen theme -->
             <TextBlock x:Name="PreviewName" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" Foreground="#ebebeb" Text="Aperçu de " HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />
+            <Canvas x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2"/>
+            <!--<ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />-->
 
             <!-- Confirm/Cancel buttons ;) :p -->
             <Button Grid.Column="1" Grid.Row="4" Content="Valider" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Save"/>

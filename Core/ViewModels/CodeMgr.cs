@@ -48,36 +48,22 @@ namespace code_in.ViewModels
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                visualNode = new Views.MainView.Nodes.NamespaceNode();
-                Views.MainView.Nodes.NamespaceNode namespaceNode = visualNode as Views.MainView.Nodes.NamespaceNode;
+                Views.MainView.Nodes.NamespaceNode namespaceNode = parentContainer.AddNode<Views.MainView.Nodes.NamespaceNode>();
+                visualNode = namespaceNode;
 
-                namespaceNode.SetSize(400, 250);
-                //namespaceNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
-                offsetX += 400;
-                if (offsetX > 4000)
-                {
-                    offsetX = 0;
-                    offsetY += 250;
-                }
+                //namespaceNode.SetSize(400, 250);
+
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
                 namespaceNode.SetNodeName(tmpNode.Name);
             }
             #endregion
             #region Class
-
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
-                visualNode = new Views.MainView.Nodes.ClassDeclNode();
-                Views.MainView.Nodes.ClassDeclNode classDeclNode = visualNode as Views.MainView.Nodes.ClassDeclNode;
+                Views.MainView.Nodes.ClassDeclNode classDeclNode = parentContainer.AddNode<Views.MainView.Nodes.ClassDeclNode>();
+                visualNode = classDeclNode;
                 classDeclNode.SetSize(400, 250);
 
-                //classDeclNode.Margin = new System.Windows.Thickness(offsetX, offsetY, 0, 0);
-                offsetX += 400;
-                if (offsetX > 4000)
-                {
-                    offsetX = 0;
-                    offsetY += 250;
-                }
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
 
                 classDeclNode.SetNodeName(tmpNode.Name);
@@ -129,7 +115,7 @@ namespace code_in.ViewModels
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
-                FuncDeclNode funcDecl = new FuncDeclNode(this._code_inMgr._mainView, "Func");
+                FuncDeclNode funcDecl = parentContainer.AddNode<FuncDeclNode>();
                 visualNode = funcDecl;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
@@ -146,10 +132,10 @@ namespace code_in.ViewModels
             #endregion
             #region Attribute
             #endregion
-            if (visualNode != null)
-                parentContainer.AddNode(visualNode);
-            if (goDeeper)
-                foreach (var n in node.Children) if (node.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+            //if (visualNode != null)
+            //    parentContainer.AddNode(visualNode);
+            //if (goDeeper)
+                foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                     _generateVisualASTRecur(n, (visualNode != null ? visualNode : parentContainer));
         }
 
