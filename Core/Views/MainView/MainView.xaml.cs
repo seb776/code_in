@@ -65,8 +65,28 @@ namespace code_in.Views.MainView
             this.KeyDown += MainView_KeyDown;
             this.MouseUp += MainView_MouseUp;
             themeSelect = true;
-            themeA = new Models.Theme.DefaultThemeData();
-            themeB = new Models.Theme.ThemeYaya();
+            themeA = new Models.Theme.ThemeData();
+
+            var node = new Nodes.FuncDeclNode(this, "test");
+            node.Margin = new Thickness(300, 300, 0, 0);
+            this.MainGrid.Children.Add(node);
+
+            var node1 = new Nodes.FuncDeclNode(this, "other test");
+            node1.Margin = new Thickness(500, 500, 0, 0);
+            this.MainGrid.Children.Add(node1);
+
+            
+
+            foreach (var t in node.Outputs.Children) {
+                tmp1 = (Nodes.Items.IOItem)t;
+            }
+
+            foreach (var t in node1.Inputs.Children)
+            {
+                tmp2 = (Nodes.Items.IOItem)t;
+            }
+                
+            
 
             (this as IVisualNodeContainer).AddNode<Nodes.BaseNode>();
             (this as IVisualNodeContainer).AddNode<Nodes.FuncDeclNode>();
@@ -76,19 +96,20 @@ namespace code_in.Views.MainView
         {
         }
         bool themeSelect;
-        Models.Theme.DefaultThemeData themeA;
-        Models.Theme.ThemeYaya themeB;
+        Models.Theme.ThemeData themeA;
+        
 
         public Nodes.Items.NodeAnchor destAnchor; // when drawin a line, stock the other destination on the link
 
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            // if the mode is drawing a line
             if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
             {
                 Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
-                // delete link if when mouse up is not from output to an input
                 if (n._parentItem.Orientation == Nodes.Items.NodeItem.EOrientation.RIGHT)
                 {
+                    // delete link if when mouse up is not from output to an input
                     if (enterInput == null)
                         MainGrid.Children.Remove(n.IOLine);
                     else
@@ -97,9 +118,9 @@ namespace code_in.Views.MainView
                         enterInput._parentItem.ParentNode.lineInput = n.IOLine;
                     }
                 }
-                // delete link if when mouse up is not from input to an output
                 else if (n._parentItem.Orientation == Nodes.Items.NodeItem.EOrientation.LEFT)
                 {
+                    // delete link if when mouse up is not from input to an output
                     if (enterOutput == null)
                         MainGrid.Children.Remove(n.IOLine);
                     else
@@ -116,6 +137,7 @@ namespace code_in.Views.MainView
                 }
             }
 
+            // reset mode 
             Nodes.TransformingNode.TransformingObject = null;
             Nodes.TransformingNode.Transformation = Nodes.TransformingNode.TransformationMode.NONE;
         }
@@ -137,7 +159,7 @@ namespace code_in.Views.MainView
             if (e.Key == Key.T)
             {
 
-                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
+                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
                 themeSelect = !themeSelect;
             }
             if (e.Key == Key.S)
@@ -148,6 +170,10 @@ namespace code_in.Views.MainView
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     _code_inMgr._codeMgr.SaveFile(dialog.FileName);
             }
+
+            if (e.Key == Key.L)
+                tmp1.createLink(tmp2);
+
             code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"] = tmp;
             ((DrawingBrush)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["GridTile"]).Viewport = tmp;
         }
@@ -160,7 +186,7 @@ namespace code_in.Views.MainView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            System.Diagnostics.Trace.WriteLine(enterOutput);
+          //  System.Diagnostics.Trace.WriteLine(enterOutput);
             bool gridMagnet = true;
             Vector diff;
             if ((lastPosition.X + lastPosition.Y) < 0.01)
@@ -210,15 +236,15 @@ namespace code_in.Views.MainView
                     {
                         lineOutput.X1 -= diff.X;
                         lineOutput.Y1 -= diff.Y;
-                    }
+                }
                     if (lineIntput != null)
                     {
                         lineIntput.X2 -= diff.X;
                         lineIntput.Y2 -= diff.Y;
-                    }
+            }
                     
                         
-                }
+        }
                 else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
                 {
                     Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
@@ -228,19 +254,6 @@ namespace code_in.Views.MainView
                     n.IOLine.X2 = e.GetPosition(MainGrid).X;
                     n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
 
-                    /*      if (Nodes.TransformingNode.lineOutput == null)
-                          {
-                              Nodes.TransformingNode.lineOutput = new Line();
-                              Canvas.SetZIndex(Nodes.TransformingNode.lineOutput, -1000);
-                              MainGrid.Children.Add(Nodes.TransformingNode.lineOutput);
-                              Nodes.TransformingNode.lineOutput.Stroke = System.Windows.Media.Brushes.Red;
-                              Nodes.TransformingNode.lineOutput.StrokeThickness = 5;
-                          }
-
-                          Nodes.TransformingNode.lineOutput.X1 = Nodes.TransformingNode.begin.X;
-                          Nodes.TransformingNode.lineOutput.Y1 = Nodes.TransformingNode.begin.Y;
-                          Nodes.TransformingNode.lineOutput.X2 = e.GetPosition(MainGrid).X;
-                          Nodes.TransformingNode.lineOutput.Y2 = e.GetPosition(MainGrid).Y;*/
 
                 }
             }

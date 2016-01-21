@@ -28,14 +28,14 @@ namespace code_in.ViewModels
         }
 
 
-        public void setTheme(Models.Theme.IThemeData data) {
+        public void setTheme(Models.Theme.ThemeData data) {
             checkResourceTheme();
 
             // Put random color to each resources of the dictionary
             // Have to take by the next colors in the given class code_inMgr
 
-            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColor"] = data.getNodeForegroundColor();
-            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColorBack"] = data.getNodeBackgroundColor();
+            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColor"] = new SolidColorBrush(Colors.GreenYellow);
+            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColorBack"] = new SolidColorBrush(Colors.Gray);
             Resources.SharedDictionaryManager.MainResourceDictionary["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
             Resources.SharedDictionaryManager.MainResourceDictionary["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
             Resources.SharedDictionaryManager.MainResourceDictionary["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
