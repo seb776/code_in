@@ -24,5 +24,17 @@ namespace code_in.Views.MainView
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Sb_Collapsed(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

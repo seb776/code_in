@@ -6,21 +6,46 @@
              mc:Ignorable="d" 
              xmlns:nodes="clr-namespace:code_in.Views.MainView.Nodes"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Expander Header="SearchBar" HorizontalAlignment="Right" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Foreground="Black" HorizontalContentAlignment="Left" ExpandDirection="Right" IsExpanded="False" >
-    <Grid Background="#42FFFFFF" HorizontalAlignment="Left">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Type in to search" Width="120"/>
-            <Button HorizontalAlignment="Right" Content="Search" Background="Aqua" Width="auto"/>
-        </StackPanel>
-        <StackPanel x:Name="SearchResult" HorizontalAlignment="Center" Grid.Row="1">
-            <nodes:BaseNode />
-        </StackPanel>
-        
-            <Grid Background="#FFE5E5E5"/>
-    </Grid>
+    <Expander x:Name="Sb" Header="SearchBar" VerticalAlignment="Stretch" Foreground="Black" IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Sb_Collapsed" ExpandDirection="Right" FlowDirection="RightToLeft">
+        <Expander.Content>
+            <Grid Background="#70000000">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="Sb_content" Grid.Column="1" FlowDirection="LeftToRight">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox HorizontalAlignment="Stretch" Foreground="Gray" Background="White" Text="Type in to search"/>
+                        <Button HorizontalAlignment="Right" Content="Search" Foreground="Black" Width="100" Click="Button_Click"/>
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="3">
+                        <StackPanel x:Name="SearchResult" HorizontalAlignment="Center" >
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                            <nodes:BaseNode />
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Grid/>
+                </Grid>
+            </Grid>
+        </Expander.Content>
     </Expander>
 </UserControl>
