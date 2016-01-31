@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace code_in.Views.MainView
 {
@@ -62,6 +63,17 @@ namespace code_in.Views.MainView
         {
             this.BlueBtn.IsEnabled = false;
             this.BlueBtn.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        private void Pink_Clicked(object sender, MouseEventArgs e)
+        {
+            Popup codePopup = new Popup();
+            TextBlock popupText = new TextBlock();
+            popupText.Text = "Pink";
+            popupText.Background = Brushes.Pink;
+            popupText.Foreground = Brushes.Purple;
+            codePopup.Child = popupText;
+            codePopup.IsOpen = true;
         }
     }
 }

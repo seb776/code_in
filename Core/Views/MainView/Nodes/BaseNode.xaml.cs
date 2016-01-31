@@ -72,6 +72,7 @@ namespace code_in.Views.MainView.Nodes
         {
             this.ResourceDict = resourceDict;
             this.Resources.MergedDictionaries.Add(this.ResourceDict);
+            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.LanguageResourcesDictionary);
             InitializeComponent();
             { // We set all the features to true
                 int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
@@ -85,6 +86,12 @@ namespace code_in.Views.MainView.Nodes
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.SetColorResource("BaseNodeColor");
+            this.SetLanguageResources();
+        }
+
+        private void SetLanguageResources()
+        {
+            this.NodeType.SetResourceReference(ContentProperty, "DefaultNodeType");
         }
         public BaseNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
