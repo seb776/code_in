@@ -28,20 +28,42 @@ namespace code_in.ViewModels
         }
 
 
-        public void setTheme(Models.Theme.ThemeData data) {
+        public void setTheme(System.Windows.ResourceDictionary resDict, Models.Theme.ThemeData data) {
             checkResourceTheme();
 
             // Put random color to each resources of the dictionary
             // Have to take by the next colors in the given class code_inMgr
 
-            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColor"] = new SolidColorBrush(Colors.GreenYellow);
-            Resources.SharedDictionaryManager.MainResourceDictionary["BaseNodeColorBack"] = new SolidColorBrush(Colors.Gray);
-            Resources.SharedDictionaryManager.MainResourceDictionary["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
-            Resources.SharedDictionaryManager.MainResourceDictionary["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
-            Resources.SharedDictionaryManager.MainResourceDictionary["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
-            Resources.SharedDictionaryManager.MainResourceDictionary["IntColor"] = new SolidColorBrush(Colors.OliveDrab);
-            Resources.SharedDictionaryManager.MainResourceDictionary["CharColor"] = new SolidColorBrush(Colors.Bisque);
-            Resources.SharedDictionaryManager.MainResourceDictionary["FloatingColor"] = new SolidColorBrush(Colors.HotPink);
-        } 
+            resDict["BaseNodeColor"] = new SolidColorBrush(Colors.GreenYellow);
+            resDict["BaseNodeColorBack"] = new SolidColorBrush(Colors.Gray);
+            resDict["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
+            resDict["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
+            resDict["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
+            resDict["IntColor"] = new SolidColorBrush(Colors.OliveDrab);
+            resDict["CharColor"] = new SolidColorBrush(Colors.Bisque);
+            resDict["FloatingColor"] = new SolidColorBrush(Colors.HotPink);
+        }
+
+        public Color setColorFromByte4(Byte[] color)
+        {
+            Color res = new Color();
+
+            System.Diagnostics.Debug.Assert(color.Count() > 3);
+            res.A = color[0];
+            res.R = color[1];
+            res.G = color[2];
+            res.B = color[3];
+            return res;
+        }
+
+        public void setMainTheme(Models.Theme.ThemeData data)
+        {
+            setTheme(Resources.SharedDictionaryManager.MainResourceDictionary, data);
+        }
+        public void setPreviewTheme(Models.Theme.ThemeData data)
+        {
+            setTheme(Resources.SharedDictionaryManager.ThemePreviewResourceDictionary, data);
+        }
+
     }
 }
