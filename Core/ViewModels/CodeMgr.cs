@@ -41,7 +41,7 @@ namespace code_in.ViewModels
         // - Improve design to make the node alignement after the parsing
         void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, Views.MainView.IVisualNodeContainer parentContainer)
         {
-            bool goDeeper = true;
+            //bool goDeeper = true;
             Views.MainView.Nodes.BaseNode visualNode = null;
             if (node.Children == null)
                 return;

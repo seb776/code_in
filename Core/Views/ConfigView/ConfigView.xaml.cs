@@ -34,8 +34,6 @@ namespace code_in.Views.ConfigView
             menu.Add("Erreurs", ErrMenu);
             menu.Add("Raccourcis", ShortMenu);
             menu.Add("Performances", PerfMenu);
-            menu.Add("Changer de thème", ChangeThemeMenu);
-            menu.Add("Créer un thème", CreateThemeMenu);
         }
         
         // For handling the changement of the menu item (moving from a category to another)

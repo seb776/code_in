@@ -160,7 +160,7 @@ namespace code_in.Views.MainView
             if (e.Key == Key.T)
             {
 
-                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
+                this._code_inMgr._themeMgr.setMainTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
                 themeSelect = !themeSelect;
             }
             if (false && e.Key == Key.S) // to not show this feature during follow up
