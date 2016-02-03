@@ -91,6 +91,7 @@ namespace code_in.ViewModels
 
 
                         var item = new code_in.Views.MainView.Nodes.Items.ClassItem(classDeclNode);
+                        //classDeclNode.Add
                         classDeclNode.AddInput(item);
                         item.SetName(field.Variables.FirstOrNullObject().Name);
                         item.SetItemType(field.ReturnType.ToString());
@@ -130,11 +131,63 @@ namespace code_in.ViewModels
                 funcDecl.SetNodeName(method.Name);
             }
             #endregion
-            #region Attribute
-            #endregion
+            #region ExecutionCode
+            # region IfStmts
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
+            {
+                var ifStmt = node as ICSharpCode.NRefactory.CSharp.IfElseStatement;
+                //System.Windows.MessageBox.Show();
+
+                var ifNode = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
+                var ifNodeFalse = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
+                var cond = new Views.MainView.Nodes.Items.NodeItem(ifNode);
+                var condFalse = new Views.MainView.Nodes.Items.NodeItem(ifNode);
+                ifNode.SetNodeName("True");
+                ifNodeFalse.SetNodeName("False");
+                cond.SetName(ifStmt.Condition.ToString());
+                condFalse.SetName(ifStmt.Condition.ToString());
+                ifNode.AddInput(cond);
+                ifNodeFalse.AddInput(condFalse);
+                visualNode = ifNode;
+                _generateVisualASTRecur(ifStmt.TrueStatement, ifNode);
+                _generateVisualASTRecur(ifStmt.FalseStatement, ifNodeFalse);
+
+                goDeeper = false;
+            }
+
+            # endregion IfStmts
+            # region Loops
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
+            {
+                var whileStmt = node as ICSharpCode.NRefactory.CSharp.WhileStatement;
+                var nodeLoop = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
+                nodeLoop.SetNodeName("While");
+                var cond = new Views.MainView.Nodes.Items.NodeItem(nodeLoop);
+                cond.SetName(whileStmt.Condition.ToString());
+                _generateVisualASTRecur(whileStmt.EmbeddedStatement, nodeLoop);
+                goDeeper = false;
+            }
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
+            {
+            }
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
+            {
+            }
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
+            {
+            }
+            # endregion Loops
+# region BlockStmt
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BlockStatement))
+            {
+                //var blockStmt = node as ICSharpCode.NRefactory.CSharp.BlockStatement;
+                //blockStmt.
+            }
+# endregion Blocktmt
+            #endregion ExecutionCode
             //if (visualNode != null)
             //    parentContainer.AddNode(visualNode);
-            //if (goDeeper)
+            if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                     _generateVisualASTRecur(n, (visualNode != null ? visualNode : parentContainer));
         }

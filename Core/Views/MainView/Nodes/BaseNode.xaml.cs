@@ -55,6 +55,7 @@ namespace code_in.Views.MainView.Nodes
             return node;
         }
 
+        // TODO add elem
         protected virtual void _addNode(BaseNode n)
         {
             System.Diagnostics.Debug.Assert(MainView != null && n != null && n != this);
