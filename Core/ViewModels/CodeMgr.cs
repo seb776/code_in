@@ -57,59 +57,96 @@ namespace code_in.ViewModels
                 namespaceNode.SetNodeName(tmpNode.Name);
             }
             #endregion
-            #region Class
+            #region Variable Declaration
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
+            {
+                Views.MainView.Nodes.FuncDeclNode variableNode = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
+                variableNode.SetNodeName("VarDecl");
+                var tmpNode = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)node;
+                foreach (var v in tmpNode.Variables)
+                {
+                    var item = new Views.MainView.Nodes.Items.DataFlowItem();
+                    item.SetName(v.Name);
+                    item.SetItemType(tmpNode.Type.ToString());
+                    variableNode.AddInput(item);
+                }
+            }
+            #endregion
+            #region Type Declaration
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
-                Views.MainView.Nodes.ClassDeclNode classDeclNode = parentContainer.AddNode<Views.MainView.Nodes.ClassDeclNode>();
-                visualNode = classDeclNode;
-                classDeclNode.SetSize(400, 250);
-
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
+                #region Class
+                if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Class)
+                {
+                    Views.MainView.Nodes.ClassDeclNode classDeclNode = parentContainer.AddNode<Views.MainView.Nodes.ClassDeclNode>();
+                    visualNode = classDeclNode;
+                    classDeclNode.SetSize(400, 250);
 
-                classDeclNode.SetNodeName(tmpNode.Name);
-                // TODO protected internal
-                switch (tmpNode.Modifiers.ToString()) // Puts the right scope
-                {
-                    case "Public":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
-                        break;
-                    case "Private":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
-                        break;
-                    case "Protected":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
-                        break;
-                    default:
-                        break;
-                }
-                //goDeeper = false;
-                foreach (var n in node.Children)
-                {
-                    if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+
+
+                    classDeclNode.SetNodeName(tmpNode.Name);
+                    // TODO protected internal
+                    switch (tmpNode.Modifiers.ToString()) // Puts the right scope
                     {
-                        ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
-
-
-                        var item = new code_in.Views.MainView.Nodes.Items.ClassItem(classDeclNode);
-                        classDeclNode.AddInput(item);
-                        item.SetName(field.Variables.FirstOrNullObject().Name);
-                        item.SetItemType(field.ReturnType.ToString());
-                        switch (field.Modifiers.ToString()) // Puts the right scope
+                        case "Public":
+                            classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                            break;
+                        case "Private":
+                            classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
+                            break;
+                        case "Protected":
+                            classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                            break;
+                        default:
+                            break;
+                    }
+                    //goDeeper = false;
+                    foreach (var n in node.Children)
+                    {
+                        if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                         {
-                            case "Public":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
-                                break;
-                            case "Private":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
-                                break;
-                            case "Protected":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
-                                break;
-                            default:
-                                break;
+                            ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
+
+
+                            var item = new code_in.Views.MainView.Nodes.Items.ClassItem(classDeclNode);
+                            classDeclNode.AddInput(item);
+                            item.SetName(field.Variables.FirstOrNullObject().Name);
+                            item.SetItemType(field.ReturnType.ToString());
+                            switch (field.Modifiers.ToString()) // Puts the right scope
+                            {
+                                case "Public":
+                                    item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                                    break;
+                                case "Private":
+                                    item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
+                                    break;
+                                case "Protected":
+                                    item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                 }
+                #endregion Class
+                #region Enum
+                if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Enum)
+                {
+                    Views.MainView.Nodes.ClassDeclNode enumDeclNode = parentContainer.AddNode<Views.MainView.Nodes.ClassDeclNode>();
+                    visualNode = enumDeclNode;
+                    enumDeclNode.SetSize(400, 250);
+                    enumDeclNode.SetNodeName("EnumDecl " + tmpNode.Name);
+
+                    foreach (var v in tmpNode.Members)
+                    {
+                        var item = new Views.MainView.Nodes.Items.DataFlowItem();
+                        item.SetName(v.Name);
+                        enumDeclNode.AddInput(item);
+                    }
+                }
+                #endregion
             }
             #endregion
             #region Method
@@ -135,7 +172,7 @@ namespace code_in.ViewModels
             //if (visualNode != null)
             //    parentContainer.AddNode(visualNode);
             //if (goDeeper)
-                foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+            foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                     _generateVisualASTRecur(n, (visualNode != null ? visualNode : parentContainer));
         }
 
