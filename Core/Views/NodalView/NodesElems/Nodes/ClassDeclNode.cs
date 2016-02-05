@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace code_in.Views.MainView.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes
 {
-    public class ClassDeclNode : BaseNode
+    public class ClassDeclNode : Base.OrderedContentNode
     {
         public enum EType
         {
@@ -17,10 +17,9 @@ namespace code_in.Views.MainView.Nodes
 
         public ClassDeclNode(System.Windows.ResourceDictionary resDict) : base(resDict)
         {
-            this.DisableFeatures(EFeatures.ISFLOWNODE, EFeatures.EXPENDABLES);
             this.SetColorResource("ClassDeclColor");
             this.SetNodeType("ClassDecl");
-            this.SetNodeName("Class1");
+            this.SetName("Class1");
             _type = EType.CLASS;
         }
         public ClassDeclNode() :

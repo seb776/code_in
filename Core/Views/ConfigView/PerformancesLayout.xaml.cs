@@ -20,13 +20,19 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour PerformancesLayout.xaml
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class PerformancesLayout : UserControl, stdole.IDispatch
+    public partial class PerformancesLayout : UserControl, ICodeInVisual
     {
-        public PerformancesLayout()
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public PerformancesLayout(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public PerformancesLayout() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
          // The two buttons confirm/Cancel
         private void Button_Confirm(object sender, RoutedEventArgs e)

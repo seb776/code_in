@@ -18,11 +18,20 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour ChangeTheme.xaml
     /// </summary>
-    public partial class ChangeTheme : UserControl
+    public partial class ChangeTheme : UserControl, ICodeInVisual
     {
-        public ChangeTheme()
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public ChangeTheme(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public ChangeTheme() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
+            // Default constructor should not be called except for xaml tests purpose
         }
     }
 }

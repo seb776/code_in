@@ -13,13 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.MainView.Nodes.Items
+namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
     /// <summary>
     /// Interaction logic for ScopeItem.xaml
     /// </summary>
-    public partial class ScopeItem : UserControl
+    public partial class ScopeItem : UserControl, ICodeInVisual
     {
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         public enum EScope
         {
             PUBLIC = 0,

@@ -20,13 +20,19 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour ErrorsLayout.xaml
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class ErrorsLayout : UserControl, stdole.IDispatch
+    public partial class ErrorsLayout : UserControl, ICodeInVisual
     {
-        public ErrorsLayout()
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public ErrorsLayout(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public ErrorsLayout() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
 
         private void Button_Confirm(object sender, RoutedEventArgs e)

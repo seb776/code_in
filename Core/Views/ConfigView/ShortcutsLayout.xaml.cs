@@ -20,13 +20,19 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour ShortcutsLayout.xaml
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class ShortcutsLayout : UserControl, stdole.IDispatch
+    public partial class ShortcutsLayout : UserControl, ICodeInVisual
     {
-        public ShortcutsLayout()
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public ShortcutsLayout(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public ShortcutsLayout() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
 
         private void Button_Confirm(object sender, RoutedEventArgs e)

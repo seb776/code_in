@@ -1,20 +1,26 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace code_in.Views.MainView.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes
 {
-    public class FuncDeclNode : BaseNode
+    public class FuncDeclNode : IONode
     {
+        public override void SetDynamicResources(string keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
         public FuncDeclNode(System.Windows.ResourceDictionary resDict) :
             base(resDict)
         {
             this.SetColorResource("FuncDeclNodeColor");
             this.SetNodeType("FunctionDecl");
-            this.SetNodeName("Func1");
-            this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
+            this.SetName("Func1");
         }
         public FuncDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -28,16 +34,10 @@ namespace code_in.Views.MainView.Nodes
         //    this.EnableFeatures(EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE, EFeatures.CONTAINSMODIFIERS);
         //}
 
-        /// <summary>
-        /// A function declaration holds flying representation of the code so we do not 
-        /// </summary>
-        /// <param name="n"></param>
-        protected override void _addNode(BaseNode n)
+
+        public override void AddNode<T>(T node)
         {
-            System.Diagnostics.Debug.Assert(MainView != null && n != null && n != this);
-            n.SetMainView(MainView);
-            n.SetParent(this);
-            this.FlyingContent.Children.Add(n);
+            this.ContentGrid.Children.Add(node as UIElement);
         }
     }
 }

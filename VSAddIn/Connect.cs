@@ -195,7 +195,6 @@ namespace code_in
 
                         if (myUC == null)
                             throw new Exception("Cannot get a reference to the UI");
-
                         ((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
                     }
 					return;

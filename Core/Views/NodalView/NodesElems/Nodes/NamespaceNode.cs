@@ -1,12 +1,13 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace code_in.Views.MainView.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes
 {
-    public class NamespaceNode : BaseNode
+    public class NamespaceNode : OrderedContentNode
     {
         public NamespaceNode()
             : this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -15,13 +16,9 @@ namespace code_in.Views.MainView.Nodes
 
         public NamespaceNode(System.Windows.ResourceDictionary resDict) : base(resDict)
         {
-            this.DisableFeatures(EFeatures.CONTAINSMODIFIERS, EFeatures.EXPENDABLES, EFeatures.ISFLOWNODE);
             this.SetColorResource("NamespaceNodeColor");
             this.SetNodeType("Namespace");
-            this.SetNodeName("System.Collections.Generic.TestDeLaMuerte");
-        }
-
-        public NamespaceNode(MainView view) : this(view.ResourceDict) { 
+            this.SetName("System.Collections.Generic.TestDeLaMuerte");
         }
     }
 }

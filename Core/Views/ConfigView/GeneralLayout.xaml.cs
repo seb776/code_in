@@ -20,13 +20,19 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour GeneralLayout.xaml
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class GeneralLayout : UserControl, stdole.IDispatch
+    public partial class GeneralLayout : UserControl, ICodeInVisual
     {
-        public GeneralLayout()
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public GeneralLayout(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public GeneralLayout() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
         // The next 3 functions are for the wheckbox of the catégory "General->Activate tutorial"
 

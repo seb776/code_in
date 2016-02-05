@@ -20,13 +20,20 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour ThemeLayout.xaml
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class ThemeLayout : UserControl, stdole.IDispatch
+    public partial class ThemeLayout : UserControl, ICodeInVisual
     {
-        public ThemeLayout()
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+
+        public ThemeLayout(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
+        }
+        public ThemeLayout() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
     }
 }

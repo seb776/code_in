@@ -13,15 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.MainView.Nodes.Items
+namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
     /// <summary>
     /// This class is used to represent the bind box to which the links will be attached
     /// It triggers the event for creating the links.
     /// </summary>
-    public partial class NodeAnchor : UserControl
+    public partial class NodeAnchor : UserControl, ICodeInVisual
     {
-
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         // protected to public?
         public IOItem _parentItem;
 
@@ -44,7 +45,8 @@ namespace code_in.Views.MainView.Nodes.Items
 
         public NodeAnchor(ResourceDictionary resDict)
         {
-            this.Resources.MergedDictionaries.Add(resDict);
+            this._resourceDictionary = resDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
             _parentItem = null;
             IOLine = null;
@@ -59,23 +61,23 @@ namespace code_in.Views.MainView.Nodes.Items
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // preview
-            _parentItem.ParentNode.CreateLink(this);
-            lineBegin = e.GetPosition(_parentItem.ParentNode.MainView.MainGrid);
-            e.Handled = true;
+            //_parentItem.ParentNode.CreateLink(this);
+            //lineBegin = e.GetPosition(_parentItem.ParentNode.MainView.MainGrid);
+            //e.Handled = true;
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (_parentItem.Orientation == NodeItem.EOrientation.LEFT)
-                _parentItem.ParentNode.MainView.enterInput = this;
-            else
-                _parentItem.ParentNode.MainView.enterOutput = this;
+            //if (_parentItem.Orientation == NodeItem.EOrientation.LEFT)
+            //    _parentItem.ParentNode.MainView.enterInput = this;
+            //else
+            //    _parentItem.ParentNode.MainView.enterOutput = this;
         }
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
-            _parentItem.ParentNode.MainView.enterInput = null;
-            _parentItem.ParentNode.MainView.enterOutput = null;
+            //_parentItem.ParentNode.MainView.enterInput = null;
+            //_parentItem.ParentNode.MainView.enterOutput = null;
         }
     }
 }

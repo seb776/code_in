@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using code_in.Views.MainView.Nodes;
 using ICSharpCode.NRefactory.TypeSystem;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using code_in.Views.NodalView.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Items.Base;
+using code_in.Views.NodalView.NodesElems.Items;
 
 namespace code_in.ViewModels
 {
@@ -26,7 +31,7 @@ namespace code_in.ViewModels
 
         private void _generateVisualAST(System.Windows.Controls.Grid mainGrid)
         {
-            _generateVisualASTRecur(_codeData.AST, this._code_inMgr._mainView);
+            _generateVisualASTRecur(_codeData.AST, this._code_inMgr._mainView.NodalView);
         }
         int offsetX = 0;
         int offsetY = 0;
@@ -39,45 +44,45 @@ namespace code_in.ViewModels
         //      - improve interface to make the parent totally transparent
         //      - ...
         // - Improve design to make the node alignement after the parsing
-        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, Views.MainView.IVisualNodeContainer parentContainer)
+        void _generateVisualASTRecur(ICSharpCode.NRefactory.CSharp.AstNode node, IVisualNodeContainer parentContainer)
         {
             bool goDeeper = true;
-            Views.MainView.Nodes.BaseNode visualNode = null;
+            BaseNode visualNode = null;
             if (node.Children == null)
                 return;
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                Views.MainView.Nodes.NamespaceNode namespaceNode = parentContainer.AddNode<Views.MainView.Nodes.NamespaceNode>();
+                NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>();
                 visualNode = namespaceNode;
 
                 //namespaceNode.SetSize(400, 250);
 
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
-                namespaceNode.SetNodeName(tmpNode.Name);
+                namespaceNode.SetName(tmpNode.Name);
             }
             #endregion
             #region Class
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
-                Views.MainView.Nodes.ClassDeclNode classDeclNode = parentContainer.AddNode<Views.MainView.Nodes.ClassDeclNode>();
+                ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
                 visualNode = classDeclNode;
                 classDeclNode.SetSize(400, 250);
 
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
 
-                classDeclNode.SetNodeName(tmpNode.Name);
+                classDeclNode.SetName(tmpNode.Name);
                 // TODO protected internal
                 switch (tmpNode.Modifiers.ToString()) // Puts the right scope
                 {
                     case "Public":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
                         break;
                     case "Private":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
+                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
                         break;
                     case "Protected":
-                        classDeclNode.NodeScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
                         break;
                     default:
                         break;
@@ -90,21 +95,21 @@ namespace code_in.ViewModels
                         ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
 
 
-                        var item = new code_in.Views.MainView.Nodes.Items.ClassItem(classDeclNode);
+                        var item = new ClassItem(classDeclNode);
                         //classDeclNode.Add
-                        classDeclNode.AddInput(item);
+                        classDeclNode.AddNode(item);
                         item.SetName(field.Variables.FirstOrNullObject().Name);
-                        item.SetItemType(field.ReturnType.ToString());
+                        //item.SetItemType(field.ReturnType.ToString());
                         switch (field.Modifiers.ToString()) // Puts the right scope
                         {
                             case "Public":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PUBLIC;
+                                item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
                                 break;
                             case "Private":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PRIVATE;
+                                item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
                                 break;
                             case "Protected":
-                                item.ItemScope.Scope = Views.MainView.Nodes.Items.ScopeItem.EScope.PROTECTED;
+                                item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
                                 break;
                             default:
                                 break;
@@ -116,19 +121,18 @@ namespace code_in.ViewModels
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
-                FuncDeclNode funcDecl = parentContainer.AddNode<FuncDeclNode>();
+                FuncDeclNode funcDecl = parentContainer.CreateAndAddNode<FuncDeclNode>();
                 visualNode = funcDecl;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
                 var parameters = method.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; ++i)
                 {
-                    var item = new code_in.Views.MainView.Nodes.Items.DataFlowItem(funcDecl);
+                    var item = funcDecl.CreateAndAddInput<DataFlowItem>();
                     item.SetName(parameters[i].Name);
                     item.SetItemType(parameters[i].Type.ToString());
-                    funcDecl.AddInput(item);
                 }
-                funcDecl.SetNodeName(method.Name);
+                funcDecl.SetName(method.Name);
             }
             #endregion
             #region ExecutionCode
@@ -138,16 +142,18 @@ namespace code_in.ViewModels
                 var ifStmt = node as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 //System.Windows.MessageBox.Show();
 
-                var ifNode = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
-                var ifNodeFalse = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
-                var cond = new Views.MainView.Nodes.Items.NodeItem(ifNode);
-                var condFalse = new Views.MainView.Nodes.Items.NodeItem(ifNode);
-                ifNode.SetNodeName("True");
-                ifNodeFalse.SetNodeName("False");
+                var ifNode = parentContainer.CreateAndAddNode<FuncDeclNode>();
+                var ifNodeFalse = parentContainer.CreateAndAddNode<FuncDeclNode>();
+
+                ifNode.SetName("True");
+                ifNodeFalse.SetName("False");
+
+                var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
+                var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
+
                 cond.SetName(ifStmt.Condition.ToString());
                 condFalse.SetName(ifStmt.Condition.ToString());
-                ifNode.AddInput(cond);
-                ifNodeFalse.AddInput(condFalse);
+
                 visualNode = ifNode;
                 _generateVisualASTRecur(ifStmt.TrueStatement, ifNode);
                 _generateVisualASTRecur(ifStmt.FalseStatement, ifNodeFalse);
@@ -160,10 +166,11 @@ namespace code_in.ViewModels
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
             {
                 var whileStmt = node as ICSharpCode.NRefactory.CSharp.WhileStatement;
-                var nodeLoop = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
-                nodeLoop.SetNodeName("While");
-                var cond = new Views.MainView.Nodes.Items.NodeItem(nodeLoop);
+                var nodeLoop = parentContainer.CreateAndAddNode<FuncDeclNode>();
+                nodeLoop.SetName("While");
+                var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
                 cond.SetName(whileStmt.Condition.ToString());
+
                 _generateVisualASTRecur(whileStmt.EmbeddedStatement, nodeLoop);
                 goDeeper = false;
             }

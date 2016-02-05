@@ -20,7 +20,7 @@ namespace code_in.ViewModels
 
         public void LoadFile(String filePath)
         {
-            _codeMgr.LoadFile(filePath, _mainView.MainGrid);
+            _codeMgr.LoadFile(filePath, null);
         }
     }
 }

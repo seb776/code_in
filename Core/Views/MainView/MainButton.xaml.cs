@@ -18,8 +18,10 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Interaction logic for MainButton.xaml
     /// </summary>
-    public partial class MainButton : UserControl
+    public partial class MainButton : UserControl, ICodeInVisual
     {
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         public MainButton()
         {
             InitializeComponent();

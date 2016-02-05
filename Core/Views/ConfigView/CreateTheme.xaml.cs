@@ -18,15 +18,18 @@ namespace code_in.Views.ConfigView
     /// <summary>
     /// Logique d'interaction pour CreateTheme.xaml
     /// </summary>
-    public partial class CreateTheme : UserControl
+    public partial class CreateTheme : UserControl, ICodeInVisual
     {
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         private List<string> themeList = new List<string>();
         private string name = "";
-        static private MainView.MainView preview = new MainView.MainView(code_in.Resources.SharedDictionaryManager.ThemePreviewResourceDictionary);
-        public CreateTheme()
+        static private MainView.MainView _preview = new MainView.MainView(code_in.Resources.SharedDictionaryManager.ThemePreviewResourceDictionary);
+
+        public CreateTheme(ResourceDictionary resDict)
         {
-            int i = 0;
             InitializeComponent();
+            int i = 0;
             themeList.Add("DarkTheme");
             themeList.Add("LightTheme");
             while (i != themeList.Count)
@@ -37,7 +40,12 @@ namespace code_in.Views.ConfigView
             ThemeName.AddHandler(TextBox.TextInputEvent,
                    new TextCompositionEventHandler(ThemeName_TextInput_1),
                    true);
-            this.previewThemeLayout.Children.Add(preview);
+            this.previewThemeLayout.Children.Add(_preview);
+        }
+        public CreateTheme() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
+            
         }
 
         private void DeleteTheme(object sender, RoutedEventArgs e)

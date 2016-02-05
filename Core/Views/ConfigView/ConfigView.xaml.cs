@@ -22,8 +22,10 @@ namespace code_in.Views.ConfigView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class ConfigView : UserControl, stdole.IDispatch
+    public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual
     {
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         private UserControl currentMenu;
         private Dictionary<string, UserControl> menu = new Dictionary<string, UserControl>();
         public ConfigView()

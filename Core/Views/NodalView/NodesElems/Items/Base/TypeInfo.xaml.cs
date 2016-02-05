@@ -13,13 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.MainView.Nodes.Items
+namespace code_in.Views.NodalView.Nodes.Items.Base
 {
     /// <summary>
     /// Interaction logic for TypeInfo.xaml
     /// </summary>
-    public partial class TypeInfo : UserControl
+    public partial class TypeInfo : UserControl, ICodeInVisual
     {
+        private ResourceDictionary _resourceDictionary = null;
+        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         public TypeInfo(ResourceDictionary resDict)
         {
             InitializeComponent();
