@@ -37,7 +37,7 @@
 
             <!-- For the choice of the theme, dynamic combobox -->
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Choix du thème" FontSize="20" Foreground="#ebebeb" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20, 0, 0, 0"/>
-            <ComboBox x:Name="BoxTheme" Grid.Row="0" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+            <ComboBox x:Name="BoxTheme" Grid.Row="0" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" SelectionChanged="BoxTheme_SelectionChanged"/>
 
             <!-- For removing a theme -->
             <Button Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" Height="30" Content="Supprimer" FontSize="16" TextBlock.TextAlignment="Center" Click="DeleteTheme"/>

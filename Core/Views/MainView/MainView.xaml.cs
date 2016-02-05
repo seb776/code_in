@@ -27,7 +27,7 @@ namespace code_in.Views.MainView
         public Nodes.Items.NodeAnchor enterInput = null;
         public Nodes.Items.NodeAnchor enterOutput = null;
 
-        private ViewModels.code_inMgr _code_inMgr;
+        public ViewModels.code_inMgr _code_inMgr;
         private Point _newNodePos;
 
         public ResourceDictionary ResourceDict = null;

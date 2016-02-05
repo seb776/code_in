@@ -83,6 +83,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Theme\DarkThemeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Views\MainView\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">

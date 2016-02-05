@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,14 +24,16 @@ namespace code_in.Views.ConfigView
         private Dictionary<string, Models.Theme.ThemeData> themeList = new Dictionary<string, Models.Theme.ThemeData>();
         private string name = "";
         static private MainView.MainView preview = new MainView.MainView(code_in.Resources.SharedDictionaryManager.ThemePreviewResourceDictionary);
-        Models.Theme.ThemeData DefaultData = new Models.Theme.ThemeData();
-        Models.Theme.ThemeData DarkData = new Models.Theme.ThemeData();
+        Models.Theme.ThemeData DefaultData = new Models.Theme.DefaultThemeData();
+        Models.Theme.ThemeData DarkData = new Models.Theme.DarkThemeData();
         Models.Theme.ThemeData CurrentCustomData = new Models.Theme.ThemeData();
+        Models.Theme.ThemeData Tmp = null;
 
         public ThemeLayout()
         {
             int i = 0;
             InitializeComponent();
+
             themeList["DefaultTheme"] = DefaultData;
             themeList["DarkTheme"] = DarkData;
             foreach (KeyValuePair<string, Models.Theme.ThemeData> elem in themeList)
@@ -60,6 +63,11 @@ namespace code_in.Views.ConfigView
             }
         }
 
+        public void setCode_inMgr(code_inMgr c)
+        {
+            codeinMgr = c;
+        }
+        code_inMgr codeinMgr = null;
         private void ThemeName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -71,7 +79,10 @@ namespace code_in.Views.ConfigView
 
         private void Button_Save(object sender, RoutedEventArgs e)
         {
-
+            if (Tmp != null)
+            {
+                codeinMgr._themeMgr.setMainTheme(Tmp);
+            }
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -237,6 +248,21 @@ namespace code_in.Views.ConfigView
         private void TypeColorIOOtherTypeChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void BoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            if(e.AddedItems[0].ToString() == "DefaultTheme")
+            {
+                codeinMgr._themeMgr.setPreviewTheme(DefaultData);
+                Tmp = DefaultData;
+            }
+            else
+            {
+                codeinMgr._themeMgr.setPreviewTheme(DarkData);
+                Tmp = DarkData;
+            }
         }
     }
 }

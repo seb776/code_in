@@ -34,8 +34,8 @@ namespace code_in.ViewModels
             // Put random color to each resources of the dictionary
             // Have to take by the next colors in the given class code_inMgr
 
-            resDict["BaseNodeColor"] = new SolidColorBrush(Colors.GreenYellow);
-            resDict["BaseNodeColorBack"] = new SolidColorBrush(Colors.Gray);
+            resDict["BaseNodeColor"] = new SolidColorBrush(setColorFromByte4(data.ForegroundColor));
+            resDict["BaseNodeColorBack"] = new SolidColorBrush(setColorFromByte4(data.BackgroundColor));
             resDict["NamespaceNodeColor"] = new SolidColorBrush(Colors.Indigo);
             resDict["FuncDeclNodeColor"] = new SolidColorBrush(Colors.Yellow);
             resDict["PreprocessColor"] = new SolidColorBrush(Colors.Tomato);
