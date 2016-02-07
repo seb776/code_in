@@ -83,6 +83,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Theme\DarkThemeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
@@ -123,7 +125,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\CreateTheme.xaml">
+    <Page Include="Views\ConfigView\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,10 +142,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConfigView\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,8 +180,8 @@
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\CreateTheme.xaml.cs">
-      <DependentUpon>CreateTheme.xaml</DependentUpon>
+    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+      <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
       <DependentUpon>ErrorsLayout.xaml</DependentUpon>
@@ -196,9 +194,6 @@
     </Compile>
     <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
-      <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

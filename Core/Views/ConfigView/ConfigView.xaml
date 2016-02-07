@@ -17,10 +17,7 @@
         <!-- Treeview of the menu = Summary -->
         <TreeView Grid.Column="0" Margin="0,0,0,0" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="#ebebeb" FontSize="18" SelectedItemChanged="myTreeView_SelectedItemChanged">
             <TreeViewItem x:Name="General" Header="Général" Foreground="#424242" IsSelected="True"/>
-            <TreeViewItem x:Name="Themes" Header="Thèmes" IsExpanded="True" Foreground="#424242" >
-                <TreeViewItem x:Name="ChangeTheme" Header="Changer de thème" Foreground="#424242"/>
-                <TreeViewItem x:Name="CreerTheme" Header="Créer un thème" Foreground="#424242"/>
-            </TreeViewItem>
+            <TreeViewItem x:Name="Themes" Header="Thèmes" IsExpanded="True" Foreground="#424242" />
             <TreeViewItem x:Name="Errors" Header="Erreurs" Foreground="#424242" />
             <TreeViewItem x:Name="Shortcuts" Header="Raccourcis" Foreground="#424242"/>
             <TreeViewItem x:Name="Performances" Header="Performances" Foreground="#424242"/>
@@ -33,8 +30,6 @@
             <my:ErrorsLayout x:Name="ErrMenu" IsEnabled="False" Visibility="Hidden"/>
             <my:ShortcutsLayout x:Name="ShortMenu" IsEnabled="False" Visibility="Hidden"/>
             <my:PerformancesLayout x:Name="PerfMenu" IsEnabled="False" Visibility="Hidden"/>
-            <my:ChangeTheme x:Name="ChangeThemeMenu" IsEnabled="False" Visibility="Hidden" />
-            <my:CreateTheme x:Name="CreateThemeMenu" IsEnabled="False" Visibility="Hidden" />
         </Grid>
         
     </Grid>

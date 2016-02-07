@@ -28,6 +28,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
         // Line of the NodeAnchor
         public Line IOLine;
+        public BezierSegment IOBezier;
+        public PathFigure pthFigure;
 
         // Position begin for the Line
         public Point lineBegin;

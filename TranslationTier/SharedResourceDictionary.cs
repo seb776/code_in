@@ -37,7 +37,22 @@ namespace code_in.Resources
             }
         }
 
+        public static ResourceDictionary LanguageResourcesDictionary
+        {
+            get
+            {
+                if (_themePreviewResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/LanguageResourcesDictionary.xaml",
+                                        System.UriKind.Relative);
+                    _languageResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _languageResourceDictionary;
+            }
+        }
+
         private static ResourceDictionary _themePreviewResourceDictionary = null;
         private static ResourceDictionary _mainResourceDictionary = null;
+        private static ResourceDictionary _languageResourceDictionary = null;
     }
 }
