@@ -45,15 +45,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public void createLink(IOItem itemDest)
         {
             //this._parentNode.CreateLink(_nodeAnchor);
-            _nodeAnchor.lineBegin.X = _parentNode.Margin.Left + _parentNode.ActualWidth;
-            _nodeAnchor.lineBegin.Y = _parentNode.Margin.Top + this.Margin.Top + _parentNode.NodeHeader.ActualHeight;
-            _nodeAnchor.IOLine.X1 = _nodeAnchor.lineBegin.X;
-            _nodeAnchor.IOLine.Y1 = _nodeAnchor.lineBegin.Y;
-            _nodeAnchor.IOLine.X2 = itemDest.Margin.Left + itemDest._parentNode.Margin.Left;
-            _nodeAnchor.IOLine.Y2 = itemDest.Margin.Top + itemDest._parentNode.Margin.Top;
-            itemDest._parentNode.lineInput = this._nodeAnchor.IOLine;
+            //_nodeAnchor.lineBegin.X = _parentNode.Margin.Left + _parentNode.ActualWidth;
+            //_nodeAnchor.lineBegin.Y = _parentNode.Margin.Top + this.Margin.Top + _parentNode.NodeHeader.ActualHeight;
+            //_nodeAnchor.IOLine.X1 = _nodeAnchor.lineBegin.X;
+            //_nodeAnchor.IOLine.Y1 = _nodeAnchor.lineBegin.Y;
+            //_nodeAnchor.IOLine.X2 = itemDest.Margin.Left + itemDest._parentNode.Margin.Left;
+            //_nodeAnchor.IOLine.Y2 = itemDest.Margin.Top + itemDest._parentNode.Margin.Top;
+            //itemDest._parentNode.lineInput = this._nodeAnchor.IOLine;
 
-            TransformingNode.Transformation = TransformingNode.TransformationMode.NONE;
+            //TransformingNode.Transformation = TransformingNode.TransformationMode.NONE;
 
             //System.Diagnostics.Trace.WriteLine("jijfeiozjfoez fezojf zoejfzeo jfze ojf zeoj feoij fze  zefioj jfozie fjizeo" + na.IOLine.X1);
         }

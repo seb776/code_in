@@ -63,7 +63,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             _parentNode = null;
         }
         public NodeItem(BaseNode parent) :
-            this(parent.ResourceDict)
+            this(parent.GetResourceDictionary())
         {
             System.Diagnostics.Debug.Assert(parent != null, "The parentNode is null");
             _parentNode = parent;

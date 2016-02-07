@@ -24,7 +24,7 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="25"/>
             </Border.Effect>
-            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Cursor="ScrollAll">
+            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="OnDragNode" MouseLeftButtonUp="OnDropNode" Cursor="ScrollAll">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
@@ -86,7 +86,7 @@
                         <StackPanel x:Name="Outputs" Grid.Column="2">
                         </StackPanel>
                     </Grid>-->
-                    <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="Polygon_PreviewMouseLeftButtonDown"/>
+                    <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="OnDragResize"/>
                 </Grid>
             </Grid>
         </Border>

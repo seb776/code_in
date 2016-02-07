@@ -11,7 +11,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     {
         public override void SetDynamicResources(String keyPrefix)
         { }
-        System.Windows.Controls.StackPanel _orderedLayout;
+        public System.Windows.Controls.StackPanel _orderedLayout;
         public OrderedContentNode()
             : this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {

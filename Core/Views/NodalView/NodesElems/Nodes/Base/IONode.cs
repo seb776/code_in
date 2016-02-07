@@ -46,6 +46,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 
             _inputs.SetValue(Grid.ColumnProperty, 0);
             _outputs.SetValue(Grid.ColumnProperty, 1);
+            _subGrid.Children.Add(_inputs);
+            _subGrid.Children.Add(_outputs);
             this.ContentGrid.Children.Add(_subGrid);
 
         }

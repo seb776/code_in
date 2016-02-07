@@ -37,11 +37,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public abstract void SetDynamicResources(String keyPrefix);
 
-        public ResourceDictionary ResourceDict = null;
         public BaseNode(ResourceDictionary resourceDict)
         {
-            this.ResourceDict = resourceDict;
-            this.Resources.MergedDictionaries.Add(this.ResourceDict);
+            this._resourceDictionary = resourceDict;
+            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
 
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
@@ -66,24 +65,37 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             return true;
         }
 
-        //public BaseNode(MainView view)
-        //    : this()
-        //{
-        //    MainView = view;
-        //}
-
-        private void Polygon_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnDragResize(object sender, MouseButtonEventArgs e)
         {
-            TransformingNode.TransformingObject = this;
-            TransformingNode.Transformation = TransformingNode.TransformationMode.RESIZE;
+            this._nodalView.SetTransformingNodes(this);
+            this._nodalView.SetTransformationMode(TransformationMode.RESIZE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnDragNode(object sender, MouseButtonEventArgs e)
         {
-            TransformingNode.TransformingObject = this;
-            TransformingNode.Transformation = TransformingNode.TransformationMode.MOVE;
+            this._nodalView.SetTransformingNodes(this);
+            this._nodalView.SetTransformationMode(TransformationMode.MOVE);
+            //if (this._parentNode.GetType() == typeof(OrderedContentNode))
+            //{
+            //    var orderParent = this._parentNode as OrderedContentNode;
+            //    orderParent._orderedLayout.Children.Remove(this);
+            //    this.ContentGrid.Children.Add(this);
+            //    this.Opacity = 0.5f;
+            //}
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+        }
+        private void OnDropNode(object sender, MouseButtonEventArgs e)
+        {
+            //if (this._nodalView._transformationMode == TransformationMode.MOVEORDERED)
+            //{
+            //    var orderParent = this._parentNode as OrderedContentNode;
+            //    this.ContentGrid.Children.Remove(this);
+            //    orderParent._orderedLayout.Children.Add(this);
+            //    this.Opacity = 1f;
+            //}
+            this._nodalView.ResetTransformationMode();
+            this._nodalView.ResetTransformingNode();
         }
 
         private void OnRemoveNode(object sender, MouseButtonEventArgs e)
@@ -158,8 +170,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         // The function is virtual so it can be overriden, usefull if there is a check to do
         public virtual T CreateAndAddNode<T>() where T : UIElement, INode
         {
-            T node = (T)Activator.CreateInstance(typeof(T), code_in.Resources.SharedDictionaryManager.MainResourceDictionary);//(MainView == null ? code_in.Resources.SharedDictionaryManager.MainResourceDictionary : MainView.ResourceDict)) as T;
-            //node.SetMainView(this.MainView);
+            T node = (T)Activator.CreateInstance(typeof(T), _resourceDictionary);
+            node.SetNodalView(this._nodalView);
+            node.SetParentNode(this);
             try
             {
                 this.AddNode(node);
@@ -170,6 +183,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             }
             return node;
         }
+
+
 
     } // Class BaseNode
 } // Namespace

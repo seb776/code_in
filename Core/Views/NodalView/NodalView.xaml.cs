@@ -25,6 +25,25 @@ namespace code_in.Views.NodalView
     /// </summary>
     public partial class NodalView : UserControl, IVisualNodeContainer, ICodeInVisual
     {
+        private BaseNode[] _transformingNodes = null;
+        public TransformationMode _transformationMode = TransformationMode.NONE;
+
+        public void SetTransformationMode(TransformationMode mode)
+        {
+            _transformationMode = mode;
+        }
+        public void ResetTransformationMode()
+        {
+            _transformationMode = TransformationMode.NONE;
+        }
+        public void SetTransformingNodes(params BaseNode[] transform)
+        {
+            _transformingNodes = transform;
+        }
+        public void ResetTransformingNode()
+        {
+            _transformingNodes = null;
+        }
         private ResourceDictionary _resourceDictionary;
         public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         public NodalView() :
@@ -42,6 +61,10 @@ namespace code_in.Views.NodalView
 
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            this.ResetTransformationMode();
+            this.ResetTransformingNode();
+            MessageBox.Show("yeh");
+
             //// if the mode is drawing a line
             //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
             //{
@@ -123,77 +146,78 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            ////  System.Diagnostics.Trace.WriteLine(enterOutput);
-            //bool gridMagnet = true;
-            //Vector diff;
-            //if ((lastPosition.X + lastPosition.Y) < 0.01)
-            //    diff = new Vector(0, 0);
-            //else
-            //{
-            //    diff = lastPosition - e.GetPosition(this.MainGrid);
-            //}
-            //lastPosition = e.GetPosition(this.MainGrid);
+            //  System.Diagnostics.Trace.WriteLine(enterOutput);
+            bool gridMagnet = true;
+            Vector diff;
+            if ((lastPosition.X + lastPosition.Y) < 0.01)
+                diff = new Vector(0, 0);
+            else
+            {
+                diff = lastPosition - e.GetPosition(this.MainGrid);
+            }
+            lastPosition = e.GetPosition(this.MainGrid);
 
-            //if (Nodes.TransformingNode.TransformingObject != null)
-            //{
+            if (_transformingNodes != null && _transformingNodes.Count() > 0)
+            {
 
-            //    //((ScrollViewer)((Grid)sender).Parent).ScrollToHorizontalOffset(((ScrollViewer)((Grid)sender).Parent).HorizontalOffset + (diff.X < 0 ? -.1 : .1));
-            //    if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.RESIZE)
-            //    {
-            //        double sizeX = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualWidth").GetValue(Nodes.TransformingNode.TransformingObject);
-            //        double sizeY = (double)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("ActualHeight").GetValue(Nodes.TransformingNode.TransformingObject);
-            //        double nSizeX = sizeX - diff.X;
-            //        double nSizeY = sizeY - diff.Y;
+                //((ScrollViewer)((Grid)sender).Parent).ScrollToHorizontalOffset(((ScrollViewer)((Grid)sender).Parent).HorizontalOffset + (diff.X < 0 ? -.1 : .1));
+                if (_transformationMode == TransformationMode.RESIZE)
+                {
+                    double sizeX = (double)_transformingNodes[0].GetType().GetProperty("ActualWidth").GetValue(_transformingNodes[0]);
+                    double sizeY = (double)_transformingNodes[0].GetType().GetProperty("ActualHeight").GetValue(_transformingNodes[0]);
+                    double nSizeX = sizeX - diff.X;
+                    double nSizeY = sizeY - diff.Y;
 
-            //        //MessageBox.Show((sizeX + diff.X).ToString());
-            //        Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Width").SetValue(Nodes.TransformingNode.TransformingObject, nSizeX);
-            //        Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Height").SetValue(Nodes.TransformingNode.TransformingObject, nSizeY);
-            //        //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
-            //    }
-            //    else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.MOVE)
-            //    {
-            //        Thickness margin = (Thickness)Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Margin").GetValue(Nodes.TransformingNode.TransformingObject);
-            //        double marginLeft = margin.Left;
-            //        double marginTop = margin.Top;
-            //        Thickness newMargin = margin;
-            //        newMargin.Left -= diff.X;
-            //        newMargin.Top -= diff.Y;
+                    //MessageBox.Show((sizeX + diff.X).ToString());
+                    _transformingNodes[0].GetType().GetProperty("Width").SetValue(_transformingNodes[0], nSizeX);
+                    _transformingNodes[0].GetType().GetProperty("Height").SetValue(_transformingNodes[0], nSizeY);
+                    //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
+                }
+                else if (_transformationMode == TransformationMode.MOVE || _transformationMode == TransformationMode.MOVEORDERED)
+                {
+                    Thickness margin = (Thickness)_transformingNodes[0].GetType().GetProperty("Margin").GetValue(_transformingNodes[0]);
+                    double marginLeft = margin.Left;
+                    double marginTop = margin.Top;
+                    Thickness newMargin = margin;
+                    if (_transformationMode == TransformationMode.MOVE)
+                        newMargin.Left -= diff.X;
+                    newMargin.Top -= diff.Y;
 
-            //        Nodes.TransformingNode.TransformingObject.GetType().GetProperty("Margin").SetValue(Nodes.TransformingNode.TransformingObject, newMargin);
-
-
-            //        // move the link if exist
-
-            //        Line lineOutput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineOutput;
-            //        Line lineIntput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineInput;
-
-            //        //    Nodes.BaseNode test = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject);
-
-            //        if (lineOutput != null)
-            //        {
-            //            lineOutput.X1 -= diff.X;
-            //            lineOutput.Y1 -= diff.Y;
-            //        }
-            //        if (lineIntput != null)
-            //        {
-            //            lineIntput.X2 -= diff.X;
-            //            lineIntput.Y2 -= diff.Y;
-            //        }
+                    _transformingNodes[0].GetType().GetProperty("Margin").SetValue(_transformingNodes[0], newMargin);
 
 
-            //    }
-            //    else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
-            //    {
-            //        Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
+                    // move the link if exist
 
-            //        n.IOLine.X1 = n.lineBegin.X;
-            //        n.IOLine.Y1 = n.lineBegin.Y;
-            //        n.IOLine.X2 = e.GetPosition(MainGrid).X;
-            //        n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
+                    //Line lineOutput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineOutput;
+                    //Line lineIntput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineInput;
+
+                    //    Nodes.BaseNode test = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject);
+
+                    //if (lineOutput != null)
+                    //{
+                    //    lineOutput.X1 -= diff.X;
+                    //    lineOutput.Y1 -= diff.Y;
+                    //}
+                    //if (lineIntput != null)
+                    //{
+                    //    lineIntput.X2 -= diff.X;
+                    //    lineIntput.Y2 -= diff.Y;
+                    //}
 
 
-            //    }
-            //}
+                }
+                //else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
+                //{
+                //    Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
+
+                //    n.IOLine.X1 = n.lineBegin.X;
+                //    n.IOLine.Y1 = n.lineBegin.Y;
+                //    n.IOLine.X2 = e.GetPosition(MainGrid).X;
+                //    n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
+
+
+                //}
+            }
         }
         public T CreateAndAddNode<T>() where T : UIElement, INode
         {
