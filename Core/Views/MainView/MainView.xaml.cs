@@ -237,11 +237,16 @@ namespace code_in.Views.MainView
                 {
                     Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
 
-                    n.IOLine.X1 = n.lineBegin.X;
+                    n.pthFigure.StartPoint = n.lineBegin;
+                    n.IOBezier.Point1 = new Point(n.lineBegin.X + 100 , n.lineBegin.Y);
+                    n.IOBezier.Point2 = new Point(n.lineBegin.X + 0, n.lineBegin.Y + 100);
+                    n.IOBezier.Point3 = e.GetPosition(MainGrid);
+                    
+              /*      n.IOLine.X1 = n.lineBegin.X;
                     n.IOLine.Y1 = n.lineBegin.Y;
                     n.IOLine.X2 = e.GetPosition(MainGrid).X;
                     n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
-
+                    */
 
                 }
             }

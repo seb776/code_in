@@ -134,16 +134,48 @@ namespace code_in.Views.MainView.Nodes
             TransformingNode.TransformingObject = n;
             TransformingNode.Transformation = TransformingNode.TransformationMode.LINE;
             MainView.MainGrid.Children.Remove(n.IOLine);
-            n.IOLine = new Line();
+        /*    n.IOLine = new Line();
             n.IOLine.Stroke = System.Windows.Media.Brushes.Red;
             n.IOLine.StrokeThickness = 5;
             if (n._parentItem.Orientation == Nodes.Items.NodeItem.EOrientation.LEFT)
                 lineInput = n.IOLine;
             else
-                lineOutput = n.IOLine;
-            Canvas.SetZIndex(n.IOLine, -1);
+                lineOutput = n.IOLine;*/
 
-            MainView.MainGrid.Children.Add(n.IOLine);
+            Point w = new Point(100, 10);
+            Point x = new Point(350, 50);
+            Point c = new Point(500, 500);
+
+            n.pthFigure = new PathFigure();
+           //0 n.pthFigure.StartPoint = new Point(0, 0);
+
+            n.IOBezier = new BezierSegment();
+        
+
+            PathSegmentCollection myPathSegmentCollection = new PathSegmentCollection();
+            myPathSegmentCollection.Add(n.IOBezier);
+
+            n.pthFigure.Segments = myPathSegmentCollection;
+
+            PathFigureCollection pthFigureCollection = new PathFigureCollection();
+            pthFigureCollection.Add(n.pthFigure);
+
+            PathGeometry pthGeometry = new PathGeometry();
+            pthGeometry.Figures = pthFigureCollection;
+
+            Path arcPath = new Path();
+            arcPath.Stroke = new SolidColorBrush(Colors.Red);
+            arcPath.StrokeThickness = 5;
+            arcPath.Data = pthGeometry;
+
+            MainView.MainGrid.Children.Add(arcPath);
+
+
+            //Canvas.SetZIndex(n.IOLine, -1);
+            //Canvas.SetZIndex(a, -1);
+          //  MainView.MainGrid.Children.Add(a);
+
+           // MainView.MainGrid.Children.Add(n.IOLine);
         }
         public enum EFeatures
         {
