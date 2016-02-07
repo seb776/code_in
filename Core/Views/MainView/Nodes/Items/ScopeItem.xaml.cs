@@ -44,9 +44,13 @@ namespace code_in.Views.MainView.Nodes.Items
                 this.Symbol.SetResourceReference(Label.ContentProperty, refs[(int)value] + "String");
             }
         }
-        public ScopeItem()
+        public ScopeItem(ResourceDictionary resDict)
         {
             InitializeComponent();
+        }
+        public ScopeItem() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
 
         void m1_Click(object sender, RoutedEventArgs e)

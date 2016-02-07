@@ -83,11 +83,15 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Theme\DarkThemeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
-    <Compile Include="Models\Theme\ThemeYaya.cs" />
     <Compile Include="Views\MainView\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView\SearchBar.xaml.cs">
+      <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\Nodes\Items\ClassItem.cs" />
     <Compile Include="Views\MainView\Nodes\Items\DataFlowItem.cs" />
@@ -115,7 +119,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\CreateTheme.xaml">
+    <Page Include="Views\ConfigView\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,10 +136,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConfigView\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,8 +164,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Models\CodeData.cs" />
-    <Compile Include="Models\Theme\DefaultThemeData.cs" />
-    <Compile Include="Models\Theme\IThemeData.cs" />
+    <Compile Include="Models\Theme\ThemeData.cs" />
     <Compile Include="ViewModels\CodeMgr.cs" />
     <Compile Include="ViewModels\code_inMgr.cs" />
     <Compile Include="ViewModels\ThemeMgr.cs" />
@@ -175,8 +174,8 @@
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\CreateTheme.xaml.cs">
-      <DependentUpon>CreateTheme.xaml</DependentUpon>
+    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+      <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
       <DependentUpon>ErrorsLayout.xaml</DependentUpon>
@@ -189,9 +188,6 @@
     </Compile>
     <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
-      <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -213,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView\Nodes\Items\TypeInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\SearchBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

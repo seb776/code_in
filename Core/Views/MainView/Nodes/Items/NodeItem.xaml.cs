@@ -20,7 +20,8 @@ namespace code_in.Views.MainView.Nodes.Items
     /// </summary>
     public partial class NodeItem : UserControl, INodeItem
     {
-        protected BaseNode _parentNode;
+        protected BaseNode _parentNode = null;
+        protected ResourceDictionary ResourceDict = null;
         public BaseNode ParentNode
         {
             get
@@ -32,14 +33,20 @@ namespace code_in.Views.MainView.Nodes.Items
                 _parentNode = value;
             }
         }
-        public NodeItem()
+        public NodeItem() : 
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
+        }
+
+        public NodeItem(ResourceDictionary resDict)
+        {
+            this.ResourceDict = resDict;
+            this.Resources.MergedDictionaries.Add(this.ResourceDict);
             InitializeComponent();
             _parentNode = null;
         }
-
         public NodeItem(BaseNode parent) :
-            this()
+            this(parent.ResourceDict)
         {
             System.Diagnostics.Debug.Assert(parent != null, "The parentNode is null");
             _parentNode = parent;

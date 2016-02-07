@@ -13,24 +13,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.MainView.Nodes.Items
+namespace code_in.Views.MainView
 {
     /// <summary>
-    /// Interaction logic for TypeInfo.xaml
+    /// Logique d'interaction pour SearchBar.xaml
     /// </summary>
-    public partial class TypeInfo : UserControl
+    public partial class SearchBar : UserControl
     {
-        public TypeInfo(ResourceDictionary resDict)
+        public SearchBar()
         {
             InitializeComponent();
         }
-        public TypeInfo() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
         }
-        public void SetTypeFromString(String type)
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
-            // Not implemented yet
+        }
+
+        private void Sb_Collapsed(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

@@ -15,14 +15,17 @@ namespace code_in.Views.MainView.Nodes
         }
         private EType _type;
 
-        public ClassDeclNode() :
-            base()
+        public ClassDeclNode(System.Windows.ResourceDictionary resDict) : base(resDict)
         {
             this.DisableFeatures(EFeatures.ISFLOWNODE, EFeatures.EXPENDABLES);
             this.SetColorResource("ClassDeclColor");
             this.SetNodeType("ClassDecl");
             this.SetNodeName("Class1");
             _type = EType.CLASS;
+        }
+        public ClassDeclNode() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
 
         public ClassDeclNode(EType type) :

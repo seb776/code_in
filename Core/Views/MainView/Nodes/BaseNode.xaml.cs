@@ -47,7 +47,15 @@ namespace code_in.Views.MainView.Nodes
         public Line lineInput;
         public Line lineOutput;
 
-        public virtual void AddNode(BaseNode n)
+        T IVisualNodeContainer.AddNode<T>()
+        {
+            T node = Activator.CreateInstance(typeof(T), (MainView == null ? code_in.Resources.SharedDictionaryManager.MainResourceDictionary : MainView.ResourceDict)) as T;
+            node.SetMainView(this.MainView);
+            this._addNode(node);
+            return node;
+        }
+
+        protected virtual void _addNode(BaseNode n)
         {
             System.Diagnostics.Debug.Assert(MainView != null && n != null && n != this);
             n.SetMainView(MainView);
@@ -59,9 +67,12 @@ namespace code_in.Views.MainView.Nodes
         {
             _parent = parent;
         }
-        public BaseNode()
+        public ResourceDictionary ResourceDict = null;
+        public BaseNode(ResourceDictionary resourceDict)
         {
-            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.SharedDictionary);
+            this.ResourceDict = resourceDict;
+            this.Resources.MergedDictionaries.Add(this.ResourceDict);
+            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.LanguageResourcesDictionary);
             InitializeComponent();
             { // We set all the features to true
                 int maxEFeaturesVal = (int)Enum.GetValues(typeof(EFeatures)).Cast<EFeatures>().Last();
@@ -75,6 +86,16 @@ namespace code_in.Views.MainView.Nodes
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.SetColorResource("BaseNodeColor");
+            this.SetLanguageResources();
+        }
+
+        private void SetLanguageResources()
+        {
+            this.NodeType.SetResourceReference(ContentProperty, "DefaultNodeType");
+        }
+        public BaseNode() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
 
         /// <summary>

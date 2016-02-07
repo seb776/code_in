@@ -35,11 +35,18 @@ namespace code_in.Views.MainView.Nodes.Items
 
       //  public ILinkDraw line;
 
-        public NodeAnchor()
+
+        public NodeAnchor() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
             // We need a default constructor to centralize the call to InitializeComponent();
             // and also to be able to create controls from XAML without passing parameters
             // and then be able to preview in the XAML editor
+        }
+
+        public NodeAnchor(ResourceDictionary resDict)
+        {
+            this.Resources.MergedDictionaries.Add(resDict);
             InitializeComponent();
             _parentItem = null;
             IOLine = null;

@@ -27,30 +27,37 @@ namespace code_in.Views.MainView
         public Nodes.Items.NodeAnchor enterInput = null;
         public Nodes.Items.NodeAnchor enterOutput = null;
 
-        private ViewModels.code_inMgr _code_inMgr;
+        public ViewModels.code_inMgr _code_inMgr;
         private Point _newNodePos;
 
-
-        //temp for testing create link
-        Nodes.Items.IOItem tmp1 = null;
-        Nodes.Items.IOItem tmp2 = null;
+        public ResourceDictionary ResourceDict = null;
 
         public void OpenFile(String filePath)
         {
             _code_inMgr.LoadFile(filePath);
-
         }
 
-        void IVisualNodeContainer.AddNode(Nodes.BaseNode n)
+        T IVisualNodeContainer.AddNode<T>()
+        {
+            T node = Activator.CreateInstance(typeof(T), ResourceDict) as T;
+            node.SetMainView(this);
+            this._addNode(node);
+            return node;
+        }
+
+        private void _addNode(Nodes.BaseNode n)
         {
             System.Diagnostics.Debug.Assert(n != null);
             n.SetMainView(this);
             this.MainGrid.Children.Add(n);
         }
 
-        public MainView()
+        Nodes.Items.IOItem tmp1 = null;
+        Nodes.Items.IOItem tmp2 = null;
+        public MainView(ResourceDictionary resourceDict)
         {
-            this.Resources.MergedDictionaries.Add(code_in.Resources.SharedDictionaryManager.SharedDictionary);
+            this.ResourceDict = resourceDict;
+            this.Resources.MergedDictionaries.Add(this.ResourceDict);
             InitializeComponent();
 
             _code_inMgr = new ViewModels.code_inMgr(this);
@@ -59,33 +66,39 @@ namespace code_in.Views.MainView
             this.KeyDown += MainView_KeyDown;
             this.MouseUp += MainView_MouseUp;
             themeSelect = true;
-            themeA = new Models.Theme.DefaultThemeData();
-            themeB = new Models.Theme.ThemeYaya();
+            themeA = new Models.Theme.ThemeData();
 
-            var node = new Nodes.FuncDeclNode(this, "test");
-            node.Margin = new Thickness(300, 300, 0, 0);
-            this.MainGrid.Children.Add(node);
+            //var node = new Nodes.FuncDeclNode(this.ResourceDict);
+            //node.Margin = new Thickness(300, 300, 0, 0);
+            //this.MainGrid.Children.Add(node);
 
-            var node1 = new Nodes.FuncDeclNode(this, "other test");
-            node1.Margin = new Thickness(500, 500, 0, 0);
-            this.MainGrid.Children.Add(node1);
+            //var node1 = new Nodes.FuncDeclNode(this.ResourceDict);
+            //node1.Margin = new Thickness(500, 500, 0, 0);
+            //this.MainGrid.Children.Add(node1);
 
             
 
-            foreach (var t in node.Outputs.Children) {
-                tmp1 = (Nodes.Items.IOItem)t;
-            }
+            //foreach (var t in node.Outputs.Children) {
+            //    tmp1 = (Nodes.Items.IOItem)t;
+            //}
 
-            foreach (var t in node1.Inputs.Children)
-            {
-                tmp2 = (Nodes.Items.IOItem)t;
-            }
+            //foreach (var t in node1.Inputs.Children)
+            //{
+            //    tmp2 = (Nodes.Items.IOItem)t;
+            //}
                 
             
+
+            (this as IVisualNodeContainer).AddNode<Nodes.BaseNode>();
+            (this as IVisualNodeContainer).AddNode<Nodes.FuncDeclNode>();
+        }
+        public MainView() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        {
         }
         bool themeSelect;
-        Models.Theme.DefaultThemeData themeA;
-        Models.Theme.ThemeYaya themeB;
+        Models.Theme.ThemeData themeA;
+        
 
         public Nodes.Items.NodeAnchor destAnchor; // when drawin a line, stock the other destination on the link
 
@@ -133,7 +146,7 @@ namespace code_in.Views.MainView
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
             int step = 2;
-            Rect tmp = (Rect)code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"];
+            Rect tmp = (Rect)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"];
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -147,10 +160,10 @@ namespace code_in.Views.MainView
             if (e.Key == Key.T)
             {
 
-                this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.IThemeData)themeA : (Models.Theme.IThemeData)themeB));
+                this._code_inMgr._themeMgr.setMainTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
                 themeSelect = !themeSelect;
             }
-            if (e.Key == Key.S)
+            if (false && e.Key == Key.S) // to not show this feature during follow up
             {
 
                 System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
@@ -159,11 +172,11 @@ namespace code_in.Views.MainView
                     _code_inMgr._codeMgr.SaveFile(dialog.FileName);
             }
 
-            if (e.Key == Key.L)
-                tmp1.createLink(tmp2);
+            //if (e.Key == Key.L)
+            //    tmp1.createLink(tmp2);
 
-            code_in.Resources.SharedDictionaryManager.SharedDictionary["RectDims"] = tmp;
-            ((DrawingBrush)code_in.Resources.SharedDictionaryManager.SharedDictionary["GridTile"]).Viewport = tmp;
+            code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"] = tmp;
+            ((DrawingBrush)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["GridTile"]).Viewport = tmp;
         }
 
         void MainView_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -224,15 +237,15 @@ namespace code_in.Views.MainView
                     {
                         lineOutput.X1 -= diff.X;
                         lineOutput.Y1 -= diff.Y;
-                    }
+                }
                     if (lineIntput != null)
                     {
                         lineIntput.X2 -= diff.X;
                         lineIntput.Y2 -= diff.Y;
-                    }
+            }
                     
                         
-                }
+        }
                 else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
                 {
                     Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
@@ -283,10 +296,8 @@ namespace code_in.Views.MainView
 
         void m1_Click(object sender, RoutedEventArgs e)
         {
-
-            var node = new Nodes.FuncDeclNode(this, "test");
+            var node = ((IVisualNodeContainer)this).AddNode<Nodes.FuncDeclNode>();
             node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
-            this.MainGrid.Children.Add(node);
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

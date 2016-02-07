@@ -139,6 +139,7 @@ namespace code_in
 			}
 		}
 
+        code_in.ViewModels.code_inMgr c = null;
 		/// <summary>Implements the Exec method of the IDTCommandTarget interface. This is called when the command is invoked.</summary>
 		/// <param term='commandName'>The name of the command to execute.</param>
 		/// <param term='executeOption'>Describes how the command should be run.</param>
@@ -151,6 +152,7 @@ namespace code_in
 			handled = false;
 			if(executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
 			{
+                 
                 if (commandName == "code_in.Connect.Parameters")
                 {
                     object myUC = null;
@@ -166,6 +168,10 @@ namespace code_in
                     myWindow.IsFloating = false;
                     myWindow.Linkable = false;
                     handled = true;
+                    if (c != null)
+                    {
+                        ((code_in.Views.ConfigView.ConfigView)myUC).setCode_inMgr(c);
+                    }
 
                     if (myUC == null)
                         throw new Exception("Cannot get a reference to the UI");
@@ -197,6 +203,7 @@ namespace code_in
                             throw new Exception("Cannot get a reference to the UI");
 
                         ((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
+                        c = ((code_in.Views.MainView.MainView)myUC)._code_inMgr;
                     }
 					return;
 				}

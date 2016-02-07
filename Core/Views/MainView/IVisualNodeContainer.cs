@@ -8,7 +8,8 @@ namespace code_in.Views.MainView
 {
     public interface IVisualNodeContainer
     {
-        void AddNode(Nodes.BaseNode node);
+        T AddNode<T>() where T : code_in.Views.MainView.Nodes.BaseNode;
+        //void AddNode(Nodes.BaseNode node);
         //void RemoveNode(Nodes.BaseNode node);
     }
 }

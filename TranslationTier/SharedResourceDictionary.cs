@@ -9,21 +9,50 @@ namespace code_in.Resources
 {
     public static class SharedDictionaryManager
     {
-        public static ResourceDictionary SharedDictionary
+        public static ResourceDictionary MainResourceDictionary
         {
             get
             {
-                if (_sharedDictionary == null)
+                if (_mainResourceDictionary == null)
                 {
                     System.Uri resourceLocater = new System.Uri("/TranslationTier;component/ResourcesDictionary.xaml",
                                         System.UriKind.Relative);
-                    _sharedDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                    _mainResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
                 }
 
-                return _sharedDictionary;
+                return _mainResourceDictionary;
+            }
+        }
+        public static ResourceDictionary ThemePreviewResourceDictionary
+        {
+            get
+            {
+                if (_themePreviewResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/ResourcesDictionary.xaml",
+                                        System.UriKind.Relative);
+                    _themePreviewResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _themePreviewResourceDictionary;
             }
         }
 
-        private static ResourceDictionary _sharedDictionary;
+        public static ResourceDictionary LanguageResourcesDictionary
+        {
+            get
+            {
+                if (_themePreviewResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/LanguageResourcesDictionary.xaml",
+                                        System.UriKind.Relative);
+                    _languageResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _languageResourceDictionary;
+            }
+        }
+
+        private static ResourceDictionary _themePreviewResourceDictionary = null;
+        private static ResourceDictionary _mainResourceDictionary = null;
+        private static ResourceDictionary _languageResourceDictionary = null;
     }
 }
