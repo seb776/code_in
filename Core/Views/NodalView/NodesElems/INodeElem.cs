@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems
 {
-    public interface INode
+    public interface INodeElem
     {
         void SetName(String name);
         String GetName();

@@ -9,10 +9,7 @@ namespace code_in.ViewModels
 {
     public class ThemeMgr
     {
-        private code_inMgr _mainMgr;
-
-        public ThemeMgr(code_inMgr mainMgr) {
-            this._mainMgr = mainMgr;
+        public ThemeMgr() {
         }
 
         private void checkResourceTheme()
@@ -28,7 +25,7 @@ namespace code_in.ViewModels
         }
 
 
-        public void setTheme(System.Windows.ResourceDictionary resDict, Models.Theme.ThemeData data) {
+        public void setTheme(System.Windows.ResourceDictionary resDict, Models.Theme.AThemeData data) {
             checkResourceTheme();
 
             // Put random color to each resources of the dictionary
@@ -56,11 +53,11 @@ namespace code_in.ViewModels
             return res;
         }
 
-        public void setMainTheme(Models.Theme.ThemeData data)
+        public void setMainTheme(Models.Theme.AThemeData data)
         {
             setTheme(Resources.SharedDictionaryManager.MainResourceDictionary, data);
         }
-        public void setPreviewTheme(Models.Theme.ThemeData data)
+        public void setPreviewTheme(Models.Theme.AThemeData data)
         {
             setTheme(Resources.SharedDictionaryManager.ThemePreviewResourceDictionary, data);
         }

@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
-using code_in.ViewModels;
 
 namespace code_in.Views.ConfigView
 {
@@ -28,9 +27,12 @@ namespace code_in.Views.ConfigView
         private ResourceDictionary _resourceDictionary;
         public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
         private UserControl currentMenu;
-        private Dictionary<string, UserControl> menu = new Dictionary<string, UserControl>();
-        public ConfigView()
+        private Dictionary<String, UserControl> menu = new Dictionary<String, UserControl>();
+        public ConfigView() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary) {}
+        public ConfigView(ResourceDictionary resDict)
         {
+            this._resourceDictionary = resDict;
             InitializeComponent();
             menu.Add("Général", GenMenu);
             menu.Add("Thèmes", TheMenu);
@@ -64,11 +66,5 @@ namespace code_in.Views.ConfigView
         {
             currentMenu = GenMenu;
         }
-        public void setCode_inMgr(code_inMgr c)
-        {
-            codeinMgr = c;
-            this.TheMenu.setCode_inMgr(c);
-        }
-        code_inMgr codeinMgr = null;
     }
 }

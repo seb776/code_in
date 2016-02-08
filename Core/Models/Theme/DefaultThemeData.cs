@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Models.Theme
 {
-    public class DefaultThemeData : ThemeData
+    public class DefaultThemeData : AThemeData
     {
         public DefaultThemeData()
         {

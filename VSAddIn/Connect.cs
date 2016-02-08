@@ -13,12 +13,26 @@ namespace code_in
 {
 	/// <summary>The object for implementing an Add-in.</summary>
 	/// <seealso class='IDTExtensibility2' />
-	public class Connect : IDTExtensibility2, IDTCommandTarget
+	public class Connect : IDTExtensibility2, IDTCommandTarget, IEnvironmentWrapper
 	{
 		/// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
 		public Connect()
 		{
 		}
+
+        public T CreateAndAddView<T>() where T : UserControl
+        {
+            return default(T);
+        }
+        public void CloseView<T>(T view) where T : UserControl
+        {
+
+        }
+        void RenameView<T>(T view, String name) where T : UserControl
+        {
+
+        }
+
 
 		/// <summary>Implements the OnConnection method of the IDTExtensibility2 interface. Receives notification that the Add-in is being loaded.</summary>
 		/// <param term='application'>Root object of the host application.</param>
@@ -27,6 +41,7 @@ namespace code_in
 		/// <seealso class='IDTExtensibility2' />
 		public void OnConnection(object application, ext_ConnectMode connectMode, object addInInst, ref Array custom)
 		{
+            Code_inApplication.StartApplication(this);
 			_applicationObject = (DTE2)application;
 			_addInInstance = (AddIn)addInInst;
 			if(connectMode == ext_ConnectMode.ext_cm_UISetup)
@@ -81,7 +96,7 @@ namespace code_in
                     {
                         menuConfig.AddControl(oBar, 2);
                     }
-				}
+                }
 				catch(System.ArgumentException e)
 				{
                     //MessageBox.Show(e.ToString());
@@ -139,7 +154,6 @@ namespace code_in
 			}
 		}
 
-        code_in.ViewModels.code_inMgr c = null;
 		/// <summary>Implements the Exec method of the IDTCommandTarget interface. This is called when the command is invoked.</summary>
 		/// <param term='commandName'>The name of the command to execute.</param>
 		/// <param term='executeOption'>Describes how the command should be run.</param>
@@ -168,10 +182,6 @@ namespace code_in
                     myWindow.IsFloating = false;
                     myWindow.Linkable = false;
                     handled = true;
-                    if (c != null)
-                    {
-                        ((code_in.Views.ConfigView.ConfigView)myUC).setCode_inMgr(c);
-                    }
 
                     if (myUC == null)
                         throw new Exception("Cannot get a reference to the UI");
@@ -202,7 +212,6 @@ namespace code_in
                         if (myUC == null)
                             throw new Exception("Cannot get a reference to the UI");
                         ((code_in.Views.MainView.MainView)myUC).OpenFile(fileDialog.FileName); // To give the name of the file to the UserControl (Core)
-                        c = ((code_in.Views.MainView.MainView)myUC)._code_inMgr;
                     }
 					return;
 				}

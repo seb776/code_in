@@ -20,7 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// <summary>
     /// Interaction logic for NodeItem.xaml
     /// </summary>
-    public abstract partial class NodeItem : UserControl, INode, ICodeInVisual
+    public abstract partial class NodeItem : UserControl, INodeElem, ICodeInVisual
     {
         protected BaseNode _parentNode = null;
         private ResourceDictionary _resourceDictionary = null;

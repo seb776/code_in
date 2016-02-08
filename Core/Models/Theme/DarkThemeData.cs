@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Models.Theme
 {
-    public class DarkThemeData : ThemeData
+    public class DarkThemeData : AThemeData
     {
         public DarkThemeData()
         {

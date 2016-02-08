@@ -21,7 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// The visual representation of an AST node.
     /// This class contains all the features that may be used by all the other kind of nodes.
     /// </summary>
-    public abstract partial class BaseNode : UserControl, INode, IVisualNodeContainer, ICodeInVisual
+    public abstract partial class BaseNode : UserControl, INodeElem, IVisualNodeContainer, ICodeInVisual
     {
         protected BaseNode _parentNode = null;
         private ResourceDictionary _resourceDictionary = null;
@@ -165,10 +165,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             return this.NodeName.Text;
         }
 
-        public abstract void AddNode<T>(T node) where T : UIElement, INode;
+        public abstract void AddNode<T>(T node) where T : UIElement, INodeElem;
 
         // The function is virtual so it can be overriden, usefull if there is a check to do
-        public virtual T CreateAndAddNode<T>() where T : UIElement, INode
+        public virtual T CreateAndAddNode<T>() where T : UIElement, INodeElem
         {
             T node = (T)Activator.CreateInstance(typeof(T), _resourceDictionary);
             node.SetNodalView(this._nodalView);

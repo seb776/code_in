@@ -12,7 +12,7 @@ namespace code_in.Models.Theme
 {
 
     [Serializable]
-    public class ThemeData
+    public abstract class AThemeData
     {
         public String Name;
         public Byte[] ForegroundColor;
@@ -29,7 +29,7 @@ namespace code_in.Models.Theme
         public Byte[] FuncDeclColor;
         public Byte[] DeclColor;
 
-        public ThemeData()
+        public AThemeData()
         {
             Name = "Unknown";
             ForegroundColor = new Byte[4] {0,0,0,0};
@@ -56,7 +56,7 @@ namespace code_in.Models.Theme
             FileStream fs = new FileStream(filename, FileMode.Create);
 
             // Construct a BinaryFormatter and use it to serialize the data to the stream.
-           XmlSerializer formatter = new XmlSerializer(typeof(ThemeData));
+           XmlSerializer formatter = new XmlSerializer(typeof(AThemeData));
             try
             {
                 formatter.Serialize(fs, this);
@@ -74,7 +74,7 @@ namespace code_in.Models.Theme
 
         }
 
-        public void CopyFrom(ThemeData t)
+        public void CopyFrom(AThemeData t)
         {
             Name = t.Name;
             ForegroundColor = (Byte[])t.ForegroundColor.Clone();
@@ -97,11 +97,11 @@ namespace code_in.Models.Theme
             FileStream fs = new FileStream(filename, FileMode.Open);
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(ThemeData));
+                XmlSerializer formatter = new XmlSerializer(typeof(AThemeData));
 
                 // Deserialize the hashtable from the file and 
                 // assign the reference to the local variable.
-                this.CopyFrom((ThemeData)formatter.Deserialize(fs));
+                this.CopyFrom((AThemeData)formatter.Deserialize(fs));
             }
             catch (SerializationException e)
             {

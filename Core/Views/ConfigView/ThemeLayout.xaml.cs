@@ -1,4 +1,4 @@
-﻿using code_in.ViewModels;
+﻿using code_in.Models.Theme;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,21 +23,22 @@ namespace code_in.Views.ConfigView
     {
         private ResourceDictionary _resourceDictionary = null;
         public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-
+        public Dictionary<String, AThemeData> _themeList = new Dictionary<string,AThemeData>();
+        public MainView.MainView _preview = null;
         public ThemeLayout(ResourceDictionary resDict)
         {
             this._resourceDictionary = resDict;
             this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
-
-            themeList["DefaultTheme"] = DefaultData;
-            themeList["DarkTheme"] = DarkData;
-            foreach (KeyValuePair<string, Models.Theme.ThemeData> elem in themeList)
+            _preview = new MainView.MainView(this._resourceDictionary);
+            _themeList["DefaultTheme"] = null;
+            _themeList["DarkTheme"] = null;
+            foreach (KeyValuePair<string, AThemeData> elem in _themeList)
                 BoxTheme.Items.Add(elem.Key);
             ThemeName.AddHandler(TextBox.TextInputEvent,
                    new TextCompositionEventHandler(ThemeName_TextInput_1),
                    true);
-            this.previewThemeLayout.Children.Add(preview);
+            this.previewThemeLayout.Children.Add(_preview);
         }
         public ThemeLayout() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -48,41 +49,33 @@ namespace code_in.Views.ConfigView
         {
             if (BoxTheme.SelectedItem.ToString() != null)
             {
-                themeList.Remove(BoxTheme.SelectedItem.ToString());
+                _themeList.Remove(BoxTheme.SelectedItem.ToString());
                 BoxTheme.Items.Remove(BoxTheme.SelectedItem);
             }
         }
 
         private void ThemeName_TextInput_1(object sender, TextCompositionEventArgs e)
         {
-            ThemeName.KeyUp += new KeyEventHandler(ThemeName_KeyDown);
+            //ThemeName.KeyUp += new KeyEventHandler(ThemeName_KeyDown);
 
-            if (e.Text != "\n")
-            {
-                name += e.Text;
-            }
+            //if (e.Text != "\n")
+            //{
+            //    name += e.Text;
+            //}
         }
 
-        public void setCode_inMgr(code_inMgr c)
-        {
-            codeinMgr = c;
-        }
-        code_inMgr codeinMgr = null;
         private void ThemeName_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                PreviewName.Text = "Aperçu de " + name;
-                CurrentCustomData.Name = name;
-            }
+            //if (e.Key == Key.Enter)
+            //{
+            //    PreviewName.Text = "Aperçu de " + name;
+            //    CurrentCustomData.Name = name;
+            //}
         }
 
         private void Button_Save(object sender, RoutedEventArgs e)
         {
-            if (Tmp != null)
-            {
-                codeinMgr._themeMgr.setMainTheme(Tmp);
-            }
+            Code_inApplication.ThemeMgr.setMainTheme(new DarkThemeData());
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -252,17 +245,16 @@ namespace code_in.Views.ConfigView
 
         private void BoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            if(e.AddedItems[0].ToString() == "DefaultTheme")
-            {
-                codeinMgr._themeMgr.setPreviewTheme(DefaultData);
-                Tmp = DefaultData;
-            }
-            else
-            {
-                codeinMgr._themeMgr.setPreviewTheme(DarkData);
-                Tmp = DarkData;
-            }
+            //if(e.AddedItems[0].ToString() == "DefaultTheme")
+            //{
+            //    toto._themeMgr.setPreviewTheme(DefaultData);
+            //    Tmp = DefaultData;
+            //}
+            //else
+            //{
+            //    codeinMgr._themeMgr.setPreviewTheme(DarkData);
+            //    Tmp = DarkData;
+            //}
         }
     }
 }

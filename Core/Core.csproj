@@ -83,16 +83,20 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\Code_inApplication.cs" />
+    <Compile Include="Managers\ThemeMgr.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
+    <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
+    <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\INode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\OrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
@@ -169,11 +173,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Models\CodeData.cs" />
-    <Compile Include="Models\Theme\ThemeData.cs" />
-    <Compile Include="ViewModels\CodeMgr.cs" />
-    <Compile Include="ViewModels\code_inMgr.cs" />
-    <Compile Include="ViewModels\ThemeMgr.cs" />
+    <Compile Include="Models\NodalModel.cs" />
+    <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ChangeTheme.xaml.cs">
       <DependentUpon>ChangeTheme.xaml</DependentUpon>
     </Compile>

@@ -24,14 +24,14 @@ namespace code_in.Views.MainView
     {
         private ResourceDictionary _resourceDictionary;
         public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public T CreateAndAddNode<T>() where T : UIElement, INode
+        public T CreateAndAddNode<T>() where T : UIElement, INodeElem
         {
             T node = (T)Activator.CreateInstance(typeof(T), _resourceDictionary);
 
             this.AddNode(node);
             return node;
         }
-        public void AddNode<T>(T node) where T : UIElement, INode
+        public void AddNode<T>(T node) where T : UIElement, INodeElem
         {
             this.SearchResult.Children.Add((UIElement)node);
         }
