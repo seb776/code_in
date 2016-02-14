@@ -12,6 +12,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationTier", "TranslationTier\TranslationTier.csproj", "{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standalone", "Standalone\Standalone.csproj", "{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B} = {3D041F78-9D37-4E06-9B5A-4F80FB3A595B}
+		{0AB61E98-1A9D-4571-BABE-F276B513435C} = {0AB61E98-1A9D-4571-BABE-F276B513435C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +36,10 @@ Global
 		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
