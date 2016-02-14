@@ -448,7 +448,7 @@ namespace code_in.Views.NodalView
                 m1.Click += m1_Click;
                 cm.Items.Add(m1);
             }
-            cm.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
+            cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
             cm.IsOpen = true;
             // Setting the position of the node if we create one to the place the menu has been opened
             _newNodePos.X = e.GetPosition(this).X;
