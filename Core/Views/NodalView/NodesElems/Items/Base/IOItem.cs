@@ -77,9 +77,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             get { return _orientation; }
             set
             {
-                //this.Container.FlowDirection = (value == EOrientation.LEFT ?
-                //    System.Windows.FlowDirection.LeftToRight :
-                //    System.Windows.FlowDirection.RightToLeft);
+                this.FlowDirection = (value == EOrientation.LEFT ?
+                    System.Windows.FlowDirection.LeftToRight :
+                    System.Windows.FlowDirection.RightToLeft);
 
                 //TypeInfo ti = (TypeInfo)this.Container.FindName("TypeField");
                 //if (this.Container.FindName("TypeField") != null) // TypeField is not always part of an item
