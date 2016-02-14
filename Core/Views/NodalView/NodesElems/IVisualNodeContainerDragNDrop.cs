@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems
         void UnSelectNode(INodeElem node);
         void UnSelectAll();
         void DragNodes(TransformationMode transform, INodeElem node);
-        void DropNodes(IVisualNodeContainer container);
+        void DropNodes(INodeElem container);
     }
     public enum TransformationMode
     {

@@ -23,7 +23,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     public abstract partial class NodeItem : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
-        protected IVisualNodeContainer _parentView = null;
+        protected INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
         protected NodeItem(ResourceDictionary themeResDict)
@@ -37,10 +37,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         #region INodeElem
-        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetParentView(INodeElem parent) { _parentView = parent; }
+        public INodeElem GetParentView() { return _parentView; }
         public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        public void RemoveNode(INodeElem node) { }
         public void SetName(String name)
         {
             this.ItemName.Text = name;

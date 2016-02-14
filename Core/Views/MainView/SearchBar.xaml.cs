@@ -29,7 +29,7 @@ namespace code_in.Views.MainView
         public T CreateAndAddNode<T>() where T : UIElement, INodeElem
         {
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
-            node.SetParentView(this);
+            node.SetParentView(null);
             node.SetRootView(this);
             this.AddNode(node);
             return node;
@@ -57,7 +57,7 @@ namespace code_in.Views.MainView
             //if (transform == TransformationMode.MOVE)
             //    _draggingNode = node;
         }
-        public void DropNodes(IVisualNodeContainer container)
+        public void DropNodes(INodeElem container)
         {
 
         }
