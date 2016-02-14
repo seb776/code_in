@@ -90,6 +90,9 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this.ContentGrid.Children.Add(_subGrid);
 
         }
-
+        public override void RemoveNode(NodesElems.INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
