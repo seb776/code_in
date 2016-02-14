@@ -22,7 +22,20 @@ namespace code_in
 
         public T CreateAndAddView<T>() where T : UserControl
         {
-            return default(T);
+            object myUC = null;
+
+            Windows2 vsWindows = _applicationObject.ItemOperations.DTE.Windows as Windows2;
+
+            Window myWindow = vsWindows.CreateToolWindow2(_addInInstance,
+                "bin/code_inCore.dll",//Assembly.GetExecutingAssembly().Location, // This path is used to get the dll where the Window is contained
+                typeof(MainView).FullName,
+                "NewTab",
+                Guid.NewGuid().ToString(),
+                ref myUC);
+            myWindow.Visible = true;
+            myWindow.IsFloating = false;
+            myWindow.Linkable = false;
+            return myUC as T;
         }
         public void CloseView<T>(T view) where T : UserControl
         {
