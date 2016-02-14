@@ -22,18 +22,21 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
-            _inputs.Children.Add(item);
+            this.AddInput(item);
             return item;
         }
         public T CreateAndAddOutput<T>() where T : IOItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
             item.Orientation = IOItem.EOrientation.RIGHT;
-            _outputs.Children.Add(item);
+            this.AddOutput(item);
             return item;
         }
         public void AddInput(IOItem item, int index = -1)
         {
+            var old = item.Margin;
+            var n = new Thickness(old.Left - 13, old.Top, 0, 0);
+            item.Margin = n;
             if (index < 0)
                 _inputs.Children.Add(item);
             else
@@ -41,6 +44,9 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         }
         public void AddOutput(IOItem item, int index = -1)
         {
+            var old = item.Margin;
+            var n = new Thickness(0, old.Top, old.Right - 13, 0);
+            item.Margin = n;
             if (index < 0)
                 _outputs.Children.Add(item);
             else
