@@ -8,11 +8,11 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
-    public abstract class OrderedContentNode : BaseNode
+    public abstract class AOrderedContentNode : AContentNode
     {
         public System.Windows.Controls.StackPanel _orderedLayout;
 
-        public OrderedContentNode(System.Windows.ResourceDictionary themeResDict)
+        public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict)
             : base(themeResDict)
         {
             this.SetColorResource("NamespaceNodeColor");
@@ -27,7 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
         }
 
-        public OrderedContentNode()
+        public AOrderedContentNode()
             : this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 

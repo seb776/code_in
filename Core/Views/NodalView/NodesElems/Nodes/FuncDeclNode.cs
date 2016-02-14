@@ -6,7 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
 {
@@ -21,6 +24,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetNodeType("FunctionDecl");
             this.SetName("Func1");
             this.SetDynamicResources("FuncDecl");
+            var editIcon = new Line();
+            editIcon.SetValue(Grid.ColumnProperty, 4);
+            editIcon.X1 = editIcon.Y1 = 0;
+            editIcon.X2 = editIcon.Y2 = 10;
+            editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            editIcon.StrokeThickness = 3;
+            editIcon.Stroke = new SolidColorBrush(Colors.Black);
+            this.NodeHeader.Children.Add(editIcon);
         }
         public FuncDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -33,20 +45,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             //throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-        #region IVisualNodeContainer
-        public override void AddNode<T>(T node, int index = -1)
-        {
-            this.ContentGrid.Children.Add(node as UIElement);
-            BaseNode n = node as BaseNode;
-            n.Margin = new Thickness(_offsetX, 0, 0, 0);
-            _offsetX += 300;
-        }
-        public override void HighLightDropPlace(Point pos)
-        { /*Show the whole Grid*/ }
-        public override int GetDropIndex(Point pos)
-        { return 0; }
-        #endregion IVisualNodeContainer
-
     }
 }

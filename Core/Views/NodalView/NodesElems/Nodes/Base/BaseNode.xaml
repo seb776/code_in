@@ -23,7 +23,7 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="25"/>
             </Border.Effect>
-            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="EvtDragNode" MouseLeftButtonUp="EvtDropNode" Cursor="ScrollAll">
+            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="EvtDragNode" Cursor="ScrollAll">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
@@ -53,13 +53,7 @@
                         </TextBox.Effect>
                         Example
                     </TextBox>
-                    <Rectangle x:Name="CollapseButton" IsEnabled="False" Visibility="Hidden" Grid.Column="4" Width="20" Height="5" Fill="{StaticResource LocalNodeColorBack}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
-                    <Grid x:Name="ExpandButton" Grid.Column="4" VerticalAlignment="Center">
-                        <Rectangle Fill="{StaticResource LocalNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{StaticResource LocalNodeColorBack}" StrokeThickness="2"/>
-                    </Grid>
                     <Grid Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="EvtRemoveNode">
-                        <!--IsRemovable feature -->
                         <Grid x:Name="RemoveButton">
                             <Line Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             <Line Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -67,24 +61,6 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1" x:Name="ContentGrid">
-                    <!--<Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel x:Name="Inputs" Grid.Column="0">
-                        </StackPanel>
-                        <StackPanel x:Name="OrderedContent" Grid.Column="1">
-                            --><!-- For class, namespaces, enum... --><!--
-                        </StackPanel>
-                        <Grid x:Name="FlyingContent" Grid.Column="1">
-                            --><!-- For functions --><!--
-
-                        </Grid>
-                        <StackPanel x:Name="Outputs" Grid.Column="2">
-                        </StackPanel>
-                    </Grid>-->
                     <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="EvtDragResize"/>
                 </Grid>
             </Grid>

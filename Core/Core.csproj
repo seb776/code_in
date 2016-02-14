@@ -92,13 +92,15 @@
     <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AContentNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\OrderedContentNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AOrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>

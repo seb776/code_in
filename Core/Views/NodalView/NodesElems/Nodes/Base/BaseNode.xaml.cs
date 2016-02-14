@@ -21,7 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// The visual representation of an AST node.
     /// This class contains all the features that may be used by all the other kind of nodes.
     /// </summary>
-    public abstract partial class BaseNode : UserControl, INodeElem, IVisualNodeContainer, ICodeInVisual
+    public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private IVisualNodeContainer _parentView = null;
@@ -49,37 +49,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem
-        #region IVisualNodeContainer
-        /// <summary>
-        /// Creates a INodeElem of type T and add it to this control by passing all required parameters (theme, language...)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public virtual T CreateAndAddNode<T>() where T : UIElement, INodeElem
-        {
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
-            node.SetParentView(this);
-            node.SetRootView(this.GetRootView());
-            try
-            {
-                this.AddNode(node);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-                return default(T);
-            }
-            return node;
-        }
-        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
-        public void RemoveNode(INodeElem node) // TODO abstract
-        {
-            throw new NotImplementedException();
-        }
-        public abstract int GetDropIndex(Point pos);
-        public abstract void HighLightDropPlace(Point pos);
 
-        #endregion IVisualNodeContainer
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public abstract void SetDynamicResources(String keyPrefix);
@@ -124,26 +94,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private void EvtDragNode(object sender, MouseButtonEventArgs e) // abstract ?
         {
             this.GetRootView().DragNodes(TransformationMode.MOVE, this);
-
-            //if (this._parentNode.GetType() == typeof(OrderedContentNode))
-            //{
-            //    var orderParent = this._parentNode as OrderedContentNode;
-            //    orderParent._orderedLayout.Children.Remove(this);
-            //    this.ContentGrid.Children.Add(this);
-            //    this.Opacity = 0.5f;
-            //}
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
-        }
-        private void EvtDropNode(object sender, MouseButtonEventArgs e)
-        {
-            this.GetRootView().DropNodes(this);
-            //if (this._nodalView._transformationMode == TransformationMode.MOVEORDERED)
-            //{
-            //    var orderParent = this._parentNode as OrderedContentNode;
-            //    this.ContentGrid.Children.Remove(this);
-            //    orderParent._orderedLayout.Children.Add(this);
-            //    this.Opacity = 1f;
-            //}
         }
 
         private void EvtRemoveNode(object sender, MouseButtonEventArgs e)

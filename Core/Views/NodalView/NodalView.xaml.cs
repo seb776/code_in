@@ -11,6 +11,7 @@ using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,7 +27,7 @@ using System.Windows.Shapes;
 namespace code_in.Views.NodalView
 {
     /// <summary>
-    /// Interaction logic for NodalView.xaml
+    /// The Nodal view is the layout that is able to display Nodes From the NodalPresenter;
     /// </summary>
     public partial class NodalView : UserControl, IVisualNodeContainer, IVisualNodeContainerDragNDrop, ICodeInVisual
     {
@@ -37,13 +38,10 @@ namespace code_in.Views.NodalView
 
         public NodalView(ResourceDictionary themeResDict)
         {
-            _nodalPresenter = new NodalPresenter(this);
+            this._nodalPresenter = new NodalPresenter(this);
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
-            this._nodalPresenter = new NodalPresenter(this);
-            _root = this.CreateAndAddNode<NamespaceNode>();
-            _root.SetName("RootNode");
         }
         public NodalView() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -59,7 +57,7 @@ namespace code_in.Views.NodalView
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>() where T : UIElement, INodeElem
         {
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);//(MainView == null ? code_in.Resources.SharedDictionaryManager.MainResourceDictionary : MainView.ResourceDict)) as T;
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
 
             node.SetParentView(this);
             node.SetRootView(this);
@@ -102,14 +100,14 @@ namespace code_in.Views.NodalView
         private void _generateVisualASTRecur(AstNode node, IVisualNodeContainer parentContainer)
         {
             bool goDeeper = true;
-            BaseNode visualNode = null;
+            IVisualNodeContainer parentNode = null;
             if (node.Children == null)
                 return;
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
                 NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>();
-                visualNode = namespaceNode;
+                parentNode = namespaceNode;
 
                 //namespaceNode.SetSize(400, 250);
 
@@ -121,7 +119,7 @@ namespace code_in.Views.NodalView
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
                 ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
-                visualNode = classDeclNode;
+                parentNode = classDeclNode;
                 classDeclNode.SetSize(400, 250);
 
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
@@ -174,7 +172,6 @@ namespace code_in.Views.NodalView
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
                 FuncDeclNode funcDecl = parentContainer.CreateAndAddNode<FuncDeclNode>();
-                visualNode = funcDecl;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
                 var parameters = method.Parameters.ToList();
@@ -185,57 +182,58 @@ namespace code_in.Views.NodalView
                     item.SetItemType(parameters[i].Type.ToString());
                 }
                 funcDecl.SetName(method.Name);
+                goDeeper = false;
             }
             #endregion
             #region ExecutionCode
-            # region IfStmts
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
-            {
-                var ifStmt = node as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                //System.Windows.MessageBox.Show();
+            //# region IfStmts
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
+            //{
+            //    var ifStmt = node as ICSharpCode.NRefactory.CSharp.IfElseStatement;
+            //    //System.Windows.MessageBox.Show();
 
-                var ifNode = parentContainer.CreateAndAddNode<FuncDeclNode>();
-                var ifNodeFalse = parentContainer.CreateAndAddNode<FuncDeclNode>();
+            //    var ifNode = parentContainer.CreateAndAddNode<NamespaceNode>();
+            //    var ifNodeFalse = parentContainer.CreateAndAddNode<NamespaceNode>();
 
-                ifNode.SetName("True");
-                ifNodeFalse.SetName("False");
+            //    ifNode.SetName("True");
+            //    ifNodeFalse.SetName("False");
 
-                var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
-                var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
+            //    var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
+            //    var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
 
-                cond.SetName(ifStmt.Condition.ToString());
-                condFalse.SetName(ifStmt.Condition.ToString());
+            //    cond.SetName(ifStmt.Condition.ToString());
+            //    condFalse.SetName(ifStmt.Condition.ToString());
 
-                visualNode = ifNode;
-                _generateVisualASTRecur(ifStmt.TrueStatement, ifNode);
-                _generateVisualASTRecur(ifStmt.FalseStatement, ifNodeFalse);
+            //    visualNode = ifNode;
+            //    _generateVisualASTRecur(ifStmt.TrueStatement, ifNode);
+            //    _generateVisualASTRecur(ifStmt.FalseStatement, ifNodeFalse);
 
-                goDeeper = false;
-            }
+            //    goDeeper = false;
+            //}
 
-            # endregion IfStmts
-            # region Loops
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
-            {
-                var whileStmt = node as ICSharpCode.NRefactory.CSharp.WhileStatement;
-                var nodeLoop = parentContainer.CreateAndAddNode<FuncDeclNode>();
-                nodeLoop.SetName("While");
-                var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
-                cond.SetName(whileStmt.Condition.ToString());
+            //# endregion IfStmts
+            //# region Loops
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
+            //{
+            //    var whileStmt = node as ICSharpCode.NRefactory.CSharp.WhileStatement;
+            //    var nodeLoop = parentContainer.CreateAndAddNode<FuncDeclNode>();
+            //    nodeLoop.SetName("While");
+            //    var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
+            //    cond.SetName(whileStmt.Condition.ToString());
 
-                _generateVisualASTRecur(whileStmt.EmbeddedStatement, nodeLoop);
-                goDeeper = false;
-            }
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
-            {
-            }
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
-            {
-            }
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
-            {
-            }
-            # endregion Loops
+            //    _generateVisualASTRecur(whileStmt.EmbeddedStatement, nodeLoop);
+            //    goDeeper = false;
+            //}
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
+            //{
+            //}
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
+            //{
+            //}
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
+            //{
+            //}
+            //# endregion Loops
             # region BlockStmt
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BlockStatement))
             {
@@ -248,12 +246,13 @@ namespace code_in.Views.NodalView
             //    parentContainer.AddNode(visualNode);
             if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
-                        _generateVisualASTRecur(n, (visualNode != null ? visualNode : parentContainer));
+                        _generateVisualASTRecur(n, (parentNode != null ? parentNode : parentContainer));
         }
 
+        #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-
+            this.DropNodes(this);
             //// if the mode is drawing a line
             //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
             //{
@@ -307,31 +306,11 @@ namespace code_in.Views.NodalView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
-            //if (e.Key == Key.T)
-            //{
-
-            //    this._code_inMgr._themeMgr.setTheme((themeSelect ? (Models.Theme.ThemeData)themeA : (Models.Theme.ThemeData)themeA));
-            //    themeSelect = !themeSelect;
-            //}
-            //if (false && e.Key == Key.S) // to not show this feature during follow up
-            //{
-
-            //    System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-
-            //    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            //        _code_inMgr._codeMgr.SaveFile(dialog.FileName);
-            //}
-
-
-            //code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"] = tmp;
-            //((DrawingBrush)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["GridTile"]).Viewport = tmp;
         }
 
         void MainView_MouseWheel(object sender, MouseWheelEventArgs e)
         {
         }
-
-        Point lastPosition = new Point(0, 0);
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
@@ -413,7 +392,6 @@ namespace code_in.Views.NodalView
         {
             // This automatically updates the list of accessible nodes
             // Need to be optimized (compute only the first time, as it uses reflection)
-            // Make the click on the Item Creates the right instance
             List<Type> listOfBs = new List<Type>();
             foreach (var t in typeof(BaseNode).Assembly.GetTypes())
             {
@@ -428,22 +406,24 @@ namespace code_in.Views.NodalView
             {
                 var m1 = new MenuItem();
                 m1.Header = t.Name;
+                m1.DataContext = t;
                 m1.Click += m1_Click;
                 cm.Items.Add(m1);
             }
             cm.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
             cm.IsOpen = true;
             // Setting the position of the node if we create one to the place the menu has been opened
-            _newNodePos.X = e.GetPosition(this).X;
-            _newNodePos.Y = e.GetPosition(this).Y;
+            //_newNodePos.X = e.GetPosition(this).X;
+            //_newNodePos.Y = e.GetPosition(this).Y;
         }
 
-        Point _newNodePos;
-        NamespaceNode _root = null;
         void m1_Click(object sender, RoutedEventArgs e)
         {
-            var node = this._root.CreateAndAddNode<FuncDeclNode>();
-            node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
+            MethodInfo mi = this.GetType().GetMethod("CreateAndAddNode");
+            MethodInfo gmi = mi.MakeGenericMethod(((sender as MenuItem).DataContext as Type));
+            gmi.Invoke(this, null);
+            //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
         }
+        #endregion Events
     }
 }

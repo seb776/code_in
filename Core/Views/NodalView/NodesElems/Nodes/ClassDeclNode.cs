@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     /// <summary>
     /// This defines the visual nodes for "classes", class here as a large meaning, it stand for enum, struct, class, interface
     /// </summary>
-    public class ClassDeclNode : Base.OrderedContentNode
+    public class ClassDeclNode : AOrderedContentNode
     {
         public enum EType
         {

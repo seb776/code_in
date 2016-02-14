@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
 {
-    public class NamespaceNode : OrderedContentNode
+    public class NamespaceNode : AFlyingContentNode
     {
         public NamespaceNode()
             : this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -21,9 +21,19 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetNodeType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
         }
+        #region ICodeInVisual
         public override void SetDynamicResources(string keyPrefix)
         {
             throw new NotImplementedException();
         }
-    }
-}
+        #endregion ICodeInVisual
+        #region IVisualNodeContainer
+        public override void HighLightDropPlace(System.Windows.Point pos)
+        {
+            throw new NotImplementedException();
+        }
+        public override int GetDropIndex(System.Windows.Point pos)
+        { return 0; }
+        #endregion IVisualNodeContainer
+    } // Class
+} // Namespace
