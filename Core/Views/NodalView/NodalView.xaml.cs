@@ -206,6 +206,7 @@ namespace code_in.Views.NodalView
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
                 FuncDeclNode funcDecl = parentContainer.CreateAndAddNode<FuncDeclNode>();
+                funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
                 var parameters = method.Parameters.ToList();
@@ -281,6 +282,13 @@ namespace code_in.Views.NodalView
             if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                         _generateVisualASTRecur(n, (parentNode != null ? parentNode : parentContainer));
+        }
+
+        public void    GenerateFuncNodes(MethodDeclaration method)
+        {
+            this.CreateAndAddNode<FuncEntryNode>();
+            var exit = this.CreateAndAddNode<FuncExitNode>();
+            exit.Margin = new Thickness(0, 150, 0, 0);
         }
 
         #region Events

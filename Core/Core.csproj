@@ -196,6 +196,8 @@
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\ClassDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\FuncDeclNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\FuncEntryNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\FuncExitNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\NamespaceNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>

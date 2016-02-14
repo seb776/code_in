@@ -27,6 +27,13 @@ namespace code_in.Views.MainView
     [ClassInterface(ClassInterfaceType.None)]
     public partial class MainView : UserControl, stdole.IDispatch, ICodeInVisual
     {
+        public NodalView.NodalView NodalV
+        {
+            get
+            {
+                return _nodalView;
+            }
+        }
         private NodalView.NodalView _nodalView = null;
         public NodeAnchor enterInput = null;
         public NodeAnchor enterOutput = null;
