@@ -66,12 +66,15 @@ namespace code_in.Views.NodalView
         {
             _nodeTransform = transform;
             _draggingNode = node;
-            if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+            if (_draggingNode != null && _draggingNode.GetParentView() != null)
             {
-                Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentGrid).Transform(new Point(0, 0));
-                _draggingNode.GetParentView().RemoveNode(_draggingNode);
-                ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Add(_draggingNode as UIElement);
-                (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
+                if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                {
+                    Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentGrid).Transform(new Point(0, 0));
+                    _draggingNode.GetParentView().RemoveNode(_draggingNode);
+                    ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Add(_draggingNode as UIElement);
+                    (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
+                }
             }
         }
 
@@ -80,10 +83,10 @@ namespace code_in.Views.NodalView
 
         }
 
-        public void DropNodes(IVisualNodeContainer container) 
+        public void DropNodes(INodeElem container) 
         {
             // Moving inside orderedContentNode
-            if (_draggingNode != null)
+            if (_draggingNode != null && _draggingNode.GetParentView() != null)
             {
                 if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
                 {
@@ -106,7 +109,7 @@ namespace code_in.Views.NodalView
         {
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
 
-            node.SetParentView(this);
+            node.SetParentView(null);
             node.SetRootView(this);
 
             this.AddNode(node);
@@ -306,7 +309,7 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.DropNodes(this);
+            this.DropNodes(null);
 
             //// if the mode is drawing a line
             //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
@@ -400,9 +403,17 @@ namespace code_in.Views.NodalView
                     double marginLeft = margin.Left;
                     double marginTop = margin.Top;
                     Thickness newMargin = margin;
-                    if (!_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                    if (_draggingNode.GetParentView() == null)
+                    {
                         newMargin.Left -= diff.X;
-                    newMargin.Top -= diff.Y;
+                        newMargin.Top -= diff.Y;
+                    }
+                    else
+                    {
+                        if (!_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                            newMargin.Left -= diff.X;
+                        newMargin.Top -= diff.Y;
+                    }
 
                     newMargin.Left = Math.Max(newMargin.Left, 0);
                     newMargin.Top = Math.Max(newMargin.Top, 0);
@@ -488,7 +499,7 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            this.DropNodes(this);
+            this.DropNodes(null);
         }
     }
 }

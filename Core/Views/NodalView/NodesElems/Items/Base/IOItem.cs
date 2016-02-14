@@ -29,6 +29,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
             _nodeAnchor.Width = 10;
             _nodeAnchor.Height = 20;
+            _nodeAnchor.setParentAnchor(this);
             this.BeforeName.Children.Add(_nodeAnchor);
         }
         public IOItem() :
@@ -37,8 +38,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public void createLink(IOItem itemDest)
+        public void createLink()
         {
+            this.GetRootView().DragNodes(TransformationMode.LINE, this);
+            MessageBox.Show("toto");
+
             //this._parentNode.CreateLink(_nodeAnchor);
             //_nodeAnchor.lineBegin.X = _parentNode.Margin.Left + _parentNode.ActualWidth;
             //_nodeAnchor.lineBegin.Y = _parentNode.Margin.Top + this.Margin.Top + _parentNode.NodeHeader.ActualHeight;

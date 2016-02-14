@@ -57,6 +57,10 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             IOLine = null;
         }
 
+        public void setParentAnchor(IOItem item) {
+            _parentItem = item;
+        }
+
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // preview
@@ -64,7 +68,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             //lineBegin = e.GetPosition(_parentItem.ParentNode.MainView.MainGrid);
             //e.Handled = true;
 
-        //   this._parentItem.createLink(this);
+           this._parentItem.createLink();
             e.Handled = true;
         }
 

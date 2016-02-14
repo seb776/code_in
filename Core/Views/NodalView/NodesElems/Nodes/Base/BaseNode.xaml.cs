@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
-        private IVisualNodeContainer _parentView = null;
+        private INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
         public Line lineInput;
@@ -44,10 +44,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         #region INodeElem
-        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetParentView(INodeElem parent) { _parentView = parent; }
+        public INodeElem GetParentView() { return _parentView; }
         public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        public abstract void RemoveNode(INodeElem node);
         #endregion INodeElem
 
         #region ICodeInVisual

@@ -22,12 +22,18 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
-            this.AddInput(item);
-            return item;
+            
+            item.SetRootView(this.GetRootView());
+            item.SetParentView(this);
+            this.AddInput(item);            return item;
         }
         public T CreateAndAddOutput<T>() where T : IOItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
+
+            item.SetRootView(this.GetRootView());
+            item.SetParentView(this);
+
             item.Orientation = IOItem.EOrientation.RIGHT;
             this.AddOutput(item);
             return item;

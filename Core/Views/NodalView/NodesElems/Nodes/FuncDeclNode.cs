@@ -54,5 +54,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             //throw new NotImplementedException();
         }
         #endregion ICodeInVisual
+
+        public override void RemoveNode(INodeElem node)
+        {
+            this.ContentGrid.Children.Remove(node as UIElement);
+        }
     }
 }
