@@ -63,6 +63,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             //_parentItem.ParentNode.CreateLink(this);
             //lineBegin = e.GetPosition(_parentItem.ParentNode.MainView.MainGrid);
             //e.Handled = true;
+
+        //   this._parentItem.createLink(this);
+            e.Handled = true;
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)

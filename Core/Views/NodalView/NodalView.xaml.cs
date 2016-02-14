@@ -45,6 +45,13 @@ namespace code_in.Views.NodalView
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+            var t = this.CreateAndAddNode<FuncDeclNode>();
+            t.CreateAndAddInput<DataFlowItem>();
+            t.CreateAndAddOutput<FlowNodeItem>();
+
+            var at = this.CreateAndAddNode<FuncDeclNode>();
+            at.CreateAndAddInput<DataFlowItem>();
+            at.CreateAndAddOutput<FlowNodeItem>();
         }
         public NodalView() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -68,6 +75,11 @@ namespace code_in.Views.NodalView
             }
         }
 
+        public void CreateLink(IOItem item)
+        {
+
+        }
+
         public void DropNodes(IVisualNodeContainer container) 
         {
             // Moving inside orderedContentNode
@@ -88,7 +100,7 @@ namespace code_in.Views.NodalView
             _draggingNode = null;
             _nodeTransform = TransformationMode.NONE;
         }
-        #endregion IVisualNodeContainerDragNDrop
+        #endregion create
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>() where T : UIElement, INodeElem
         {

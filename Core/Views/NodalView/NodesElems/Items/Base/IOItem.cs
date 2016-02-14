@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
+using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -49,7 +50,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
             //TransformingNode.Transformation = TransformingNode.TransformationMode.NONE;
 
-            //System.Diagnostics.Trace.WriteLine("jijfeiozjfoez fezojf zoejfzeo jfze ojf zeoj feoij fze  zefioj jfozie fjizeo" + na.IOLine.X1);
         }
 
         public void SetItemType(String type)
@@ -80,6 +80,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
                 this.FlowDirection = (value == EOrientation.LEFT ?
                     System.Windows.FlowDirection.LeftToRight :
                     System.Windows.FlowDirection.RightToLeft);
+
+                this.HorizontalAlignment = (value == EOrientation.LEFT ? HorizontalAlignment.Left : HorizontalAlignment.Right);
 
                 //TypeInfo ti = (TypeInfo)this.Container.FindName("TypeField");
                 //if (this.Container.FindName("TypeField") != null) // TypeField is not always part of an item
