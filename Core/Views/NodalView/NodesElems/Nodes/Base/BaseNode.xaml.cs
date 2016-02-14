@@ -66,7 +66,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
             this.NodeBorder.SetResourceReference(BorderBrushProperty, resourceName);
             this.NodeHeader.SetResourceReference(BackgroundProperty, resourceName);
-            this.ResizeControl.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, resourceName);
         }
         #endregion ICodeInVisual
 

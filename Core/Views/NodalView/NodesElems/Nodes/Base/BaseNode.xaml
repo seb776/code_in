@@ -61,7 +61,6 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1" x:Name="ContentGrid">
-                    <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="EvtDragResize"/>
                 </Grid>
             </Grid>
         </Border>
