@@ -63,8 +63,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             var leftCol = new ColumnDefinition();
             var rightCol = new ColumnDefinition();
 
-            leftCol.Width = GridLength.Auto;
-            rightCol.Width = GridLength.Auto;
+            leftCol.Width = new GridLength(1, GridUnitType.Star);
+            rightCol.Width = new GridLength(1, GridUnitType.Star);
 
             _subGrid.ColumnDefinitions.Add(leftCol);
             _subGrid.ColumnDefinitions.Add(rightCol);
