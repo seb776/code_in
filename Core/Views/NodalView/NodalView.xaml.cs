@@ -59,9 +59,32 @@ namespace code_in.Views.NodalView
         {
             _nodeTransform = transform;
             _draggingNode = node;
+            if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+            {
+                Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentGrid).Transform(new Point(0, 0));
+                _draggingNode.GetParentView().RemoveNode(_draggingNode);
+                ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Add(_draggingNode as UIElement);
+                (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
+            }
         }
+
         public void DropNodes(IVisualNodeContainer container) 
         {
+            // Moving inside orderedContentNode
+            if (_draggingNode != null)
+            {
+                if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                {
+                    ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Remove(_draggingNode as UIElement);
+                    MethodInfo mi = ((AOrderedContentNode)_draggingNode.GetParentView()).GetType().GetMethod("AddNode");
+                    MethodInfo gmi = mi.MakeGenericMethod(_draggingNode.GetType());
+                    Object[] prm = {_draggingNode, ((AOrderedContentNode)_draggingNode.GetParentView()).GetDropIndex(new Point(0, (_draggingNode as UserControl).Margin.Top))};
+                    gmi.Invoke(_draggingNode.GetParentView(), prm);
+                    ((UserControl)_draggingNode).Margin = new Thickness();
+                }
+            }
+            
+            // Reset transformation
             _draggingNode = null;
             _nodeTransform = TransformationMode.NONE;
         }
@@ -132,7 +155,6 @@ namespace code_in.Views.NodalView
             {
                 ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
                 parentNode = classDeclNode;
-                classDeclNode.SetSize(400, 250);
 
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
 
@@ -265,6 +287,7 @@ namespace code_in.Views.NodalView
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.DropNodes(this);
+
             //// if the mode is drawing a line
             //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
             //{
@@ -354,13 +377,15 @@ namespace code_in.Views.NodalView
                 {
                     Thickness margin = (Thickness)_draggingNode.GetType().GetProperty("Margin").GetValue(_draggingNode);
 
-                    System.Diagnostics.Trace.WriteLine(margin.Left + " " + margin.Top);
-
                     double marginLeft = margin.Left;
                     double marginTop = margin.Top;
                     Thickness newMargin = margin;
-                    newMargin.Left -= diff.X;
+                    if (!_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                        newMargin.Left -= diff.X;
                     newMargin.Top -= diff.Y;
+
+                    newMargin.Left = Math.Max(newMargin.Left, 0);
+                    newMargin.Top = Math.Max(newMargin.Top, 0);
 
                     _draggingNode.GetType().GetProperty("Margin").SetValue(_draggingNode, newMargin);
                 }

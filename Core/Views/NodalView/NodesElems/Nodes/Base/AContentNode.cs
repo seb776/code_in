@@ -43,10 +43,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             return node;
         }
         public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
-        public void RemoveNode(INodeElem node) // TODO abstract
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void RemoveNode(INodeElem node);
+
         public abstract int GetDropIndex(Point pos);
         public abstract void HighLightDropPlace(Point pos);
 

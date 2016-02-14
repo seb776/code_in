@@ -32,8 +32,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             throw new NotImplementedException();
         }
+        
         public override int GetDropIndex(System.Windows.Point pos)
-        { return 0; }
+        { 
+            return 0; 
+        }
+
+        public override void RemoveNode(INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion IVisualNodeContainer
     } // Class
 } // Namespace
