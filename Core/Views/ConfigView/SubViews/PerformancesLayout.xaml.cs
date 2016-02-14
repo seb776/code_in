@@ -15,25 +15,29 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 
-namespace code_in.Views.ConfigView
+namespace code_in.Views.ConfigView.SubViews
 {
     /// <summary>
     /// Logique d'interaction pour PerformancesLayout.xaml
     /// </summary>
     public partial class PerformancesLayout : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public PerformancesLayout(ResourceDictionary resDict)
+        public void SetDynamicResources(String keyPrefix)
         {
-            this._resourceDictionary = resDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+
+        }
+        private ResourceDictionary _themeResourceDictionary;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public PerformancesLayout(ResourceDictionary themeResDict)
+        {
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
         }
         public PerformancesLayout() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
-        {
-        }
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+
          // The two buttons confirm/Cancel
         private void Button_Confirm(object sender, RoutedEventArgs e)
         {

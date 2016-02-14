@@ -9,6 +9,7 @@ namespace code_in.Views
 {
     interface ICodeInVisual
     {
-        ResourceDictionary GetResourceDictionary();
+        ResourceDictionary GetThemeResourceDictionary(); // Each visual element of the application can be modified through a unique resource dict
+        void SetDynamicResources(String keyPrefix);
     }
 }

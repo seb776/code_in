@@ -23,24 +23,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, INodeElem, IVisualNodeContainer, ICodeInVisual
     {
-        protected BaseNode _parentNode = null;
-        private ResourceDictionary _resourceDictionary = null;
-        private NodalView _nodalView = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public void SetParentNode(BaseNode parent) { _parentNode = parent; }
-        public BaseNode GetParentNode() { return _parentNode; }
-        public void SetNodalView(NodalView nv) { _nodalView = nv; }
-        public NodalView GetNodalView() { return _nodalView; }
+        private ResourceDictionary _themeResourceDictionary = null;
+        private IVisualNodeContainer _parentView = null;
+        private IVisualNodeContainerDragNDrop _rootView = null;
 
         public Line lineInput;
         public Line lineOutput;
 
-        public abstract void SetDynamicResources(String keyPrefix);
-
-        public BaseNode(ResourceDictionary resourceDict)
+        public BaseNode(ResourceDictionary themeResDict)
         {
-            this._resourceDictionary = resourceDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
 
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
@@ -48,7 +41,64 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         public BaseNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
-        { }
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
+        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
+        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        #endregion INodeElem
+        #region IVisualNodeContainer
+        /// <summary>
+        /// Creates a INodeElem of type T and add it to this control by passing all required parameters (theme, language...)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual T CreateAndAddNode<T>() where T : UIElement, INodeElem
+        {
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            node.SetParentView(this);
+            node.SetRootView(this.GetRootView());
+            try
+            {
+                this.AddNode(node);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                return default(T);
+            }
+            return node;
+        }
+        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
+        public void RemoveNode(INodeElem node) // TODO abstract
+        {
+            throw new NotImplementedException();
+        }
+        public abstract int GetDropIndex(Point pos);
+        public abstract void HighLightDropPlace(Point pos);
+
+        #endregion IVisualNodeContainer
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public abstract void SetDynamicResources(String keyPrefix);
+
+        /// <summary>
+        /// This function is used to set the resource that will be used as the main color of the node. Usefull to distinguish different nodes.
+        /// This function have to be called before setting any value as the resource is used for each modification.
+        /// </summary>
+        /// <param name="resourceName">The name of the resource that have to be used</param>
+        public void SetColorResource(String resourceName) // TODO remove this
+        {
+            System.Windows.Media.Brush resource = (System.Windows.Media.Brush)this.Resources[resourceName];
+            System.Diagnostics.Debug.Assert(resource != null); // Just to check if the resource exists
+
+            this.NodeBorder.SetResourceReference(BorderBrushProperty, resourceName);
+            this.NodeHeader.SetResourceReference(BackgroundProperty, resourceName);
+            this.ResizeControl.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, resourceName);
+        }
+        #endregion ICodeInVisual
 
         /// <summary>
         /// This function sets the width and height of the node.
@@ -64,18 +114,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.Height = height;
             return true;
         }
-
-        private void OnDragResize(object sender, MouseButtonEventArgs e)
+        #region Events
+        private void EvtDragResize(object sender, MouseButtonEventArgs e)
         {
-            this._nodalView.SetTransformingNodes(this);
-            this._nodalView.SetTransformationMode(TransformationMode.RESIZE);
+            this.GetRootView().DragNodes(TransformationMode.RESIZE, this);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
-        private void OnDragNode(object sender, MouseButtonEventArgs e)
+        private void EvtDragNode(object sender, MouseButtonEventArgs e) // abstract ?
         {
-            this._nodalView.SetTransformingNodes(this);
-            this._nodalView.SetTransformationMode(TransformationMode.MOVE);
+            this.GetRootView().DragNodes(TransformationMode.MOVE, this);
+
             //if (this._parentNode.GetType() == typeof(OrderedContentNode))
             //{
             //    var orderParent = this._parentNode as OrderedContentNode;
@@ -85,8 +134,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             //}
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
-        private void OnDropNode(object sender, MouseButtonEventArgs e)
+        private void EvtDropNode(object sender, MouseButtonEventArgs e)
         {
+            this.GetRootView().DropNodes(this);
             //if (this._nodalView._transformationMode == TransformationMode.MOVEORDERED)
             //{
             //    var orderParent = this._parentNode as OrderedContentNode;
@@ -94,18 +144,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             //    orderParent._orderedLayout.Children.Add(this);
             //    this.Opacity = 1f;
             //}
-            this._nodalView.ResetTransformationMode();
-            this._nodalView.ResetTransformingNode();
         }
 
-        private void OnRemoveNode(object sender, MouseButtonEventArgs e)
+        private void EvtRemoveNode(object sender, MouseButtonEventArgs e)
         {
             ((Panel)this.Parent).Children.Remove(this);
             //MainView.MainGrid.Children.Remove(lineInput);
             //MainView.MainGrid.Children.Remove(lineOutput);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
-
+        #endregion Events
         //public void CreateLink(Nodes.Items.Base.NodeAnchor n)
         //{
         //    TransformingNode.TransformingObject = n;
@@ -132,28 +180,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         //    this.NodeModifiers.Children.Add(lblType);
         //}
 
-        /// <summary>
-        /// This function is used to set the resource that will be used as the main color of the node. Usefull to distinguish different nodes.
-        /// This function have to be called before setting any value as the resource is used for each modification.
-        /// </summary>
-        /// <param name="resourceName">The name of the resource that have to be used</param>
-        public void SetColorResource(String resourceName)
-        {
-            System.Windows.Media.Brush resource = (System.Windows.Media.Brush)this.Resources[resourceName];
-            System.Diagnostics.Debug.Assert(resource != null); // Just to check if the resource exists
-
-            this.NodeBorder.SetResourceReference(BorderBrushProperty, resourceName);
-            this.NodeHeader.SetResourceReference(BackgroundProperty, resourceName);
-            this.ResizeControl.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, resourceName);
-        }
-
         public void SetNodeType(String type)
         {
             this.NodeType.Content = type;
         }
-
-
-        //private bool[] _features;
 
         public void SetName(String name)
         {
@@ -164,27 +194,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             return this.NodeName.Text;
         }
-
-        public abstract void AddNode<T>(T node) where T : UIElement, INodeElem;
-
-        // The function is virtual so it can be overriden, usefull if there is a check to do
-        public virtual T CreateAndAddNode<T>() where T : UIElement, INodeElem
-        {
-            T node = (T)Activator.CreateInstance(typeof(T), _resourceDictionary);
-            node.SetNodalView(this._nodalView);
-            node.SetParentNode(this);
-            try
-            {
-                this.AddNode(node);
-            }
-            catch (Exception e)
-            {
-                return default(T);
-            }
-            return node;
-        }
-
-
-
     } // Class BaseNode
 } // Namespace

@@ -27,9 +27,6 @@
                     </StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="3">
                         <StackPanel x:Name="SearchResult" HorizontalAlignment="Center" >
-                            <nodes:FuncDeclNode />
-                            <nodes:NamespaceNode />
-                            <nodes:ClassDeclNode />
                         </StackPanel>
                     </ScrollViewer>
                     <Grid/>

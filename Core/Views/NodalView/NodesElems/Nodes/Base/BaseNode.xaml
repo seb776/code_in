@@ -6,8 +6,7 @@
              xmlns:items="clr-namespace:code_in.Views.NodalView.NodesElems.Items.Base"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="250"
-             MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top"
-             xmlns:my="clr-namespace:code_in.Views.MainView.Nodes">
+             MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top">
     <UserControl.Resources>
         <!--These values are only meant to have color in the designer-->
         <SolidColorBrush x:Key="LocalNodeColor" Color="GreenYellow"/>
@@ -24,7 +23,7 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="25"/>
             </Border.Effect>
-            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="OnDragNode" MouseLeftButtonUp="OnDropNode" Cursor="ScrollAll">
+            <Grid Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="EvtDragNode" MouseLeftButtonUp="EvtDropNode" Cursor="ScrollAll">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
@@ -40,7 +39,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
-                    <items:ScopeItem x:Name="NodeScope" Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>
+                    <!--<items:ScopeItem x:Name="NodeScope" Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>-->
                     <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
                         <Label.Effect>
                             <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
@@ -59,7 +58,7 @@
                         <Rectangle Fill="{StaticResource LocalNodeColorBack}" Width="20" Height="6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Rectangle Width="20" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{StaticResource LocalNodeColorBack}" StrokeThickness="2"/>
                     </Grid>
-                    <Grid Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="OnRemoveNode">
+                    <Grid Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="EvtRemoveNode">
                         <!--IsRemovable feature -->
                         <Grid x:Name="RemoveButton">
                             <Line Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -86,7 +85,7 @@
                         <StackPanel x:Name="Outputs" Grid.Column="2">
                         </StackPanel>
                     </Grid>-->
-                    <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="OnDragResize"/>
+                    <Polygon x:Name="ResizeControl" Fill="{StaticResource LocalNodeColor}" Points="15,15 0,15 15,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" PreviewMouseLeftButtonDown="EvtDragResize"/>
                 </Grid>
             </Grid>
         </Border>

@@ -14,23 +14,27 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.ConfigView
+namespace code_in.Views.ConfigView.SubViews
 {
     /// <summary>
     /// Logique d'interaction pour CreateTheme.xaml
     /// </summary>
     public partial class ThemeLayout : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
+        private ResourceDictionary _themeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public Dictionary<String, AThemeData> _themeList = new Dictionary<string,AThemeData>();
         public MainView.MainView _preview = null;
-        public ThemeLayout(ResourceDictionary resDict)
+        public ThemeLayout(ResourceDictionary themeResDict)
         {
-            this._resourceDictionary = resDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
-            _preview = new MainView.MainView(this._resourceDictionary);
+            _preview = new MainView.MainView(code_in.Resources.SharedDictionaryManager.ThemePreviewResourceDictionary);
             _themeList["DefaultTheme"] = null;
             _themeList["DarkTheme"] = null;
             foreach (KeyValuePair<string, AThemeData> elem in _themeList)
@@ -42,8 +46,7 @@ namespace code_in.Views.ConfigView
         }
         public ThemeLayout() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
-        {
-        }
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         private void DeleteTheme(object sender, RoutedEventArgs e)
         {
@@ -75,7 +78,8 @@ namespace code_in.Views.ConfigView
 
         private void Button_Save(object sender, RoutedEventArgs e)
         {
-            Code_inApplication.ThemeMgr.setMainTheme(new DarkThemeData());
+            if (Tmp != null)
+                Code_inApplication.ThemeMgr.setMainTheme(Tmp);
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -242,19 +246,21 @@ namespace code_in.Views.ConfigView
         {
 
         }
-
+        private DefaultThemeData DefaultData = new DefaultThemeData();
+        private DarkThemeData DarkData = new DarkThemeData();
+        AThemeData Tmp = null;
         private void BoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if(e.AddedItems[0].ToString() == "DefaultTheme")
-            //{
-            //    toto._themeMgr.setPreviewTheme(DefaultData);
-            //    Tmp = DefaultData;
-            //}
-            //else
-            //{
-            //    codeinMgr._themeMgr.setPreviewTheme(DarkData);
-            //    Tmp = DarkData;
-            //}
+            if (e.AddedItems[0].ToString() == "DefaultTheme")
+            {
+                Code_inApplication.ThemeMgr.setPreviewTheme(DefaultData);
+                Tmp = DefaultData;
+            }
+            else
+            {
+                Code_inApplication.ThemeMgr.setPreviewTheme(DarkData);
+                Tmp = DarkData;
+            }
         }
     }
 }

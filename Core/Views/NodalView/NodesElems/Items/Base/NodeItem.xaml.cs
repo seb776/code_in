@@ -22,15 +22,26 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public abstract partial class NodeItem : UserControl, INodeElem, ICodeInVisual
     {
-        protected BaseNode _parentNode = null;
-        private ResourceDictionary _resourceDictionary = null;
-        private NodalView _nodalView = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public void SetParentNode(BaseNode parent) { _parentNode = parent; }
-        public BaseNode GetParentNode() { return _parentNode; }
-        public void SetNodalView(NodalView nv) { _nodalView = nv; }
-        public NodalView GetNodalView() { return _nodalView; }
-        public void SetName(String name) 
+        private ResourceDictionary _themeResourceDictionary = null;
+        protected IVisualNodeContainer _parentView = null;
+        private IVisualNodeContainerDragNDrop _rootView = null;
+
+        protected NodeItem(ResourceDictionary themeResDict)
+        {
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            InitializeComponent();
+        }
+        protected NodeItem() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
+        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
+        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        public void SetName(String name)
         {
             this.ItemName.Text = name;
         }
@@ -38,35 +49,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             return this.ItemName.Text;
         }
+        #endregion INodeElem
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public abstract void SetDynamicResources(String keyPrefix);
-        public BaseNode ParentNode
-        {
-            get
-            {
-                return _parentNode;
-            }
-            set
-            {
-                _parentNode = value;
-            }
-        }
-        public NodeItem() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
-        {
-        }
 
-        protected NodeItem(ResourceDictionary resDict)
-        {
-            this._resourceDictionary = resDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
-            InitializeComponent();
-            _parentNode = null;
-        }
-        public NodeItem(BaseNode parent) :
-            this(parent.GetResourceDictionary())
-        {
-            System.Diagnostics.Debug.Assert(parent != null, "The parentNode is null");
-            _parentNode = parent;
-        }
-    }
-}
+        #endregion ICodeInVisual
+    } // Class
+} // Namespace

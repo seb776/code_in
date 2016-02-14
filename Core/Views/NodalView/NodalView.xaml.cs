@@ -3,6 +3,7 @@ using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
@@ -27,41 +28,68 @@ namespace code_in.Views.NodalView
     /// <summary>
     /// Interaction logic for NodalView.xaml
     /// </summary>
-    public partial class NodalView : UserControl, IVisualNodeContainer, ICodeInVisual
+    public partial class NodalView : UserControl, IVisualNodeContainer, IVisualNodeContainerDragNDrop, ICodeInVisual
     {
-        private BaseNode[] _transformingNodes = null;
+        private ResourceDictionary _themeResourceDictionary = null;
+        private INodeElem _draggingNode = null;
+        private TransformationMode _nodeTransform = TransformationMode.NONE;
         private INodalPresenter _nodalPresenter = null;
-        public TransformationMode _transformationMode = TransformationMode.NONE;
 
-        public void SetTransformationMode(TransformationMode mode)
+        public NodalView(ResourceDictionary themeResDict)
         {
-            _transformationMode = mode;
-        }
-        public void ResetTransformationMode()
-        {
-            _transformationMode = TransformationMode.NONE;
-        }
-        public void SetTransformingNodes(params BaseNode[] transform)
-        {
-            _transformingNodes = transform;
-        }
-        public void ResetTransformingNode()
-        {
-            _transformingNodes = null;
-        }
-        private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public NodalView() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
-        {}
-        public NodalView(ResourceDictionary resDict)
-        {
-            this._resourceDictionary = resDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+            _nodalPresenter = new NodalPresenter(this);
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             this._nodalPresenter = new NodalPresenter(this);
             _root = this.CreateAndAddNode<NamespaceNode>();
             _root.SetName("RootNode");
+        }
+        public NodalView() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+
+        #region IVisualNodeContainerDragNDrop
+        public void SelectNode(INodeElem node) { }
+        public void UnSelectNode(INodeElem node) { }
+        public void UnSelectAll() { }
+        public void DragNodes(TransformationMode transform, INodeElem node) { }
+        public void DropNodes(IVisualNodeContainer container) { }
+        #endregion IVisualNodeContainerDragNDrop
+        #region IVisualNodeContainer
+        public T CreateAndAddNode<T>() where T : UIElement, INodeElem
+        {
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);//(MainView == null ? code_in.Resources.SharedDictionaryManager.MainResourceDictionary : MainView.ResourceDict)) as T;
+
+            node.SetParentView(this);
+            node.SetRootView(this);
+
+            this.AddNode(node);
+            return node;
+        }
+        public void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem
+        {
+            this.MainGrid.Children.Add(node as UIElement);
+        }
+
+        public void RemoveNode(INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
+        public void HighLightDropPlace(Point pos) { }
+        public int GetDropIndex(Point pos) { return 0; }
+        #endregion IVisualNodeContainer
+        #region ICodeInVisual
+        public void SetDynamicResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        #endregion ICodeInVisual
+
+        public void OpenFile(String path)
+        {
+            this._nodalPresenter.OpenFile(path);
         }
 
         public NodeAnchor destAnchor; // when drawin a line, stock the other destination on the link
@@ -121,10 +149,7 @@ namespace code_in.Views.NodalView
                     {
                         ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
 
-
-                        var item = new ClassItem(classDeclNode);
-                        //classDeclNode.Add
-                        classDeclNode.AddNode(item);
+                        var item = classDeclNode.CreateAndAddNode<ClassItem>();
                         item.SetName(field.Variables.FirstOrNullObject().Name);
                         //item.SetItemType(field.ReturnType.ToString());
                         switch (field.Modifiers.ToString()) // Puts the right scope
@@ -228,8 +253,6 @@ namespace code_in.Views.NodalView
 
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.ResetTransformationMode();
-            this.ResetTransformingNode();
 
             //// if the mode is drawing a line
             //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
@@ -312,95 +335,80 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            //  System.Diagnostics.Trace.WriteLine(enterOutput);
-            bool gridMagnet = true;
-            Vector diff;
-            if ((lastPosition.X + lastPosition.Y) < 0.01)
-                diff = new Vector(0, 0);
-            else
-            {
-                diff = lastPosition - e.GetPosition(this.MainGrid);
-            }
-            lastPosition = e.GetPosition(this.MainGrid);
+            ////  System.Diagnostics.Trace.WriteLine(enterOutput);
+            //bool gridMagnet = true;
+            //Vector diff;
+            //if ((lastPosition.X + lastPosition.Y) < 0.01)
+            //    diff = new Vector(0, 0);
+            //else
+            //{
+            //    diff = lastPosition - e.GetPosition(this.MainGrid);
+            //}
+            //lastPosition = e.GetPosition(this.MainGrid);
 
-            if (_transformingNodes != null && _transformingNodes.Count() > 0)
-            {
+            //if (_transformingNodes != null && _transformingNodes.Count() > 0)
+            //{
 
-                //((ScrollViewer)((Grid)sender).Parent).ScrollToHorizontalOffset(((ScrollViewer)((Grid)sender).Parent).HorizontalOffset + (diff.X < 0 ? -.1 : .1));
-                if (_transformationMode == TransformationMode.RESIZE)
-                {
-                    double sizeX = (double)_transformingNodes[0].GetType().GetProperty("ActualWidth").GetValue(_transformingNodes[0]);
-                    double sizeY = (double)_transformingNodes[0].GetType().GetProperty("ActualHeight").GetValue(_transformingNodes[0]);
-                    double nSizeX = sizeX - diff.X;
-                    double nSizeY = sizeY - diff.Y;
+            //    //((ScrollViewer)((Grid)sender).Parent).ScrollToHorizontalOffset(((ScrollViewer)((Grid)sender).Parent).HorizontalOffset + (diff.X < 0 ? -.1 : .1));
+            //    if (_transformationMode == TransformationMode.RESIZE)
+            //    {
+            //        double sizeX = (double)_transformingNodes[0].GetType().GetProperty("ActualWidth").GetValue(_transformingNodes[0]);
+            //        double sizeY = (double)_transformingNodes[0].GetType().GetProperty("ActualHeight").GetValue(_transformingNodes[0]);
+            //        double nSizeX = sizeX - diff.X;
+            //        double nSizeY = sizeY - diff.Y;
 
-                    //MessageBox.Show((sizeX + diff.X).ToString());
-                    _transformingNodes[0].GetType().GetProperty("Width").SetValue(_transformingNodes[0], nSizeX);
-                    _transformingNodes[0].GetType().GetProperty("Height").SetValue(_transformingNodes[0], nSizeY);
-                    //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
-                }
-                else if (_transformationMode == TransformationMode.MOVE || _transformationMode == TransformationMode.MOVEORDERED)
-                {
-                    Thickness margin = (Thickness)_transformingNodes[0].GetType().GetProperty("Margin").GetValue(_transformingNodes[0]);
-                    double marginLeft = margin.Left;
-                    double marginTop = margin.Top;
-                    Thickness newMargin = margin;
-                    if (_transformationMode == TransformationMode.MOVE)
-                        newMargin.Left -= diff.X;
-                    newMargin.Top -= diff.Y;
+            //        //MessageBox.Show((sizeX + diff.X).ToString());
+            //        _transformingNodes[0].GetType().GetProperty("Width").SetValue(_transformingNodes[0], nSizeX);
+            //        _transformingNodes[0].GetType().GetProperty("Height").SetValue(_transformingNodes[0], nSizeY);
+            //        //((Nodes.TransformingNode.TransformingObject.GetType().get)Nodes.TransformingNode.TransformingObject)
+            //    }
+            //    else if (_transformationMode == TransformationMode.MOVE || _transformationMode == TransformationMode.MOVEORDERED)
+            //    {
+            //        Thickness margin = (Thickness)_transformingNodes[0].GetType().GetProperty("Margin").GetValue(_transformingNodes[0]);
+            //        double marginLeft = margin.Left;
+            //        double marginTop = margin.Top;
+            //        Thickness newMargin = margin;
+            //        if (_transformationMode == TransformationMode.MOVE)
+            //            newMargin.Left -= diff.X;
+            //        newMargin.Top -= diff.Y;
 
-                    _transformingNodes[0].GetType().GetProperty("Margin").SetValue(_transformingNodes[0], newMargin);
-
-
-                    // move the link if exist
-
-                    //Line lineOutput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineOutput;
-                    //Line lineIntput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineInput;
-
-                    //    Nodes.BaseNode test = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject);
-
-                    //if (lineOutput != null)
-                    //{
-                    //    lineOutput.X1 -= diff.X;
-                    //    lineOutput.Y1 -= diff.Y;
-                    //}
-                    //if (lineIntput != null)
-                    //{
-                    //    lineIntput.X2 -= diff.X;
-                    //    lineIntput.Y2 -= diff.Y;
-                    //}
+            //        _transformingNodes[0].GetType().GetProperty("Margin").SetValue(_transformingNodes[0], newMargin);
 
 
-                }
-                //else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
-                //{
-                //    Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
+            //        // move the link if exist
 
-                //    n.IOLine.X1 = n.lineBegin.X;
-                //    n.IOLine.Y1 = n.lineBegin.Y;
-                //    n.IOLine.X2 = e.GetPosition(MainGrid).X;
-                //    n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
+            //        //Line lineOutput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineOutput;
+            //        //Line lineIntput = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject).lineInput;
+
+            //        //    Nodes.BaseNode test = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject);
+
+            //        //if (lineOutput != null)
+            //        //{
+            //        //    lineOutput.X1 -= diff.X;
+            //        //    lineOutput.Y1 -= diff.Y;
+            //        //}
+            //        //if (lineIntput != null)
+            //        //{
+            //        //    lineIntput.X2 -= diff.X;
+            //        //    lineIntput.Y2 -= diff.Y;
+            //        //}
 
 
-                //}
-            }
+            //    }
+            //    //else if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
+            //    //{
+            //    //    Nodes.Items.NodeAnchor n = ((Nodes.Items.NodeAnchor)Nodes.TransformingNode.TransformingObject);
+
+            //    //    n.IOLine.X1 = n.lineBegin.X;
+            //    //    n.IOLine.Y1 = n.lineBegin.Y;
+            //    //    n.IOLine.X2 = e.GetPosition(MainGrid).X;
+            //    //    n.IOLine.Y2 = e.GetPosition(MainGrid).Y;
+
+
+            //    //}
+            //}
         }
-        public T CreateAndAddNode<T>() where T : UIElement, INodeElem
-        {
-            T node = (T)Activator.CreateInstance(typeof(T), code_in.Resources.SharedDictionaryManager.MainResourceDictionary);//(MainView == null ? code_in.Resources.SharedDictionaryManager.MainResourceDictionary : MainView.ResourceDict)) as T;
 
-            node.SetNodalView(this);
-            node.SetParentNode(null);
-
-            this.AddNode(node);
-            return node;
-        }
-        public void AddNode<T>(T node) where T : UIElement, INodeElem
-        {
-            //if (node.GetType() != RootNode || this.Root != null) // TODO
-            //  throw new Exception();
-            this.MainGrid.Children.Add(node as UIElement);
-        }
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             // This automatically updates the list of accessible nodes

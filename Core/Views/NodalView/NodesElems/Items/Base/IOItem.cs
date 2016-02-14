@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -15,17 +16,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             LEFT = 0,
             RIGHT = 1,
         }
-        NodeAnchor _nodeAnchor; // The anchor point of the item
+        private Assets.NodeAnchor _nodeAnchor; // The anchor point of the item
 
-        public IOItem(ResourceDictionary resDict) :
-            base(resDict)
+        public IOItem(ResourceDictionary themeResDict) :
+            base(themeResDict)
         {
-
-        }
-        public IOItem() :
-            base()
-        {
-            _nodeAnchor = new NodeAnchor(this);
+            _nodeAnchor = new NodeAnchor(this.GetThemeResourceDictionary());
 
             _nodeAnchor.Name = "Anchor"; // Not necessary but to be clean
             //this.Container.RegisterName("Anchor", na); // To be able to find it through container.FindName(String)
@@ -34,12 +30,10 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             _nodeAnchor.Height = 20;
             this.BeforeName.Children.Add(_nodeAnchor);
         }
-
-        public IOItem(BaseNode parent) :
-            base(parent)
+        public IOItem() :
+            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
-            _nodeAnchor = new NodeAnchor(this);
-            this.BeforeName.Children.Add(_nodeAnchor);
+            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
         public void createLink(IOItem itemDest)

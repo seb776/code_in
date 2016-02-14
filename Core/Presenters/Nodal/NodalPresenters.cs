@@ -18,6 +18,7 @@ namespace code_in.Presenters.Nodal
             _parser = new CSharpParser();
 
         }
+
         NodalView   _view; // TODO INodalView
         NodalModel  _model = null;
         CSharpParser _parser = null;

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Items.Base;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 
 namespace code_in.Views.MainView
 {
@@ -24,27 +25,36 @@ namespace code_in.Views.MainView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class MainView : UserControl, stdole.IDispatch
+    public partial class MainView : UserControl, stdole.IDispatch, ICodeInVisual
     {
         private NodalView.NodalView _nodalView = null;
         public NodeAnchor enterInput = null;
         public NodeAnchor enterOutput = null;
+        public void SetDynamicResources(String keyPrefix)
+        {
 
+        }
         private Point _newNodePos;
 
         public void OpenFile(String filePath)
         {
+            this._nodalView.OpenFile(filePath);
         }
 
-        private ResourceDictionary _resourceDictionary = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        private ResourceDictionary _ThemeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _ThemeResourceDictionary; }
+        public SearchBar SearchBar = null;
 
         public MainView(ResourceDictionary resourceDict)
         {
-            this._resourceDictionary = resourceDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+            this._ThemeResourceDictionary = resourceDict;
+            this.Resources.MergedDictionaries.Add(this._ThemeResourceDictionary);
             InitializeComponent();
-            this._nodalView = new NodalView.NodalView(this._resourceDictionary);
+            this.SearchBar = new SearchBar(this.GetThemeResourceDictionary());
+            this.SearchBar.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
+            this.SearchBar.SetValue(WidthProperty, Double.NaN); // Width auto
+            this.WinGrid.Children.Add(this.SearchBar);
+            this._nodalView = new NodalView.NodalView(this._ThemeResourceDictionary);
             this.ZoomPanel.Child = this._nodalView;
 
             //this.MouseWheel += MainView_MouseWheel;

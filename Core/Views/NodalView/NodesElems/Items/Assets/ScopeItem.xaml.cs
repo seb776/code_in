@@ -13,15 +13,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.NodalView.NodesElems.Items.Base
+namespace code_in.Views.NodalView.NodesElems.Items.Assets
 {
     /// <summary>
     /// Interaction logic for ScopeItem.xaml
     /// </summary>
     public partial class ScopeItem : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
+        private ResourceDictionary _themeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public enum EScope
         {
             PUBLIC = 0,
@@ -46,13 +50,16 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
                 this.Symbol.SetResourceReference(Label.ContentProperty, refs[(int)value] + "String");
             }
         }
-        public ScopeItem(ResourceDictionary resDict)
+        public ScopeItem(ResourceDictionary themeResDict)
         {
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
         }
         public ScopeItem() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
+            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
         void m1_Click(object sender, RoutedEventArgs e)

@@ -10,22 +10,18 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
     class FlowNodeItem : IOItem
     {
-        public override void SetDynamicResources(String keyPrefix)
-        { }
-        public FlowNodeItem() :
-            base()
+         public FlowNodeItem(ResourceDictionary resDict) :
+            base(resDict)
         {
             this.SetName("FlowNode");
         }
-        public FlowNodeItem(ResourceDictionary resDict) :
-            base(resDict)
-        {
+         public FlowNodeItem() :
+             base()
+         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
-        }
-        public FlowNodeItem(BaseNode parent) :
-            this()
-        {
-            this._parentNode = parent;
-        }
+        #region ICodeInVisual
+        public override void SetDynamicResources(String keyPrefix)
+        { }
+        #endregion ICodeInVisual
     }
 }

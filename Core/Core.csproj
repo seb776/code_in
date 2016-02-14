@@ -91,8 +91,9 @@
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IVisualNodeContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
     </Compile>
@@ -108,10 +109,10 @@
     <Compile Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml.cs">
       <DependentUpon>NodeItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\ScopeItem.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml.cs">
       <DependentUpon>ScopeItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\TypeInfo.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\TypeInfo.xaml.cs">
       <DependentUpon>TypeInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodalView.xaml.cs">
@@ -121,31 +122,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ConfigView\ChangeTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ConfigView\ConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ThemeLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ErrorsLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ErrorsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\GeneralLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\GeneralLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\PerformancesLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\PerformancesLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,39 +158,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Nodes\CommentNode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Items\Base\NodeAnchor.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\AThemeData.cs" />
-    <Compile Include="Views\ConfigView\ChangeTheme.xaml.cs">
-      <DependentUpon>ChangeTheme.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ThemeLayout.xaml.cs">
       <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ErrorsLayout.xaml.cs">
       <DependentUpon>ErrorsLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\GeneralLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\GeneralLayout.xaml.cs">
       <DependentUpon>GeneralLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\PerformancesLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\PerformancesLayout.xaml.cs">
       <DependentUpon>PerformancesLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
@@ -203,19 +193,16 @@
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\ClassDeclNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\CommentNode.xaml.cs">
-      <DependentUpon>CommentNode.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\FuncDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\NamespaceNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\NodeAnchor.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\NodalView\NodesElems\Items\Base\ScopeItem.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Items\Base\TypeInfo.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\TypeInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

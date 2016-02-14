@@ -13,22 +13,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.NodalView.Nodes.Items.Base
+namespace code_in.Views.NodalView.Nodes.Items.Assets
 {
     /// <summary>
     /// Interaction logic for TypeInfo.xaml
     /// </summary>
     public partial class TypeInfo : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public TypeInfo(ResourceDictionary resDict)
+        private ResourceDictionary _themeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public void SetDynamicResources(String keyPrefix)
         {
+
+        }
+        public TypeInfo(ResourceDictionary themeResDict)
+        {
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
         }
         public TypeInfo() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
+            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
         public void SetTypeFromString(String type)
         {

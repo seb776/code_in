@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.NodalView.NodesElems.Items.Base
+namespace code_in.Views.NodalView.NodesElems.Items.Assets
 {
     /// <summary>
     /// This class is used to represent the bind box to which the links will be attached
@@ -21,8 +22,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public partial class NodeAnchor : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
+        private ResourceDictionary _themeResourceDictionary;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         // protected to public?
         public IOItem _parentItem;
 
@@ -40,24 +45,16 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public NodeAnchor() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
-            // We need a default constructor to centralize the call to InitializeComponent();
-            // and also to be able to create controls from XAML without passing parameters
-            // and then be able to preview in the XAML editor
+            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public NodeAnchor(ResourceDictionary resDict)
+        public NodeAnchor(ResourceDictionary themeResDict)
         {
-            this._resourceDictionary = resDict;
-            this.Resources.MergedDictionaries.Add(this._resourceDictionary);
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             _parentItem = null;
             IOLine = null;
-        }
-
-        public NodeAnchor(IOItem parent) :
-            this() // Mandatory to have a call to InitializeComponent();
-        {
-            _parentItem = parent;
         }
 
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

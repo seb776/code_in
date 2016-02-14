@@ -15,22 +15,26 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 
-namespace code_in.Views.ConfigView
+namespace code_in.Views.ConfigView.SubViews
 {
     /// <summary>
-    /// Logique d'interaction pour ShortcutsLayout.xaml
+    /// Logique d'interaction pour ErrorsLayout.xaml
     /// </summary>
-    public partial class ShortcutsLayout : UserControl, ICodeInVisual
+    public partial class ErrorsLayout : UserControl, ICodeInVisual
     {
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
         private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
-        public ShortcutsLayout(ResourceDictionary resDict)
+        public ResourceDictionary GetThemeResourceDictionary() { return _resourceDictionary; }
+        public ErrorsLayout(ResourceDictionary resDict)
         {
             this._resourceDictionary = resDict;
             this.Resources.MergedDictionaries.Add(this._resourceDictionary);
             InitializeComponent();
         }
-        public ShortcutsLayout() :
+        public ErrorsLayout() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         {
         }

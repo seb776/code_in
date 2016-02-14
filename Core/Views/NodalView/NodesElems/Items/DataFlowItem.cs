@@ -12,20 +12,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
     {
         public override void SetDynamicResources(String keyprefix)
         { }
-        //public DataFlowItem()// :
-        //    //base()
-        //{
-        //    this.SetItemType("test");
-        //}
 
-        public DataFlowItem(ResourceDictionary resDict) :
-            base(resDict)
+        public DataFlowItem(ResourceDictionary themeResDict) :
+            base(themeResDict)
         { }
-
-        public DataFlowItem(BaseNode parent) :
-            base(parent)
-        {
-            //this._parentNode = parent;
-        }
     }
 }

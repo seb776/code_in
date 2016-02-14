@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="code_in.Views.ConfigView.ThemeLayout"
+﻿<UserControl x:Class="code_in.Views.ConfigView.SubViews.ThemeLayout"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -251,7 +251,11 @@
 
             <!-- For the preview of the choosen theme -->
             <TextBlock x:Name="PreviewName" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" Foreground="#ebebeb" Text="Aperçu de " HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Canvas x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2"/>
+            <Grid x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2">
+                
+            </Grid>
+            <!--<ScrollViewer x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            </ScrollViewer>-->
             <!--<ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />-->
 
             <!-- Confirm/Cancel buttons ;) :p -->

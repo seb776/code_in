@@ -11,20 +11,10 @@ namespace code_in.Views.NodalView.NodesElems
     {
         void SetName(String name);
         String GetName();
-        void SetDynamicResources(String keyPrefix);
-        NodalView GetNodalView();
-        BaseNode GetParentNode();
-        void SetNodalView(NodalView nv);
-        void SetParentNode(BaseNode parent);
-    }
-
-    public enum TransformationMode
-    {
-        NONE = 0,
-        RESIZE = 1,
-        MOVE = 2,
-        LINE = 3,
-        MOVEORDERED = 4
+        void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
+        IVisualNodeContainer GetParentView();
+        void SetRootView(IVisualNodeContainerDragNDrop dnd);
+        IVisualNodeContainerDragNDrop GetRootView();
     }
     /*public static Point begin;
     public static Line lineInput;

@@ -21,8 +21,12 @@ namespace code_in.Views.MainView
     /// </summary>
     public partial class MainButton : UserControl, ICodeInVisual
     {
-        private ResourceDictionary _resourceDictionary = null;
-        public ResourceDictionary GetResourceDictionary() { return _resourceDictionary; }
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
+        private ResourceDictionary _themeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public MainButton()
         {
             InitializeComponent();
