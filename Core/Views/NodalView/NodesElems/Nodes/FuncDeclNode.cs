@@ -32,7 +32,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             editIcon.StrokeThickness = 3;
             editIcon.Stroke = new SolidColorBrush(Colors.Black);
+            editIcon.MouseDown += editIcon_MouseDown;
             this.NodeHeader.Children.Add(editIcon);
+        }
+
+        void editIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
         }
         public FuncDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
