@@ -90,7 +90,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this.ContentGrid.Children.Add(_subGrid);
 
         }
-        public override void RemoveNode(NodesElems.INodeElem node)
+        public override void RemoveNode(NodesElems.INodeElem node) {}
         public override void MoveNodeSpecial()
         {
             Point nodeAnchorRelativeCoord;
