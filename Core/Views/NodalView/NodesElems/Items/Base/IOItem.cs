@@ -17,7 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             LEFT = 0,
             RIGHT = 1,
         }
-        private Assets.NodeAnchor _nodeAnchor; // The anchor point of the item
+        public Assets.NodeAnchor _nodeAnchor; // The anchor point of the item
 
         public IOItem(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -41,7 +41,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public void createLink()
         {
             this.GetRootView().DragNodes(TransformationMode.LINE, this);
-            MessageBox.Show("toto");
 
             //this._parentNode.CreateLink(_nodeAnchor);
             //_nodeAnchor.lineBegin.X = _parentNode.Margin.Left + _parentNode.ActualWidth;
@@ -54,6 +53,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
             //TransformingNode.Transformation = TransformingNode.TransformationMode.NONE;
 
+        }
+
+        public void dropLine()
+        {
+            this.GetRootView().DropNodes(this);
         }
 
         public void SetItemType(String type)

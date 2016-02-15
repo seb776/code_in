@@ -48,6 +48,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public abstract int GetDropIndex(Point pos);
         public abstract void HighLightDropPlace(Point pos);
 
+        public override void MoveNodeSpecial()
+        {
+        }
+
         #endregion IVisualNodeContainer
     }
 }

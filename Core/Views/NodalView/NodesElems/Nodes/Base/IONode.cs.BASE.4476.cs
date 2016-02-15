@@ -22,10 +22,11 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
-            
             item.SetRootView(this.GetRootView());
             item.SetParentView(this);
-            this.AddInput(item);            return item;
+
+            _inputs.Children.Add(item);
+            return item;
         }
         public T CreateAndAddOutput<T>() where T : IOItem
         {
@@ -35,14 +36,11 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             item.SetParentView(this);
 
             item.Orientation = IOItem.EOrientation.RIGHT;
-            this.AddOutput(item);
+            _outputs.Children.Add(item);
             return item;
         }
         public void AddInput(IOItem item, int index = -1)
         {
-            var old = item.Margin;
-            var n = new Thickness(old.Left - 13, old.Top, 0, 0);
-            item.Margin = n;
             if (index < 0)
                 _inputs.Children.Add(item);
             else
@@ -50,9 +48,6 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         }
         public void AddOutput(IOItem item, int index = -1)
         {
-            var old = item.Margin;
-            var n = new Thickness(0, old.Top, old.Right - 13, 0);
-            item.Margin = n;
             if (index < 0)
                 _outputs.Children.Add(item);
             else
@@ -89,35 +84,6 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             _subGrid.Children.Add(_outputs);
             this.ContentGrid.Children.Add(_subGrid);
 
-        }
-        public override void RemoveNode(NodesElems.INodeElem node) {}
-        public override void MoveNodeSpecial()
-        {
-            Point nodeAnchorRelativeCoord;
-
-            foreach (var i in _inputs.Children)
-            {
-                IOItem it = i as IOItem;
-                UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
-                nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-                if (it._nodeAnchor.IOLine != null)
-                {
-                    it._nodeAnchor.IOLine.X2 = nodeAnchorRelativeCoord.X;
-                    it._nodeAnchor.IOLine.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
-                }
-            }
-
-            foreach (var i in _outputs.Children)
-            {
-                IOItem it = i as IOItem;
-                UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
-                nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-                if (it._nodeAnchor.IOLine != null)
-                {
-                    it._nodeAnchor.IOLine.X1 = nodeAnchorRelativeCoord.X;
-                    it._nodeAnchor.IOLine.Y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
-                }
-            }
         }
 
     }
