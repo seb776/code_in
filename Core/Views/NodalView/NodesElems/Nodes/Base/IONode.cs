@@ -86,5 +86,34 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 
         }
 
+        public override void MoveNodeSpecial()
+        {
+            Point nodeAnchorRelativeCoord;
+
+            foreach (var i in _inputs.Children)
+            {
+                IOItem it = i as IOItem;
+                UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
+                nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
+                if (it._nodeAnchor.IOLine != null)
+                {
+                    it._nodeAnchor.IOLine.X2 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOLine.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
+                }
+            }
+
+            foreach (var i in _outputs.Children)
+            {
+                IOItem it = i as IOItem;
+                UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
+                nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
+                if (it._nodeAnchor.IOLine != null)
+                {
+                    it._nodeAnchor.IOLine.X1 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOLine.Y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
+                }
+            }
+        }
+
     }
 }

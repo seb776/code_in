@@ -85,5 +85,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             //_parentItem.ParentNode.MainView.enterInput = null;
             //_parentItem.ParentNode.MainView.enterOutput = null;
         }
+
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            this._parentItem.dropLine();
+            e.Handled = true;
+        }
     }
 }

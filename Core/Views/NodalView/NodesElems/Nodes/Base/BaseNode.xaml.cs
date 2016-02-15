@@ -27,8 +27,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
-        public Line lineInput;
-        public Line lineOutput;
+      //  public Line lineInput;
+ //       public Line lineOutput;
 
         public BaseNode(ResourceDictionary themeResDict)
         {
@@ -99,7 +99,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void EvtRemoveNode(object sender, MouseButtonEventArgs e)
         {
-            ((Panel)this.Parent).Children.Remove(this);
+            ((Panel)this.Parent).Children.Remove(this);            
             //MainView.MainGrid.Children.Remove(lineInput);
             //MainView.MainGrid.Children.Remove(lineOutput);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
@@ -145,5 +145,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             return this.NodeName.Text;
         }
+
+        public void MoveNode(Point pos)
+        {
+            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
+            this.MoveNodeSpecial();
+        }
+
+        public abstract void MoveNodeSpecial();
     } // Class BaseNode
 } // Namespace

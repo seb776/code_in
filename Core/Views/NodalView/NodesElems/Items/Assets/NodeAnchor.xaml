@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
+    <Grid PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" MouseUp="Grid_MouseUp">
         <Rectangle x:Name="AnchorBox" Fill="GreenYellow"/>
         <!--<Ellipse Fill="CornflowerBlue">
             
