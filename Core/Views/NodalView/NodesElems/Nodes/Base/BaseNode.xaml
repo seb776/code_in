@@ -60,7 +60,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="1" x:Name="ContentGrid">
+                <Grid Grid.Row="1" x:Name="ContentGrid" MouseRightButtonDown="ContentGrid_MouseRightButtonDown">
                 </Grid>
             </Grid>
         </Border>

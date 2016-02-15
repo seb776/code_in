@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
+        private Point _newNodePos = new Point();
         private ResourceDictionary _themeResourceDictionary = null;
         private INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
@@ -144,6 +146,45 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public String GetName()
         {
             return this.NodeName.Text;
+        }
+
+        private void ContentGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // This automatically updates the list of accessible nodes
+            // Need to be optimized (compute only the first time, as it uses reflection)
+            List<Type> listOfBs = new List<Type>();
+            foreach (var t in typeof(BaseNode).Assembly.GetTypes())
+            {
+
+                if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
+                {
+                    listOfBs.Add(t);
+                }
+            }
+            var cm = new ContextMenu();
+            foreach (var t in listOfBs)
+            {
+                var m1 = new MenuItem();
+                m1.Header = t.Name;
+                m1.DataContext = t;
+                m1.Click += m1_Click;
+                cm.Items.Add(m1);
+            }
+            cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            cm.IsOpen = true;
+            // Setting the position of the node if we create one to the place the menu has been opened
+            _newNodePos.X = e.GetPosition(this).X;
+            _newNodePos.Y = e.GetPosition(this).Y;
+            e.Handled = true;
+        }
+        void m1_Click(object sender, RoutedEventArgs e)
+        {
+            MethodInfo mi = this.GetType().GetMethod("CreateAndAddNode");
+            MethodInfo gmi = mi.MakeGenericMethod(((sender as MenuItem).DataContext as Type));
+            BaseNode node = gmi.Invoke(this, null) as BaseNode;
+
+            node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
+            //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
         }
     } // Class BaseNode
 } // Namespace
