@@ -30,7 +30,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void EvtDragResize(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void AddNode<T>(T node, int index = -1)

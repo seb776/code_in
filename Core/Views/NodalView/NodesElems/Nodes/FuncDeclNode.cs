@@ -1,5 +1,6 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class FuncDeclNode : IONode
     {
+        public MethodDeclaration MethodNode = null;
         private int _offsetX = 0;
 
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :
@@ -38,7 +40,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         void editIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            view.NodalV.GenerateFuncNodes(this.MethodNode);
         }
         public FuncDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)

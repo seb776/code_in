@@ -9,6 +9,10 @@
     <SolidColorBrush x:Key="FuncDeclNodeColor" Color="#FF1C8DEC"/>
     <SolidColorBrush x:Key="PreprocessColor" Color="ForestGreen"/>
     <SolidColorBrush x:Key="ClassDeclColor" Color="Gold"/>
+    <SolidColorBrush x:Key="FuncEntryMainColor" Color="#FF1C8DEC"/>
+    <SolidColorBrush x:Key="FuncEntrySecColor" Color="#424242"/>
+    <SolidColorBrush x:Key="FuncExitMainColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="FuncExitSecColor" Color="#424242"/>
 
     <!-- These are the colors for the input-output -->
     <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
