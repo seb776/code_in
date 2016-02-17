@@ -88,9 +88,9 @@ namespace code_in.Views.NodalView
                 {
                     l = new Line();
                     
-                    l.Stroke = new SolidColorBrush(Colors.Red);
+                    l.Stroke = new SolidColorBrush(Colors.GreenYellow);
                     l.StrokeThickness = 3;
-                    Canvas.SetZIndex(l, -9999999);
+                    Canvas.SetZIndex(l, -9999999); // TODO Beuark
                     Point nodeAnchorRelativeCoord;
                     if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null) {
                         nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
@@ -106,14 +106,7 @@ namespace code_in.Views.NodalView
                     l.Y2 = l.Y1;
                     if ((_draggingNode as IOItem)._nodeAnchor.IOLine != null)
                     {
-                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-                        {
-                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove((_draggingNode as IOItem)._nodeAnchor.IOLine);
-                        }
-                        else
-                        {
-                            this.MainGrid.Children.Remove((_draggingNode as IOItem)._nodeAnchor.IOLine);
-                        }
+                        this.RemoveLink(_draggingNode as IOItem);
                     }
                     if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
                     {
@@ -169,6 +162,10 @@ namespace code_in.Views.NodalView
                     {
                         if (node.GetType().IsSubclassOf(typeof(IOItem)))
                         {
+                            if ((node as IOItem).IOAttached != null)
+                            {
+                                this.RemoveLink(node as IOItem);
+                            }
                             // if create link from output to input, swap begin and end point of the line
                             if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
                             {
@@ -184,6 +181,8 @@ namespace code_in.Views.NodalView
                             // storing line in nodeanchor
                             (_draggingNode as IOItem)._nodeAnchor.IOLine = l;
                             (node as IOItem)._nodeAnchor.IOLine = l;
+                            (_draggingNode as IOItem).IOAttached = node as IOItem;
+                            (node as IOItem).IOAttached = (_draggingNode as IOItem);
                         }
                     }
                 }
@@ -192,6 +191,18 @@ namespace code_in.Views.NodalView
             // Reset transformation
             _draggingNode = null;
             _nodeTransform = TransformationMode.NONE;
+        }
+        public void RemoveLink(IOItem node)
+        {
+            if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+            {
+                ((node.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(node._nodeAnchor.IOLine);
+            }
+            else
+            {
+                this.MainGrid.Children.Remove(node._nodeAnchor.IOLine);
+            }
+            node.RemoveLink();
         }
         #endregion create
         #region IVisualNodeContainer
@@ -389,8 +400,12 @@ namespace code_in.Views.NodalView
 
         public void    GenerateFuncNodes(MethodDeclaration method)
         {
-            this.CreateAndAddNode<FuncEntryNode>();
+            var entry = this.CreateAndAddNode<FuncEntryNode>();
+            entry.CreateAndAddOutput<FlowNodeItem>();
+
             var exit = this.CreateAndAddNode<FuncExitNode>();
+            exit.CreateAndAddInput<FlowNodeItem>();
+
             exit.Margin = new Thickness(0, 150, 0, 0);
         }
 

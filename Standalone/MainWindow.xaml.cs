@@ -25,5 +25,18 @@ namespace code_in
             InitializeComponent();
             //_application = new App(this);
         }
+
+        private void MainGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.C)
+            {
+                Code_inApplication.StartApplication(Application.Current as IEnvironmentWrapper);
+                var config = new code_in.Views.ConfigView.ConfigView();
+                TabItem nItem = new TabItem();
+                nItem.Header = "Parameters";
+                nItem.Content = config;
+                this.TabCtrl.Items.Add(nItem);
+            }
+        }
     }
 }

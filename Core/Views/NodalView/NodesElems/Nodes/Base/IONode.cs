@@ -1,4 +1,6 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+﻿using code_in.Views.NodalView.NodesElems;
+using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 {
@@ -18,11 +21,44 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         Grid _subGrid;
         StackPanel _inputs;
         StackPanel _outputs;
+        public override void SetRootView(IVisualNodeContainerDragNDrop root)
+        {
+            base.SetRootView(root);
+            foreach (var i in _inputs.Children)
+            {
+                IOItem it = i as IOItem;
+                it.SetRootView(this.GetRootView());
+            }
+            foreach (var i in _outputs.Children)
+            {
+                IOItem it = i as IOItem;
+                it.SetRootView(this.GetRootView());
+            }
+        }
+
+        public override void EvtRemoveNode(object sender, MouseButtonEventArgs e)
+        {
+            ((Panel)this.Parent).Children.Remove(this);
+            foreach (var i in this._inputs.Children)
+            {
+                IOItem it = i as IOItem;
+
+                if (it.GetRootView().GetType() == typeof(NodalView))
+                    (it.GetRootView() as NodalView).RemoveLink(it);
+            }
+            foreach (var i in this._outputs.Children)
+            {
+                IOItem it = i as IOItem;
+
+                if (it.GetRootView().GetType() == typeof(NodalView))
+                    (it.GetRootView() as NodalView).RemoveLink(it);
+            }
+            e.Handled = true;
+        }
         public T CreateAndAddInput<T>() where T : IOItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
-            
             item.SetRootView(this.GetRootView());
             item.SetParentView(this);
             this.AddInput(item);            return item;

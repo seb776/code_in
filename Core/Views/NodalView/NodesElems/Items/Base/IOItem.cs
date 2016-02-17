@@ -18,6 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             RIGHT = 1,
         }
         public Assets.NodeAnchor _nodeAnchor; // The anchor point of the item
+        public IOItem IOAttached = null;  // The attached IOItem
 
         public IOItem(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -37,7 +38,17 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
-
+        public void RemoveLink()
+        {
+            if (this.IOAttached != null)
+            {
+                IOItem bu = this.IOAttached; // to avoid recursion
+                this.IOAttached = null;
+                bu.RemoveLink();
+            }
+            if (this._nodeAnchor.IOLine != null)
+                this._nodeAnchor.IOLine = null;
+        }
         public void createLink()
         {
             this.GetRootView().DragNodes(TransformationMode.LINE, this);

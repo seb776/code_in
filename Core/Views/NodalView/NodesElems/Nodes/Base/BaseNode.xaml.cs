@@ -48,7 +48,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region INodeElem
         public void SetParentView(INodeElem parent) { _parentView = parent; }
         public INodeElem GetParentView() { return _parentView; }
-        public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
+        public virtual void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
         public abstract void RemoveNode(INodeElem node);
         #endregion INodeElem
@@ -99,9 +99,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
-        private void EvtRemoveNode(object sender, MouseButtonEventArgs e)
+        public virtual void EvtRemoveNode(object sender, MouseButtonEventArgs e)
         {
-            ((Panel)this.Parent).Children.Remove(this);            
+            ((Panel)this.Parent).Children.Remove(this);
             //MainView.MainGrid.Children.Remove(lineInput);
             //MainView.MainGrid.Children.Remove(lineOutput);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events

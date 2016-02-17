@@ -16,7 +16,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public FuncExitNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.CreateAndAddInput<FlowNodeItem>();
             this.SetNodeType("FuncExit");
             this.SetName("Outputs");
             this.SetDynamicResources("FuncExit");

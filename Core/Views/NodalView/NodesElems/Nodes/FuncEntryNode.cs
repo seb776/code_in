@@ -17,7 +17,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.CreateAndAddOutput<FlowNodeItem>();
             this.SetNodeType("FuncEntry");
             this.SetName("Inputs");
             this.SetDynamicResources("FuncEntry");
