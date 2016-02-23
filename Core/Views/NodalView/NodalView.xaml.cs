@@ -144,8 +144,8 @@ namespace code_in.Views.NodalView
                     Canvas.SetZIndex(l, 9999999);
 
                     if (node == null ||
-                        ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT) && (node as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT || // line from input to input
-                        ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.RIGHT || // line from output to output
+                        ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
+                        ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
                         _draggingNode.GetParentView() == node.GetParentView()) 
                     {
                         // remove line
