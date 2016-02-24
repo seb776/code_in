@@ -83,57 +83,71 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\Code_inApplication.cs" />
+    <Compile Include="Managers\ThemeMgr.cs" />
+    <Compile Include="Models\Theme\DarkThemeData.cs" />
+    <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
-    <Compile Include="Views\MainView\IVisualNodeContainer.cs" />
+    <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
+    <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
+    <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AContentNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AOrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ClassItem.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\DataFlowItem.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\FlowNodeItem.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\INodeItem.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\IOItem.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\NodeItem.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\ClassItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\DataFlowItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\FlowNodeItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Base\IOItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml.cs">
       <DependentUpon>NodeItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\ScopeItem.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml.cs">
       <DependentUpon>ScopeItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\Items\TypeInfo.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\TypeInfo.xaml.cs">
       <DependentUpon>TypeInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodalView.xaml.cs">
+      <DependentUpon>NodalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\IfStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\StatementNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\WhileLoopStmt.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ConfigView\ChangeTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\ConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ThemeLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ErrorsLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ErrorsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\GeneralLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\GeneralLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\PerformancesLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\PerformancesLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\ShortcutsLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,72 +159,65 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView\Nodes\BaseNode.xaml">
+    <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView\Nodes\CommentNode.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView\Nodes\Items\NodeItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\Nodes\Items\NodeAnchor.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Models\CodeData.cs" />
-    <Compile Include="Models\Theme\ThemeData.cs" />
-    <Compile Include="ViewModels\CodeMgr.cs" />
-    <Compile Include="ViewModels\code_inMgr.cs" />
-    <Compile Include="ViewModels\ThemeMgr.cs" />
-    <Compile Include="Views\ConfigView\ChangeTheme.xaml.cs">
-      <DependentUpon>ChangeTheme.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Models\NodalModel.cs" />
+    <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ThemeLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ThemeLayout.xaml.cs">
       <DependentUpon>ThemeLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ErrorsLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ErrorsLayout.xaml.cs">
       <DependentUpon>ErrorsLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\GeneralLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\GeneralLayout.xaml.cs">
       <DependentUpon>GeneralLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\PerformancesLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\PerformancesLayout.xaml.cs">
       <DependentUpon>PerformancesLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView\ShortcutsLayout.xaml.cs">
+    <Compile Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\BaseNode.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml.cs">
       <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView\Nodes\ClassDeclNode.cs" />
-    <Compile Include="Views\MainView\Nodes\CommentNode.xaml.cs">
-      <DependentUpon>CommentNode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView\Nodes\FuncDeclNode.cs" />
-    <Compile Include="Views\MainView\Nodes\NamespaceNode.cs" />
-    <Compile Include="Views\MainView\Nodes\Items\NodeAnchor.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Nodes\ClassDeclNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\FuncDeclNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\FuncEntryNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\FuncExitNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\NamespaceNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml.cs">
       <DependentUpon>NodeAnchor.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainView\Nodes\Items\ScopeItem.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView\Nodes\Items\TypeInfo.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\TypeInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView\SearchBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

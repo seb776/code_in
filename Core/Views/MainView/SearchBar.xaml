@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             xmlns:nodes="clr-namespace:code_in.Views.MainView.Nodes"
+             xmlns:nodes="clr-namespace:code_in.Views.NodalView.NodesElems.Nodes"
              d:DesignHeight="300" d:DesignWidth="300">
     <Expander x:Name="Sb" Header="SearchBar" VerticalAlignment="Stretch" Foreground="Black" IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Sb_Collapsed" ExpandDirection="Right" FlowDirection="RightToLeft">
         <Expander.Content>
@@ -27,20 +27,6 @@
                     </StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="3">
                         <StackPanel x:Name="SearchResult" HorizontalAlignment="Center" >
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
-                            <nodes:BaseNode />
                         </StackPanel>
                     </ScrollViewer>
                     <Grid/>

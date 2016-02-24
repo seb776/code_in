@@ -19,8 +19,14 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Interaction logic for MainButton.xaml
     /// </summary>
-    public partial class MainButton : UserControl
+    public partial class MainButton : UserControl, ICodeInVisual
     {
+        public void SetDynamicResources(String keyPrefix)
+        {
+
+        }
+        private ResourceDictionary _themeResourceDictionary = null;
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public MainButton()
         {
             InitializeComponent();

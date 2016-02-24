@@ -42,8 +42,6 @@ namespace code_in.Views.MainView.Nodes.Items
             itemDest._parentNode.lineInput = this.na.IOLine;
 
             TransformingNode.Transformation = TransformingNode.TransformationMode.NONE;
-
-            System.Diagnostics.Trace.WriteLine("jijfeiozjfoez fezojf zoejfzeo jfze ojf zeoj feoij fze  zefioj jfozie fjizeo" + na.IOLine.X1);
         }
     }
 }
