@@ -66,8 +66,8 @@ namespace code_in.Views.NodalView
         public void SelectNode(INodeElem node) { }
         public void UnSelectNode(INodeElem node) { }
         public void UnSelectAll() { }
-        
-        public void DragNodes(TransformationMode transform, INodeElem node) 
+
+        public void DragNodes(TransformationMode transform, INodeElem node)
         {
             _nodeTransform = transform;
             _draggingNode = node;
@@ -83,16 +83,17 @@ namespace code_in.Views.NodalView
                         (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
                     }
                 }
-              
+
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
                     l = new Line();
-                    
+
                     l.Stroke = new SolidColorBrush(Colors.GreenYellow);
                     l.StrokeThickness = 3;
                     Canvas.SetZIndex(l, -9999999); // TODO Beuark
                     Point nodeAnchorRelativeCoord;
-                    if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null) {
+                    if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                    {
                         nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
                     }
                     else
@@ -120,12 +121,12 @@ namespace code_in.Views.NodalView
             }
         }
 
-        public void DropNodes(INodeElem node) 
+        public void DropNodes(INodeElem node)
         {
             // Moving inside orderedContentNode
             if (_draggingNode != null && _draggingNode.GetParentView() != null)
             {
-              
+
                 if (_nodeTransform == TransformationMode.MOVE)
                 {
                     if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
@@ -138,7 +139,7 @@ namespace code_in.Views.NodalView
                         ((UserControl)_draggingNode).Margin = new Thickness();
                     }
                 }
-                
+
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
                     Canvas.SetZIndex(l, 9999999);
@@ -146,7 +147,7 @@ namespace code_in.Views.NodalView
                     if (node == null ||
                         ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
                         ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
-                        _draggingNode.GetParentView() == node.GetParentView()) 
+                        _draggingNode.GetParentView() == node.GetParentView())
                     {
                         // remove line
                         if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
@@ -177,7 +178,7 @@ namespace code_in.Views.NodalView
                                 l.X2 = tmpPoint.X;
                                 l.Y2 = tmpPoint.Y;
                             }
-                            
+
                             // storing line in nodeanchor
                             (_draggingNode as IOItem)._nodeAnchor.IOLine = l;
                             (node as IOItem)._nodeAnchor.IOLine = l;
@@ -187,7 +188,7 @@ namespace code_in.Views.NodalView
                     }
                 }
             }
-            
+
             // Reset transformation
             _draggingNode = null;
             _nodeTransform = TransformationMode.NONE;
@@ -264,13 +265,26 @@ namespace code_in.Views.NodalView
                 namespaceNode.SetName(tmpNode.Name);
             }
             #endregion
-            #region Class
+            #region Classes (interface, class, enum)
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
+                var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
+                #region Enum
+                if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Enum)
+                {
+                    ClassDeclNode enumDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
+                    enumDeclNode.SetName("EnumDecl " + tmpNode.Name);
+
+                    foreach (var v in tmpNode.Members)
+                    {
+                        var item = enumDeclNode.CreateAndAddNode<NodeItem>();
+                        item.SetName(v.Name);
+                    }
+                }
+                #endregion Enum
+                #region Class
                 ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
                 parentNode = classDeclNode;
-
-                var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
 
                 classDeclNode.SetName(tmpNode.Name);
                 // TODO protected internal
@@ -314,8 +328,9 @@ namespace code_in.Views.NodalView
                         }
                     }
                 }
+                #endregion Class
             }
-            #endregion
+            #endregion Classes (interface, class, enum)
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
@@ -398,13 +413,29 @@ namespace code_in.Views.NodalView
                         _generateVisualASTRecur(n, (parentNode != null ? parentNode : parentContainer));
         }
 
-        public void    GenerateFuncNodes(MethodDeclaration method)
+        public void GenerateFuncNodes(MethodDeclaration method)
         {
             var entry = this.CreateAndAddNode<FuncEntryNode>();
             entry.CreateAndAddOutput<FlowNodeItem>();
 
             var exit = this.CreateAndAddNode<FuncExitNode>();
             exit.CreateAndAddInput<FlowNodeItem>();
+
+            //#region Variable Declaration
+            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
+            //{
+            //    Views.MainView.Nodes.FuncDeclNode variableNode = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
+            //    variableNode.SetNodeName("VarDecl");
+            //    var tmpNode = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)node;
+            //    foreach (var v in tmpNode.Variables)
+            //    {
+            //        var item = new Views.MainView.Nodes.Items.DataFlowItem();
+            //        item.SetName(v.Name);
+            //        item.SetItemType(tmpNode.Type.ToString());
+            //        variableNode.AddInput(item);
+            //    }
+            //}
+            //#endregion
 
             exit.Margin = new Thickness(0, 150, 0, 0);
         }
@@ -449,8 +480,8 @@ namespace code_in.Views.NodalView
             //}
 
             //// reset mode 
-        //    MessageBox.Show("teste");
-            
+            //    MessageBox.Show("teste");
+
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
@@ -473,7 +504,7 @@ namespace code_in.Views.NodalView
         {
             ////  System.Diagnostics.Trace.WriteLine(enterOutput);
             //bool gridMagnet = true;
-            
+
             Vector diff;
             if ((lastPosition.X + lastPosition.Y) < 0.01)
                 diff = new Vector(0, 0);
@@ -523,7 +554,7 @@ namespace code_in.Views.NodalView
 
                     (_draggingNode as BaseNode).MoveNode(new Point(newMargin.Left, newMargin.Top));
 
-                    
+
                 }
 
 
@@ -549,7 +580,7 @@ namespace code_in.Views.NodalView
                     l.X2 = e.GetPosition(this.MainGrid).X;
                     l.Y2 = e.GetPosition(this.MainGrid).Y;
                 }
-                
+
             }
         }
 
@@ -587,7 +618,7 @@ namespace code_in.Views.NodalView
             MethodInfo mi = this.GetType().GetMethod("CreateAndAddNode");
             MethodInfo gmi = mi.MakeGenericMethod(((sender as MenuItem).DataContext as Type));
             BaseNode node = gmi.Invoke(this, null) as BaseNode;
-           
+
             node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
             //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
         }

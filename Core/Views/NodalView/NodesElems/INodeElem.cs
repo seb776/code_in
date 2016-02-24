@@ -17,9 +17,4 @@ namespace code_in.Views.NodalView.NodesElems
         void RemoveNode(INodeElem node);
         IVisualNodeContainerDragNDrop GetRootView();
     }
-    /*public static Point begin;
-    public static Line lineInput;
-    public static Line lineOutput;
-    public static int orientationStart = 0; // 0 : none, 1 : input, 2 : output
-    */
 }
