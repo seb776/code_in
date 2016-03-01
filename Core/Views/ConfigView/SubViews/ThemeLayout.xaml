@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="1045218" d:DesignWidth="804"
-             xmlns:ap="clr-namespace:code_in.Views.MainView" >
+             mc:Ignorable="d"
+             xmlns:ap="clr-namespace:code_in.Views.MainView" Height="2131.537" Width="1192" >
 
     <!-- Grid n°1 = the entire screen -->
     <Grid x:Name="Grid1" Background="#424242">
@@ -252,13 +251,13 @@
             <!-- For the preview of the choosen theme -->
             <TextBlock x:Name="PreviewName" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" Foreground="#ebebeb" Text="Aperçu de " HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Grid x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2">
-                
+
             </Grid>
             <!--<ScrollViewer x:Name="previewThemeLayout" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             </ScrollViewer>-->
             <!--<ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />-->
 
-            <!-- Confirm/Cancel buttons ;) :p -->
+            <!-- Confirm/Cancel buttons  -->
             <Button Grid.Column="1" Grid.Row="4" Content="Valider" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Save"/>
             <Button Grid.Column="1" Grid.Row="4" Content="Annuler" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Cancel"/>
 

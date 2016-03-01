@@ -21,11 +21,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.CreateAndAddInput<DataFlowItem>();
             this.CreateAndAddOutput<FlowNodeItem>();
         }
-        #region ICodeInVisual
-        public override void SetDynamicResources(string keyPrefix)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion ICodeInVisual
     }
 }

@@ -17,16 +17,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : base(themeResDict)
         {
-            this.SetColorResource("NamespaceNodeColor");
             this.SetNodeType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
+            this.SetDynamicResources("NamespaceNode");
         }
-        #region ICodeInVisual
-        public override void SetDynamicResources(string keyPrefix)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion ICodeInVisual
         #region IVisualNodeContainer
         public override void HighLightDropPlace(System.Windows.Point pos)
         {

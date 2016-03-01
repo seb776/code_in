@@ -37,7 +37,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
-
+            this.SetDynamicResources("BaseNode");
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
         }
@@ -55,20 +55,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public abstract void SetDynamicResources(String keyPrefix);
-
-        /// <summary>
-        /// This function is used to set the resource that will be used as the main color of the node. Usefull to distinguish different nodes.
-        /// This function have to be called before setting any value as the resource is used for each modification.
-        /// </summary>
-        /// <param name="resourceName">The name of the resource that have to be used</param>
-        public void SetColorResource(String resourceName) // TODO remove this
+        public virtual void SetDynamicResources(String keyPrefix)
         {
-            System.Windows.Media.Brush resource = (System.Windows.Media.Brush)this.Resources[resourceName];
-            System.Diagnostics.Debug.Assert(resource != null); // Just to check if the resource exists
-
-            this.NodeBorder.SetResourceReference(BorderBrushProperty, resourceName);
-            this.NodeHeader.SetResourceReference(BackgroundProperty, resourceName);
+            this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
+            this.NodeSeparator.SetResourceReference(ForegroundProperty, keyPrefix + "SeparatorForeGroundColor");
+            this.NodeType.SetResourceReference(ForegroundProperty, keyPrefix + "TypeForeGroundColor");
+            this.NodeHeader.SetResourceReference(BackgroundProperty, keyPrefix + "MainColor");
+            this.NodeBorder.SetResourceReference(BorderBrushProperty, keyPrefix + "MainColor");
+            this.BackGrid.SetResourceReference(BackgroundProperty, keyPrefix + "SecondaryColor");
+            this.CrossA.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
+            this.CrossB.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
         }
         #endregion ICodeInVisual
 

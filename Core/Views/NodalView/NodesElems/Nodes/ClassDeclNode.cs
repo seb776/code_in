@@ -26,9 +26,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetColorResource("ClassDeclColor");
             this.SetNodeType("ClassDecl");
             this.SetName("Class1");
+            this.SetDynamicResources("ClassDeclNode");
             NodeScope = new ScopeItem(this.GetThemeResourceDictionary());
             NodeScope.SetValue(Grid.ColumnProperty, 0);
             NodeScope.Scope = ScopeItem.EScope.PRIVATE;
@@ -41,11 +41,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
-        #region ICodeInVisual
-        public override void SetDynamicResources(string keyPrefix)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion ICodeInVisual
     }
 }
