@@ -20,6 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetName("Outputs");
             this.SetDynamicResources("FuncExit");
             this.NodeHeader.Children.Remove(this.RmBtn);
+            this.CreateAndAddInput<FlowNodeItem>();
         }
         public override void SetDynamicResources(String keyPrefix)
         {

@@ -349,63 +349,6 @@ namespace code_in.Views.NodalView
                 goDeeper = false;
             }
             #endregion
-            #region ExecutionCode
-            //# region IfStmts
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
-            //{
-            //    var ifStmt = node as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-            //    //System.Windows.MessageBox.Show();
-
-            //    var ifNode = parentContainer.CreateAndAddNode<NamespaceNode>();
-            //    var ifNodeFalse = parentContainer.CreateAndAddNode<NamespaceNode>();
-
-            //    ifNode.SetName("True");
-            //    ifNodeFalse.SetName("False");
-
-            //    var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
-            //    var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
-
-            //    cond.SetName(ifStmt.Condition.ToString());
-            //    condFalse.SetName(ifStmt.Condition.ToString());
-
-            //    visualNode = ifNode;
-            //    _generateVisualASTRecur(ifStmt.TrueStatement, ifNode);
-            //    _generateVisualASTRecur(ifStmt.FalseStatement, ifNodeFalse);
-
-            //    goDeeper = false;
-            //}
-
-            //# endregion IfStmts
-            //# region Loops
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
-            //{
-            //    var whileStmt = node as ICSharpCode.NRefactory.CSharp.WhileStatement;
-            //    var nodeLoop = parentContainer.CreateAndAddNode<FuncDeclNode>();
-            //    nodeLoop.SetName("While");
-            //    var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
-            //    cond.SetName(whileStmt.Condition.ToString());
-
-            //    _generateVisualASTRecur(whileStmt.EmbeddedStatement, nodeLoop);
-            //    goDeeper = false;
-            //}
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
-            //{
-            //}
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
-            //{
-            //}
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
-            //{
-            //}
-            //# endregion Loops
-            # region BlockStmt
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BlockStatement))
-            {
-                //var blockStmt = node as ICSharpCode.NRefactory.CSharp.BlockStatement;
-                //blockStmt.
-            }
-            # endregion Blocktmt
-            #endregion ExecutionCode
             //if (visualNode != null)
             //    parentContainer.AddNode(visualNode);
             if (goDeeper)
@@ -413,75 +356,115 @@ namespace code_in.Views.NodalView
                         _generateVisualASTRecur(n, (parentNode != null ? parentNode : parentContainer));
         }
 
+        private void _generateFuncNodesBlockStmt(Statement stmtArg)
+        {
+            #region Block Statement
+            if (stmtArg.GetType() == typeof(BlockStatement))
+            {
+                foreach (var stmt in (stmtArg as BlockStatement))
+                {
+                    this._generateFuncNodesBlockStmt(stmt);
+                }
+            }
+
+            # region IfStmts
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
+            {
+                var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
+
+                var ifNode = this.CreateAndAddNode<IfStmtNode>();
+
+                ifNode.SetName("IfStatement");
+
+                var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
+                var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
+
+                cond.SetName(ifStmt.Condition.ToString());
+                condFalse.SetName(ifStmt.Condition.ToString());
+
+                this._generateFuncNodesBlockStmt(ifStmt.TrueStatement);
+                this._generateFuncNodesBlockStmt(ifStmt.FalseStatement);
+            }
+
+            # endregion IfStmts
+            # region Loops
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
+            {
+                var whileStmt = stmtArg as ICSharpCode.NRefactory.CSharp.WhileStatement;
+                var nodeLoop = this.CreateAndAddNode<FuncDeclNode>();
+                nodeLoop.SetName("While");
+                var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
+                cond.SetName(whileStmt.Condition.ToString());
+                this._generateFuncNodesBlockStmt(whileStmt.EmbeddedStatement);
+            }
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
+            {
+            }
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
+            {
+            }
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
+            {
+            }
+            # endregion Loops
+            #endregion Block Statement
+            #region Single Statement
+            #region Variable Declaration
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
+            {
+                var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
+                var variableNode = this.CreateAndAddNode<FuncDeclNode>();
+                variableNode.SetNodeType("VarDecl");
+                foreach (var v in varStmt.Variables)
+                {
+                    var item = variableNode.CreateAndAddOutput<DataFlowItem>();
+                    item.SetName(v.Name);
+                    item.SetItemType(varStmt.Type.ToString());
+                }
+            }
+            #endregion Variable Declaration
+            #region ExpressionStatement
+            #endregion ExpressionStatement
+
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
+            {
+                var exprStmt = stmtArg as ExpressionStatement;
+
+                var exprStmtNode = this.CreateAndAddNode<StatementNode>();
+
+                var input = exprStmtNode.CreateAndAddInput<DataFlowItem>();
+                input.SetName(exprStmt.ToString());
+            }
+            #endregion Single Statement
+        }
+
         public void GenerateFuncNodes(MethodDeclaration method)
         {
             var entry = this.CreateAndAddNode<FuncEntryNode>();
-            entry.CreateAndAddOutput<FlowNodeItem>();
-
             var exit = this.CreateAndAddNode<FuncExitNode>();
-            exit.CreateAndAddInput<FlowNodeItem>();
 
-            //#region Variable Declaration
-            //if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
-            //{
-            //    Views.MainView.Nodes.FuncDeclNode variableNode = parentContainer.AddNode<Views.MainView.Nodes.FuncDeclNode>();
-            //    variableNode.SetNodeName("VarDecl");
-            //    var tmpNode = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)node;
-            //    foreach (var v in tmpNode.Variables)
-            //    {
-            //        var item = new Views.MainView.Nodes.Items.DataFlowItem();
-            //        item.SetName(v.Name);
-            //        item.SetItemType(tmpNode.Type.ToString());
-            //        variableNode.AddInput(item);
-            //    }
-            //}
-            //#endregion
+            foreach (var i in method.Parameters)
+            {
+                var data = entry.CreateAndAddOutput<DataFlowItem>();
+                data.SetName(i.Name);
+                data.SetItemType(i.Type.ToString());
+            }
+
+            this._generateFuncNodesBlockStmt(method.Body);
+
+            var returnType = exit.CreateAndAddInput<FlowNodeItem>();
+            returnType.SetName(method.ReturnType.ToString());
+
+
 
             exit.Margin = new Thickness(0, 150, 0, 0);
         }
+
 
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.DropNodes(null);
-
-            //// if the mode is drawing a line
-            //if (Nodes.TransformingNode.Transformation == Nodes.TransformingNode.TransformationMode.LINE)
-            //{
-            //    Nodes.Items.Base.NodeAnchor n = ((Nodes.Items.Base.NodeAnchor)Nodes.TransformingNode.TransformingObject);
-            //    if (n._parentItem.Orientation == Nodes.Items.Base.IOItem.EOrientation.RIGHT)
-            //    {
-            //        // delete link if when mouse up is not from output to an input
-            //        if (enterInput == null)
-            //            MainGrid.Children.Remove(n.IOLine);
-            //        else
-            //        {
-            //            enterInput.IOLine = n.IOLine;
-            //            enterInput._parentItem.ParentNode.lineInput = n.IOLine;
-            //        }
-            //    }
-            //    else if (n._parentItem.Orientation == Nodes.Items.Base.IOItem.EOrientation.LEFT)
-            //    {
-            //        // delete link if when mouse up is not from input to an output
-            //        if (enterOutput == null)
-            //            MainGrid.Children.Remove(n.IOLine);
-            //        else
-            //        {
-            //            double tmpX = n.IOLine.X1;
-            //            double tmpY = n.IOLine.Y1;
-            //            n.IOLine.X1 = n.IOLine.X2;
-            //            n.IOLine.Y1 = n.IOLine.Y2;
-            //            n.IOLine.X2 = tmpX;
-            //            n.IOLine.Y2 = tmpY;
-            //            enterOutput.IOLine = n.IOLine;
-            //            enterOutput._parentItem.ParentNode.lineOutput = n.IOLine;
-            //        }
-            //    }
-            //}
-
-            //// reset mode 
-            //    MessageBox.Show("teste");
-
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
