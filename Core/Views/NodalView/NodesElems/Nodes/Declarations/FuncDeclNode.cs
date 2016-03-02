@@ -53,7 +53,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             base.SetDynamicResources(keyPrefix);
             if(_editIcon != null)
             {
-                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "MainColor");
+                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
             }
         }
         #endregion ICodeInVisual

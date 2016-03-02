@@ -94,7 +94,7 @@
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\IONode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AIONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
     <Compile Include="Views\MainView\MainButton.xaml.cs">
       <DependentUpon>MainButton.xaml</DependentUpon>
@@ -120,11 +120,17 @@
     <Compile Include="Views\NodalView\NodalView.xaml.cs">
       <DependentUpon>NodalView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStatementNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AExpressionNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\FuncCallExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TernaryExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\IfStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\AStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ReturnStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ReturnStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\WhileStmtNode.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public abstract class AStatementNode : IONode
+    public abstract class AStatementNode : AIONode
     {
         public AStatementNode(ResourceDictionary themeResDict) :
             base(themeResDict)

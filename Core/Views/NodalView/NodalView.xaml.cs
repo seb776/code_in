@@ -7,6 +7,7 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using ICSharpCode.NRefactory.CSharp;
 using System;
@@ -399,7 +400,7 @@ namespace code_in.Views.NodalView
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
-                var variableNode = this.CreateAndAddNode<VarDeclNode>();
+                var variableNode = this.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.SetNodeType("VarDecl");
                 foreach (var v in varStmt.Variables)
                 {
@@ -410,24 +411,54 @@ namespace code_in.Views.NodalView
             }
             #endregion Variable Declaration
             #region ExpressionStatement
-            #endregion ExpressionStatement
-
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
                 var exprStmt = stmtArg as ExpressionStatement;
 
-                var exprStmtNode = this.CreateAndAddNode<ExpressionStatementNode>();
-
-                var input = exprStmtNode.CreateAndAddInput<DataFlowItem>();
-                input.SetName(exprStmt.ToString());
+                var exprStmtNode = this.CreateAndAddNode<ExpressionStmtNode>();
+                exprStmtNode.Expression.SetName(exprStmt.ToString());
+                this._generateFuncExpressions(exprStmt.Expression);
             }
+            #endregion ExpressionStatement
+            #region Return Statement
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
+            {
+                var exprStmt = stmtArg as ExpressionStatement;
+
+                var exprStmtNode = this.CreateAndAddNode<ReturnStmtNode>();
+                if (exprStmt != null)
+                {
+                    this._generateFuncExpressions(exprStmt.Expression);
+                }
+            }
+            #endregion Return Statement
             #endregion Single Statement
+        }
+
+        private void _generateFuncExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
+        {
+            if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
+            {
+                var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
+                var unaryExpr = this.CreateAndAddNode<UnaryExprNode>();
+                unaryExpr.OperandA.SetName(unaryExprOp.OperatorToken.ToString());
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
+            {
+                var binaryExpr = this.CreateAndAddNode<BinaryExprNode>();
+
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
+            {
+                var invokExpr = this.CreateAndAddNode<FuncCallExprNode>();
+
+            }
         }
 
         public void GenerateFuncNodes(MethodDeclaration method)
         {
             var entry = this.CreateAndAddNode<FuncEntryNode>();
-            var exit = this.CreateAndAddNode<ReturnStatementNode>();
+            var exit = this.CreateAndAddNode<ReturnStmtNode>();
             exit.MakeNotRemovable();
 
             foreach (var i in method.Parameters)

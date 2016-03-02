@@ -8,15 +8,17 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class VarDeclNode : AStatementNode
+    public class ExpressionStmtNode : AStatementNode
     {
-        public VarDeclNode(ResourceDictionary themeResDict) : base(themeResDict)
+        public DataFlowItem Expression = null;
+        public ExpressionStmtNode(ResourceDictionary themeResDict) :
+            base(themeResDict)
         {
             this.CreateAndAddInput<FlowNodeItem>();
+            Expression = this.CreateAndAddInput<DataFlowItem>();
+            Expression.SetName("Expression");
             this.CreateAndAddOutput<FlowNodeItem>();
-            this.SetNodeType("Declaration");
-            this.SetName("Variables");
-            this.SetDynamicResources("VarDeclNode");
+            this.SetDynamicResources("ExpressionStmtNode");
         }
     }
 }

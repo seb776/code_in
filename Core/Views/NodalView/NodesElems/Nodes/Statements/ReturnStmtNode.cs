@@ -8,9 +8,9 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class ReturnStatementNode : AStatementNode
+    public class ReturnStmtNode : AStatementNode
     {
-        public ReturnStatementNode(ResourceDictionary themeResDict) :
+        public ReturnStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.CreateAndAddInput<FlowNodeItem>();

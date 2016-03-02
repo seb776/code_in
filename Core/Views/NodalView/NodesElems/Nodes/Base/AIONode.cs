@@ -17,11 +17,11 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     /// <summary>
     /// Defines an abstract visual node that has Input and OutputList
     /// </summary>
-    public abstract class IONode : BaseNode
+    public abstract class AIONode : BaseNode
     {
         Grid _subGrid;
-        StackPanel _inputs;
-        StackPanel _outputs;
+        protected StackPanel _inputs;
+        protected StackPanel _outputs;
         public override void SetRootView(IVisualNodeContainerDragNDrop root)
         {
             base.SetRootView(root);
@@ -103,7 +103,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         {
             this._outputs.Children.Remove(item);
         }
-        public IONode(ResourceDictionary themeResDict) :
+        public AIONode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             _subGrid = new Grid();

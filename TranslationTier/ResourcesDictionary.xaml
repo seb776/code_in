@@ -75,19 +75,19 @@
     <SolidColorBrush x:Key="ReturnStmtNodeMainColor" Color="#FFF00036"/>
     <SolidColorBrush x:Key="ReturnStmtNodeSecondaryColor" Color="#424242"/>
 
-    <!-- For VarDeclNode color handling -->
-    <SolidColorBrush x:Key="VarDeclNodeTypeForeGroundColor" Color="#FFF00036"/>
-    <SolidColorBrush x:Key="VarDeclNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="VarDeclNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="VarDeclNodeMainColor" Color="#FF8914"/>
-    <SolidColorBrush x:Key="VarDeclNodeSecondaryColor" Color="#424242"/>
+    <!-- For VarDeclStmtNode color handling -->
+    <SolidColorBrush x:Key="VarDeclStmtNodeTypeForeGroundColor" Color="#FF8914"/>
+    <SolidColorBrush x:Key="VarDeclStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="VarDeclStmtNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="VarDeclStmtNodeMainColor" Color="#FF8914"/>
+    <SolidColorBrush x:Key="VarDeclStmtNodeSecondaryColor" Color="#424242"/>
 
     <!-- For DefaultStmtNode color handling -->
-    <SolidColorBrush x:Key="ExpressionStmtNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeSecondaryColor" Color="Black"/>
+    <SolidColorBrush x:Key="ExpressionStmtNodeTypeForeGroundColor" Color="#FFA914FF"/>
+    <SolidColorBrush x:Key="ExpressionStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="ExpressionStmtNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="ExpressionStmtNodeMainColor" Color="#FFA914FF"/>
+    <SolidColorBrush x:Key="ExpressionStmtNodeSecondaryColor" Color="#424242"/>
 
     <!-- For IfStmtNode color handling -->
     <SolidColorBrush x:Key="IfStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
