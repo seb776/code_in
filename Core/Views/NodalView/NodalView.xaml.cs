@@ -36,9 +36,8 @@ namespace code_in.Views.NodalView
         private TransformationMode _nodeTransform = TransformationMode.NONE;
         private INodalPresenter _nodalPresenter = null;
         private Point _newNodePos = new Point(0, 0);
-        private Line l;
-
-        Point lastPosition = new Point(0, 0);
+        private Line _currentLineDrawing;
+        private Point _lastPosition = new Point(0, 0);
 
         public NodalView(ResourceDictionary themeResDict)
         {
@@ -46,17 +45,6 @@ namespace code_in.Views.NodalView
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
-            var t = this.CreateAndAddNode<FuncDeclNode>();
-            t.CreateAndAddInput<DataFlowItem>();
-            t.CreateAndAddOutput<FlowNodeItem>();
-
-            var at = this.CreateAndAddNode<FuncDeclNode>();
-            at.CreateAndAddInput<DataFlowItem>();
-            at.CreateAndAddOutput<FlowNodeItem>();
-
-            var bt = this.CreateAndAddNode<FuncDeclNode>();
-            bt.CreateAndAddInput<DataFlowItem>();
-            bt.CreateAndAddOutput<FlowNodeItem>();
         }
         public NodalView() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
@@ -86,11 +74,11 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    l = new Line();
+                    _currentLineDrawing = new Line();
 
-                    l.Stroke = new SolidColorBrush(Colors.GreenYellow);
-                    l.StrokeThickness = 3;
-                    Canvas.SetZIndex(l, -9999999); // TODO Beuark
+                    _currentLineDrawing.Stroke = new SolidColorBrush(Colors.GreenYellow);
+                    _currentLineDrawing.StrokeThickness = 3;
+                    Canvas.SetZIndex(_currentLineDrawing, -9999999); // TODO Beuark
                     Point nodeAnchorRelativeCoord;
                     if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
                     {
@@ -101,21 +89,21 @@ namespace code_in.Views.NodalView
                         nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
 
                     }
-                    l.X1 = nodeAnchorRelativeCoord.X;
-                    l.Y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
-                    l.X2 = l.X1;
-                    l.Y2 = l.Y1;
+                    _currentLineDrawing.X1 = nodeAnchorRelativeCoord.X;
+                    _currentLineDrawing.Y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
+                    _currentLineDrawing.X2 = _currentLineDrawing.X1;
+                    _currentLineDrawing.Y2 = _currentLineDrawing.Y1;
                     if ((_draggingNode as IOItem)._nodeAnchor.IOLine != null)
                     {
                         this.RemoveLink(_draggingNode as IOItem);
                     }
                     if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
                     {
-                        ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(l);
+                        ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(_currentLineDrawing);
                     }
                     else
                     {
-                        this.MainGrid.Children.Add(l);
+                        this.MainGrid.Children.Add(_currentLineDrawing);
                     }
                 }
             }
@@ -142,7 +130,7 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    Canvas.SetZIndex(l, 9999999);
+                    Canvas.SetZIndex(_currentLineDrawing, 9999999);
 
                     if (node == null ||
                         ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
@@ -152,11 +140,11 @@ namespace code_in.Views.NodalView
                         // remove line
                         if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
                         {
-                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(l);
+                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(_currentLineDrawing);
                         }
                         else
                         {
-                            this.MainGrid.Children.Remove(l);
+                            this.MainGrid.Children.Remove(_currentLineDrawing);
                         }
                     }
                     else
@@ -171,17 +159,17 @@ namespace code_in.Views.NodalView
                             if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
                             {
                                 Point tmpPoint = new Point();
-                                tmpPoint.X = l.X1;
-                                tmpPoint.Y = l.Y1;
-                                l.X1 = l.X2;
-                                l.Y1 = l.Y2;
-                                l.X2 = tmpPoint.X;
-                                l.Y2 = tmpPoint.Y;
+                                tmpPoint.X = _currentLineDrawing.X1;
+                                tmpPoint.Y = _currentLineDrawing.Y1;
+                                _currentLineDrawing.X1 = _currentLineDrawing.X2;
+                                _currentLineDrawing.Y1 = _currentLineDrawing.Y2;
+                                _currentLineDrawing.X2 = tmpPoint.X;
+                                _currentLineDrawing.Y2 = tmpPoint.Y;
                             }
 
                             // storing line in nodeanchor
-                            (_draggingNode as IOItem)._nodeAnchor.IOLine = l;
-                            (node as IOItem)._nodeAnchor.IOLine = l;
+                            (_draggingNode as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
+                            (node as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
                             (_draggingNode as IOItem).IOAttached = node as IOItem;
                             (node as IOItem).IOAttached = (_draggingNode as IOItem);
                         }
@@ -241,8 +229,6 @@ namespace code_in.Views.NodalView
         {
             this._nodalPresenter.OpenFile(path);
         }
-
-        public NodeAnchor destAnchor; // when drawin a line, stock the other destination on the link
 
         public void GenerateVisualNodes(NodalModel model) // TODO Do better (Give a graph of NodePresenter (can be very generic))
         {
@@ -485,17 +471,14 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            ////  System.Diagnostics.Trace.WriteLine(enterOutput);
-            //bool gridMagnet = true;
-
             Vector diff;
-            if ((lastPosition.X + lastPosition.Y) < 0.01)
+            if ((_lastPosition.X + _lastPosition.Y) < 0.01)
                 diff = new Vector(0, 0);
             else
             {
-                diff = lastPosition - e.GetPosition(this.MainGrid);
+                diff = _lastPosition - e.GetPosition(this.MainGrid);
             }
-            lastPosition = e.GetPosition(this.MainGrid);
+            _lastPosition = e.GetPosition(this.MainGrid);
 
             if (_nodeTransform != TransformationMode.NONE /*&& _transformingNodes.Count() > 0*/)
             {
@@ -560,8 +543,8 @@ namespace code_in.Views.NodalView
                 //    }
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    l.X2 = e.GetPosition(this.MainGrid).X;
-                    l.Y2 = e.GetPosition(this.MainGrid).Y;
+                    _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
+                    _currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).Y;
                 }
 
             }

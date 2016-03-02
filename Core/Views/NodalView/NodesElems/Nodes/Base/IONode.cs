@@ -157,7 +157,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             }
         }
         #region ICodeInVisual
-        public virtual void SetDynamicResources(String keyPrefix)
+        public override void SetDynamicResources(String keyPrefix)
         {
             this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
             this.NodeSeparator.SetResourceReference(ForegroundProperty, keyPrefix + "SeparatorForeGroundColor");

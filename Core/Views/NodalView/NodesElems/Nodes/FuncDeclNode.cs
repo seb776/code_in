@@ -17,7 +17,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     public class FuncDeclNode : IONode
     {
         public MethodDeclaration MethodNode = null;
-        private int _offsetX = 0;
         private Line _editIcon;
 
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :
@@ -32,7 +31,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             _editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             _editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             _editIcon.StrokeThickness = 3;
-            _editIcon.Stroke = new SolidColorBrush(Colors.White);
+            _editIcon.Stroke = new SolidColorBrush(Colors.Black);
             _editIcon.MouseDown += editIcon_MouseDown;
             this.NodeHeader.Children.Add(_editIcon);
             this.SetDynamicResources("FuncDeclNode");
@@ -49,14 +48,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        //TODO : faire une exception car bouton en plus
         #region ICodeInVisual
-        public virtual void SetDynamicResources(string keyPrefix)
+        public override void SetDynamicResources(string keyPrefix)
         {
             base.SetDynamicResources(keyPrefix);
             if(_editIcon != null)
             {
-                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
+                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "MainColor");
             }
         }
         #endregion ICodeInVisual
