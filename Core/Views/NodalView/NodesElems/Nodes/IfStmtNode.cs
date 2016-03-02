@@ -25,9 +25,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             item = this.CreateAndAddOutput<FlowNodeItem>();
             item.SetName("False");
         }
-        public override void SetDynamicResources(string keyPrefix)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
