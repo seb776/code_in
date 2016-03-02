@@ -264,54 +264,61 @@ namespace code_in.Views.NodalView
 
                     foreach (var v in tmpNode.Members)
                     {
-                        var item = enumDeclNode.CreateAndAddNode<NodeItem>();
-                        item.SetName(v.Name);
+                        var tmp = v as EnumMemberDeclaration;
+                        var item = enumDeclNode.CreateAndAddNode<DataFlowItem>();
+                        if (tmp.Initializer.IsNull == false)
+                            item.SetName(v.Name + " = " + tmp.Initializer.ToString());
+                        else
+                            item.SetName(v.Name);
                     }
                 }
                 #endregion Enum
                 #region Class
-                ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
-                parentNode = classDeclNode;
+                else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Class)
+                {
+                    ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
+                    parentNode = classDeclNode;
 
-                classDeclNode.SetName(tmpNode.Name);
-                // TODO protected internal
-                switch (tmpNode.Modifiers.ToString()) // Puts the right scope
-                {
-                    case "Public":
-                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
-                        break;
-                    case "Private":
-                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
-                        break;
-                    case "Protected":
-                        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
-                        break;
-                    default:
-                        break;
-                }
-                //goDeeper = false;
-                foreach (var n in node.Children)
-                {
-                    if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+                    classDeclNode.SetName(tmpNode.Name);
+                    // TODO protected internal
+                    switch (tmpNode.Modifiers.ToString()) // Puts the right scope
                     {
-                        ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
-
-                        var item = classDeclNode.CreateAndAddNode<ClassItem>();
-                        item.SetName(field.Variables.FirstOrNullObject().Name);
-                        //item.SetItemType(field.ReturnType.ToString());
-                        switch (field.Modifiers.ToString()) // Puts the right scope
+                        case "Public":
+                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
+                            break;
+                        case "Private":
+                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
+                            break;
+                        case "Protected":
+                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
+                            break;
+                        default:
+                            break;
+                    }
+                    //goDeeper = false;
+                    foreach (var n in node.Children)
+                    {
+                        if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                         {
-                            case "Public":
-                                item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
-                                break;
-                            case "Private":
-                                item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
-                                break;
-                            case "Protected":
-                                item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
-                                break;
-                            default:
-                                break;
+                            ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
+
+                            var item = classDeclNode.CreateAndAddNode<ClassItem>();
+                            item.SetName(field.Variables.FirstOrNullObject().Name);
+                            //item.SetItemType(field.ReturnType.ToString());
+                            switch (field.Modifiers.ToString()) // Puts the right scope
+                            {
+                                case "Public":
+                                    item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
+                                    break;
+                                case "Private":
+                                    item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
+                                    break;
+                                case "Protected":
+                                    item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                 }
