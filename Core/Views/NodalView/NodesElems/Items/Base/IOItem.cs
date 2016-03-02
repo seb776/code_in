@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
-    public abstract class IOItem : NodeItem
+    public abstract class IOItem : ANodeItem
     {
         public enum EOrientation
         {

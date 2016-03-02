@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
 {
-    public class FuncDeclNode : IONode
+    public class FuncDeclNode : AOrderedContentNode
     {
         public MethodDeclaration MethodNode = null;
         private Line _editIcon;
@@ -22,8 +22,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetNodeType("FunctionDecl");
-            this.SetName("Func1");
+            this.SetNodeType("Declaration");
+            this.SetName("Function");
             _editIcon = new Line();
             _editIcon.SetValue(Grid.ColumnProperty, 4);
             _editIcon.X1 = _editIcon.Y1 = 0;
@@ -31,7 +31,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             _editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             _editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             _editIcon.StrokeThickness = 3;
-            _editIcon.Stroke = new SolidColorBrush(Colors.Black);
             _editIcon.MouseDown += editIcon_MouseDown;
             this.NodeHeader.Children.Add(_editIcon);
             this.SetDynamicResources("FuncDeclNode");

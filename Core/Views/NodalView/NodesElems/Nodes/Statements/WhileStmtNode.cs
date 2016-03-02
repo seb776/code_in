@@ -9,10 +9,10 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class WhileStmt : AStatementNode
+    public class WhileStmtNode : AStatementNode
     {
         public DataFlowItem Condition = null;
-        public WhileStmt(ResourceDictionary themeResDict) :
+        public WhileStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetName("While");

@@ -108,8 +108,8 @@
     <Compile Include="Views\NodalView\NodesElems\Items\DataFlowItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FlowNodeItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\IOItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml.cs">
-      <DependentUpon>NodeItem.xaml</DependentUpon>
+    <Compile Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml.cs">
+      <DependentUpon>ANodeItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml.cs">
       <DependentUpon>ScopeItem.xaml</DependentUpon>
@@ -124,7 +124,8 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\IfStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\AStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ReturnStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\WhileStmt.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\WhileStmtNode.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -165,7 +166,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Items\Base\NodeItem.xaml">
+    <Page Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

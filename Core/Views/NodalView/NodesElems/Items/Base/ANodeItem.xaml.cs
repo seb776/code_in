@@ -18,21 +18,21 @@ using code_in.Views.NodalView.NodesElems;
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
     /// <summary>
-    /// Interaction logic for NodeItem.xaml
+    /// Interaction logic for ANodeItem.xaml
     /// </summary>
-    public abstract partial class NodeItem : UserControl, INodeElem, ICodeInVisual
+    public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
         protected INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
-        protected NodeItem(ResourceDictionary themeResDict)
+        protected ANodeItem(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
         }
-        protected NodeItem() :
+        protected ANodeItem() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 

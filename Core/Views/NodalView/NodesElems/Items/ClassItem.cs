@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class ClassItem : Base.NodeItem
+    public class ClassItem : Base.ANodeItem
     {
         public override void SetDynamicResources(String keyPrefix) { }
         static Random r = new Random();

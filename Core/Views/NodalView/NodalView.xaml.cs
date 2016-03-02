@@ -335,9 +335,9 @@ namespace code_in.Views.NodalView
                 var parameters = method.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; ++i)
                 {
-                    var item = funcDecl.CreateAndAddInput<DataFlowItem>();
+                    var item = funcDecl.CreateAndAddNode<ClassItem>(); // TODO ArgItem
                     item.SetName(parameters[i].Name);
-                    item.SetItemType(parameters[i].Type.ToString());
+                    //item.SetItemType(parameters[i].Type.ToString());
                 }
                 funcDecl.SetName(method.Name);
                 goDeeper = false;
@@ -378,8 +378,7 @@ namespace code_in.Views.NodalView
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
             {
                 var whileStmt = stmtArg as ICSharpCode.NRefactory.CSharp.WhileStatement;
-                var nodeLoop = this.CreateAndAddNode<FuncDeclNode>();
-                nodeLoop.SetName("While");
+                var nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
                 var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
                 cond.SetName(whileStmt.Condition.ToString());
                 this._generateFuncNodesBlockStmt(whileStmt.EmbeddedStatement);
@@ -400,7 +399,7 @@ namespace code_in.Views.NodalView
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
-                var variableNode = this.CreateAndAddNode<FuncDeclNode>();
+                var variableNode = this.CreateAndAddNode<VarDeclNode>();
                 variableNode.SetNodeType("VarDecl");
                 foreach (var v in varStmt.Variables)
                 {
