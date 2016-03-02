@@ -13,6 +13,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             base(themeResDict)
         {
             this.MouseUp += EvtDropNode;
+//            this.SetDynamicResources("AcontentNode");
         }
 
         void EvtDropNode(object sender, System.Windows.Input.MouseButtonEventArgs e)

@@ -15,7 +15,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict)
             : base(themeResDict)
         {
-            this.SetColorResource("NamespaceNodeColor");
             this.SetNodeType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
             _orderedLayout = new System.Windows.Controls.StackPanel();
@@ -33,9 +32,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             : this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
-        #region ICodeInVisual
-        public abstract override void SetDynamicResources(String keyPrefix);
-        #endregion ICodeInVisual
         #region IVisualNodeContainer
         
         public override void AddNode<T>(T node, int index = -1)

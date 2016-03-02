@@ -46,7 +46,7 @@
                         </Label.Effect>
                         NodeType
                     </Label>
-                    <Label Grid.Column="2">::</Label>
+                    <Label x:Name="NodeSeparator" Grid.Column="2">::</Label>
                     <TextBox Grid.Column="3" x:Name="NodeName" Margin="2,2,0,0"  BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
                         <TextBox.Effect>
                             <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>

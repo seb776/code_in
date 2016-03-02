@@ -19,18 +19,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             this.SetNodeType("FuncEntry");
             this.SetName("Inputs");
-            this.SetDynamicResources("FuncEntry");
+            this.SetDynamicResources("FuncEntryNode");
             this.NodeHeader.Children.Remove(this.RmBtn);
             this.CreateAndAddOutput<FlowNodeItem>();
-        }
-
-        public override void SetDynamicResources(String keyPrefix)
-        {
-            this.NodeBorder.SetResourceReference(BorderBrushProperty, keyPrefix + "SecColor");
-            this.NodeHeader.SetResourceReference(BackgroundProperty, keyPrefix + "SecColor");
-            this.BackGrid.SetResourceReference(BackgroundProperty, keyPrefix + "MainColor");
-            this.CrossA.SetResourceReference(Shape.StrokeProperty, keyPrefix + "MainColor");
-            this.CrossB.SetResourceReference(Shape.StrokeProperty, keyPrefix + "MainColor");
         }
     }
 }

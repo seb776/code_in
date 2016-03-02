@@ -18,24 +18,24 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     {
         public MethodDeclaration MethodNode = null;
         private int _offsetX = 0;
+        private Line _editIcon;
 
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetColorResource("FuncDeclNodeColor");
             this.SetNodeType("FunctionDecl");
             this.SetName("Func1");
-            this.SetDynamicResources("FuncDecl");
-            var editIcon = new Line();
-            editIcon.SetValue(Grid.ColumnProperty, 4);
-            editIcon.X1 = editIcon.Y1 = 0;
-            editIcon.X2 = editIcon.Y2 = 10;
-            editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            editIcon.StrokeThickness = 3;
-            editIcon.Stroke = new SolidColorBrush(Colors.Black);
-            editIcon.MouseDown += editIcon_MouseDown;
-            this.NodeHeader.Children.Add(editIcon);
+            _editIcon = new Line();
+            _editIcon.SetValue(Grid.ColumnProperty, 4);
+            _editIcon.X1 = _editIcon.Y1 = 0;
+            _editIcon.X2 = _editIcon.Y2 = 10;
+            _editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            _editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            _editIcon.StrokeThickness = 3;
+            _editIcon.Stroke = new SolidColorBrush(Colors.White);
+            _editIcon.MouseDown += editIcon_MouseDown;
+            this.NodeHeader.Children.Add(_editIcon);
+            this.SetDynamicResources("FuncDeclNode");
         }
 
         void editIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -48,10 +48,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
+
+        //TODO : faire une exception car bouton en plus
         #region ICodeInVisual
-        public override void SetDynamicResources(string keyPrefix)
+        public virtual void SetDynamicResources(string keyPrefix)
         {
-            //throw new NotImplementedException();
+            base.SetDynamicResources(keyPrefix);
+            if(_editIcon != null)
+            {
+                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
+            }
         }
         #endregion ICodeInVisual
 
