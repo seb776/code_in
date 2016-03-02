@@ -144,6 +144,23 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             return this.NodeName.Text;
         }
 
+        /// <summary>
+        /// This function is not reversible. It removes the remove button from the node.
+        /// </summary>
+        public void MakeNotRemovable()
+        {
+            this.NodeHeader.Children.Remove(this.RmBtn);
+        }
+
+        public void LockName()
+        {
+            this.NodeName.IsReadOnly = true;
+        }
+        public void UnLockName()
+        {
+            this.NodeName.IsReadOnly = false;
+        }
+
         private void ContentGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             // This automatically updates the list of accessible nodes

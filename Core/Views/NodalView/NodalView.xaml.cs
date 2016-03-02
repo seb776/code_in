@@ -7,6 +7,7 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -357,16 +358,9 @@ namespace code_in.Views.NodalView
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-
                 var ifNode = this.CreateAndAddNode<IfStmtNode>();
 
-                ifNode.SetName("IfStatement");
-
-                var cond = ifNode.CreateAndAddInput<FlowNodeItem>();
-                var condFalse = ifNode.CreateAndAddInput<FlowNodeItem>();
-
-                cond.SetName(ifStmt.Condition.ToString());
-                condFalse.SetName(ifStmt.Condition.ToString());
+                ifNode.Condition.SetName(ifStmt.Condition.ToString());
 
                 this._generateFuncNodesBlockStmt(ifStmt.TrueStatement);
                 this._generateFuncNodesBlockStmt(ifStmt.FalseStatement);
@@ -416,7 +410,7 @@ namespace code_in.Views.NodalView
             {
                 var exprStmt = stmtArg as ExpressionStatement;
 
-                var exprStmtNode = this.CreateAndAddNode<StatementNode>();
+                var exprStmtNode = this.CreateAndAddNode<ExpressionStatementNode>();
 
                 var input = exprStmtNode.CreateAndAddInput<DataFlowItem>();
                 input.SetName(exprStmt.ToString());
@@ -427,7 +421,8 @@ namespace code_in.Views.NodalView
         public void GenerateFuncNodes(MethodDeclaration method)
         {
             var entry = this.CreateAndAddNode<FuncEntryNode>();
-            var exit = this.CreateAndAddNode<FuncExitNode>();
+            var exit = this.CreateAndAddNode<ReturnStatementNode>();
+            exit.MakeNotRemovable();
 
             foreach (var i in method.Parameters)
             {

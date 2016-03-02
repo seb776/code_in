@@ -10,9 +10,13 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Shapes;
 
-namespace code_in.Views.NodalView.NodesElems.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class FuncEntryNode : IONode
+    /// <summary>
+    /// This is a special node that has no equivalent in the AST. Its only goal is to provide
+    /// a clear and simple entry point for function editing.
+    /// </summary>
+    public class FuncEntryNode : AStatementNode
     {
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -20,8 +24,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetNodeType("FuncEntry");
             this.SetName("Inputs");
             this.SetDynamicResources("FuncEntryNode");
-            this.NodeHeader.Children.Remove(this.RmBtn);
             this.CreateAndAddOutput<FlowNodeItem>();
+            this.MakeNotRemovable();
         }
     }
 }

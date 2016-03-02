@@ -8,7 +8,7 @@ namespace code_in.Models.Theme
 {
     public class DefaultThemeData : AThemeData
     {
-        public DefaultThemeData()
+        public DefaultThemeData() : base()
         {
             ForegroundColor = new Byte[]{255, 255, 0, 0};
             BackgroundColor = new Byte[] { 255, 42, 42, 42 };

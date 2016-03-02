@@ -8,7 +8,7 @@ namespace code_in.Models.Theme
 {
     public class DarkThemeData : AThemeData
     {
-        public DarkThemeData()
+        public DarkThemeData() : base()
         {
             ForegroundColor = new Byte[]{255, 0, 255, 0};
             BackgroundColor = new Byte[] { 255, 0, 0, 0 };

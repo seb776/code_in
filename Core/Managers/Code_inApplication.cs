@@ -1,4 +1,5 @@
-﻿using code_in.ViewModels;
+﻿using code_in.Models.Theme;
+using code_in.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace code_in
         {
             System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valide wrapper in order to start the application !");
             _environmentWrapper = wrapper;
+            // Code_inApplication.ThemeMgr.setMainTheme(new DefaultThemeData()); // TODO when theme management is complete and functional, load default theme
         }
         public static IEnvironmentWrapper _environmentWrapper = null;
         private static ThemeMgr _themeMgr = null;

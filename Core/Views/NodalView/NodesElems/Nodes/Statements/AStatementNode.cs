@@ -8,18 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace code_in.Views.NodalView.NodesElems.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class StatementNode : IONode
+    public abstract class AStatementNode : IONode
     {
-        public StatementNode(ResourceDictionary themeResDict) :
+        public AStatementNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetNodeType("Statement");
-            this.SetName("Default");
-            this.CreateAndAddInput<FlowNodeItem>();
-            this.CreateAndAddInput<DataFlowItem>();
-            this.CreateAndAddOutput<FlowNodeItem>();
+            this.LockName();
         }
     }
 }

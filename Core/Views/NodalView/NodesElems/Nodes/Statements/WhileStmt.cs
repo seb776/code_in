@@ -7,27 +7,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace code_in.Views.NodalView.NodesElems.Nodes
+namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class WhileLoopStmt : IONode
+    public class WhileStmt : AStatementNode
     {
-        public WhileLoopStmt(ResourceDictionary themeResDict) :
+        public DataFlowItem Condition = null;
+        public WhileStmt(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetNodeType("Statement");
             this.SetName("While");
             var item = this.CreateAndAddInput<FlowNodeItem>();
             item.SetName("In");
-            var item2 = this.CreateAndAddInput<DataFlowItem>();
-            item2.SetName("Condition");
+            Condition = this.CreateAndAddInput<DataFlowItem>();
+            Condition.SetName("Condition");
             item = this.CreateAndAddOutput<FlowNodeItem>();
             item.SetName("True");
             item = this.CreateAndAddOutput<FlowNodeItem>();
             item.SetName("False");
-        }
-        public override void SetDynamicResources(string keyPrefix)
-        {
-            throw new NotImplementedException();
+            this.SetDynamicResources("WhileStmtNode");
+
         }
     }
 }
