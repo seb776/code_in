@@ -370,6 +370,8 @@ namespace code_in.Views.NodalView
 
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
 
+                this._generateFuncExpressions(ifStmt.Condition); // Expressions
+
                 this._generateFuncNodesBlockStmt(ifStmt.TrueStatement);
                 this._generateFuncNodesBlockStmt(ifStmt.FalseStatement);
             }
@@ -382,6 +384,8 @@ namespace code_in.Views.NodalView
                 var nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
                 var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
                 cond.SetName(whileStmt.Condition.ToString());
+
+                this._generateFuncExpressions(whileStmt.Condition); // Expressions
                 this._generateFuncNodesBlockStmt(whileStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO

@@ -30,8 +30,8 @@
     <SolidColorBrush x:Key="ClassDeclNodeTypeForeGroundColor" Color="white"/>
     <SolidColorBrush x:Key="ClassDeclNodeSeparatorForeGroundColor" Color="white"/>
     <SolidColorBrush x:Key="ClassDeclNodeNameForeGroundColor" Color="white"/>
-    <SolidColorBrush x:Key="ClassDeclNodeMainColor" Color="Blue"/>
-    <SolidColorBrush x:Key="ClassDeclNodeSecondaryColor" Color="DarkGray"/>
+    <SolidColorBrush x:Key="ClassDeclNodeMainColor" Color="#FFFFA200"/>
+    <SolidColorBrush x:Key="ClassDeclNodeSecondaryColor" Color="#424242"/>
 
     <!-- For InterfaceDeclNode color handling -->
     <SolidColorBrush x:Key="InterfaceDeclNodeTypeForeGroundColor" Color="Black"/>
@@ -45,7 +45,7 @@
     <SolidColorBrush x:Key="NamespaceNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="NamespaceNodeNameForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="NamespaceNodeMainColor" Color="#52D4FF"/>
-    <SolidColorBrush x:Key="NamespaceNodeSecondaryColor" Color="#424242"/>
+    <SolidColorBrush x:Key="NamespaceNodeSecondaryColor" Color="#00424242"/>
 
     <!-- For FuncEntryNode color handling -->
     <SolidColorBrush x:Key="FuncEntryNodeTypeForeGroundColor" Color="White"/>
@@ -53,13 +53,6 @@
     <SolidColorBrush x:Key="FuncEntryNodeNameForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="FuncEntryNodeMainColor" Color="#52D4FF"/>
     <SolidColorBrush x:Key="FuncEntryNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For FuncExitNode color handling -->
-    <SolidColorBrush x:Key="FuncExitNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExitNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExitNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExitNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExitNodeSecondaryColor" Color="Black"/>
 
     <!-- For FuncDeclNode color handling -->
     <SolidColorBrush x:Key="FuncDeclNodeTypeForeGroundColor" Color="White"/>
