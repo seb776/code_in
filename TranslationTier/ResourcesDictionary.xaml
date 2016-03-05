@@ -118,11 +118,11 @@
     <SolidColorBrush x:Key="ForeachStmtNodeSecondaryColor" Color="Black"/>
 
     <!-- For UnaryExprNode color handling -->
-    <SolidColorBrush x:Key="UnaryExprNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="UnaryExprNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="UnaryExprNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="UnaryExprNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="UnaryExprNodeSecondaryColor" Color="Black"/>
+    <SolidColorBrush x:Key="UnaryExprNodeTypeForeGroundColor" Color="#FF6EAA45"/>
+    <SolidColorBrush x:Key="UnaryExprNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="UnaryExprNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="UnaryExprNodeMainColor" Color="#FF6EAA45"/>
+    <SolidColorBrush x:Key="UnaryExprNodeSecondaryColor" Color="#424242"/>
 
     <!-- For BinaryExprNode color handling -->
     <SolidColorBrush x:Key="BinaryExprNodeTypeForeGroundColor" Color="Black"/>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace code_in.Models
+namespace code_in.Models.NodalModel
 {
     public class NodalModel
     {

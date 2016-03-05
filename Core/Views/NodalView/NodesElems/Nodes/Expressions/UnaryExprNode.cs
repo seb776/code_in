@@ -15,6 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             OperandA = this.CreateAndAddInput<DataFlowItem>();
             OperandA.SetName("A");
+            this.SetDynamicResources("UnaryExprNode");
         }
     }
 }

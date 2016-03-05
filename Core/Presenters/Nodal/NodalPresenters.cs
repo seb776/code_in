@@ -1,4 +1,5 @@
 ﻿using code_in.Models;
+using code_in.Models.NodalModel;
 using code_in.Views.NodalView;
 using ICSharpCode.NRefactory.CSharp;
 using System;

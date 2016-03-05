@@ -1,4 +1,5 @@
 ﻿using code_in.Models;
+using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.Nodes;
 using code_in.Views.NodalView.NodesElems;
@@ -378,24 +379,51 @@ namespace code_in.Views.NodalView
 
             # endregion IfStmts
             # region Loops
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
+            bool isWhile = false;
+            if ((isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
+                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement))
             {
-                var whileStmt = stmtArg as ICSharpCode.NRefactory.CSharp.WhileStatement;
-                var nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
-                var cond = nodeLoop.CreateAndAddInput<DataFlowItem>();
-                cond.SetName(whileStmt.Condition.ToString());
+                dynamic whileStmt = stmtArg;
+                dynamic nodeLoop;
+                
+                if (isWhile)
+                    nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
+                else
+                    nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
+
+                nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
+                nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
 
                 this._generateFuncExpressions(whileStmt.Condition); // Expressions
                 this._generateFuncNodesBlockStmt(whileStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
             {
-            }
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement)) // TODO
-            {
+                var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
+                var nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
+
+                nodeLoop.SetName("For");
+
+                foreach (var forStmts in forStmt.Initializers)
+                    this._generateFuncNodesBlockStmt(forStmts);
+                nodeLoop.Condition.SetName(forStmt.Condition.ToString());
+
+                foreach (var forStmts in forStmt.Iterators)
+                    this._generateFuncNodesBlockStmt(forStmts);
+
+                this._generateFuncExpressions(forStmt.Condition); // Expressions
+                this._generateFuncNodesBlockStmt(forStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
             {
+                var forEachStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForeachStatement;
+                var nodeLoop = this.CreateAndAddNode<WhileStmtNode>();
+
+                nodeLoop.SetName("ForEach");
+                nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
+                this._generateFuncExpressions(forEachStmt.InExpression);
+                this._generateFuncNodesBlockStmt(forEachStmt.EmbeddedStatement);
+                
             }
             # endregion Loops
             #endregion Block Statement
@@ -445,7 +473,7 @@ namespace code_in.Views.NodalView
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
                 var unaryExpr = this.CreateAndAddNode<UnaryExprNode>();
-                unaryExpr.OperandA.SetName(unaryExprOp.OperatorToken.ToString());
+                unaryExpr.SetName(unaryExprOp.OperatorToken.ToString());
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
