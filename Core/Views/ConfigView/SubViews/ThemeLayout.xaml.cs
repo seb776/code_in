@@ -26,9 +26,12 @@ namespace code_in.Views.ConfigView.SubViews
 
         }
         private ResourceDictionary _themeResourceDictionary = null;
+        private ModThemeData temp = new ModThemeData();
+
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public Dictionary<String, AThemeData> _themeList = new Dictionary<string,AThemeData>();
         public MainView.MainView _preview = null;
+
         public ThemeLayout(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -76,7 +79,7 @@ namespace code_in.Views.ConfigView.SubViews
             //}
         }
 
-        private void Button_Save(object sender, RoutedEventArgs e)
+        private void Button_Confirm(object sender, RoutedEventArgs e)
         {
             if (Tmp != null)
                 Code_inApplication.ThemeMgr.setMainTheme(Tmp);
@@ -261,6 +264,11 @@ namespace code_in.Views.ConfigView.SubViews
                 Code_inApplication.ThemeMgr.setPreviewTheme(DarkData);
                 Tmp = DarkData;
             }
+        }
+
+        private void Button_Save(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

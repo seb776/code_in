@@ -257,9 +257,10 @@
             </ScrollViewer>-->
             <!--<ap:MainView x:Name="previewTheme" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Gray" />-->
 
-            <!-- Confirm/Cancel buttons  -->
-            <Button Grid.Column="1" Grid.Row="4" Content="Valider" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Save"/>
-            <Button Grid.Column="1" Grid.Row="4" Content="Annuler" Height="30" Width="100" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Cancel"/>
+            <!-- Save/Confirm/Cancel buttons  -->
+            <Button Grid.Column="1" Grid.Row="4" Content="Valider" Height="30" Width="90" VerticalAlignment="Center" HorizontalAlignment="Left" Click="Button_Confirm"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="Sauvegarder" Height="30" Width="90" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Save"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="Annuler" Height="30" Width="90" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Cancel"/>
 
         </Grid>
 

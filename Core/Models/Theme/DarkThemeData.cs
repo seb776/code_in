@@ -10,9 +10,9 @@ namespace code_in.Models.Theme
     {
         public DarkThemeData() : base()
         {
-            ForegroundColor = new Byte[]{255, 0, 255, 0};
-            BackgroundColor = new Byte[] { 255, 0, 0, 0 };
-            NodeTitleColor = new Byte[] { 255, 84, 84, 84 };
+            BNTypeForeGroundColor = new Byte[]{255, 0, 255, 0};
+            BNMainColor = new Byte[] { 255, 0, 0, 0 };
+            BNNameForeGroundColor = new Byte[] { 255, 84, 84, 84 };
         }
     }
 }
