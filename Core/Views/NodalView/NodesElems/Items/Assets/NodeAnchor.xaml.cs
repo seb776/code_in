@@ -28,11 +28,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         }
         private ResourceDictionary _themeResourceDictionary;
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        // protected to public?
+        
         public IOItem _parentItem;
 
         // Line of the NodeAnchor
         public Line IOLine;
+        public Tuple<Line, Line> IOSquare;
         public BezierSegment IOBezier;
         public PathFigure pthFigure;
 
@@ -55,6 +56,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             InitializeComponent();
             _parentItem = null;
             IOLine = null;
+            IOSquare = null;
         }
 
         public void setParentAnchor(IOItem item) {

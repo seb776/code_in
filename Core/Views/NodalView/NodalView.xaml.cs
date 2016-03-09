@@ -37,9 +37,11 @@ namespace code_in.Views.NodalView
         private ResourceDictionary _themeResourceDictionary = null;
         private INodeElem _draggingNode = null;
         private TransformationMode _nodeTransform = TransformationMode.NONE;
+        private LineMode _lineMode = LineMode.LINE;
         private INodalPresenter _nodalPresenter = null;
         private Point _newNodePos = new Point(0, 0);
         private Line _currentLineDrawing;
+        private Tuple<Line, Line> _currentSquareLineDrawing;
         private Point _lastPosition = new Point(0, 0);
 
         public NodalView(ResourceDictionary themeResDict)
@@ -58,7 +60,7 @@ namespace code_in.Views.NodalView
         public void UnSelectNode(INodeElem node) { }
         public void UnSelectAll() { }
 
-        public void DragNodes(TransformationMode transform, INodeElem node)
+        public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
         {
             _nodeTransform = transform;
             _draggingNode = node;
@@ -77,37 +79,77 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    _currentLineDrawing = new Line();
+                    if (_lineMode == LineMode.LINE)
+                    {
+                        _currentLineDrawing = new Line();
 
-                    _currentLineDrawing.Stroke = new SolidColorBrush(Colors.GreenYellow);
-                    _currentLineDrawing.StrokeThickness = 3;
-                    Canvas.SetZIndex(_currentLineDrawing, -9999999); // TODO Beuark
-                    Point nodeAnchorRelativeCoord;
-                    if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-                    {
-                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
-                    }
-                    else
-                    {
-                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
+                        _currentLineDrawing.Stroke = new SolidColorBrush(Colors.GreenYellow);
+                        _currentLineDrawing.StrokeThickness = 3;
+                        _currentLineDrawing.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
+                        Canvas.SetZIndex(_currentLineDrawing, -9999999); // TODO Beuark
+                        Point nodeAnchorRelativeCoord;
+                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        {
+                            nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
+                        }
+                        else
+                        {
+                            nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
 
+                        }
+                        _currentLineDrawing.X1 = nodeAnchorRelativeCoord.X;
+                        _currentLineDrawing.Y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
+                        _currentLineDrawing.X2 = _currentLineDrawing.X1;
+                        _currentLineDrawing.Y2 = _currentLineDrawing.Y1;
+                        if ((_draggingNode as IOItem)._nodeAnchor.IOLine != null)
+                        {
+                            // this.RemoveLink(_draggingNode as IOItem);
+                        }
+                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        {
+                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(_currentLineDrawing);
+                        }
+                        else
+                        {
+                            this.MainGrid.Children.Add(_currentLineDrawing);
+                        }
                     }
-                    _currentLineDrawing.X1 = nodeAnchorRelativeCoord.X;
-                    _currentLineDrawing.Y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
-                    _currentLineDrawing.X2 = _currentLineDrawing.X1;
-                    _currentLineDrawing.Y2 = _currentLineDrawing.Y1;
-                    if ((_draggingNode as IOItem)._nodeAnchor.IOLine != null)
+                    else if (_lineMode == LineMode.SQUARE)
                     {
-                        this.RemoveLink(_draggingNode as IOItem);
+                        Line sl1 = new Line();
+                        Line sl2 = new Line();
+                        _currentSquareLineDrawing = new Tuple<Line, Line>(sl1, sl2);
+
+                        sl1.Stroke = sl2.Stroke = new SolidColorBrush(Colors.GreenYellow);
+                        sl2.Stroke = new SolidColorBrush(Colors.AliceBlue);
+                        sl1.StrokeThickness = sl2.StrokeThickness = 3;
+                        Canvas.SetZIndex(sl1, -9999999);
+                        Canvas.SetZIndex(sl2, -9999999);
+                       
+                        Point nodeAnchorRelativeCoord;
+                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        {
+                            nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
+                        }
+                        else
+                        {
+                            nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
+                        }
+                        sl1.X1 = sl2.X1 = sl2.X2 = nodeAnchorRelativeCoord.X;
+                        sl1.Y1 = sl2.Y1 = sl2.Y2 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
+                        
+                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        {
+                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(sl1);
+                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(sl2);
+                        }
+                        else
+                        {
+                            this.MainGrid.Children.Add(sl1);
+                            this.MainGrid.Children.Add(sl2);
+                        }
                     }
-                    if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-                    {
-                        ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Add(_currentLineDrawing);
-                    }
-                    else
-                    {
-                        this.MainGrid.Children.Add(_currentLineDrawing);
-                    }
+                   
                 }
             }
         }
@@ -133,50 +175,106 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    Canvas.SetZIndex(_currentLineDrawing, 9999999);
-
-                    if (node == null ||
-                        ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
-                        ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
-                        _draggingNode.GetParentView() == node.GetParentView())
+                    if (_lineMode == LineMode.LINE)
                     {
-                        // remove line
-                        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        Canvas.SetZIndex(_currentLineDrawing, 9999999);
+
+                        if (node == null ||
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
+                            _draggingNode.GetParentView() == node.GetParentView())
                         {
-                            ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(_currentLineDrawing);
+                            // remove line
+                            if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                            {
+                                ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(_currentLineDrawing);
+                            }
+                            else
+                            {
+                                this.MainGrid.Children.Remove(_currentLineDrawing);
+                            }
                         }
                         else
                         {
-                            this.MainGrid.Children.Remove(_currentLineDrawing);
-                        }
-                    }
-                    else
-                    {
-                        if (node.GetType().IsSubclassOf(typeof(IOItem)))
-                        {
-                            if ((node as IOItem).IOAttached != null)
+                            if (node.GetType().IsSubclassOf(typeof(IOItem)))
                             {
-                                this.RemoveLink(node as IOItem);
-                            }
-                            // if create link from output to input, swap begin and end point of the line
-                            if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
-                            {
-                                Point tmpPoint = new Point();
-                                tmpPoint.X = _currentLineDrawing.X1;
-                                tmpPoint.Y = _currentLineDrawing.Y1;
-                                _currentLineDrawing.X1 = _currentLineDrawing.X2;
-                                _currentLineDrawing.Y1 = _currentLineDrawing.Y2;
-                                _currentLineDrawing.X2 = tmpPoint.X;
-                                _currentLineDrawing.Y2 = tmpPoint.Y;
-                            }
+                                if ((node as IOItem).IOAttached != null)
+                                {
+                                    this.RemoveLink(node as IOItem);
+                                }
+                                // if create link from output to input, swap begin and end point of the line
+                                if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
+                                {
+                                    Point tmpPoint = new Point();
+                                    tmpPoint.X = _currentLineDrawing.X1;
+                                    tmpPoint.Y = _currentLineDrawing.Y1;
+                                    _currentLineDrawing.X1 = _currentLineDrawing.X2;
+                                    _currentLineDrawing.Y1 = _currentLineDrawing.Y2;
+                                    _currentLineDrawing.X2 = tmpPoint.X;
+                                    _currentLineDrawing.Y2 = tmpPoint.Y;
+                                }
 
-                            // storing line in nodeanchor
-                            (_draggingNode as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
-                            (node as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
-                            (_draggingNode as IOItem).IOAttached = node as IOItem;
-                            (node as IOItem).IOAttached = (_draggingNode as IOItem);
+                                // storing line in nodeanchor
+                                (_draggingNode as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
+                                (node as IOItem)._nodeAnchor.IOLine = _currentLineDrawing;
+                                (_draggingNode as IOItem).IOAttached = node as IOItem;
+                                (node as IOItem).IOAttached = (_draggingNode as IOItem);
+                            }
                         }
                     }
+
+                    else if (_lineMode == LineMode.SQUARE)
+                    {
+                        Canvas.SetZIndex(_currentSquareLineDrawing.Item1, 9999999);
+                        Canvas.SetZIndex(_currentSquareLineDrawing.Item2, 9999999);
+
+                        if (node == null ||
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
+                            _draggingNode.GetParentView() == node.GetParentView())
+                        {
+                            // remove line
+                            if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                            {
+                                ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(_currentSquareLineDrawing.Item1);
+                                ((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(_currentSquareLineDrawing.Item2);
+                            }
+                            else
+                            {
+                                this.MainGrid.Children.Remove(_currentSquareLineDrawing.Item1);
+                                this.MainGrid.Children.Remove(_currentSquareLineDrawing.Item2);
+                            }
+                        }
+                        else
+                        {
+                            if (node.GetType().IsSubclassOf(typeof(IOItem)))
+                            {
+                               /* if ((node as IOItem).IOAttached != null)
+                                {
+                                    this.RemoveLink(node as IOItem);
+                                }*/
+                                // if create link from output to input, swap begin and end point of the line
+                                if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
+                                {
+                                    Point tmpPoint = new Point();
+                                    tmpPoint.X = _currentSquareLineDrawing.Item1.X1; // sl1.X1
+                                    tmpPoint.Y = _currentSquareLineDrawing.Item1.Y1; // sl1.Y1
+                                    _currentSquareLineDrawing.Item1.X1 = _currentSquareLineDrawing.Item2.X2;
+                                    _currentSquareLineDrawing.Item1.Y1 = _currentSquareLineDrawing.Item2.Y2;
+                                    _currentSquareLineDrawing.Item2.X2 = tmpPoint.X;
+                                    _currentSquareLineDrawing.Item2.Y2 = tmpPoint.Y;
+                                }
+
+                                // storing line in nodeanchor
+                                (_draggingNode as IOItem)._nodeAnchor.IOSquare = _currentSquareLineDrawing;
+                                (node as IOItem)._nodeAnchor.IOSquare = _currentSquareLineDrawing;
+                                (_draggingNode as IOItem).IOAttached = node as IOItem;
+                                (node as IOItem).IOAttached = (_draggingNode as IOItem);
+                            }
+                        }
+
+                    }
+                    
                 }
             }
 
@@ -531,6 +629,13 @@ namespace code_in.Views.NodalView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
+            if (e.Key == Key.L)
+            {
+                if (_lineMode == LineMode.LINE)
+                    _lineMode = LineMode.SQUARE;
+                else
+                    _lineMode = LineMode.LINE;
+            }
         }
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
@@ -563,7 +668,6 @@ namespace code_in.Views.NodalView
                 if (_nodeTransform == TransformationMode.MOVE)
                 {
                     Thickness margin = (Thickness)_draggingNode.GetType().GetProperty("Margin").GetValue(_draggingNode);
-
                     double marginLeft = margin.Left;
                     double marginTop = margin.Top;
                     Thickness newMargin = margin;
@@ -607,11 +711,43 @@ namespace code_in.Views.NodalView
                 //    }
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
-                    _currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).Y;
+                    if (_lineMode == LineMode.LINE)
+                    {
+                        _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
+                        _currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).Y;
+                    }
+                    else if (_lineMode == LineMode.SQUARE)
+                    {
+                        _currentSquareLineDrawing.Item1.X2 = e.GetPosition(this.MainGrid).X;
+                        _currentSquareLineDrawing.Item1.Y2 = _currentSquareLineDrawing.Item1.Y1;
+                        _currentSquareLineDrawing.Item2.X1 = _currentSquareLineDrawing.Item1.X2;
+                        _currentSquareLineDrawing.Item2.Y1 = _currentSquareLineDrawing.Item1.Y2;
+                        _currentSquareLineDrawing.Item2.X2 = _currentSquareLineDrawing.Item2.X1;
+                        _currentSquareLineDrawing.Item2.Y2 = e.GetPosition(this.MainGrid).Y;
+                    }
                 }
 
             }
+        }
+
+        void _currentLineDrawing_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Line aLine = sender as Line;
+            aLine.Stroke = new SolidColorBrush(Colors.Red); // to see the line selected
+            e.Handled = true;
+            var cm = new ContextMenu();
+            var m1 = new MenuItem();
+            m1.Header = "test";
+            m1.Click += testClick;
+            m1.DataContext = aLine;
+            cm.Items.Add(m1);
+            cm.IsOpen = true;
+        }
+
+        void testClick(object sender, RoutedEventArgs e)
+        {
+            Line aLine = (sender as MenuItem).DataContext as Line; // is it better to use _currentLineDrawing or let the DataContext?
+            // remove aLine
         }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

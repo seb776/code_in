@@ -11,7 +11,7 @@ namespace code_in.Views.NodalView.NodesElems
         void SelectNode(INodeElem node);
         void UnSelectNode(INodeElem node);
         void UnSelectAll();
-        void DragNodes(TransformationMode transform, INodeElem node);
+        void DragNodes(TransformationMode transform, INodeElem node, LineMode lm);
         void DropNodes(INodeElem container);
     }
     public enum TransformationMode
@@ -20,5 +20,13 @@ namespace code_in.Views.NodalView.NodesElems
         RESIZE,
         LINE,
         MOVE
+    }
+
+    public enum LineMode
+    {
+        NONE = 0,
+        LINE = 1,
+        SQUARE = 2,
+        BEZIER = 3
     }
 }

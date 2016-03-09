@@ -85,13 +85,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region Events
         private void EvtDragResize(object sender, MouseButtonEventArgs e)
         {
-            this.GetRootView().DragNodes(TransformationMode.RESIZE, this);
+            this.GetRootView().DragNodes(TransformationMode.RESIZE, this, LineMode.NONE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
         private void EvtDragNode(object sender, MouseButtonEventArgs e) // abstract ?
         {
-            this.GetRootView().DragNodes(TransformationMode.MOVE, this);
+            this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
