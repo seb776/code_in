@@ -52,7 +52,7 @@ namespace code_in.Views.MainView
         public void SelectNode(INodeElem node) { } // Do nothing
         public void UnSelectNode(INodeElem node) { } // Do nothing
         public void UnSelectAll() { } // Do nothing
-        public void DragNodes(TransformationMode transform, INodeElem node)
+        public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
         {
             //if (transform == TransformationMode.MOVE)
             //    _draggingNode = node;

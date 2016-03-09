@@ -85,13 +85,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region Events
         private void EvtDragResize(object sender, MouseButtonEventArgs e)
         {
-            this.GetRootView().DragNodes(TransformationMode.RESIZE, this);
+            this.GetRootView().DragNodes(TransformationMode.RESIZE, this, LineMode.NONE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
         private void EvtDragNode(object sender, MouseButtonEventArgs e) // abstract ?
         {
-            this.GetRootView().DragNodes(TransformationMode.MOVE, this);
+            this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
@@ -103,31 +103,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
         #endregion Events
-        //public void CreateLink(Nodes.Items.Base.NodeAnchor n)
-        //{
-        //    TransformingNode.TransformingObject = n;
-        //    TransformingNode.Transformation = TransformingNode.TransformationMode.LINE;
 
-        //    MainView.MainGrid.Children.Remove(n.IOLine);
-        //    n.IOLine = new Line();
-        //    n.IOLine.Stroke = System.Windows.Media.Brushes.Red;
-        //    n.IOLine.StrokeThickness = 5;
-        //    if (n._parentItem.Orientation == Nodes.Items.NodeItem.EOrientation.LEFT)
-        //        lineInput = n.IOLine;
-        //    else
-        //        lineOutput = n.IOLine;
-        //    Canvas.SetZIndex(n.IOLine, -1);
-
-        //    MainView.MainGrid.Children.Add(n.IOLine);
-        //}
-
-        //public void AddNodeModifiers(String type)
-        //{
-        //    System.Diagnostics.Debug.Assert(this._features[(int)EFeatures.CONTAINSMODIFIERS], "The node cannot contain modifiers.");
-        //    Label lblType = new Label();
-        //    lblType.Content = type;
-        //    this.NodeModifiers.Children.Add(lblType);
-        //}
+        public void AddAttribute(String type)
+        {
+            Label lblType = new Label();
+            lblType.Content = type;
+            this.NodeAttributes.Children.Add(lblType);
+        }
 
         public void SetNodeType(String type)
         {

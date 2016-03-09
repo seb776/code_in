@@ -85,17 +85,7 @@
   <ItemGroup>
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ThemeMgr.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Base\IASTNode.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\Base\AAttributableMember.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\Base\AClassDeclMember.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\Base\ADeclaration.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\Base\IRootDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\Base\ITypedDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\ClassDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\EnumDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\InterfaceDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\NamespaceDecl.cs" />
-    <Compile Include="Models\NodalModel\Nodes\Declarations\RootDecl.cs" />
+    <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
@@ -192,7 +182,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Models\NodalModel\NodalModel.cs" />
     <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
@@ -276,10 +265,7 @@
       <Name>TranslationTier</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\NodalModel\Nodes\Expressions\" />
-    <Folder Include="Models\NodalModel\Nodes\Statements\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
