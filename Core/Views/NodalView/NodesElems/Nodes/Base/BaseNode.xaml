@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="NodeModifiers" Grid.Row="0" Orientation="Vertical">
+        <StackPanel x:Name="NodeAttributes" Grid.Row="0" Orientation="Vertical">
         </StackPanel>
         <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="2" BorderBrush="{StaticResource LocalNodeColor}">
             <Border.Effect>
