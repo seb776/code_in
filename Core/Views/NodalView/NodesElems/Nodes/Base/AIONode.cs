@@ -142,6 +142,13 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
                     it._nodeAnchor.IOLine.X2 = nodeAnchorRelativeCoord.X;
                     it._nodeAnchor.IOLine.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
                 }
+                else if (it._nodeAnchor.IOSquare != null)
+                {
+                    it._nodeAnchor.IOSquare.Item1.X2 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOSquare.Item2.X1 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOSquare.Item2.X2 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOSquare.Item2.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
+                }
             }
 
             foreach (var i in _outputs.Children)

@@ -51,7 +51,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
         public void createLink()
         {
-            this.GetRootView().DragNodes(TransformationMode.LINE, this);
+            this.GetRootView().DragNodes(TransformationMode.LINE, this, LineMode.SQUARE);
 
             //this._parentNode.CreateLink(_nodeAnchor);
             //_nodeAnchor.lineBegin.X = _parentNode.Margin.Left + _parentNode.ActualWidth;

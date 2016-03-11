@@ -31,7 +31,7 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource LocalGridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseUp="MainView_MouseUp" MouseLeave="MainGrid_MouseLeave">
+    <Grid Background="{DynamicResource LocalGridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseUp="MainView_MouseUp" MouseLeave="MainGrid_MouseLeave" KeyDown="MainView_KeyDown">
         <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
     </Grid>
 </UserControl>
