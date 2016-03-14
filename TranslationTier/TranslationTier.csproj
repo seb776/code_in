@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>signingKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -62,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\1.png" />
+    <None Include="signingKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LanguageResourcesDictionary.xaml">
