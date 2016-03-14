@@ -8,6 +8,9 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using code_in;
+using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace Code_in.VSCode_in
 {
@@ -32,7 +35,7 @@ namespace Code_in.VSCode_in
     [ProvideToolWindow(typeof(ConfigWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
     [ProvideToolWindow(typeof(NodalWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
     [Guid(GuidList.guidVSCode_inPkgString)]
-    public sealed class VSCode_inPackage : Package
+    public sealed class VSCode_inPackage : Package, IEnvironmentWrapper
     {
         /// <summary>
         /// Default constructor of the package.
@@ -74,6 +77,7 @@ namespace Code_in.VSCode_in
                 MenuCommand configMenuItem = new MenuCommand(ConfigCallback, configMenuCommandID);
                 mcs.AddCommand(configMenuItem);
             }
+            Code_inApplication.StartApplication(this);
         }
         #endregion
 
@@ -98,6 +102,8 @@ namespace Code_in.VSCode_in
                 {
                     frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
                     frame.Show();
+                    (wp as NodalWindowPane).PaneId = i;
+                    (wp as NodalWindowPane).OpenFile();
                 }
             }
         }
@@ -118,6 +124,37 @@ namespace Code_in.VSCode_in
 
 
         }
+
+        public T CreateAndAddView<T>() where T : UserControl
+        {
+            Dictionary<String, Type> dict = new Dictionary<string, Type>()
+            {
+                {"MainView", typeof(NodalWindowPane)},
+                {"ConfigView", typeof(ConfigWindowPane)}
+            };
+            int i = 0;
+
+            while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
+                ++i;
+
+            ToolWindowPane wp = this.CreateToolWindow(dict[typeof(T).Name], i) as ToolWindowPane;
+
+            if (wp != null)
+            {
+                IVsWindowFrame frame = wp.Frame as IVsWindowFrame;
+                if (frame != null)
+                {
+                    frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
+                    frame.Show();
+                }
+                return wp.Content as T;
+            }
+            return null;
+        }
+        public void CloseView<T>(T view) where T : UserControl
+        {
+
+        }
     }
 
     public class ConfigWindowPane : ToolWindowPane // TODO move this elsewhere
@@ -125,19 +162,47 @@ namespace Code_in.VSCode_in
         private code_in.Views.ConfigView.ConfigView _configView = null;
         public ConfigWindowPane()
         {
-            _configView =  new code_in.Views.ConfigView.ConfigView();
+            _configView = new code_in.Views.ConfigView.ConfigView();
             this.Content = _configView;
+            this.Caption = "Configuration";
         }
     }
 
     public class NodalWindowPane : ToolWindowPane
     {
         private code_in.Views.MainView.MainView _mainView = null;
+        private int _paneId = 0;
+        public int PaneId
+        {
+            get
+            {
+                return _paneId;
+            }
+            set
+            {
+                _paneId = value;
+                this.Caption = "Blank" + _paneId;
+            }
+        }
 
         public NodalWindowPane()
         {
             _mainView = new code_in.Views.MainView.MainView();
             this.Content = _mainView;
+            PaneId = 0;
+        }
+
+        public void OpenFile()
+        {
+            Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            bool? result = fileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                this.Caption = fileDialog.SafeFileName;
+                this._mainView.OpenFile(fileDialog.FileName);
+            }
         }
     }
 }
