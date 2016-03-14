@@ -83,6 +83,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ThemeMgr.cs" />
     <Compile Include="Models\NodalModel.cs" />
