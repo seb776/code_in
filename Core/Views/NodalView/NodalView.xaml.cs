@@ -524,6 +524,16 @@ namespace code_in.Views.NodalView
                 
             }
             # endregion Loops
+            #region Switch
+            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
+            {
+                var switchStmtNode = this.CreateAndAddNode<SwitchStmtNode>();
+                var switchStmt = (stmtArg as SwitchStatement);
+                var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
+                exprInput.SetName(switchStmt.Expression.ToString());
+                _generateFuncExpressions(switchStmt.Expression);
+            }
+            #endregion Switch
             #endregion Block Statement
             #region Single Statement
             #region Variable Declaration
