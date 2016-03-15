@@ -9,12 +9,22 @@ namespace code_in.Models.NodalModel
 {
     public class NodalModel
     {
-        public SyntaxTree AST;
+        private SyntaxTree _ast;
+        public SyntaxTree AST
+        {
+            private set
+            {
+                _ast = value;
+            }
+            get
+            {
+                return _ast;
+            }
+        }
 
         public NodalModel(SyntaxTree ast)
         {
             AST = ast;
         }
-
     }
 }
