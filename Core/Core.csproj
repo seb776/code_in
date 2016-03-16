@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -141,6 +142,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\IfStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\AStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ReturnStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\SwitchStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\WhileStmtNode.cs" />
     <Page Include="App.xaml">

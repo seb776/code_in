@@ -6,7 +6,100 @@
              mc:Ignorable="d" 
              xmlns:nodes="clr-namespace:code_in.Views.NodalView.NodesElems.Nodes"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Expander x:Name="Sb" Header="SearchBar" VerticalAlignment="Stretch" Foreground="Black" IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Sb_Collapsed" ExpandDirection="Right" FlowDirection="RightToLeft">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ExpanderToggleButton" TargetType="{x:Type ToggleButton}">
+            <Border x:Name="ExpanderButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.ColumnSpan="2"/>
+                    <!--<Path x:Name="Sign"
+              Grid.Column="0"
+              Data="M 0,5 H 10 M 5,0 V 10 Z"
+              Stroke="#FF666666"
+              Width="10"
+              Height="10"
+              StrokeThickness="2"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              RenderTransformOrigin="0.5,0.5"
+              >
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Path.RenderTransform>
+                    </Path>-->
+                    <Label x:Name="Sign" Content="&lt;&lt;&lt;" Grid.Column="0" FontSize="15" FontWeight="ExtraBold"/>
+                    <ContentPresenter x:Name="HeaderContent" Grid.Column="1" Margin="4,0,0,0" ContentSource="Content"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <!--Change the sign to minus when toggled-->
+                <Trigger Property="IsChecked" Value="True">
+                    <!--<Setter Property="Data" 
+               TargetName="Sign" Value="M 0,5 H 10 Z"/>-->
+                    <Setter Property="Content" TargetName="Sign" Value="&gt;&gt;&gt;"/>
+                </Trigger>
+
+                <!-- MouseOver, Pressed behaviours-->
+                <Trigger Property="IsMouseOver" Value="true">
+                    <!--<Setter Property="Stroke"
+                            Value="#FF3C7FB1"
+                            TargetName="Circle"/>
+                    <Setter Property="Stroke"
+                            Value="#222"
+                            TargetName="Sign"/>-->
+                    <Setter Property="Foreground" Value="#FF3C7FB1" TargetName="Sign"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <!--<Setter Property="Stroke"
+                            Value="#FF526C7B"
+                            TargetName="Circle"/>
+                    <Setter Property="StrokeThickness"
+                            Value="1.5"
+                            TargetName="Circle"/>
+                    <Setter Property="Stroke"
+                            Value="#FF003366"
+                            TargetName="Sign"/>-->
+                    <Setter Property="Foreground" Value="#FFFF0000" TargetName="Sign"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style TargetType="Expander">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Name="ContentColumn" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Name="Border" Grid.Column="0" BorderThickness="1" CornerRadius="2,2,0,0" >
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton IsChecked="{Binding Path=IsExpanded,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}" />
+                                    <ContentPresenter Grid.Column="1" Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                                </Grid>
+                            </Border>
+                            <Border Name="Content" Grid.Column="1" BorderThickness="1,0,1,1" CornerRadius="0,0,2,2" >
+                                <ContentPresenter />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ContentColumn" Property="Width" Value="{Binding ElementName=Content,Path=DesiredSize}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Expander x:Name="Sb" Header="" VerticalAlignment="Stretch" Foreground="Black" IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Sb_Collapsed" ExpandDirection="Right" FlowDirection="RightToLeft">
         <Expander.Content>
             <Grid Background="#70000000">
                 <Grid.ColumnDefinitions>
