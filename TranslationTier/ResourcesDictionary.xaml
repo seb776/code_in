@@ -12,13 +12,6 @@
     <SolidColorBrush x:Key="BaseNodeMainColor" Color="DarkGray"/>
     <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="Green"/>
 
-    <!-- For IONode color handling -->
-    <SolidColorBrush x:Key="IONodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="IONodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="IONodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="IONodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="IONodeSecondaryColor" Color="Black"/>
-
     <!-- For EnumNode color handling -->
     <SolidColorBrush x:Key="EnumNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="EnumNodeSeparatorForeGroundColor" Color="White"/>

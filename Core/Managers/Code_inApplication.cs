@@ -13,7 +13,7 @@ namespace code_in
     {
         public static void StartApplication(IEnvironmentWrapper wrapper)
         {
-            System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valide wrapper in order to start the application !");
+            System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valid wrapper in order to start the application !");
             _environmentWrapper = wrapper;
             // Code_inApplication.ThemeMgr.setMainTheme(new DefaultThemeData()); // TODO when theme management is complete and functional, load default theme
         }

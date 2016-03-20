@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +36,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>signingKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
@@ -83,12 +90,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ThemeMgr.cs" />
     <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ILinkDraw.cs" />
+    <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
     <Compile Include="Views\Code_inLink .cs" />
@@ -132,6 +143,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\IfStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\AStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ReturnStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\SwitchStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\WhileStmtNode.cs" />
     <Page Include="App.xaml">
@@ -255,6 +267,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="signingKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
