@@ -137,18 +137,20 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
                 IOItem it = i as IOItem;
                 UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
                 nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-                if (it._nodeAnchor.IOLine != null)
+
+                for (int j = 0; j < it._nodeAnchor.IOLine.Count(); ++j)
                 {
-                    it._nodeAnchor.IOLine.X2 = nodeAnchorRelativeCoord.X;
-                    it._nodeAnchor.IOLine.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
+                     it._nodeAnchor.IOLine[j]._x2 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOLine[j]._y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
                 }
-                else if (it._nodeAnchor.IOSquare != null)
+                  
+              /*  else if (it._nodeAnchor.IOSquare != null)
                 {
                     it._nodeAnchor.IOSquare.Item1.X2 = nodeAnchorRelativeCoord.X;
                     it._nodeAnchor.IOSquare.Item2.X1 = nodeAnchorRelativeCoord.X;
                     it._nodeAnchor.IOSquare.Item2.X2 = nodeAnchorRelativeCoord.X;
                     it._nodeAnchor.IOSquare.Item2.Y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
-                }
+                }*/
             }
 
             foreach (var i in _outputs.Children)
@@ -156,11 +158,14 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
                 IOItem it = i as IOItem;
                 UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
                 nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-                if (it._nodeAnchor.IOLine != null)
+
+                for (int j = 0; j < it._nodeAnchor.IOLine.Count(); ++j)
                 {
-                    it._nodeAnchor.IOLine.X1 = nodeAnchorRelativeCoord.X;
-                    it._nodeAnchor.IOLine.Y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
+                    it._nodeAnchor.IOLine[j]._x1 = nodeAnchorRelativeCoord.X;
+                    it._nodeAnchor.IOLine[j]._y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
                 }
+
+              
             }
         }
         #region ICodeInVisual

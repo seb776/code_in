@@ -44,6 +44,8 @@ namespace code_in.Views.NodalView
         private Tuple<Line, Line> _currentSquareLineDrawing;
         private Point _lastPosition = new Point(0, 0);
 
+        private Code_inLink _link;
+
         public NodalView(ResourceDictionary themeResDict)
         {
             this._nodalPresenter = new NodalPresenter(this);
@@ -79,9 +81,31 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
+                    Point nodeAnchorRelativeCoord;
+                    if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
+                    else
+                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
+
+                    this._link = new Code_inLink();
+
+                    Canvas.SetZIndex(_link, -9999999); // TODO Beuark
+                    _link._x1 = nodeAnchorRelativeCoord.X;
+                    _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
+                    _link._x2 = _link._x1;
+                    _link._y2 = _link._y1;
+
+                    if (_lineMode == LineMode.LINE)
+                        _link.changeLineMode(Code_inLink.ELineMode.LINE);
+                    else if (_lineMode == LineMode.BEZIER)
+                        _link.changeLineMode(Code_inLink.ELineMode.BEZIER);
+
+                    this.MainGrid.Children.Add(_link);
+                        
+
                     if (_lineMode == LineMode.LINE)
                     {
-                        _currentLineDrawing = new Line();
+                     /*   _currentLineDrawing = new Line();
 
                         _currentLineDrawing.Stroke = new SolidColorBrush(Colors.GreenYellow);
                         _currentLineDrawing.StrokeThickness = 3;
@@ -112,8 +136,8 @@ namespace code_in.Views.NodalView
                         else
                         {
                             this.MainGrid.Children.Add(_currentLineDrawing);
-                        }
-                    }
+                        } 
+                    } 
                     else if (_lineMode == LineMode.SQUARE)
                     {
                         Line sl1 = new Line();
@@ -147,8 +171,8 @@ namespace code_in.Views.NodalView
                         {
                             this.MainGrid.Children.Add(sl1);
                             this.MainGrid.Children.Add(sl2);
-                        }
-                    }
+                        }*/
+                    } 
                    
                 }
             }
@@ -175,7 +199,36 @@ namespace code_in.Views.NodalView
 
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    if (_lineMode == LineMode.LINE)
+                    if (node == null ||
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
+                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
+                            _draggingNode.GetParentView() == node.GetParentView())
+                    {
+                       
+                        this.MainGrid.Children.Remove(_link);
+                    }
+                    else
+                    {
+                        if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
+                        {
+                            Point tmpPoint = new Point();
+                            tmpPoint.X = _link._x1;
+                            tmpPoint.Y = _link._y1;
+                            _link._x1 = _link._x2;
+                            _link._y1 = _link._y2;
+                            _link._x2 = tmpPoint.X;
+                            _link._y2 = tmpPoint.Y;
+                        }
+
+                        // storing line in nodeanchor
+                        (_draggingNode as IOItem)._nodeAnchor.IOLine.Add(_link);
+                        (node as IOItem)._nodeAnchor.IOLine.Add(_link);
+                        (_draggingNode as IOItem).IOAttached = node as IOItem;
+                        (node as IOItem).IOAttached = (_draggingNode as IOItem);
+                    }
+
+
+                   /* if (_lineMode == LineMode.LINE)
                     {
                         Canvas.SetZIndex(_currentLineDrawing, 9999999);
 
@@ -220,7 +273,7 @@ namespace code_in.Views.NodalView
                                 (_draggingNode as IOItem).IOAttached = node as IOItem;
                                 (node as IOItem).IOAttached = (_draggingNode as IOItem);
                             }
-                        }
+                        } 
                     }
 
                     else if (_lineMode == LineMode.SQUARE)
@@ -249,10 +302,10 @@ namespace code_in.Views.NodalView
                         {
                             if (node.GetType().IsSubclassOf(typeof(IOItem)))
                             {
-                               /* if ((node as IOItem).IOAttached != null)
-                                {
-                                    this.RemoveLink(node as IOItem);
-                                }*/
+                               // if ((node as IOItem).IOAttached != null)
+                                //{
+                                 //   this.RemoveLink(node as IOItem);
+                                //}
                                 // if create link from output to input, swap begin and end point of the line
                                 if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
                                 {
@@ -273,7 +326,7 @@ namespace code_in.Views.NodalView
                             }
                         }
 
-                    }
+                    }*/
                     
                 }
             }
@@ -284,14 +337,17 @@ namespace code_in.Views.NodalView
         }
         public void RemoveLink(IOItem node)
         {
-            if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+           /* if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
             {
-                ((node.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(node._nodeAnchor.IOLine);
+              //  ((node.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(node._nodeAnchor.IOLine);
             }
             else
+            {*/
+            for (int i = 0; i < node._nodeAnchor.IOLine.Count(); ++i)
             {
-                this.MainGrid.Children.Remove(node._nodeAnchor.IOLine);
+                this.MainGrid.Children.Remove(node._nodeAnchor.IOLine[i]);
             }
+           // }
             node.RemoveLink();
         }
         #endregion create
@@ -631,8 +687,9 @@ namespace code_in.Views.NodalView
             }
             if (e.Key == Key.L)
             {
-                if (_lineMode == LineMode.LINE)
-                    _lineMode = LineMode.SQUARE;
+                if (_lineMode == LineMode.LINE) {
+                    _lineMode = LineMode.BEZIER;
+                }
                 else
                     _lineMode = LineMode.LINE;
             }
@@ -690,41 +747,12 @@ namespace code_in.Views.NodalView
 
 
                 }
-
-
-                // move the link if exist
-
-                //        //    Nodes.BaseNode test = ((Nodes.BaseNode)Nodes.TransformingNode.TransformingObject);
-
-                //        //if (lineOutput != null)
-                //        //{
-                //        //    lineOutput.X1 -= diff.X;
-                //        //    lineOutput.Y1 -= diff.Y;
-                //        //}
-                //        //if (lineIntput != null)
-                //        //{
-                //        //    lineIntput.X2 -= diff.X;
-                //        //    lineIntput.Y2 -= diff.Y;
-                //        //}
-
-
-                //    }
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
-                    if (_lineMode == LineMode.LINE)
-                    {
-                        _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
-                        _currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).Y;
-                    }
-                    else if (_lineMode == LineMode.SQUARE)
-                    {
-                        _currentSquareLineDrawing.Item1.X2 = e.GetPosition(this.MainGrid).X;
-                        _currentSquareLineDrawing.Item1.Y2 = _currentSquareLineDrawing.Item1.Y1;
-                        _currentSquareLineDrawing.Item2.X1 = _currentSquareLineDrawing.Item1.X2;
-                        _currentSquareLineDrawing.Item2.Y1 = _currentSquareLineDrawing.Item1.Y2;
-                        _currentSquareLineDrawing.Item2.X2 = _currentSquareLineDrawing.Item2.X1;
-                        _currentSquareLineDrawing.Item2.Y2 = e.GetPosition(this.MainGrid).Y;
-                    }
+                    _link._x2 = e.GetPosition(this.MainGrid).X;
+                    _link._y2 = e.GetPosition(this.MainGrid).Y;
+                   // _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
+                    //_currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).X;
                 }
 
             }
@@ -772,6 +800,12 @@ namespace code_in.Views.NodalView
                 m1.Click += m1_Click;
                 cm.Items.Add(m1);
             }
+            
+            var m2 = new MenuItem();
+            m2.Header = "change line mode";
+            m2.Click += clickChangeMode;
+            cm.Items.Add(m2);
+
             cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
             cm.IsOpen = true;
             // Setting the position of the node if we create one to the place the menu has been opened
@@ -779,12 +813,20 @@ namespace code_in.Views.NodalView
             _newNodePos.Y = e.GetPosition(this).Y;
         }
 
+        void clickChangeMode(object sender, RoutedEventArgs e)
+        {
+            if (_lineMode == LineMode.LINE)
+                _lineMode = LineMode.BEZIER;
+            else
+                _lineMode = LineMode.LINE;
+        }
+
         void m1_Click(object sender, RoutedEventArgs e)
         {
             MethodInfo mi = this.GetType().GetMethod("CreateAndAddNode");
             MethodInfo gmi = mi.MakeGenericMethod(((sender as MenuItem).DataContext as Type));
             BaseNode node = gmi.Invoke(this, null) as BaseNode;
-
+  
             node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
             //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
         }
