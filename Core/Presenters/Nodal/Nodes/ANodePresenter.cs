@@ -20,7 +20,7 @@ namespace code_in.Presenters.Nodal.Nodes
     /// </summary>
     public class ANodePresenter
     {
-        ANodePresenter(INodeElem view, NodalPresenter nodalPres, AstNode model = null){
+        ANodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model = null){
             _view = view;
             _nodalPresenter = nodalPres;
             _model = model;
@@ -30,7 +30,7 @@ namespace code_in.Presenters.Nodal.Nodes
         String _name;
         AstNode _model;
         INodeElem _view;
-        NodalPresenter _nodalPresenter;
+        INodalPresenter _nodalPresenter;
 
         public void setName(String name)
         {_name = name;}
