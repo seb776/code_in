@@ -40,14 +40,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
         public void RemoveLink()
         {
-            if (this.IOAttached != null)
+          /*  if (this.IOAttached != null)
             {
                 IOItem bu = this.IOAttached; // to avoid recursion
                 this.IOAttached = null;
                 bu.RemoveLink();
             }
             if (this._nodeAnchor.IOLine != null)
-                this._nodeAnchor.IOLine = null;
+                this._nodeAnchor.IOLine = null; */
+            this._nodeAnchor.IOLine.Clear();
         }
         public void createLink()
         {

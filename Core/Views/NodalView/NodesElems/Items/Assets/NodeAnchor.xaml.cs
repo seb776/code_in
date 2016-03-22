@@ -32,7 +32,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         public IOItem _parentItem;
 
         // Line of the NodeAnchor
-        public Line IOLine;
+        public List<Code_inLink> IOLine;
         public Tuple<Line, Line> IOSquare;
         public BezierSegment IOBezier;
         public PathFigure pthFigure;
@@ -55,7 +55,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             _parentItem = null;
-            IOLine = null;
+            IOLine = new List<Code_inLink>();
             IOSquare = null;
         }
 
