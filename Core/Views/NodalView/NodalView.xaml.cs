@@ -331,7 +331,7 @@ namespace code_in.Views.NodalView
             this._nodalPresenter.OpenFile(path);
         }
 
-        public void GenerateVisualNodes(NodalModel model) // TODO Do better (Give a graph of NodePresenter (can be very generic))
+        public void GenerateVisualNodes(NodalModel model)
         {
             this._generateVisualASTRecur(model.AST, this);
         }
@@ -449,7 +449,6 @@ namespace code_in.Views.NodalView
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                         _generateVisualASTRecur(n, (parentNode != null ? parentNode : parentContainer));
         }
-
         private void _generateFuncNodesBlockStmt(Statement stmtArg)
         {
             #region Block Statement
@@ -574,7 +573,6 @@ namespace code_in.Views.NodalView
             #endregion Return Statement
             #endregion Single Statement
         }
-
         private void _generateFuncExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
         {
             if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
@@ -594,7 +592,6 @@ namespace code_in.Views.NodalView
 
             }
         }
-
         public void GenerateFuncNodes(MethodDeclaration method)
         {
             var entry = this.CreateAndAddNode<FuncEntryNode>();
