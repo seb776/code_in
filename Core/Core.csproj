@@ -101,8 +101,9 @@
     <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
-    <Compile Include="Presenters\Nodal\NodalPresenters.cs" />
+    <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />

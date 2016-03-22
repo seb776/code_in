@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes;
 
 namespace code_in.Views.MainView
 {
@@ -46,6 +47,11 @@ namespace code_in.Views.MainView
         public void OpenFile(String filePath)
         {
             this._nodalView.OpenFile(filePath);
+        }
+
+        public void EditFunction(FuncDeclNode node)
+        {
+            this._nodalView.EditFunction(node);
         }
 
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
