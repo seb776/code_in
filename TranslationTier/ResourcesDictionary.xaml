@@ -149,12 +149,15 @@
     <SolidColorBrush x:Key="OtherTypesColor" Color="LightSalmon"/>
     
     <!-- These are the resources for the scopes -->
-    <LinearGradientBrush x:Key="ScopePublicColor" StartPoint="0,0" EndPoint="1,0">
+    <!--<LinearGradientBrush x:Key="ScopePublicColor" StartPoint="0,0" EndPoint="1,0">
         <GradientStop Color="#FF0098F0" Offset="0"/>
         <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>
-    <!--<SolidColorBrush x:Key="ScopePublicColor" Color="#FF0098F0"/>-->
-    <LinearGradientBrush x:Key="ScopeInternalColor" StartPoint="0,0" EndPoint="1,0">
+    </LinearGradientBrush>-->
+    <SolidColorBrush x:Key="ScopePublicColor" Color="#FF0098F0"/>
+    <SolidColorBrush x:Key="ScopeInternalColor" Color="#FF00DC14"/>
+    <SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFF650D"/>
+    <SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00037"/>
+    <!--<LinearGradientBrush x:Key="ScopeInternalColor" StartPoint="0,0" EndPoint="1,0">
         <GradientStop Color="#FF4ACB00" Offset="0"/>
         <GradientStop Color="Transparent" Offset="1"/>
     </LinearGradientBrush>
@@ -165,14 +168,14 @@
     <LinearGradientBrush x:Key="ScopePrivateColor" StartPoint="0,0" EndPoint="1,0">
         <GradientStop Color="#FFF00041" Offset="0"/>
         <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>
+    </LinearGradientBrush>-->
     <!--<SolidColorBrush x:Key="ScopeInternalColor" Color="#FF4ACB00"/>-->
     <!--<SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFFA200"/>-->
     <!--<SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00041"/>-->
-    <sys:String x:Key="ScopePublicString">}+{</sys:String>
-    <sys:String x:Key="ScopeInternalString">{~}</sys:String>
-    <sys:String x:Key="ScopeProtectedString">{#}</sys:String>
-    <sys:String x:Key="ScopePrivateString">{-}</sys:String>
+    <sys:String x:Key="ScopePublicString">+</sys:String>
+    <sys:String x:Key="ScopeInternalString">~</sys:String>
+    <sys:String x:Key="ScopeProtectedString">#</sys:String>
+    <sys:String x:Key="ScopePrivateString">-</sys:String>
     
     <!-- These are the offset for the anchors -->
     <Thickness x:Key="AnchorOffsetLeft"  Left="-13" Bottom="0" Top="0" Right="0"/>

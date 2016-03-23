@@ -6,7 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid MouseRightButtonDown="Grid_MouseRightButtonDown">
-        <Rectangle x:Name="Shape" Fill="Black"/>
-        <Label x:Name="Symbol" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">example</Label>
+        <Rectangle x:Name="Shape" Fill="White"/>
+        <Label x:Name="Symbol" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" FontSize="15">
+            <Label.Effect>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="2"/>
+            </Label.Effect>
+            example
+        </Label>
     </Grid>
 </UserControl>

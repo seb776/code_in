@@ -139,15 +139,16 @@ namespace code_in.Presenters.Nodal
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
-                FuncDeclNode funcDecl = parentContainer.CreateAndAddNode<FuncDeclNode>();
-                funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+                FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>();
+                //funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
                 var parameters = method.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; ++i)
                 {
-                    var item = funcDecl.CreateAndAddNode<ClassItem>(); // TODO ArgItem
-                    item.SetName(parameters[i].Name);
+                    funcDecl.AddParam(parameters[i].Type.ToString());
+                    //var item = funcDecl.CreateAndAddNode<ClassItem>(); // TODO ArgItem
+                    //item.SetName(parameters[i].Name);
                     //item.SetItemType(parameters[i].Type.ToString());
                 }
                 funcDecl.SetName(method.Name);

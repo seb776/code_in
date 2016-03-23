@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using code_in.Views.NodalView.Nodes;
+using code_in.Views.NodalView.NodesElems;
 using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems

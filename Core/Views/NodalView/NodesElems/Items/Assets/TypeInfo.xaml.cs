@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace code_in.Views.NodalView.Nodes.Items.Assets
+namespace code_in.Views.NodalView.NodesElems.Items.Assets
 {
     /// <summary>
     /// Interaction logic for TypeInfo.xaml

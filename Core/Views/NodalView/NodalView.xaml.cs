@@ -1,7 +1,6 @@
 ﻿using code_in.Models;
 using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal;
-using code_in.Views.NodalView.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
@@ -10,6 +9,7 @@ using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
+using code_in.Views.Utils;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -508,6 +508,17 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            
+            //var hexMenu = new HexagonalMenu();
+
+            //hexMenu.AddHexagonButton(0, 0);
+            //hexMenu.AddHexagonButton(-1, -1);
+            //hexMenu.AddHexagonButton(-1, 0);
+            //hexMenu.AddHexagonButton(-1, 1);
+            //hexMenu.AddHexagonButton(1, 1);
+            //hexMenu.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            //this.MainGrid.Children.Add(hexMenu);
+            //hexMenu.ShowMenu();
             // This automatically updates the list of accessible nodes
             // Need to be optimized (compute only the first time, as it uses reflection)
             List<Type> listOfBs = new List<Type>();
@@ -528,7 +539,7 @@ namespace code_in.Views.NodalView
                 m1.Click += m1_Click;
                 cm.Items.Add(m1);
             }
-            
+
             var m2 = new MenuItem();
             m2.Header = "change line mode";
             m2.Click += clickChangeMode;
