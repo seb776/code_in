@@ -55,6 +55,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+            this.Scope = EScope.PRIVATE;
         }
         public ScopeItem() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)

@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -508,48 +509,48 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
-            //var hexMenu = new HexagonalMenu();
+            var hexMenu = new HexagonalMenu();
 
-            //hexMenu.AddHexagonButton(0, 0);
-            //hexMenu.AddHexagonButton(-1, -1);
-            //hexMenu.AddHexagonButton(-1, 0);
-            //hexMenu.AddHexagonButton(-1, 1);
-            //hexMenu.AddHexagonButton(1, 1);
-            //hexMenu.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            //this.MainGrid.Children.Add(hexMenu);
-            //hexMenu.ShowMenu();
+            hexMenu.AddHexagonButton(0, 0);
+            hexMenu.AddHexagonButton(-1, -1);
+            hexMenu.AddHexagonButton(-1, 0);
+            hexMenu.AddHexagonButton(-1, 1);
+            hexMenu.AddHexagonButton(1, 1);
+            hexMenu.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            this.MainGrid.Children.Add(hexMenu);
+            hexMenu.ShowMenu();
+
             // This automatically updates the list of accessible nodes
             // Need to be optimized (compute only the first time, as it uses reflection)
-            List<Type> listOfBs = new List<Type>();
-            foreach (var t in typeof(BaseNode).Assembly.GetTypes())
-            {
+            //List<Type> listOfBs = new List<Type>();
+            //foreach (var t in typeof(BaseNode).Assembly.GetTypes())
+            //{
 
-                if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
-                {
-                    listOfBs.Add(t);
-                }
-            }
-            var cm = new ContextMenu();
-            foreach (var t in listOfBs)
-            {
-                var m1 = new MenuItem();
-                m1.Header = t.Name;
-                m1.DataContext = t;
-                m1.Click += m1_Click;
-                cm.Items.Add(m1);
-            }
+            //    if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
+            //    {
+            //        listOfBs.Add(t);
+            //    }
+            //}
+            //var cm = new ContextMenu();
+            //foreach (var t in listOfBs)
+            //{
+            //    var m1 = new MenuItem();
+            //    m1.Header = t.Name;
+            //    m1.DataContext = t;
+            //    m1.Click += m1_Click;
+            //    cm.Items.Add(m1);
+            //}
 
-            var m2 = new MenuItem();
-            m2.Header = "change line mode";
-            m2.Click += clickChangeMode;
-            cm.Items.Add(m2);
+            //var m2 = new MenuItem();
+            //m2.Header = "change line mode";
+            //m2.Click += clickChangeMode;
+            //cm.Items.Add(m2);
 
-            cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            cm.IsOpen = true;
-            // Setting the position of the node if we create one to the place the menu has been opened
-            _newNodePos.X = e.GetPosition(this).X;
-            _newNodePos.Y = e.GetPosition(this).Y;
+            //cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            //cm.IsOpen = true;
+            //// Setting the position of the node if we create one to the place the menu has been opened
+            //_newNodePos.X = e.GetPosition(this).X;
+            //_newNodePos.Y = e.GetPosition(this).Y;
         }
 
         void clickChangeMode(object sender, RoutedEventArgs e)
