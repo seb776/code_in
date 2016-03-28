@@ -90,9 +90,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ThemeMgr.cs" />
     <Compile Include="Models\NodalModel.cs" />
@@ -156,7 +153,7 @@
     <Compile Include="Views\Utils\HexagonalMenu.xaml.cs">
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
     </Compile>
-    <Page Include="App.xaml">
+    <Page Include="Models\LanguageResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

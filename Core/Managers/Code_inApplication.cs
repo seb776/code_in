@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in
 {
@@ -36,5 +37,19 @@ namespace code_in
                 return _environmentWrapper;
             }
         }
+        public static ResourceDictionary LanguageResourcesDictionary
+        {
+            get
+            {
+                if (_languageResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri("/Core;component/Models/LanguageResourcesDictionary.xaml",
+                                        System.UriKind.Relative);
+                    _languageResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _languageResourceDictionary;
+            }
+        }
+        private static ResourceDictionary _languageResourceDictionary = null;
     }
 }
