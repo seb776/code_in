@@ -1,4 +1,6 @@
 ﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+using code_in.Views.NodalView.NodesElems.Nodes;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class FuncDeclItem : ATypedMemberItem
     {
+        public MethodDeclaration MethodNode = null;
         StackPanel _params;
         public FuncDeclItem(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -29,8 +32,22 @@ namespace code_in.Views.NodalView.NodesElems.Items
             this.AfterName.Children.Add(paramsOpen);
             this.AfterName.Children.Add(_params);
             this.AfterName.Children.Add(paramsClose);
+            { // TODO This is temporary
+                var editButton = new Grid();
+                editButton.Background = new SolidColorBrush(Colors.GreenYellow);
+                editButton.Width = 25;
+                editButton.Height = 25;
+                editButton.PreviewMouseDown += editButton_PreviewMouseDown;
+                this.AfterName.Children.Add(editButton);
+            }
             this.MouseEnter += FuncDeclItem_MouseEnter;
             this.MouseLeave += FuncDeclItem_MouseLeave;
+        }
+
+        void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            view.EditFunction(this);
         }
 
         void FuncDeclItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)

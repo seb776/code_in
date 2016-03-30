@@ -18,6 +18,7 @@ using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.Utils;
+using code_in.Views.NodalView.NodesElems.Items;
 
 namespace code_in.Views.MainView
 {
@@ -50,7 +51,7 @@ namespace code_in.Views.MainView
             this._nodalView.OpenFile(filePath);
         }
 
-        public void EditFunction(FuncDeclNode node)
+        public void EditFunction(FuncDeclItem node)
         {
             this._nodalView.EditFunction(node);
         }

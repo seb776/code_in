@@ -29,12 +29,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetNodeType("ClassDecl");
             this.SetName("Class1");
             this.SetDynamicResources("ClassDeclNode");
-            NodeScope = new ScopeItem(this.GetThemeResourceDictionary());
-            NodeScope.SetValue(Grid.ColumnProperty, 0);
-            NodeScope.Scope = ScopeItem.EScope.PRIVATE;
-            this.NodeHeader.Children.Add(this.NodeScope);
+            //NodeScope = new ScopeItem(this.GetThemeResourceDictionary());
+            //NodeScope.SetValue(Grid.ColumnProperty, 0);
+            //NodeScope.Scope = ScopeItem.EScope.PRIVATE;
+            //this.NodeHeader.Children.Add(this.NodeScope);
 
             _type = EType.CLASS;
+            this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
