@@ -266,6 +266,18 @@ namespace code_in.Presenters.Nodal
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
                 _generateVisualASTExpressions(switchStmt.Expression);
+                foreach(var switchSection in switchStmt.SwitchSections)
+                {
+                    foreach (var caseLabel in switchSection.CaseLabels)
+                    {
+                        var caseInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
+                        var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeItem>();
+                        caseInput.SetName(caseLabel.Expression.ToString());
+                        _generateVisualASTExpressions(caseLabel.Expression);
+                    }
+                    foreach(var switchSectionStmt in switchSection.Statements)
+                        _generateVisualASTStatements(switchSectionStmt);
+                }
             }
             #endregion Switch
             #endregion Block Statement
