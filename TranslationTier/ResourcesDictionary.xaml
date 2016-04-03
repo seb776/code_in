@@ -149,10 +149,6 @@
     <SolidColorBrush x:Key="OtherTypesColor" Color="LightSalmon"/>
     
     <!-- These are the resources for the scopes -->
-    <!--<LinearGradientBrush x:Key="ScopePublicColor" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF0098F0" Offset="0"/>
-        <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>-->
     <SolidColorBrush x:Key="ScopePublicColor" Color="#FF0098F0"/>
     <SolidColorBrush x:Key="ScopeInternalColor" Color="#FF00DC14"/>
     <SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFF650D"/>

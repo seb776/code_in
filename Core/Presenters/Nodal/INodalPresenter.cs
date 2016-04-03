@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Nodes;
+﻿using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace code_in.Presenters.Nodal
     public interface INodalPresenter // For future network abstraction
     {
         void OpenFile(String path);
-        void EditFunction(FuncDeclNode node);
+        void EditFunction(FuncDeclItem node);
         //List<Type>  GetContextListNodes(NodePresenter context)
     }
 }

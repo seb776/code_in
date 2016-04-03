@@ -38,8 +38,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         void editIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
-            view.EditFunction(this);
+            //var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            //view.EditFunction(this);
         }
         public FuncDeclNode() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)

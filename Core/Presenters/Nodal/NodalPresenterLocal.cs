@@ -37,7 +37,7 @@ namespace code_in.Presenters.Nodal
             _model = this.ParseFile(path);
             this._generateVisualASTDeclaration(_model);
         }
-        public void EditFunction(FuncDeclNode node)
+        public void EditFunction(FuncDeclItem node)
         {
             this._generateVisualASTFunctionBody(node.MethodNode);
         }
@@ -92,20 +92,20 @@ namespace code_in.Presenters.Nodal
 
                     classDeclNode.SetName(tmpNode.Name);
                     // TODO protected internal
-                    switch (tmpNode.Modifiers.ToString()) // Puts the right scope
-                    {
-                        case "Public":
-                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
-                            break;
-                        case "Private":
-                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
-                            break;
-                        case "Protected":
-                            classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
-                            break;
-                        default:
-                            break;
-                    }
+                    //switch (tmpNode.Modifiers.ToString()) // Puts the right scope // TODO
+                    //{
+                    //    case "Public":
+                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
+                    //        break;
+                    //    case "Private":
+                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
+                    //        break;
+                    //    case "Protected":
+                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
+                    //        break;
+                    //    default:
+                    //        break;
+                    //}
                     //goDeeper = false;
                     foreach (var n in node.Children)
                     {
@@ -140,7 +140,7 @@ namespace code_in.Presenters.Nodal
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
                 FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>();
-                //funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+                funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
 
                 var parameters = method.Parameters.ToList();
@@ -266,6 +266,18 @@ namespace code_in.Presenters.Nodal
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
                 _generateVisualASTExpressions(switchStmt.Expression);
+                foreach(var switchSection in switchStmt.SwitchSections)
+                {
+                    foreach (var caseLabel in switchSection.CaseLabels)
+                    {
+                        var caseInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
+                        var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeItem>();
+                        caseInput.SetName(caseLabel.Expression.ToString());
+                        _generateVisualASTExpressions(caseLabel.Expression);
+                    }
+                    foreach(var switchSectionStmt in switchSection.Statements)
+                        _generateVisualASTStatements(switchSectionStmt);
+                }
             }
             #endregion Switch
             #endregion Block Statement

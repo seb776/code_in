@@ -5,64 +5,80 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:items="clr-namespace:code_in.Views.NodalView.NodesElems.Items.Base"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="250"
+             d:DesignHeight="300" d:DesignWidth="300"
              MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top">
     <UserControl.Resources>
         <!--These values are only meant to have color in the designer-->
         <SolidColorBrush x:Key="LocalNodeColor" Color="GreenYellow"/>
         <SolidColorBrush x:Key="LocalNodeColorBack" Color="#424242"/>
+        <SolidColorBrush x:Key="ModifiersColorLocal" Color="#FF171717"/>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel x:Name="NodeAttributes" Grid.Row="0" Orientation="Vertical">
-        </StackPanel>
-        <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="2" BorderBrush="{StaticResource LocalNodeColor}">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="25"/>
-            </Border.Effect>
-            <Grid x:Name="BackGrid" Background="{StaticResource LocalNodeColorBack}" MouseLeftButtonDown="EvtDragNode" Cursor="ScrollAll">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" x:Name="NodeHeader" Background="{StaticResource LocalNodeColor}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="5"/>
-                    </Grid.ColumnDefinitions>
-                    <!--<items:ScopeItem x:Name="NodeScope" Grid.Column="0" Scope="PRIVATE" Margin="-54,0,0,0" Width="25"/>-->
-                    <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
-                        <Label.Effect>
-                            <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
-                        </Label.Effect>
-                        NodeType
-                    </Label>
-                    <Label x:Name="NodeSeparator" Grid.Column="2">::</Label>
-                    <TextBox Grid.Column="3" x:Name="NodeName" Margin="2,2,0,0"  BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
-                        <TextBox.Effect>
-                            <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
-                        </TextBox.Effect>
-                        Example
-                    </TextBox>
-                    <Grid x:Name="RmBtn" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="EvtRemoveNode">
-                        <Grid x:Name="RemoveButton">
-                            <Line x:Name="CrossA" Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <Line x:Name="CrossB" Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <!-- this grid contains modifiers on the left the node itself on the right -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Margin="0,0,-10,0" Background="{StaticResource ModifiersColorLocal}" CornerRadius="5,0,0,5" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="0, 0, 10, 0">
+                <Label Foreground="#FF00B6EC">public</Label>
+                <Label Foreground="#FF00B6EC">abstract</Label>
+                <Label Foreground="#FF00B6EC">partial</Label>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="NodeAttributes" Grid.Row="0" Orientation="Vertical">
+            </StackPanel>
+            <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="4" CornerRadius="0,10,0,10" BorderBrush="{StaticResource LocalNodeColor}" Background="{StaticResource LocalNodeColorBack}">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="25"/>
+                </Border.Effect>
+                <Grid x:Name="BackGrid" MouseLeftButtonDown="EvtDragNode" Cursor="ScrollAll">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="{StaticResource LocalNodeColor}" CornerRadius="0,7,0,0">
+                        <Grid Grid.Row="0" x:Name="NodeHeader">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
+                                <Label.Effect>
+                                    <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
+                                </Label.Effect>
+                                NodeType
+                            </Label>
+                            <Label x:Name="NodeSeparator" Grid.Column="2">::</Label>
+                            <TextBox Grid.Column="3" x:Name="NodeName" Margin="2,2,0,0"  BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
+                                <TextBox.Effect>
+                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
+                                </TextBox.Effect>
+                                Example
+                            </TextBox>
+                            <Grid x:Name="RmBtn" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="EvtRemoveNode">
+                                <Grid x:Name="RemoveButton">
+                                    <Line x:Name="CrossA" Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <Line x:Name="CrossB" Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="10" X2="10" Y2="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Grid>
                         </Grid>
+                    </Border>
+                    <Grid Grid.Row="1" x:Name="ContentGrid" MouseRightButtonDown="ContentGrid_MouseRightButtonDown">
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="1" x:Name="ContentGrid" MouseRightButtonDown="ContentGrid_MouseRightButtonDown">
-                </Grid>
-            </Grid>
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
