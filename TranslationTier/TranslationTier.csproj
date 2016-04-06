@@ -72,10 +72,6 @@
     <None Include="signingKey.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="LanguageResourcesDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

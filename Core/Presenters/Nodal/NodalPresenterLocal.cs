@@ -7,6 +7,8 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -203,7 +205,7 @@ namespace code_in.Presenters.Nodal
 
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
 
-                this._generateVisualASTExpressions(ifStmt.Condition); // Expressions
+                this._generateVisualASTExpressions(ifStmt.Condition);
 
                 this._generateVisualASTStatements(ifStmt.TrueStatement);
                 this._generateVisualASTStatements(ifStmt.FalseStatement);
@@ -211,17 +213,14 @@ namespace code_in.Presenters.Nodal
 
             # endregion IfStmts
             # region Loops
-            bool isWhile = false;
-            if ((isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
-                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement))
+            bool isWhile = (isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
+                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
+            if (isWhile)
             {
                 dynamic whileStmt = stmtArg;
-                dynamic nodeLoop;
+                WhileStmtNode nodeLoop;
 
-                if (isWhile)
-                    nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
-                else
-                    nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
 
                 nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
@@ -229,16 +228,16 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(whileStmt.Condition); // Expressions
                 this._generateVisualASTStatements(whileStmt.EmbeddedStatement);
             }
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
                 var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
-                var nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>();
 
                 nodeLoop.SetName("For");
 
                 foreach (var forStmts in forStmt.Initializers)
                     this._generateVisualASTStatements(forStmts);
-                nodeLoop.Condition.SetName(forStmt.Condition.ToString());
+                //nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
                 foreach (var forStmts in forStmt.Iterators)
                     this._generateVisualASTStatements(forStmts);
@@ -246,13 +245,13 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(forStmt.Condition); // Expressions
                 this._generateVisualASTStatements(forStmt.EmbeddedStatement);
             }
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForeachStatement;
-                var nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>();
 
                 nodeLoop.SetName("ForEach");
-                nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
+                //nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
                 this._generateVisualASTExpressions(forEachStmt.InExpression);
                 this._generateVisualASTStatements(forEachStmt.EmbeddedStatement);
 
