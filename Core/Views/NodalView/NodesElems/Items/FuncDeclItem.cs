@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using ICSharpCode.NRefactory.CSharp;
 using System;
@@ -9,39 +10,41 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class FuncDeclItem : ATypedMemberItem
     {
-        public MethodDeclaration MethodNode = null;
-        StackPanel _params;
+        public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
+        ParametersList _params;
+        private Image _editButton;
         public FuncDeclItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            _params = new StackPanel();
-            this.AfterName.Margin = new Thickness(2, 4, 2, 4);
-            this.AfterName.Background = new SolidColorBrush(Color.FromArgb(0x42, 0x25, 0x57, 0xC3));
-            _params.Orientation = Orientation.Horizontal;
-            var paramsOpen = new Label();
-            paramsOpen.Content = "(";
-            paramsOpen.Foreground = new SolidColorBrush(Colors.White);
-            var paramsClose = new Label();
-            paramsClose.Foreground = new SolidColorBrush(Colors.White);
-            paramsClose.Content = ")";
-            this.AfterName.Children.Add(paramsOpen);
+            _params = new ParametersList(themeResDict);
+            //this.AfterName.Margin = new Thickness(2, 4, 2, 4);
             this.AfterName.Children.Add(_params);
-            this.AfterName.Children.Add(paramsClose);
             { // TODO This is temporary
-                var editButton = new Grid();
-                editButton.Background = new SolidColorBrush(Colors.GreenYellow);
-                editButton.Width = 25;
-                editButton.Height = 25;
-                editButton.PreviewMouseDown += editButton_PreviewMouseDown;
-                this.AfterName.Children.Add(editButton);
+                _editButton = new Image();
+                var imageSrc = new BitmapImage();
+                imageSrc.BeginInit();
+                imageSrc.UriSource = new Uri("pack://application:,,,/TranslationTier;component/Resources/Graphics/edit.png");
+                imageSrc.EndInit();
+                _editButton.Source = imageSrc;
+                _editButton.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);
+                _editButton.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+                _editButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _editButton.Width = 35;
+                _editButton.Height = 35;
+                _editButton.PreviewMouseDown += editButton_PreviewMouseDown;
+                this.AfterName.Children.Add(_editButton);
+                //_editButton.Visibility = System.Windows.Visibility.Visible;
+                _editButton.SetValue(Image.OpacityProperty, 0.0);
+                _editButton.IsEnabled = false;
             }
-            this.MouseEnter += FuncDeclItem_MouseEnter;
-            this.MouseLeave += FuncDeclItem_MouseLeave;
+
         }
 
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
@@ -50,22 +53,34 @@ namespace code_in.Views.NodalView.NodesElems.Items
             view.EditFunction(this);
         }
 
-        void FuncDeclItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        public override void OnMouseLeave()
         {
-            this.Background = new SolidColorBrush(Colors.Transparent);
+            DoubleAnimation da = new DoubleAnimation();
+            da.From = 1.0;
+            da.To = 0.0;
+            da.Duration = new Duration(TimeSpan.FromSeconds(0.1));
+            _editButton.BeginAnimation(Image.OpacityProperty, da);
+            da.Completed += _animEditDisapearCompleted;
+            
         }
 
-        void FuncDeclItem_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        void _animEditDisapearCompleted(object sender, EventArgs e)
         {
-            this.Background = new SolidColorBrush(Color.FromArgb(0x21, 0xFF, 0xFF, 0xFF));
+            _editButton.IsEnabled = false;
         }
+
+        public override void OnMouseEnter()
+        {
+            _editButton.BeginAnimation(Image.OpacityProperty, null);
+            _editButton.SetValue(Image.OpacityProperty, 1.0);
+            _editButton.IsEnabled = true;
+        }
+
+
 
         public void AddParam(String type)
         {
-            var lbl = new Label();
-            lbl.Content = type;
-            lbl.Foreground = new SolidColorBrush(Color.FromRgb(0x1C, 0xC2, 0xEC));
-            this._params.Children.Add(lbl);
+            _params.AddParameter(type);
         }
 
         public override void SetDynamicResources(String keyPrefix)

@@ -118,20 +118,20 @@ namespace code_in.Presenters.Nodal
                             var item = classDeclNode.CreateAndAddNode<ClassItem>();
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetItemType(field.ReturnType.ToString());
-                            switch (field.Modifiers.ToString()) // Puts the right scope
-                            {
-                                case "Public":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
-                                    break;
-                                case "Private":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
-                                    break;
-                                case "Protected":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            //switch (field.Modifiers.ToString()) // Puts the right scope
+                            //{
+                            //    case "Public":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
+                            //        break;
+                            //    case "Private":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
+                            //        break;
+                            //    case "Protected":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
                         }
                     }
                 }

@@ -1,22 +1,20 @@
-﻿<UserControl x:Class="code_in.Views.NodalView.NodesElems.Items.Base.ANodeItem"
+﻿<UserControl x:Class="code_in.Views.NodalView.NodesElems.Items.Assets.ParametersList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Background="#422557C3" HorizontalAlignment="Left" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" x:Name="BeforeName" Orientation="Horizontal">
+        <Label Grid.Column="0" Foreground="White">(</Label>
+        <StackPanel x:Name="ParamsList" Orientation="Horizontal" Grid.Column="1">
+            
         </StackPanel>
-        <Label VerticalAlignment="Center" Grid.Column="1" x:Name="ItemName" Margin="2,4,2,4"  BorderThickness="0"  Background="#422557C3" Foreground="White">
-            NodeItem
-        </Label>
-        <StackPanel Grid.Column="2" x:Name="AfterName" Orientation="Horizontal">
-        </StackPanel>
+        <Label Grid.Column="2" Foreground="White">)</Label>
     </Grid>
 </UserControl>

@@ -13,19 +13,19 @@
         <SolidColorBrush x:Key="LocalNodeColorBack" Color="#424242"/>
         <SolidColorBrush x:Key="ModifiersColorLocal" Color="#FF171717"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="ColumnGrid">
         <!-- this grid contains modifiers on the left the node itself on the right -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Margin="0,0,-10,0" Background="{StaticResource ModifiersColorLocal}" CornerRadius="5,0,0,5" VerticalAlignment="Top">
+        <!--<Border Grid.Column="0" Margin="0,0,-10,0" Background="{StaticResource ModifiersColorLocal}" CornerRadius="5,0,0,5" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="0, 0, 10, 0">
                 <Label Foreground="#FF00B6EC">public</Label>
                 <Label Foreground="#FF00B6EC">abstract</Label>
                 <Label Foreground="#FF00B6EC">partial</Label>
             </StackPanel>
-        </Border>
+        </Border>-->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

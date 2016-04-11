@@ -103,9 +103,18 @@
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
+      <DependentUpon>ItemModifiers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\ParametersList.xaml.cs">
+      <DependentUpon>ParametersList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ATypedMemberItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml.cs">
+      <DependentUpon>ClassNodeModifiers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AIONode.cs" />
@@ -193,6 +202,18 @@
     <Page Include="Views\MainView\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\ParametersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
       <Generator>MSBuild:Compile</Generator>

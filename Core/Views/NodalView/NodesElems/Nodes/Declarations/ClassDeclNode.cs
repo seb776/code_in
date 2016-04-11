@@ -33,6 +33,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             //NodeScope.SetValue(Grid.ColumnProperty, 0);
             //NodeScope.Scope = ScopeItem.EScope.PRIVATE;
             //this.NodeHeader.Children.Add(this.NodeScope);
+            var modifiers = new Assets.ClassNodeModifiers(themeResDict);
+            modifiers.SetValue(Grid.ColumnProperty, 0);
+            this.ColumnGrid.Children.Add(modifiers);
 
             _type = EType.CLASS;
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
