@@ -3,4 +3,16 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="DefaultNodeType">Type de nœud</sys:String>
+    <sys:String x:Key="CategoryName">General</sys:String>
+    <sys:String x:Key="TutorialMode">Type de nœud</sys:String>
+    <sys:String x:Key="Update">Type de nœud</sys:String>
+    <sys:String x:Key="BootUpdate">Type de nœud</sys:String>
+    <sys:String x:Key="DayUpdate">Type de nœud</sys:String>
+    <sys:String x:Key="MonthUpdate">Type de nœud</sys:String>
+    <sys:String x:Key="NeverUpdate">Type de nœud</sys:String>
+    <sys:String x:Key="UpdateButton">Type de nœud</sys:String>
+    <sys:String x:Key="ConfigFolder">Type de nœud</sys:String>
+    <sys:String x:Key="Browse">Type de nœud</sys:String>
+    <sys:String x:Key="Confirm">Type de nœud</sys:String>
+    <sys:String x:Key="Cancel">Type de nœud</sys:String>
 </ResourceDictionary>
