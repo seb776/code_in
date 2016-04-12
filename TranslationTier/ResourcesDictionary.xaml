@@ -12,6 +12,27 @@
     <SolidColorBrush x:Key="BaseNodeMainColor" Color="DarkGray"/>
     <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="Green"/>
 
+    <!-- Default statements nodes -->
+    <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeMainColor" Color="#424242"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeSecondaryColor" Color="GreenYellow"/>
+
+    <!-- For context statements nodes -->
+    <SolidColorBrush x:Key="ContextStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="ContextStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="ContextStmtNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="ContextStmtNodeMainColor" Color="#424242"/>
+    <SolidColorBrush x:Key="ContextStmtNodeSecondaryColor" Color="GreenYellow"/>
+
+    <!-- For block statements nodes -->
+    <SolidColorBrush x:Key="BlockStmtNodeTypeForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="BlockStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="BlockStmtNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="BlockStmtNodeMainColor" Color="#52D4FF"/>
+    <SolidColorBrush x:Key="BlockStmtNodeSecondaryColor" Color="#424242"/>
+
     <!-- For EnumNode color handling -->
     <SolidColorBrush x:Key="EnumNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="EnumNodeSeparatorForeGroundColor" Color="White"/>

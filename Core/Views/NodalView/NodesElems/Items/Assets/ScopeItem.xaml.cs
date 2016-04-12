@@ -62,48 +62,5 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
-
-        void m1_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Temporary dirty as fu**
-            String[] refs = { "ScopePublic",
-                                    "ScopePrivate",
-                                    "ScopeProtected",
-                                    "ScopeInternal"
-                                  };
-
-            int i = 0;
-            foreach (String s in refs)
-            {
-                if ((sender as MenuItem).Header.Equals(refs[i]))
-                {
-                    Scope = (EScope)i;
-                    break;
-                }
-                ++i;
-            }
-        }
-
-        private void Grid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            String[] refs = { "ScopePublic",
-                                    "ScopePrivate",
-                                    "ScopeProtected",
-                                    "ScopeInternal"
-                                  };
-            ContextMenu cm = new ContextMenu();
-            int i = 0;
-            foreach (var r in refs)
-            {
-                MenuItem m = new MenuItem();
-                m.Header = refs[i];
-                m.Click += m1_Click;
-                cm.Items.Add(m);
-                ++i;
-            }
-            cm.IsOpen = true;
-            e.Handled = true;
-        }
-
     }
 }

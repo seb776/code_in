@@ -12,12 +12,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     {
         protected ScopeItem _scope;
         protected TypeInfo _typeInfo;
+        protected ItemModifiers _modifiers;
         protected ATypedMemberItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             _scope = new ScopeItem(this.GetThemeResourceDictionary());
             _typeInfo = new TypeInfo(this.GetThemeResourceDictionary());
+            _modifiers = new ItemModifiers(this.GetThemeResourceDictionary());
             this.BeforeName.Children.Add(_scope);
+            this.BeforeName.Children.Add(_modifiers);
             this.BeforeName.Children.Add(_typeInfo);
         }
     }

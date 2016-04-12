@@ -7,6 +7,8 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -116,20 +118,20 @@ namespace code_in.Presenters.Nodal
                             var item = classDeclNode.CreateAndAddNode<ClassItem>();
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetItemType(field.ReturnType.ToString());
-                            switch (field.Modifiers.ToString()) // Puts the right scope
-                            {
-                                case "Public":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
-                                    break;
-                                case "Private":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
-                                    break;
-                                case "Protected":
-                                    item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            //switch (field.Modifiers.ToString()) // Puts the right scope
+                            //{
+                            //    case "Public":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
+                            //        break;
+                            //    case "Private":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
+                            //        break;
+                            //    case "Protected":
+                            //        item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
                         }
                     }
                 }
@@ -175,7 +177,7 @@ namespace code_in.Presenters.Nodal
                 data.SetItemType(i.Type.ToString());
             }
 
-            this._generateVisualASTStatements(method.Body);
+            this._generateVisualASTStatements(method.Body, 100, 250);
 
             var returnType = exit.CreateAndAddInput<FlowNodeItem>();
             returnType.SetName(method.ReturnType.ToString());
@@ -184,14 +186,15 @@ namespace code_in.Presenters.Nodal
 
             //exit.Margin = new Thickness(0, 150, 0, 0);
         }
-        private void _generateVisualASTStatements(Statement stmtArg)
+        private void _generateVisualASTStatements(Statement stmtArg, int posX, int posY)
         {
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
-                    this._generateVisualASTStatements(stmt);
+                    posX += 250;
+                    this._generateVisualASTStatements(stmt, posX, posY);
                 }
             }
 
@@ -200,61 +203,62 @@ namespace code_in.Presenters.Nodal
             {
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>();
+                ifNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
 
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
 
-                this._generateVisualASTExpressions(ifStmt.Condition); // Expressions
+                this._generateVisualASTExpressions(ifStmt.Condition, posX - 300, posY + 100);
 
-                this._generateVisualASTStatements(ifStmt.TrueStatement);
-                this._generateVisualASTStatements(ifStmt.FalseStatement);
+                this._generateVisualASTStatements(ifStmt.TrueStatement, posX, posY);
+                this._generateVisualASTStatements(ifStmt.FalseStatement, posX, posY);
             }
 
             # endregion IfStmts
             # region Loops
-            bool isWhile = false;
-            if ((isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
-                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement))
+            bool isWhile = (isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
+                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
+            if (isWhile)
             {
                 dynamic whileStmt = stmtArg;
-                dynamic nodeLoop;
+                WhileStmtNode nodeLoop;
 
-                if (isWhile)
-                    nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
-                else
-                    nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
 
                 nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
 
-                this._generateVisualASTExpressions(whileStmt.Condition); // Expressions
-                this._generateVisualASTStatements(whileStmt.EmbeddedStatement);
+                this._generateVisualASTExpressions(whileStmt.Condition, posX - 300, posY + 100); // Expressions
+                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, posX, posY);
             }
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement)) // TODO
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
                 var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
-                var nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>();
+                nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
 
                 nodeLoop.SetName("For");
 
                 foreach (var forStmts in forStmt.Initializers)
-                    this._generateVisualASTStatements(forStmts);
-                nodeLoop.Condition.SetName(forStmt.Condition.ToString());
+                    this._generateVisualASTStatements(forStmts, posX, posY);
+                //nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
                 foreach (var forStmts in forStmt.Iterators)
-                    this._generateVisualASTStatements(forStmts);
+                    this._generateVisualASTStatements(forStmts, posX, posY);
 
-                this._generateVisualASTExpressions(forStmt.Condition); // Expressions
-                this._generateVisualASTStatements(forStmt.EmbeddedStatement);
+                this._generateVisualASTExpressions(forStmt.Condition, posX - 300, posY + 100); // Expressions
+                this._generateVisualASTStatements(forStmt.EmbeddedStatement, posX, posY);
             }
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement)) // TODO
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForeachStatement;
-                var nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>();
+                nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
 
                 nodeLoop.SetName("ForEach");
-                nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
-                this._generateVisualASTExpressions(forEachStmt.InExpression);
-                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement);
+                //nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
+                this._generateVisualASTExpressions(forEachStmt.InExpression, posX - 300, posY + 100);
+                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, posX, posY);
 
             }
             # endregion Loops
@@ -262,10 +266,11 @@ namespace code_in.Presenters.Nodal
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
             {
                 var switchStmtNode = this._view.CreateAndAddNode<SwitchStmtNode>();
+                switchStmtNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 var switchStmt = (stmtArg as SwitchStatement);
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
-                _generateVisualASTExpressions(switchStmt.Expression);
+                _generateVisualASTExpressions(switchStmt.Expression, posX - 300, posY + 100);
                 foreach(var switchSection in switchStmt.SwitchSections)
                 {
                     foreach (var caseLabel in switchSection.CaseLabels)
@@ -273,10 +278,13 @@ namespace code_in.Presenters.Nodal
                         var caseInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                         var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeItem>();
                         caseInput.SetName(caseLabel.Expression.ToString());
-                        _generateVisualASTExpressions(caseLabel.Expression);
+                        _generateVisualASTExpressions(caseLabel.Expression, posX - 300, posY + 100);
                     }
-                    foreach(var switchSectionStmt in switchSection.Statements)
-                        _generateVisualASTStatements(switchSectionStmt);
+                    foreach (var switchSectionStmt in switchSection.Statements)
+                    {
+                        posY += 150;
+                        _generateVisualASTStatements(switchSectionStmt, posX, posY);
+                    }
                 }
             }
             #endregion Switch
@@ -287,6 +295,8 @@ namespace code_in.Presenters.Nodal
             {
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
+                variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+
                 variableNode.SetNodeType("VarDecl");
                 foreach (var v in varStmt.Variables)
                 {
@@ -302,40 +312,49 @@ namespace code_in.Presenters.Nodal
                 var exprStmt = stmtArg as ExpressionStatement;
 
                 var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>();
+                exprStmtNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+
                 exprStmtNode.Expression.SetName(exprStmt.ToString());
-                this._generateVisualASTExpressions(exprStmt.Expression);
+                this._generateVisualASTExpressions(exprStmt.Expression, posX - 300, posY + 100);
             }
             #endregion ExpressionStatement
             #region Return Statement
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
             {
-                var exprStmt = stmtArg as ExpressionStatement;
+                var returnStmt = stmtArg as ExpressionStatement;
 
-                var exprStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>();
-                if (exprStmt != null)
+                var returnStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>();
+                returnStmtNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+
+                if (returnStmt != null)
                 {
-                    this._generateVisualASTExpressions(exprStmt.Expression);
+                    this._generateVisualASTExpressions(returnStmt.Expression, posX - 300, posY + 100);
                 }
             }
             #endregion Return Statement
             #endregion Single Statement
         }
-        private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
+        private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, int posX, int posY)
         {
             if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
                 var unaryExpr = this._view.CreateAndAddNode<UnaryExprNode>();
+                unaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 unaryExpr.SetName(unaryExprOp.OperatorToken.ToString());
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = this._view.CreateAndAddNode<BinaryExprNode>();
+                binaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+
 
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
                 var invokExpr = this._view.CreateAndAddNode<FuncCallExprNode>();
+                invokExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+
 
             }
         }
