@@ -4,33 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
 
         <!-- Content of "General" menu -->
         <StackPanel x:Name="General_layout" Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Label HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20"> Général </Label>
+        <Label x:Name="CategoryNameField" HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20"> Général </Label>
 
-            <!-- "Activate Tutorial" -->
-            <CheckBox Content="Activer le mode tutoriel" Margin="50, 100, 0, 0" Foreground="#ebebeb" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20"/>
+        <Button Content=" Switch Language" Click="SwitchButtonClick"/>
+        <!-- "Activate Tutorial" -->
+            <CheckBox x:Name="TutorialModeField" Content="Activer le mode tutoriel" Margin="50, 100, 0, 0" Foreground="#ebebeb" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20"/>
 
             <!-- "Updates" -->
-            <TextBlock Margin="50,60,160,0" Text="Mises à jour" Foreground="#ebebeb" FontSize="20"/>
+            <TextBlock x:Name="UpdateField" Margin="50,60,160,0" Text="Mises à jour" Foreground="#ebebeb" FontSize="20"/>
             <ComboBox  Width="200" HorizontalAlignment="Left" Margin="50, 10, 0, 0">
-                <ComboBoxItem Content="Au démarrage"/>
-                <ComboBoxItem Content="Journalier"/>
-                <ComboBoxItem Content="Mensuel"/>
-                <ComboBoxItem Content="Jamais"/>
+                <ComboBoxItem x:Name="UpdateBootField" Content="Au démarrage"/>
+                <ComboBoxItem x:Name="UpdateDayField" Content="Journalier"/>
+                <ComboBoxItem x:Name="UpdateMonthField" Content="Mensuel"/>
+                <ComboBoxItem x:Name="UpdateNeverField" Content="Jamais"/>
             </ComboBox>
             <Button Name="maj_menu" Margin="50, 20, 0, 0" Width="150" HorizontalAlignment="Left" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
 
             <!-- configuration file's directory -->
-            <TextBlock Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
+            <TextBlock x:Name="ConfigFolderField" Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
             <TextBlock Name="Path" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
             <Button x:Name="FileConf" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
 
             <!-- Confirm/Cancel buttons ;) :p -->
-            <Button Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Confirm"/>
-            <Button Content="Annuler" Height="30" Width="100" Margin="100, -30, -100, 0" Click="Button_Cancel"/>
+            <Button x:Name="ConfirmField" Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Confirm"/>
+            <Button x:Name="CancelField" Content="Annuler" Height="30" Width="100" Margin="100, -30, -100, 0" Click="Button_Cancel"/>
         </StackPanel>
         <!-- End of "General" menu content -->
 
