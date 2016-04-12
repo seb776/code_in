@@ -1,4 +1,5 @@
-﻿using code_in.Models;
+﻿using code_in.Managers;
+using code_in.Models;
 using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.NodesElems;
@@ -555,6 +556,12 @@ namespace code_in.Views.NodalView
 
         void clickChangeMode(object sender, RoutedEventArgs e)
         {
+            var lineType = code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"];
+            if (lineType == null)
+                code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"] = 0;
+            else
+                code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
+           
             if (_lineMode == LineMode.LINE)
                 _lineMode = LineMode.BEZIER;
             else
@@ -576,5 +583,18 @@ namespace code_in.Views.NodalView
         {
             this.DropNodes(null);
         }
+
+        private void changeResourceLink(object sender, ResourcesEventArgs e)
+        {
+            foreach (var t in this.MainGrid.Children) {
+                if (t.GetType() == typeof(Code_inLink))
+                {
+                    _link = (Code_inLink) t;
+                    _link.changeLineMode();
+                }
+            }
+          //  MessageBox.Show("This is a popup triggered by an event handler that subscribed to ResourceChangeEventBehavior ResourceChanged event!!");
+        }
+
     }
 }

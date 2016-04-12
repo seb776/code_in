@@ -67,6 +67,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+
     <Grid x:Name="WinGrid" PreviewMouseWheel="WinGrid_MouseWheel">
         <ScrollViewer x:Name="ScrollView" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
             <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000" Stretch="Uniform" MouseDown="ZoomPanel_MouseDown" MouseUp="ZoomPanel_MouseUp" MouseLeave="ZoomPanel_MouseLeave" MouseMove="ZoomPanel_MouseMove">

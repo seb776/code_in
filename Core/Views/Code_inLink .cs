@@ -66,5 +66,10 @@ namespace code_in.Views
             this.InvalidateVisual();
         }
 
+        public void changeLineMode()
+        {
+            _lineMode = (_lineMode == ELineMode.LINE ? ELineMode.BEZIER : ELineMode.LINE);
+        }
+
     }
 }
