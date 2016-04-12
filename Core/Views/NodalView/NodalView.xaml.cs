@@ -102,6 +102,8 @@ namespace code_in.Views.NodalView
                     else if (_lineMode == LineMode.BEZIER)
                         _link.changeLineMode(Code_inLink.ELineMode.BEZIER);
 
+                    this._link.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
+
                     this.MainGrid.Children.Add(_link);
                         
 
@@ -111,7 +113,6 @@ namespace code_in.Views.NodalView
 
                         _currentLineDrawing.Stroke = new SolidColorBrush(Colors.GreenYellow);
                         _currentLineDrawing.StrokeThickness = 3;
-                        _currentLineDrawing.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
                         Canvas.SetZIndex(_currentLineDrawing, -9999999); // TODO Beuark
                         Point nodeAnchorRelativeCoord;
                         if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
@@ -490,22 +491,24 @@ namespace code_in.Views.NodalView
 
         void _currentLineDrawing_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Line aLine = sender as Line;
-            aLine.Stroke = new SolidColorBrush(Colors.Red); // to see the line selected
+            Code_inLink aLine = sender as Code_inLink;
             e.Handled = true;
             var cm = new ContextMenu();
             var m1 = new MenuItem();
-            m1.Header = "test";
+            m1.Header = "remove link";
             m1.Click += testClick;
             m1.DataContext = aLine;
             cm.Items.Add(m1);
+            cm.Margin = new Thickness(e.GetPosition(this.MainGrid).X, e.GetPosition(this.MainGrid).Y, 0, 0);
             cm.IsOpen = true;
         }
 
         void testClick(object sender, RoutedEventArgs e)
         {
-            Line aLine = (sender as MenuItem).DataContext as Line; // is it better to use _currentLineDrawing or let the DataContext?
+            Code_inLink aLine = (sender as MenuItem).DataContext as Code_inLink;
             // remove aLine
+            this.MainGrid.Children.Remove(aLine);
+            // need to remove line in nodeAnchor also
         }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -593,7 +596,6 @@ namespace code_in.Views.NodalView
                     _link.changeLineMode();
                 }
             }
-          //  MessageBox.Show("This is a popup triggered by an event handler that subscribed to ResourceChangeEventBehavior ResourceChanged event!!");
         }
 
     }
