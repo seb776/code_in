@@ -4,9 +4,6 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib" 
              Startup="App_Startup">
     <Application.Resources>
-        <ResourceDictionary>
-            <sys:Int32 x:Key="linkType">0</sys:Int32>
-        </ResourceDictionary>
         
     </Application.Resources>
     
