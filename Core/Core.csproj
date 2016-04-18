@@ -92,6 +92,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEnvironmentWrapper.cs" />
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\Nodes\ANodePresenter.cs" />
+    <Compile Include="SharedResourceDictionary.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
@@ -172,6 +174,10 @@
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
     </Compile>
     <Page Include="Models\LanguageResourcesDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -318,12 +324,55 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TranslationTier\TranslationTier.csproj">
-      <Project>{3d041f78-9d37-4e06-9b5a-4f80fb3a595b}</Project>
-      <Name>TranslationTier</Name>
-    </ProjectReference>
+    <Resource Include="Resources\1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\collapse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\duplicate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\edit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\expand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\inheritance.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\remove.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\pink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SpritesMainBtn\Top.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

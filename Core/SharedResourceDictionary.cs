@@ -15,7 +15,7 @@ namespace code_in.Resources
             {
                 if (_mainResourceDictionary == null)
                 {
-                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/ResourcesDictionary.xaml",
+                    System.Uri resourceLocater = new System.Uri("/code_inCore;component/ResourcesDictionary.xaml",
                                         System.UriKind.Relative);
                     _mainResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
                 }
@@ -29,7 +29,7 @@ namespace code_in.Resources
             {
                 if (_themePreviewResourceDictionary == null)
                 {
-                    System.Uri resourceLocater = new System.Uri("/TranslationTier;component/ResourcesDictionary.xaml",
+                    System.Uri resourceLocater = new System.Uri("/code_inCore;component/ResourcesDictionary.xaml",
                                         System.UriKind.Relative);
                     _themePreviewResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
                 }

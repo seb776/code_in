@@ -174,10 +174,6 @@
       <Project>{0ab61e98-1a9d-4571-babe-f276b513435c}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TranslationTier\TranslationTier.csproj">
-      <Project>{3d041f78-9d37-4e06-9b5a-4f80fb3a595b}</Project>
-      <Name>TranslationTier</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>

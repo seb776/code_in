@@ -30,7 +30,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 _editButton = new Image();
                 var imageSrc = new BitmapImage();
                 imageSrc.BeginInit();
-                imageSrc.UriSource = new Uri("pack://application:,,,/TranslationTier;component/Resources/Graphics/edit.png");
+                imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
                 imageSrc.EndInit();
                 _editButton.Source = imageSrc;
                 _editButton.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);

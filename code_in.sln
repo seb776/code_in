@@ -5,11 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{0AB61E98-1A9D-4571-BABE-F276B513435C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationTier", "TranslationTier\TranslationTier.csproj", "{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standalone", "Standalone\Standalone.csproj", "{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}"
 	ProjectSection(ProjectDependencies) = postProject
-		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B} = {3D041F78-9D37-4E06-9B5A-4F80FB3A595B}
 		{0AB61E98-1A9D-4571-BABE-F276B513435C} = {0AB61E98-1A9D-4571-BABE-F276B513435C}
 	EndProjectSection
 EndProject
@@ -25,18 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSCode_in_UnitTests", "VSCode_in\VSCode_in_UnitTests\VSCode_in_UnitTests.csproj", "{CB7FFC77-3181-4F87-866C-2D870028461C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{990B7928-9FFB-4FE5-97A5-0A7E63D1388E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{6A586FF1-51FA-45FA-94A2-60DC4788FDB4}"
-	ProjectSection(SolutionItems) = preProject
-		Resources\Graphics\collapse.png = Resources\Graphics\collapse.png
-		Resources\Graphics\duplicate.png = Resources\Graphics\duplicate.png
-		Resources\Graphics\edit.png = Resources\Graphics\edit.png
-		Resources\Graphics\expand.png = Resources\Graphics\expand.png
-		Resources\Graphics\inheritance.png = Resources\Graphics\inheritance.png
-		Resources\Graphics\remove.png = Resources\Graphics\remove.png
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +32,6 @@ Global
 		{0AB61E98-1A9D-4571-BABE-F276B513435C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AB61E98-1A9D-4571-BABE-F276B513435C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AB61E98-1A9D-4571-BABE-F276B513435C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D041F78-9D37-4E06-9B5A-4F80FB3A595B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20CE5890-7AC6-4CC7-8EE9-B1C792293B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -70,8 +51,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6A586FF1-51FA-45FA-94A2-60DC4788FDB4} = {990B7928-9FFB-4FE5-97A5-0A7E63D1388E}
 	EndGlobalSection
 EndGlobal
