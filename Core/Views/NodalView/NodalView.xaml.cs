@@ -515,6 +515,39 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            var im = new InteractiveMenu();
+            
+            List<Type> listOfBs = new List<Type>();
+            foreach (var t in typeof(BaseNode).Assembly.GetTypes())
+            {
+
+                if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
+                {
+                    listOfBs.Add(t);
+                }
+            }
+            foreach (var t in listOfBs)
+            {
+                im.AddElement(t.Name);
+            }
+            //im.PlacementTarget = (this.Parent as FrameworkElement).Parent as UIElement;
+            //var tC = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            //var tC2 = new Thickness()
+            //var tC = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
+            //im.Margin = tC;
+            //im.PlacementRectangle = new Rect(new Point(tC.Left, tC.Top), new Point(tC.Left + im.Width, im.Height + tC.Top));
+            im.Placement = PlacementMode.AbsolutePoint;
+            var tC = System.Windows.Forms.Control.MousePosition;
+            im.HorizontalOffset = tC.X;
+            im.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            im.VerticalOffset = tC.Y - (im.DesiredSize.Height / 2);
+
+            //im.PlacementTarget = (this.Parent as FrameworkElement).Parent as UIElement;
+            //im.Placement = PlacementMode.Center;
+            im.IsOpen = true;
+            //im.ShowPopup(this.MainGrid as UIElement, new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0));
+
+            return;
             //var hexMenu = new HexagonalMenu();
 
             //hexMenu.AddHexagonButton(0, 0);
@@ -528,35 +561,35 @@ namespace code_in.Views.NodalView
 
             // This automatically updates the list of accessible nodes
             // Need to be optimized (compute only the first time, as it uses reflection)
-            List<Type> listOfBs = new List<Type>();
-            foreach (var t in typeof(BaseNode).Assembly.GetTypes())
-            {
+            //List<Type> listOfBs = new List<Type>();
+            //foreach (var t in typeof(BaseNode).Assembly.GetTypes())
+            //{
 
-                if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
-                {
-                    listOfBs.Add(t);
-                }
-            }
-            var cm = new ContextMenu();
-            foreach (var t in listOfBs)
-            {
-                var m1 = new MenuItem();
-                m1.Header = t.Name;
-                m1.DataContext = t;
-                m1.Click += m1_Click;
-                cm.Items.Add(m1);
-            }
+            //    if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
+            //    {
+            //        listOfBs.Add(t);
+            //    }
+            //}
+            //var cm = new ContextMenu();
+            //foreach (var t in listOfBs)
+            //{
+            //    var m1 = new MenuItem();
+            //    m1.Header = t.Name;
+            //    m1.DataContext = t;
+            //    m1.Click += m1_Click;
+            //    cm.Items.Add(m1);
+            //}
 
-            var m2 = new MenuItem();
-            m2.Header = "change line mode";
-            m2.Click += clickChangeMode;
-            cm.Items.Add(m2);
+            //var m2 = new MenuItem();
+            //m2.Header = "change line mode";
+            //m2.Click += clickChangeMode;
+            //cm.Items.Add(m2);
 
-            cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            cm.IsOpen = true;
-            // Setting the position of the node if we create one to the place the menu has been opened
-            _newNodePos.X = e.GetPosition(this).X;
-            _newNodePos.Y = e.GetPosition(this).Y;
+            //cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
+            //cm.IsOpen = true;
+            //// Setting the position of the node if we create one to the place the menu has been opened
+            //_newNodePos.X = e.GetPosition(this).X;
+            //_newNodePos.Y = e.GetPosition(this).Y;
         }
 
         void clickChangeMode(object sender, RoutedEventArgs e)
