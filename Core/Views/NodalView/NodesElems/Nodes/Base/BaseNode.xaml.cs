@@ -29,9 +29,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
-      //  public Line lineInput;
- //       public Line lineOutput;
-
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -58,13 +55,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public virtual void SetDynamicResources(String keyPrefix)
         {
             this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
-            this.NodeSeparator.SetResourceReference(ForegroundProperty, keyPrefix + "SeparatorForeGroundColor");
             this.NodeType.SetResourceReference(ForegroundProperty, keyPrefix + "TypeForeGroundColor");
             this.NodeHeader.SetResourceReference(BackgroundProperty, keyPrefix + "MainColor");
             this.NodeBorder.SetResourceReference(BorderBrushProperty, keyPrefix + "MainColor");
             this.BackGrid.SetResourceReference(BackgroundProperty, keyPrefix + "SecondaryColor");
-            this.CrossA.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
-            this.CrossB.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
         }
         #endregion ICodeInVisual
 
@@ -104,6 +98,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion Events
 
+        #region NodesCapabilities
         public void AddAttribute(String type)
         {
             Label lblType = new Label();
@@ -126,12 +121,20 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             return this.NodeName.Content as String;
         }
 
+        public void MoveNode(Point pos)
+        {
+            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
+            this.MoveNodeSpecial();
+        }
+
+        public abstract void MoveNodeSpecial();
+        #endregion NodesCapabilities
+
         /// <summary>
         /// This function is not reversible. It removes the remove button from the node.
         /// </summary>
         public void MakeNotRemovable()
         {
-            this.NodeHeader.Children.Remove(this.RmBtn);
         }
 
         private void ContentGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -173,12 +176,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
         }
 
-        public void MoveNode(Point pos)
-        {
-            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
-            this.MoveNodeSpecial();
-        }
 
-        public abstract void MoveNodeSpecial();
     } // Class BaseNode
 } // Namespace

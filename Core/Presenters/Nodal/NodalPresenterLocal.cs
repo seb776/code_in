@@ -168,7 +168,6 @@ namespace code_in.Presenters.Nodal
         {
             var entry = this._view.CreateAndAddNode<FuncEntryNode>();
             var exit = this._view.CreateAndAddNode<ReturnStmtNode>();
-            exit.MakeNotRemovable();
 
             foreach (var i in method.Parameters)
             {

@@ -24,13 +24,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
         public override void SetDynamicResources(String keyPrefix)
         {
             this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
-            this.NodeSeparator.SetResourceReference(ForegroundProperty, keyPrefix + "SeparatorForeGroundColor");
             this.NodeType.SetResourceReference(ForegroundProperty, keyPrefix + "TypeForeGroundColor");
             this.NodeHeader.SetResourceReference(BackgroundProperty, keyPrefix + "SecondaryColor");
             this.NodeBorder.SetResourceReference(BorderBrushProperty, keyPrefix + "SecondaryColor");
             this.BackGrid.SetResourceReference(BackgroundProperty, keyPrefix + "MainColor");
-            this.CrossA.SetResourceReference(Line.StrokeProperty, keyPrefix + "MainColor");
-            this.CrossB.SetResourceReference(Line.StrokeProperty, keyPrefix + "MainColor");
         }
         #endregion ICodeInVisual
     }

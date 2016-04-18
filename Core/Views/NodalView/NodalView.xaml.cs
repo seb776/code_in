@@ -54,6 +54,8 @@ namespace code_in.Views.NodalView
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+
+
         }
         public NodalView() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)

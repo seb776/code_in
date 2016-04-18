@@ -70,7 +70,6 @@ namespace code_in.Views.MainView
             this.WinGrid.Children.Add(this.SearchBar);
             this._nodalView = new NodalView.NodalView(this._themeResourceDictionary);
             this.ZoomPanel.Child = this._nodalView;
-
         }
         public MainView() :
             this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)

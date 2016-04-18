@@ -107,6 +107,9 @@
     <Compile Include="Presenters\Nodal\Nodes\ANodePresenter.cs" />
     <Compile Include="SharedResourceDictionary.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\MainView\EditNodePanel.xaml.cs">
+      <DependentUpon>EditNodePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
@@ -212,6 +215,10 @@
     <Page Include="Views\MainView\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainView\EditNodePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml">
       <SubType>Designer</SubType>
