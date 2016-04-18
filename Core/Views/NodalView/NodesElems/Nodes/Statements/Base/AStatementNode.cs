@@ -17,7 +17,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
             base(themeResDict)
         {
             this.SetNodeType("Statement");
-            this.LockName();
             this.SetDynamicResources("DefaultStmtNode");
         }
 

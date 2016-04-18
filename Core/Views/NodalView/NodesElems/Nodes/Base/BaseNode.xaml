@@ -19,13 +19,6 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <!--<Border Grid.Column="0" Margin="0,0,-10,0" Background="{StaticResource ModifiersColorLocal}" CornerRadius="5,0,0,5" VerticalAlignment="Top">
-            <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="0, 0, 10, 0">
-                <Label Foreground="#FF00B6EC">public</Label>
-                <Label Foreground="#FF00B6EC">abstract</Label>
-                <Label Foreground="#FF00B6EC">partial</Label>
-            </StackPanel>
-        </Border>-->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -54,19 +47,19 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="5"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold">
+                            <Label Grid.Column="1" x:Name="NodeType" Foreground="White" FontWeight="Bold" VerticalAlignment="Center">
                                 <Label.Effect>
                                     <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
                                 </Label.Effect>
                                 NodeType
                             </Label>
-                            <Label x:Name="NodeSeparator" Grid.Column="2">::</Label>
-                            <TextBox Grid.Column="3" x:Name="NodeName" Margin="2,2,0,0"  BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
-                                <TextBox.Effect>
+                            <Label x:Name="NodeSeparator" Grid.Column="2" VerticalAlignment="Center">::</Label>
+                            <Label Grid.Column="3" x:Name="NodeName" BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
+                                <Label.Effect>
                                     <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
-                                </TextBox.Effect>
+                                </Label.Effect>
                                 Example
-                            </TextBox>
+                            </Label>
                             <Grid x:Name="RmBtn" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Arrow" Width="Auto" Height="Auto" MouseLeftButtonDown="EvtRemoveNode">
                                 <Grid x:Name="RemoveButton">
                                     <Line x:Name="CrossA" Stroke="{StaticResource LocalNodeColorBack}"  StrokeThickness="3" X1="0" Y1="0" X2="10" Y2="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>

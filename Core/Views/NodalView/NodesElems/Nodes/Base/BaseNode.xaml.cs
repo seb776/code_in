@@ -118,12 +118,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public void SetName(String name)
         {
-            this.NodeName.Text = name;
+            this.NodeName.Content = name;
         }
 
         public String GetName()
         {
-            return this.NodeName.Text;
+            return this.NodeName.Content as String;
         }
 
         /// <summary>
@@ -132,15 +132,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void MakeNotRemovable()
         {
             this.NodeHeader.Children.Remove(this.RmBtn);
-        }
-
-        public void LockName()
-        {
-            this.NodeName.IsReadOnly = true;
-        }
-        public void UnLockName()
-        {
-            this.NodeName.IsReadOnly = false;
         }
 
         private void ContentGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
