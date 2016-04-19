@@ -484,8 +484,6 @@ namespace code_in.Views.NodalView
                 {
                     _link._x2 = e.GetPosition(this.MainGrid).X;
                     _link._y2 = e.GetPosition(this.MainGrid).Y;
-                   // _currentLineDrawing.X2 = e.GetPosition(this.MainGrid).X;
-                    //_currentLineDrawing.Y2 = e.GetPosition(this.MainGrid).X;
                 }
 
             }
@@ -507,7 +505,7 @@ namespace code_in.Views.NodalView
 
         void testClick(object sender, RoutedEventArgs e)
         {
-            Code_inLink aLine = (sender as MenuItem).DataContext as Code_inLink;
+            Code_inLink aLine = (sender as MenuItem).DataContext as Code_inLink; // Datacontext isn't for that but it's easier
             // remove aLine
             this.MainGrid.Children.Remove(aLine);
             // need to remove line in nodeAnchor also
@@ -515,7 +513,7 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var im = new InteractiveMenu();
+            var im = new HexagonalMenu();
             
             List<Type> listOfBs = new List<Type>();
             foreach (var t in typeof(BaseNode).Assembly.GetTypes())
@@ -526,26 +524,32 @@ namespace code_in.Views.NodalView
                     listOfBs.Add(t);
                 }
             }
+            int xCount = (int)Math.Sqrt(listOfBs.Count);
+            int iX = 0;
+            int iY = 0;
+            Color[] testColors = {
+                                     Colors.DodgerBlue,
+                                     Color.FromArgb(0xFF, 0x42, 0x42, 0x42),
+                                     Colors.GreenYellow,
+                                     Colors.OrangeRed,
+                                 };
             foreach (var t in listOfBs)
             {
-                im.AddElement(t.Name);
+                im.AddHexagonButton(iX, iY, testColors[iX % 4], null);
+                ++iX;
+                if (iX == xCount)
+                {
+                    iX = 0;
+                    iY++;
+                }
             }
-            //im.PlacementTarget = (this.Parent as FrameworkElement).Parent as UIElement;
-            //var tC = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            //var tC2 = new Thickness()
-            //var tC = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y, 0, 0);
-            //im.Margin = tC;
-            //im.PlacementRectangle = new Rect(new Point(tC.Left, tC.Top), new Point(tC.Left + im.Width, im.Height + tC.Top));
-            im.Placement = PlacementMode.AbsolutePoint;
-            var tC = System.Windows.Forms.Control.MousePosition;
-            im.HorizontalOffset = tC.X;
-            im.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            im.VerticalOffset = tC.Y - (im.DesiredSize.Height / 2);
 
-            //im.PlacementTarget = (this.Parent as FrameworkElement).Parent as UIElement;
-            //im.Placement = PlacementMode.Center;
+            im.Placement = PlacementMode.Absolute;
+            var tC = System.Windows.Forms.Control.MousePosition;
+            im.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            im.HorizontalOffset = tC.X -(im.DesiredSize.Width / 2);
+            im.VerticalOffset = tC.Y -(im.DesiredSize.Height / 2);
             im.IsOpen = true;
-            //im.ShowPopup(this.MainGrid as UIElement, new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0));
 
             return;
             //var hexMenu = new HexagonalMenu();

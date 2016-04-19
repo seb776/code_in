@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,23 @@ namespace code_in.Views.Utils
     /// </summary>
     public partial class HexagonalButton : UserControl
     {
-        public HexagonalButton()
+        public HexagonalButton(Color c, ButtonAction btnAction, params object[] args)
         {
             InitializeComponent();
+            _btnAction = btnAction;
+            _args = args;
+            this.HexaButton.Fill = new SolidColorBrush(c);
+        }
+
+        public delegate void ButtonAction(object[] args);
+        ButtonAction _btnAction;
+        object[] _args;
+
+        private void HexaButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("yeah");
+            if (_btnAction != null)
+                _btnAction.Invoke(_args);
         }
     }
 }
