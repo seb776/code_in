@@ -28,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             InitializeComponent();
         }
         public ItemModifiers() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
@@ -40,5 +40,16 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
 
         }
         #endregion ICodeInVisual
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }

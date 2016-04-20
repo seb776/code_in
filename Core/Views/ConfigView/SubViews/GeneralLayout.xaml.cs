@@ -38,30 +38,14 @@ namespace code_in.Views.ConfigView.SubViews
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             this._setLanguageResource();
-            this._changeLanguage(_curLanguage);
         }
         public GeneralLayout() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
-        private void _changeLanguage(int idx)
-        {
-            _langueResourceDictionary["CategoryName"] = Code_inApplication.GetLanguageWord(idx, 0);
-            _langueResourceDictionary["TutorialMode"] = Code_inApplication.GetLanguageWord(idx, 1);
-            _langueResourceDictionary["Update"] = Code_inApplication.GetLanguageWord(idx, 2);
-            _langueResourceDictionary["BootUpdate"] = Code_inApplication.GetLanguageWord(idx, 3);
-            _langueResourceDictionary["DayUpdate"] = Code_inApplication.GetLanguageWord(idx, 4);
-            _langueResourceDictionary["MonthUpdate"] = Code_inApplication.GetLanguageWord(idx, 5);
-            _langueResourceDictionary["NeverUpdate"] = Code_inApplication.GetLanguageWord(idx, 6);
-            _langueResourceDictionary["UpdateButton"] = Code_inApplication.GetLanguageWord(idx, 7);
-            _langueResourceDictionary["ConfigFolder"] = Code_inApplication.GetLanguageWord(idx, 8);
-            _langueResourceDictionary["Browse"] = Code_inApplication.GetLanguageWord(idx, 9);
-            _langueResourceDictionary["Confirm"] = Code_inApplication.GetLanguageWord(idx, 10);
-            _langueResourceDictionary["Cancel"] = Code_inApplication.GetLanguageWord(idx, 11);
-        }
         private void _setLanguageResource()
         {
-            this.CategoryNameField.SetResourceReference(Label.ContentProperty, "CategoryName");
+            //this.CategoryNameField.SetResourceReference(Label.ContentProperty, "CategoryName");
             this.TutorialModeField.SetResourceReference(CheckBox.ContentProperty, "TutorialMode");
             this.UpdateField.SetResourceReference(TextBlock.TextProperty, "Update");
             this.UpdateBootField.SetResourceReference(ComboBoxItem.ContentProperty, "BootUpdate");
@@ -71,8 +55,8 @@ namespace code_in.Views.ConfigView.SubViews
             this.maj_menu.SetResourceReference(Button.ContentProperty, "UpdateButton");
             this.ConfigFolderField.SetResourceReference(TextBlock.TextProperty, "ConfigFolder");
             this.FileConf.SetResourceReference(Button.ContentProperty, "Browse");
-            this.ConfirmField.SetResourceReference(Button.ContentProperty, "Confirm");
-            this.CancelField.SetResourceReference(Button.ContentProperty, "Cancel");
+            //this.ConfirmField.SetResourceReference(Button.ContentProperty, "Confirm");
+            //this.CancelField.SetResourceReference(Button.ContentProperty, "Cancel");
         }
         // The next 3 functions are for the wheckbox of the catégory "General->Activate tutorial"
 
@@ -143,11 +127,15 @@ namespace code_in.Views.ConfigView.SubViews
             MessageBox.Show("Vous avez annulé votre choix !");
         }
 
-        private void SwitchButtonClick(object sender, RoutedEventArgs e)
+
+        public ResourceDictionary GetLanguageResourceDictionary()
         {
-            _curLanguage = (_curLanguage == 0 ? 1 : 0);
-            _changeLanguage(_curLanguage);
+            throw new NotImplementedException();
         }
 
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,27 +10,16 @@
 
         <!-- The two part of the menu -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition MinWidth="200" Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Treeview of the menu = Summary -->
-        <TreeView x:Name="TreeViewMenu"  Grid.Column="0" Margin="0,0,0,0" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="#ebebeb" FontSize="18" SelectedItemChanged="myTreeView_SelectedItemChanged">
-            <!--<TreeViewItem x:Name="General" Header="Général" Foreground="#424242" IsSelected="True"/>
-            <TreeViewItem x:Name="Themes" Header="Thèmes" IsExpanded="True" Foreground="#424242" />
-            <TreeViewItem x:Name="Errors" Header="Erreurs" Foreground="#424242" />
-            <TreeViewItem x:Name="Shortcuts" Header="Raccourcis" Foreground="#424242"/>
-            <TreeViewItem x:Name="Performances" Header="Performances" Foreground="#424242"/>-->
+        <TreeView x:Name="TreeViewMenu"  Grid.Column="0" Padding="0,0,25,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#ebebeb" FontSize="18" SelectedItemChanged="myTreeView_SelectedItemChanged">
         </TreeView>
 
         <!-- Right Panel (All layouts are aready loaded, waiting for being visible/enabled when usefull !) -->
         <Grid x:Name="RightPanel" Grid.Column="1" Loaded="Grid_Loaded">
-            <!-- Nope... -->
-            <!--<my:GeneralLayout x:Name="GenMenu" IsEnabled="True" Visibility="Visible"/>
-            <my:ThemeLayout x:Name="TheMenu" IsEnabled="False" Visibility="Hidden"/>
-            <my:ErrorsLayout x:Name="ErrMenu" IsEnabled="False" Visibility="Hidden"/>
-            <my:ShortcutsLayout x:Name="ShortMenu" IsEnabled="False" Visibility="Hidden"/>
-            <my:PerformancesLayout x:Name="PerfMenu" IsEnabled="False" Visibility="Hidden"/>-->
         </Grid>
         
     </Grid>

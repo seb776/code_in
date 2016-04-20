@@ -4,11 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="#424242">
-        <Label HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20">Raccourcis</Label>
-        <Button Content="Valider" Height="30" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0, 0, 0, 100" Click="Button_Confirm"/>
-        <Button Content="Annuler" Height="30" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="250, 0, 0, 100" Click="Button_Cancel"/>
-
+             d:DesignHeight="800" d:DesignWidth="1000">
+    <Grid>
     </Grid>
 </UserControl>

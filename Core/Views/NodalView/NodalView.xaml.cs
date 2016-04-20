@@ -58,7 +58,7 @@ namespace code_in.Views.NodalView
 
         }
         public NodalView() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         #region IVisualNodeContainerDragNDrop
@@ -407,7 +407,7 @@ namespace code_in.Views.NodalView
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
             int step = 2;
-            Rect tmp = (Rect)code_in.Resources.SharedDictionaryManager.MainResourceDictionary["RectDims"];
+            Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -598,11 +598,11 @@ namespace code_in.Views.NodalView
 
         void clickChangeMode(object sender, RoutedEventArgs e)
         {
-            var lineType = code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"];
+            var lineType = Code_inApplication.MainResourceDictionary["linkType"];
             if (lineType == null)
-                code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"] = 0;
+                Code_inApplication.MainResourceDictionary["linkType"] = 0;
             else
-                code_in.Resources.SharedDictionaryManager.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
+                Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
            
             if (_lineMode == LineMode.LINE)
                 _lineMode = LineMode.BEZIER;
@@ -637,5 +637,16 @@ namespace code_in.Views.NodalView
             }
         }
 
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

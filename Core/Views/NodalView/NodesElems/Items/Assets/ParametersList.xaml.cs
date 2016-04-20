@@ -28,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             InitializeComponent();
         }
         public ParametersList() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         public void AddParameter(String type)
@@ -55,6 +55,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public void SetDynamicResources(String keyPrefix) { }
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
+        }
         #endregion ICodeInVisual
     }
 }

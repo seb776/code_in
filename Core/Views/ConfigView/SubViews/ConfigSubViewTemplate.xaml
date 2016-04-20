@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="code_in.Views.ConfigView.SubViews.ConfigSubViewTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000">
+    <Grid Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="HeaderName" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" FontWeight="Black" Foreground="White">Template header</Label>
+        <Grid Grid.Row="1" Margin="20,5,0,0" x:Name="_subViewGrid" x:FieldModifier="private">
+        </Grid>
+    </Grid>
+</UserControl>

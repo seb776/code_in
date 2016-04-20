@@ -4,35 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1000">
 
-        <!-- Content of "General" menu -->
-        <StackPanel x:Name="General_layout" Background="#424242" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Label x:Name="CategoryNameField" HorizontalAlignment="Center" Foreground="#ebebeb" FontSize="20"> Général </Label>
+    <!-- Content of "General" menu -->
+    <StackPanel x:Name="General_layout" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+        <!-- configuration file's directory -->
+        <Label x:Name="ConfigFolderField" Foreground="#ebebeb" FontSize="20">
+            Emplacement du fichier de configuration
+        </Label>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Name="Path" HorizontalAlignment="Left" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
+            <Button x:Name="FileConf" Margin="20,0,0,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
+        </StackPanel>
 
-        <Button Content=" Switch Language" Click="SwitchButtonClick"/>
-        <!-- "Activate Tutorial" -->
-            <CheckBox x:Name="TutorialModeField" Content="Activer le mode tutoriel" Margin="50, 100, 0, 0" Foreground="#ebebeb" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20"/>
-
-            <!-- "Updates" -->
-            <TextBlock x:Name="UpdateField" Margin="50,60,160,0" Text="Mises à jour" Foreground="#ebebeb" FontSize="20"/>
-            <ComboBox  Width="200" HorizontalAlignment="Left" Margin="50, 10, 0, 0">
+        <!-- "Updates" -->
+        <Label x:Name="UpdateField" Foreground="#ebebeb" FontSize="20">Mises à jour</Label>
+        <StackPanel Orientation="Horizontal">
+            <ComboBox  MinWidth="200" HorizontalAlignment="Left">
                 <ComboBoxItem x:Name="UpdateBootField" Content="Au démarrage"/>
                 <ComboBoxItem x:Name="UpdateDayField" Content="Journalier"/>
                 <ComboBoxItem x:Name="UpdateMonthField" Content="Mensuel"/>
                 <ComboBoxItem x:Name="UpdateNeverField" Content="Jamais"/>
             </ComboBox>
-            <Button Name="maj_menu" Margin="50, 20, 0, 0" Width="150" HorizontalAlignment="Left" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
-
-            <!-- configuration file's directory -->
-            <TextBlock x:Name="ConfigFolderField" Margin="50,20,160,0" Text="Dossier du fichier de configuration" Foreground="#ebebeb" FontSize="20"/>
-            <TextBlock Name="Path" HorizontalAlignment="Left" Margin="50, 10, 0, 0" Width="250" Text="C:\..." Foreground="#424242" FontSize="20" Background="White" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
-            <Button x:Name="FileConf" Margin="250,-30, 300,0" Height="30" Width="100" Click="bOpenFileDialog_Click" Content="Parcourir" Background="#ebebeb"/>
-
-            <!-- Confirm/Cancel buttons ;) :p -->
-            <Button x:Name="ConfirmField" Content="Valider" Height="30" Width="100" Margin="100, 50, 150, 0" Click="Button_Confirm"/>
-            <Button x:Name="CancelField" Content="Annuler" Height="30" Width="100" Margin="100, -30, -100, 0" Click="Button_Cancel"/>
+            <Button Name="maj_menu" Margin="20,0,0,0" MinWidth="150" Width="auto" HorizontalAlignment="Left" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
         </StackPanel>
-        <!-- End of "General" menu content -->
 
+        <Label x:Name="languageField" Foreground="#ebebeb" FontSize="20">Langue</Label>
+        <StackPanel Orientation="Horizontal">
+            <ComboBox  MinWidth="200" HorizontalAlignment="Left">
+                <ComboBoxItem x:Name="FrancaisField" Content="Francais"/>
+                <ComboBoxItem x:Name="AnglaisField" Content="Anglais"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- "Activate Tutorial" -->
+        <CheckBox x:Name="TutorialModeField"   Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20">
+            <Label Foreground="#ebebeb" Margin="5,0,0,0">Activer le mode tutoriel</Label>
+        </CheckBox>
+    </StackPanel>
+    <!-- End of "General" menu content -->
 </UserControl>

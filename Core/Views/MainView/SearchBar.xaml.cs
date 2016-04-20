@@ -23,7 +23,7 @@ namespace code_in.Views.MainView
             this.CreateAndAddNode<NamespaceNode>();
         }
         public SearchBar() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>() where T : UIElement, INodeElem
@@ -80,6 +80,17 @@ namespace code_in.Views.MainView
 
         private void Sb_Collapsed(object sender, RoutedEventArgs e)
         {
+        }
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace code_in.Views.ConfigView.SubViews
             InitializeComponent();
         }
         public PerformancesLayout() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
          // The two buttons confirm/Cancel
@@ -99,6 +99,17 @@ namespace code_in.Views.ConfigView.SubViews
         private void Expand_Unchecked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
         }
     }
 }

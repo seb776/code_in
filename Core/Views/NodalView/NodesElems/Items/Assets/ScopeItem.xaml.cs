@@ -58,9 +58,20 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             this.Scope = EScope.PRIVATE;
         }
         public ScopeItem() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
+        }
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,11 +1,5 @@
-﻿using code_in.Models.Theme;
-using code_in.ViewModels;
+﻿using code_in.Presenters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace code_in
@@ -13,58 +7,28 @@ namespace code_in
     // This stores the managers of code_in
     public static class Code_inApplication
     {
-        private static String[,] _languageWords = null;
-        public static String GetLanguageWord(int x, int y)
-        {
-            if (_languageWords == null)
-            {
-                _languageWords = new String[2, 12];
-
-                // French
-                _languageWords[0, 0] = "Général";
-                _languageWords[0, 1] = "Activer le mode tutoriel";
-                _languageWords[0, 2] = "Mises à jour";
-                _languageWords[0, 3] = "Démarrage";
-                _languageWords[0, 4] = "Quotidien";
-                _languageWords[0, 5] = "Mensuel";
-                _languageWords[0, 6] = "Jamais";
-                _languageWords[0, 7] = "Vérifier les mises à jour";
-                _languageWords[0, 8] = "Dossier du fichier de configuration";
-                _languageWords[0, 9] = "Parcourir";
-                _languageWords[0, 10] = "Valider";
-                _languageWords[0, 11] = "Annuler";
-                // English
-                _languageWords[1, 0] = "General";
-                _languageWords[1, 1] = "Activate tutorial mode";
-                _languageWords[1, 2] = "Updates";
-                _languageWords[1, 3] = "Boot";
-                _languageWords[1, 4] = "Daily";
-                _languageWords[1, 5] = "Monthly";
-                _languageWords[1, 6] = "Never";
-                _languageWords[1, 7] = "Check updates";
-                _languageWords[1, 8] = "Configuration folder";
-                _languageWords[1, 9] = "Browse";
-                _languageWords[1, 10] = "Ok";
-                _languageWords[1, 11] = "Cancel";
-            }
-            return _languageWords[x, y];
-        }
+        private static readonly String _themeResourceDictionaryPath = "/code_inCore;component/Models/ThemeResourcesDictionary.xaml";
+        private static readonly String _languageResourceDictionaryPath = "/code_inCore;component/Models/LanguageResourcesDictionary.xaml";
+        private static IEnvironmentWrapper _environmentWrapper = null;
+        private static ThemePresenter _themePresenter = null;
+        private static ResourceDictionary _languageResourceDictionary = null;
+        private static ResourceDictionary _themePreviewResourceDictionary = null;
+        private static ResourceDictionary _mainResourceDictionary = null;
         public static void StartApplication(IEnvironmentWrapper wrapper)
         {
             System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valid wrapper in order to start the application !");
             _environmentWrapper = wrapper;
             // Code_inApplication.ThemeMgr.setMainTheme(new DefaultThemeData()); // TODO when theme management is complete and functional, load default theme
         }
-        public static IEnvironmentWrapper _environmentWrapper = null;
-        private static ThemeMgr _themeMgr = null;
 
-        public static ThemeMgr ThemeMgr
+        #region Accessors
+        public static ThemePresenter ThemePresenter
         {
             get
             {
-                if (_themeMgr == null)
-                    _themeMgr = new ThemeMgr();
-                return _themeMgr;
+                if (_themePresenter == null)
+                    _themePresenter = new ThemePresenter();
+                return _themePresenter;
             }
         }
         public static IEnvironmentWrapper EnvironmentWrapper
@@ -80,13 +44,36 @@ namespace code_in
             {
                 if (_languageResourceDictionary == null)
                 {
-                    Application.ResourceAssembly = Assembly.GetExecutingAssembly(); // TODO @z0rg Maybe we can remove it
-                    System.Uri resourceLocater = new System.Uri("/code_inCore;component/Models/LanguageResourcesDictionary.xaml", UriKind.Relative);
+                    System.Uri resourceLocater = new System.Uri(_languageResourceDictionaryPath, UriKind.Relative);
                     _languageResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
                 }
                 return _languageResourceDictionary;
             }
         }
-        private static ResourceDictionary _languageResourceDictionary = null;
+        public static ResourceDictionary MainResourceDictionary
+        {
+            get
+            {
+                if (_mainResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri(_themeResourceDictionaryPath, System.UriKind.Relative);
+                    _mainResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _mainResourceDictionary;
+            }
+        }
+        public static ResourceDictionary ThemePreviewResourceDictionary
+        {
+            get
+            {
+                if (_themePreviewResourceDictionary == null)
+                {
+                    System.Uri resourceLocater = new System.Uri(_themeResourceDictionaryPath, System.UriKind.Relative);
+                    _themePreviewResourceDictionary = (ResourceDictionary)Application.LoadComponent(resourceLocater);
+                }
+                return _themePreviewResourceDictionary;
+            }
+        }
+        #endregion Accessors
     }
 }

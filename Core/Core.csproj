@@ -96,7 +96,7 @@
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
-    <Compile Include="Managers\ThemeMgr.cs" />
+    <Compile Include="Presenters\ThemePresenter.cs" />
     <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
@@ -105,7 +105,9 @@
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\Nodes\ANodePresenter.cs" />
-    <Compile Include="SharedResourceDictionary.cs" />
+    <Compile Include="Views\ConfigView\SubViews\ConfigSubViewTemplate.xaml.cs">
+      <DependentUpon>ConfigSubViewTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\MainView\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
@@ -128,9 +130,6 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AIONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
-    <Compile Include="Views\MainView\MainButton.xaml.cs">
-      <DependentUpon>MainButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AOrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
@@ -183,7 +182,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourcesDictionary.xaml">
+    <Page Include="Models\ThemeResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -191,11 +190,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\SubViews\ThemeLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ConfigSubViewTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\SubViews\ErrorsLayout.xaml">
+    <Page Include="Views\ConfigView\SubViews\ThemeLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,10 +207,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\MainButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -253,9 +248,6 @@
     </Compile>
     <Compile Include="Views\ConfigView\SubViews\ThemeLayout.xaml.cs">
       <DependentUpon>ThemeLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfigView\SubViews\ErrorsLayout.xaml.cs">
-      <DependentUpon>ErrorsLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigView\SubViews\GeneralLayout.xaml.cs">
       <DependentUpon>GeneralLayout.xaml</DependentUpon>

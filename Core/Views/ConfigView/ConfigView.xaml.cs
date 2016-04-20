@@ -25,8 +25,8 @@ namespace code_in.Views.ConfigView
     public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
-        private UserControl currentMenu;
-        private Dictionary<String, UserControl> menu = new Dictionary<String, UserControl>();
+        private UserControl _currentMenu = null;
+        private Dictionary<String, UserControl> _menu = new Dictionary<String, UserControl>();
 
         public ConfigView(ResourceDictionary themeResDict)
         {
@@ -35,7 +35,6 @@ namespace code_in.Views.ConfigView
                 {"Theme", new SubViews.ThemeLayout(themeResDict)},
                 {"Shortcuts", new SubViews.ShortcutsLayout(themeResDict)},
                 {"Performances", new SubViews.PerformancesLayout(themeResDict)},
-                {"Errors", new SubViews.ErrorsLayout(themeResDict)}
             };
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
@@ -45,20 +44,18 @@ namespace code_in.Views.ConfigView
                 TreeViewItem item = new TreeViewItem();
                 item.Foreground = new SolidColorBrush(Color.FromRgb(0x42, 0x42, 0x42));
                 item.Header = i.Key;
-                item.DataContext = i.Value;
                 this.TreeViewMenu.Items.Add(item);
-                i.Value.Visibility = System.Windows.Visibility.Hidden;
-                i.Value.IsEnabled = false;
-                this.RightPanel.Children.Add(i.Value);
+                var subViewWrapper = new SubViews.ConfigSubViewTemplate(this.GetThemeResourceDictionary());
+                subViewWrapper.SetMenuContent(i.Value);
+                subViewWrapper.SetMenuName(i.Key);
+                item.DataContext = subViewWrapper;
+                subViewWrapper.Visibility = System.Windows.Visibility.Hidden;
+                subViewWrapper.IsEnabled = false;
+                this.RightPanel.Children.Add(subViewWrapper);
             }
-            //menu.Add("Général", GenMenu);
-            //menu.Add("Thèmes", TheMenu);
-            //menu.Add("Erreurs", ErrMenu);
-            //menu.Add("Raccourcis", ShortMenu);
-            //menu.Add("Performances", PerfMenu);
         }
         public ConfigView() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         { /* Here we must keep the ability to instantiate from default constructor as if it's called by VSConnect, it cannot pass parameters. */}
 
         #region ICodeInVisual
@@ -67,8 +64,18 @@ namespace code_in.Views.ConfigView
             throw new NotImplementedException();
         }
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
+        }
         #endregion ICodeInVisual
 
+        #region Events
         // For handling the changement of the menu item (moving from a category to another)
         private void myTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -77,11 +84,11 @@ namespace code_in.Views.ConfigView
                 TreeViewItem newItem = ((TreeViewItem)e.NewValue);
                 UserControl selectedMenu = newItem.DataContext as UserControl;
 
-                if (currentMenu != null)
+                if (_currentMenu != null)
                 {
                     // Set the ancient item to hidden/disabled
-                    currentMenu.Visibility = System.Windows.Visibility.Hidden;
-                    currentMenu.IsEnabled = false;
+                    _currentMenu.Visibility = System.Windows.Visibility.Hidden;
+                    _currentMenu.IsEnabled = false;
                 }
 
                 // Set the new Item to visible/enabled
@@ -89,15 +96,16 @@ namespace code_in.Views.ConfigView
                 selectedMenu.IsEnabled = true;
 
                 // The new item is now our current item
-                currentMenu = selectedMenu;
+                _currentMenu = selectedMenu;
             }
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            currentMenu = ((TreeViewMenu.Items[0] as TreeViewItem).DataContext as UserControl);
-            currentMenu.Visibility = System.Windows.Visibility.Visible;
-            currentMenu.IsEnabled = true;
+            _currentMenu = ((TreeViewMenu.Items[0] as TreeViewItem).DataContext as UserControl);
+            _currentMenu.Visibility = System.Windows.Visibility.Visible;
+            _currentMenu.IsEnabled = true;
         }
+        #endregion Events
     }
 }

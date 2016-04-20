@@ -72,7 +72,7 @@ namespace code_in.Views.MainView
             this.ZoomPanel.Child = this._nodalView;
         }
         public MainView() :
-            this(code_in.Resources.SharedDictionaryManager.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary)
         {
         }
 
@@ -130,6 +130,17 @@ namespace code_in.Views.MainView
                     this.ZoomPanel.Height = this._nodalView.MainGrid.Height * _zoomLevel / 1000;
                 }
             }
+        }
+
+
+        public ResourceDictionary GetLanguageResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources()
+        {
+            throw new NotImplementedException();
         }
     }
 }
