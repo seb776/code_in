@@ -18,7 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : base(themeResDict)
         {
             this.SetNodeType("Namespace");
-            this.SetName("System.Collections.Generic.TestDeLaMuerte");
+            this.SetName("TMP.DefaultNamespaceName");
             this.SetThemeResources("NamespaceNode");
         }
         #region IVisualNodeContainer

@@ -9,6 +9,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
+using code_in.Views.Utils;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -375,5 +376,18 @@ namespace code_in.Presenters.Nodal
         }
 
 
+
+
+        public Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>[] GetMenuOptions()
+        {
+            return new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>[] { 
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.ADD, null), 
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.ALIGN, null),
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.COLLAPSEALL, null),
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.SAVE, null),
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.CLOSE, null),
+                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.HELP, null)
+            };
+        }
     }
 }

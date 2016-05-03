@@ -20,10 +20,16 @@ namespace code_in.Views.Utils
     /// <summary>
     /// Interaction logic for HexagonalMenu.xaml
     /// </summary>
-    public partial class HexagonalMenu : UserControl
+    public partial class HexagonalMenu : UserControl, ICodeInVisual
     {
-        public HexagonalMenu()
+        private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
+        public HexagonalMenu(ResourceDictionary themeResDict)
         {
+            this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
+            this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(_languageResourceDictionary);
             InitializeComponent();
             this.Opacity = 0;
             this.MouseRightButtonUp += HexagonalMenu_MouseRightButtonUp;
@@ -45,12 +51,29 @@ namespace code_in.Views.Utils
             ReleaseMouseCapture();
             //this.GridHexa.RaiseEvent(e);
         }
-
-        public void AddHexagonButton(int x, int y, Color color, HexagonalButton.ButtonAction action, params object[] args)
+        private int _count = 0;
+        public void AddHexagonButton(int x, int y, String keyPrefix, ImageSource src, HexagonalButton.ButtonAction action, params object[] args)
         {
-            var hexBtn = new HexagonalButton(color, action, args);
+            var hexBtn = new HexagonalButton(this.GetThemeResourceDictionary(), action, args);
+            hexBtn.SetImage(src);
             this.GridHexa.Children.Add(hexBtn);
             hexBtn.Margin = new Thickness(x * 65 + ((y % 2) == 0 ? 0 : 33), y * 60, 0, 0);
+            hexBtn.SetThemeResources(keyPrefix);
+            ++_count;
+        }
+
+        public void AddHexagonButtonCircle(String keyPrefix, ImageSource src, HexagonalButton.ButtonAction action, params object[] args)
+        {
+            int[,] buttons = {
+                     {1,0},
+                     {2,0},
+                     {2,1},
+                     {2,2},
+                     {1,2},
+                     {0,1}
+                 };
+            if (_count < 6)
+                AddHexagonButton(buttons[_count, 0], buttons[_count, 1], keyPrefix, src, action, args);
         }
 
         //public void ShowMenu()
@@ -135,5 +158,20 @@ namespace code_in.Views.Utils
                 Mouse.Capture(ctrl, CaptureMode.SubTree);
             }
         }
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public void SetThemeResources(string keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLanguageResources(string keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion ICodeInVisual
+
     }
 }

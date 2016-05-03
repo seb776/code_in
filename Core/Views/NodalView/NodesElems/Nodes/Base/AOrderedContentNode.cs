@@ -67,6 +67,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion IVisualNodeContainer
 
-
     }
 }

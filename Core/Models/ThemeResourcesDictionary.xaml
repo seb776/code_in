@@ -249,4 +249,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <SolidColorBrush Color="DodgerBlue" x:Key="DefaultContextMenuMainColor"/>
+    <SolidColorBrush Color="Magenta" x:Key="RemoveContextMenuMainColor"/>
+    <SolidColorBrush Color="GreenYellow" x:Key="AddContextMenuMainColor"/>
 </ResourceDictionary>

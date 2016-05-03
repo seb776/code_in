@@ -522,7 +522,7 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var im = new HexagonalMenu();
+            var im = new HexagonalMenu(this.GetThemeResourceDictionary());
             
             List<Type> listOfBs = new List<Type>();
             foreach (var t in typeof(BaseNode).Assembly.GetTypes())
@@ -542,15 +542,69 @@ namespace code_in.Views.NodalView
                                      Colors.GreenYellow,
                                      Colors.OrangeRed,
                                  };
-            foreach (var t in listOfBs)
+            //foreach (var t in listOfBs)
+            //{
+            //    im.AddHexagonButton(iX, iY, testColors[iX % 4], null);
+            //    ++iX;
+            //    if (iX == xCount)
+            //    {
+            //        iX = 0;
+            //        iY++;
+            //    }
+            //}
+            var options = _nodalPresenter.GetMenuOptions();
+            foreach (var opt in options)
             {
-                im.AddHexagonButton(iX, iY, testColors[iX % 4], null);
-                ++iX;
-                if (iX == xCount)
+                String buttonName = "Default";
+                var imageSrc = new BitmapImage();
+                imageSrc.BeginInit();
+                switch (opt.Item1)
                 {
-                    iX = 0;
-                    iY++;
+                    case EContextMenuOptions.ADD:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        buttonName = "Add";
+                        break;
+                    case EContextMenuOptions.ALIGN:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
+                    case EContextMenuOptions.CLOSE:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
+                    case EContextMenuOptions.COLLAPSE:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/collapse.png");
+                        break;
+                    case EContextMenuOptions.COLLAPSEALL:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/collapse.png");
+                        break;
+                    case EContextMenuOptions.DUPLICATE:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/duplicate.png");
+                        break;
+                    case EContextMenuOptions.EDIT:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
+                    case EContextMenuOptions.EXPAND:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/expand.png");
+                        break;
+                    case EContextMenuOptions.EXPANDALL:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/expand.png");
+                        break;
+                    case EContextMenuOptions.GOINTO:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
+                    case EContextMenuOptions.HELP:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
+                    case EContextMenuOptions.REMOVE:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/remove.png");
+                        buttonName = "Remove";
+                        break;
+                    case EContextMenuOptions.SAVE:
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        break;
                 }
+                imageSrc.EndInit();
+
+                im.AddHexagonButtonCircle(buttonName, imageSrc, opt.Item2);
             }
 
             im.Placement = PlacementMode.Absolute;
