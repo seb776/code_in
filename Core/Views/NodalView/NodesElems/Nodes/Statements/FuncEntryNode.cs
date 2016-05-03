@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
         {
             this.SetNodeType("FuncEntry");
             this.SetName("Inputs");
-            this.SetDynamicResources("FuncEntryNode");
+            this.SetThemeResources("FuncEntryNode");
             this.CreateAndAddOutput<FlowNodeItem>();
         }
     }

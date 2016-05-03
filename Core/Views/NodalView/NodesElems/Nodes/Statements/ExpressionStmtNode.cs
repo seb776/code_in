@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             Expression = this.CreateAndAddInput<DataFlowItem>();
             Expression.SetName("Expression");
             this.CreateAndAddOutput<FlowNodeItem>();
-            this.SetDynamicResources("ExprStmtNode");
+            this.SetThemeResources("ExprStmtNode");
         }
     }
 }

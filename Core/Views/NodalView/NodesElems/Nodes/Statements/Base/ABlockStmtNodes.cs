@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
         protected ABlockStmtNodes(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetDynamicResources("BlockStmtNode");
+            this.SetThemeResources("BlockStmtNode");
         }
     }
 }

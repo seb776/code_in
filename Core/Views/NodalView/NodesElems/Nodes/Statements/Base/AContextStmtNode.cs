@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
         protected AContextStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetDynamicResources("ContextStmtNode");
+            this.SetThemeResources("ContextStmtNode");
         }
     }
 }

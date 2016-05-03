@@ -21,10 +21,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
     public partial class ClassNodeModifiers : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public ClassNodeModifiers(ResourceDictionary themeResDict)
         {
-            _themeResourceDictionary = themeResDict;
+            this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(_languageResourceDictionary);
             InitializeComponent();
         }
         public ClassNodeModifiers() :
@@ -35,21 +38,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetDynamicResources(String keyPrefix)
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public void SetThemeResources(String keyPrefix)
         {
 
+        }
+
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

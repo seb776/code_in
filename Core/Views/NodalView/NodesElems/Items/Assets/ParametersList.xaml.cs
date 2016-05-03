@@ -21,10 +21,13 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
     public partial class ParametersList : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public ParametersList(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
         }
         public ParametersList() :
@@ -54,13 +57,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetDynamicResources(String keyPrefix) { }
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
-        public void SetLanguageResources()
+        public void SetThemeResources(String keyPrefix) { }
+
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }

@@ -25,6 +25,7 @@ namespace code_in.Views.ConfigView
     public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         private UserControl _currentMenu = null;
         private Dictionary<String, UserControl> _menu = new Dictionary<String, UserControl>();
 
@@ -33,21 +34,24 @@ namespace code_in.Views.ConfigView
             Dictionary<String, UserControl> panels = new Dictionary<String, UserControl>() {
                 {"General", new SubViews.GeneralLayout(themeResDict)},
                 {"Theme", new SubViews.ThemeLayout(themeResDict)},
-                {"Shortcuts", new SubViews.ShortcutsLayout(themeResDict)},
-                {"Performances", new SubViews.PerformancesLayout(themeResDict)},
+                {"Shortcuts", new SubViews.ShortcutsLayout(themeResDict)}
             };
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
+
             foreach (var i in panels)
             {
                 TreeViewItem item = new TreeViewItem();
                 item.Foreground = new SolidColorBrush(Color.FromRgb(0x42, 0x42, 0x42));
                 item.Header = i.Key;
+                item.SetResourceReference(TreeViewItem.HeaderProperty, i.Key + "ConfigPanelTitle");
                 this.TreeViewMenu.Items.Add(item);
                 var subViewWrapper = new SubViews.ConfigSubViewTemplate(this.GetThemeResourceDictionary());
                 subViewWrapper.SetMenuContent(i.Value);
-                subViewWrapper.SetMenuName(i.Key);
+                subViewWrapper.SetLanguageResources(i.Key);
                 item.DataContext = subViewWrapper;
                 subViewWrapper.Visibility = System.Windows.Visibility.Hidden;
                 subViewWrapper.IsEnabled = false;
@@ -59,17 +63,15 @@ namespace code_in.Views.ConfigView
         { /* Here we must keep the ability to instantiate from default constructor as if it's called by VSConnect, it cannot pass parameters. */}
 
         #region ICodeInVisual
-        public void SetDynamicResources(String keyPrefix)
-        {
-            throw new NotImplementedException();
-        }
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
 
-        public void SetLanguageResources()
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+        public void SetThemeResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }

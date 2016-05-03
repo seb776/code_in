@@ -37,6 +37,7 @@ namespace code_in.Views.NodalView
     public partial class NodalView : UserControl, INodalView, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         private INodeElem _draggingNode = null;
         private TransformationMode _nodeTransform = TransformationMode.NONE;
         private LineMode _lineMode = LineMode.LINE;
@@ -52,7 +53,9 @@ namespace code_in.Views.NodalView
         {
             this._nodalPresenter = new NodalPresenterLocal(this);
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
 
 
@@ -380,11 +383,17 @@ namespace code_in.Views.NodalView
         public int GetDropIndex(Point pos) { return 0; }
         #endregion IVisualNodeContainer
         #region ICodeInVisual
-        public void SetDynamicResources(String keyPrefix)
+
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+        public void SetThemeResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
         #endregion ICodeInVisual
 
         public void OpenFile(String path)
@@ -639,14 +648,6 @@ namespace code_in.Views.NodalView
 
 
 
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
 
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

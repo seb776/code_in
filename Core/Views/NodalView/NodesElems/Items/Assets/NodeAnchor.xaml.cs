@@ -22,41 +22,31 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
     /// </summary>
     public partial class NodeAnchor : UserControl, ICodeInVisual
     {
-        public void SetDynamicResources(String keyPrefix)
-        {
-
-        }
-        private ResourceDictionary _themeResourceDictionary;
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         
         public IOItem _parentItem;
 
         // Line of the NodeAnchor
         public List<Code_inLink> IOLine;
-        public Tuple<Line, Line> IOSquare;
-        public BezierSegment IOBezier;
-        public PathFigure pthFigure;
 
-        // Position begin for the Line
-        public Point lineBegin;
 
-      //  public ILinkDraw line;
 
+        public NodeAnchor(ResourceDictionary themeResDict)
+        {
+            this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
+            InitializeComponent();
+            _parentItem = null;
+            IOLine = new List<Code_inLink>();
+        }
 
         public NodeAnchor() :
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
-
-        public NodeAnchor(ResourceDictionary themeResDict)
-        {
-            this._themeResourceDictionary = themeResDict;
-            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
-            InitializeComponent();
-            _parentItem = null;
-            IOLine = new List<Code_inLink>();
-            IOSquare = null;
         }
 
         public void setParentAnchor(IOItem item) {
@@ -94,15 +84,19 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             e.Handled = true;
         }
 
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
-        public ResourceDictionary GetLanguageResourceDictionary()
+        public void SetThemeResources(String keyPrefix)
+        {
+
+        }
+
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ICodeInVisual
     }
 }

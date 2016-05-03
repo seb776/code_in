@@ -10,7 +10,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="HeaderName" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" FontWeight="Black" Foreground="White">Template header</Label>
+        <Label x:Name="HeaderName" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" FontWeight="Black" Foreground="White">TMP: Template header</Label>
         <Grid Grid.Row="1" Margin="20,5,0,0" x:Name="_subViewGrid" x:FieldModifier="private">
         </Grid>
     </Grid>

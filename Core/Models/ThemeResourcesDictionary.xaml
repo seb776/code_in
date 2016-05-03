@@ -174,6 +174,8 @@
     <SolidColorBrush x:Key="ScopeInternalColor" Color="#FF00DC14"/>
     <SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFF650D"/>
     <SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00037"/>
+
+    <SolidColorBrush x:Key="DefaultColorLight" Color="#FFEBEBEB"/>
     <!--<LinearGradientBrush x:Key="ScopeInternalColor" StartPoint="0,0" EndPoint="1,0">
         <GradientStop Color="#FF4ACB00" Offset="0"/>
         <GradientStop Color="Transparent" Offset="1"/>
@@ -222,4 +224,29 @@
             </GeometryDrawing>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+
+    <Style x:Name="StyleTabItems" TargetType="TabItem">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border Name="Border" Margin="2,0">
+                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FF0097FF" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="#FF848484" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

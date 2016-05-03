@@ -6,5 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
+        <Label Foreground="#FFEBEBEB" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="24">.: WORK IN PROGRESS :.</Label>
     </Grid>
 </UserControl>

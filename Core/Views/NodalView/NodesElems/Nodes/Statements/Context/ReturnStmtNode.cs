@@ -15,7 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
             base(themeResDict)
         {
             this.CreateAndAddInput<FlowNodeItem>();
-            this.SetDynamicResources("ReturnStmtNode");
+            this.SetThemeResources("ReturnStmtNode");
             this.SetName("Return");
         }
     }

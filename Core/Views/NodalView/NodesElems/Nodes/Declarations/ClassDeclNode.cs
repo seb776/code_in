@@ -28,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             this.SetNodeType("ClassDecl");
             this.SetName("Class1");
-            this.SetDynamicResources("ClassDeclNode");
+            this.SetThemeResources("ClassDeclNode");
             //NodeScope = new ScopeItem(this.GetThemeResourceDictionary());
             //NodeScope.SetValue(Grid.ColumnProperty, 0);
             //NodeScope.Scope = ScopeItem.EScope.PRIVATE;

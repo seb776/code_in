@@ -22,42 +22,23 @@ namespace code_in.Views.ConfigView.SubViews
     /// </summary>
     public partial class GeneralLayout : UserControl, ICodeInVisual
     {
-        private int _curLanguage = 0;
-        public void SetDynamicResources(String keyPrefix)
-        {
 
-        }
-        private ResourceDictionary _themeResourceDictionary;
-        private ResourceDictionary _langueResourceDictionary;
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public GeneralLayout(ResourceDictionary themeResDict)
         {
-            this._langueResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
-            this.Resources.MergedDictionaries.Add(_langueResourceDictionary);
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
+
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
+
             InitializeComponent();
-            this._setLanguageResource();
         }
         public GeneralLayout() :
             this(Code_inApplication.MainResourceDictionary)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
-        private void _setLanguageResource()
-        {
-            //this.CategoryNameField.SetResourceReference(Label.ContentProperty, "CategoryName");
-            this.TutorialModeField.SetResourceReference(CheckBox.ContentProperty, "TutorialMode");
-            this.UpdateField.SetResourceReference(TextBlock.TextProperty, "Update");
-            this.UpdateBootField.SetResourceReference(ComboBoxItem.ContentProperty, "BootUpdate");
-            this.UpdateDayField.SetResourceReference(ComboBoxItem.ContentProperty, "DayUpdate");
-            this.UpdateMonthField.SetResourceReference(ComboBoxItem.ContentProperty, "MonthUpdate");
-            this.UpdateNeverField.SetResourceReference(ComboBoxItem.ContentProperty, "NeverUpdate");
-            this.maj_menu.SetResourceReference(Button.ContentProperty, "UpdateButton");
-            this.ConfigFolderField.SetResourceReference(TextBlock.TextProperty, "ConfigFolder");
-            this.FileConf.SetResourceReference(Button.ContentProperty, "Browse");
-            //this.ConfirmField.SetResourceReference(Button.ContentProperty, "Confirm");
-            //this.CancelField.SetResourceReference(Button.ContentProperty, "Cancel");
-        }
         // The next 3 functions are for the wheckbox of the catégory "General->Activate tutorial"
 
         //if box checked -> send
@@ -112,7 +93,7 @@ namespace code_in.Views.ConfigView.SubViews
             {
                 // Open document
                 string filename = dlg.FileName;
-                Path.Text = filename;
+                //Path.Text = filename;
                 // filename = the path of the choosen file
             }
         }
@@ -127,15 +108,18 @@ namespace code_in.Views.ConfigView.SubViews
             MessageBox.Show("Vous avez annulé votre choix !");
         }
 
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
-        public ResourceDictionary GetLanguageResourceDictionary()
+        public void SetThemeResources(String keyPrefix)
+        {
+
+        }
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ICodeInVisual
     }
 }

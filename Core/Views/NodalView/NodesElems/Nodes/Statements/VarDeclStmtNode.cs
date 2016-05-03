@@ -17,7 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             this.CreateAndAddOutput<FlowNodeItem>();
             this.SetNodeType("Declaration");
             this.SetName("Variables");
-            this.SetDynamicResources("VarDeclStmtNode");
+            this.SetThemeResources("VarDeclStmtNode");
         }
     }
 }

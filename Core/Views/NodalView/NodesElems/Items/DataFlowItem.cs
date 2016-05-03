@@ -10,7 +10,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class DataFlowItem : Base.IOItem
     {
-        public override void SetDynamicResources(String keyprefix)
+        public override void SetThemeResources(String keyprefix)
         { }
 
         public DataFlowItem(ResourceDictionary themeResDict) :

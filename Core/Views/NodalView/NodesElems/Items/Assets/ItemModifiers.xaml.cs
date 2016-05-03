@@ -21,10 +21,13 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
     public partial class ItemModifiers : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public ItemModifiers(ResourceDictionary themeResDict)
         {
-            _themeResourceDictionary = themeResDict;
+            this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(_languageResourceDictionary);
             InitializeComponent();
         }
         public ItemModifiers() :
@@ -35,21 +38,17 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetDynamicResources(String keyPrefix)
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public void SetThemeResources(String keyPrefix)
         {
 
+        }
+
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

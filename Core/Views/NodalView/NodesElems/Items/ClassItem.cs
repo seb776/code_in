@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class ClassItem : ATypedMemberItem
     {
-        public override void SetDynamicResources(String keyPrefix) { }
+        public override void SetThemeResources(String keyPrefix) { }
         static Random r = new Random();
         public ClassItem(ResourceDictionary themeResDict) :
             base(themeResDict)

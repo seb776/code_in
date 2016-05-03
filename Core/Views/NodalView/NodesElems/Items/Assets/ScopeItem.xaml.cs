@@ -20,12 +20,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
     /// </summary>
     public partial class ScopeItem : UserControl, ICodeInVisual
     {
-        public void SetDynamicResources(String keyPrefix)
-        {
-
-        }
         private ResourceDictionary _themeResourceDictionary = null;
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        private ResourceDictionary _languageResourceDictionary = null;
         public enum EScope
         {
             PUBLIC = 0,
@@ -62,16 +58,18 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+        public void SetThemeResources(String keyPrefix)
+        {
 
+        }
 
-        public ResourceDictionary GetLanguageResourceDictionary()
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ICodeInVisual
     }
 }

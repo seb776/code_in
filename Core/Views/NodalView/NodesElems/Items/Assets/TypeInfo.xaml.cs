@@ -21,15 +21,14 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
     public partial class TypeInfo : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetDynamicResources(String keyPrefix)
-        {
+        private ResourceDictionary _languageResourceDictionary = null;
 
-        }
         public TypeInfo(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
         }
         public TypeInfo() :
@@ -39,18 +38,21 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         }
         public void SetTypeFromString(String type)
         {
-            // Not implemented yet
         }
 
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
-        public ResourceDictionary GetLanguageResourceDictionary()
+        public void SetThemeResources(String keyPrefix)
+        {
+
+        }
+
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ICodeInVisual
     }
 }

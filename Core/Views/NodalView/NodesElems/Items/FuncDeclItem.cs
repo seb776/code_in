@@ -83,7 +83,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
             _params.AddParameter(type);
         }
 
-        public override void SetDynamicResources(String keyPrefix)
+        public override void SetThemeResources(String keyPrefix)
         {
 
         }

@@ -33,7 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             _editIcon.StrokeThickness = 3;
             _editIcon.MouseDown += editIcon_MouseDown;
             this.NodeHeader.Children.Add(_editIcon);
-            this.SetDynamicResources("FuncDeclNode");
+            this.SetThemeResources("FuncDeclNode");
         }
 
         void editIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -48,9 +48,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
 
         #region ICodeInVisual
-        public override void SetDynamicResources(string keyPrefix)
+        public override void SetThemeResources(string keyPrefix)
         {
-            base.SetDynamicResources(keyPrefix);
+            base.SetThemeResources(keyPrefix);
             if(_editIcon != null)
             {
                 _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");

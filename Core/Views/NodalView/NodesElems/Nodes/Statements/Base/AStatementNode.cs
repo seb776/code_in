@@ -17,11 +17,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
             base(themeResDict)
         {
             this.SetNodeType("Statement");
-            this.SetDynamicResources("DefaultStmtNode");
+            this.SetThemeResources("DefaultStmtNode");
         }
 
         #region ICodeInVisual
-        public override void SetDynamicResources(String keyPrefix)
+        public override void SetThemeResources(String keyPrefix)
         {
             this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
             this.NodeType.SetResourceReference(ForegroundProperty, keyPrefix + "TypeForeGroundColor");

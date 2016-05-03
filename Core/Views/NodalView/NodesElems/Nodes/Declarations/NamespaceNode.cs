@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             this.SetNodeType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
-            this.SetDynamicResources("NamespaceNode");
+            this.SetThemeResources("NamespaceNode");
         }
         #region IVisualNodeContainer
         public override void HighLightDropPlace(System.Windows.Point pos)

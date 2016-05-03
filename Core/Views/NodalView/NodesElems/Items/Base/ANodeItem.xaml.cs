@@ -23,13 +23,16 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         protected INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
             this.MouseEnter += Item_MouseEnter;
             this.MouseLeave += Item_MouseLeave;
@@ -72,19 +75,14 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         #endregion INodeElem
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public abstract void SetDynamicResources(String keyPrefix);
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
+        public abstract void SetThemeResources(String keyPrefix);
+
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
         #endregion ICodeInVisual
-
-
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
     } // Class
 } // Namespace

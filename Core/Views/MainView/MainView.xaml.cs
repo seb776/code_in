@@ -40,11 +40,8 @@ namespace code_in.Views.MainView
         private NodalView.NodalView _nodalView = null;
         private int _zoomLevel = 100;
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
 
-        public void SetDynamicResources(String keyPrefix)
-        {
-
-        }
 
         public void OpenFile(String filePath)
         {
@@ -56,13 +53,14 @@ namespace code_in.Views.MainView
             this._nodalView.EditFunction(node);
         }
 
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public SearchBar SearchBar = null;
 
         public MainView(ResourceDictionary resourceDict)
         {
             this._themeResourceDictionary = resourceDict;
+            this._languageResourceDictionary = resourceDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
             this.SearchBar = new SearchBar(this.GetThemeResourceDictionary());
             this.SearchBar.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
@@ -132,15 +130,18 @@ namespace code_in.Views.MainView
             }
         }
 
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+        public void SetThemeResources(String keyPrefix)
+        {
 
-        public ResourceDictionary GetLanguageResourceDictionary()
+        }
+
+        public void SetLanguageResources(String keyPrefix)
         {
             throw new NotImplementedException();
         }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ICodeInVisual
     }
 }

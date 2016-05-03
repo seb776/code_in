@@ -202,10 +202,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConfigView\SubViews\PerformancesLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,9 +247,6 @@
     </Compile>
     <Compile Include="Views\ConfigView\SubViews\GeneralLayout.xaml.cs">
       <DependentUpon>GeneralLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConfigView\SubViews\PerformancesLayout.xaml.cs">
-      <DependentUpon>PerformancesLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>

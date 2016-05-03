@@ -21,7 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
          { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         #region ICodeInVisual
-        public override void SetDynamicResources(String keyPrefix)
+        public override void SetThemeResources(String keyPrefix)
         { }
         #endregion ICodeInVisual
     }

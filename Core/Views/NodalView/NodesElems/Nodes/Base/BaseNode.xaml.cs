@@ -24,17 +24,21 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
-        private Point _newNodePos = new Point();
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
+
+        private Point _newNodePos = new Point();
         private INodeElem _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
-            this.SetDynamicResources("BaseNode");
+            this.SetThemeResources("BaseNode");
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
         }
@@ -52,13 +56,20 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public virtual void SetDynamicResources(String keyPrefix)
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public virtual void SetThemeResources(String keyPrefix)
         {
             this.NodeName.SetResourceReference(ForegroundProperty, keyPrefix + "NameForeGroundColor");
             this.NodeType.SetResourceReference(ForegroundProperty, keyPrefix + "TypeForeGroundColor");
             this.NodeHeader.SetResourceReference(BackgroundProperty, keyPrefix + "MainColor");
             this.NodeBorder.SetResourceReference(BorderBrushProperty, keyPrefix + "MainColor");
             this.BackGrid.SetResourceReference(BackgroundProperty, keyPrefix + "SecondaryColor");
+        }
+
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
         }
         #endregion ICodeInVisual
 
@@ -174,19 +185,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
             node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
             //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
-        }
-
-
-
-
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
         }
     } // Class BaseNode
 } // Namespace

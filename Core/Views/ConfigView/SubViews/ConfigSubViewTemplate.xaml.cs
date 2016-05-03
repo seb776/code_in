@@ -21,45 +21,36 @@ namespace code_in.Views.ConfigView.SubViews
     public partial class ConfigSubViewTemplate : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public ConfigSubViewTemplate(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             this.InitializeComponent();
+            this.SetThemeResources(null);
         }
 
-        public ResourceDictionary GetThemeResourceDictionary()
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+
+        public void SetThemeResources(String keyPrefix)
         {
-            return _themeResourceDictionary;
+            this.HeaderName.SetResourceReference(Label.ForegroundProperty, "DefaultColorLight");
         }
 
-        public void SetDynamicResources(string keyPrefix)
+        public void SetLanguageResources(String keyPrefix)
         {
-            throw new NotImplementedException();
+            this.HeaderName.SetResourceReference(Label.ContentProperty, keyPrefix + "ConfigPanelTitle");
         }
+        #endregion ICodeInVisual
 
         public void SetMenuContent(UserControl uc)
         {
             this._subViewGrid.Children.Clear();
             this._subViewGrid.Children.Add(uc);
-        }
-
-        public void SetMenuName(String resourceKey)
-        {
-            // TODO
-            //this.HeaderName.SetResourceReference(Label.ContentProperty, resourceKey);
-            this.HeaderName.Content = resourceKey;
-        }
-
-
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
         }
     }
 }

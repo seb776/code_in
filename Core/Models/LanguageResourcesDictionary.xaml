@@ -15,4 +15,13 @@
     <sys:String x:Key="Browse">Type de nœud</sys:String>
     <sys:String x:Key="Confirm">Type de nœud</sys:String>
     <sys:String x:Key="Cancel">Type de nœud</sys:String>
+
+    <!-- Config panels -->
+    <sys:String x:Key="GeneralConfigPanelTitle">RES: Général</sys:String>
+    <sys:String x:Key="ThemeConfigPanelTitle">RES: Thèmes</sys:String>
+    <sys:String x:Key="ShortcutsConfigPanelTitle">RES: Raccourcis</sys:String>
+    
+    <!-- Config.Theme tabs-->
+    <sys:String x:Key="ConfigThemeGeneralHeader">RES: Général</sys:String>
+    <sys:String x:Key="ConfigThemeNodalHeader">RES: Vue nodale</sys:String>
 </ResourceDictionary>

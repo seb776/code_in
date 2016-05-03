@@ -13,10 +13,13 @@ namespace code_in.Views.MainView
     {
         INodeElem _draggingNode = null;
         private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
         public SearchBar(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
+            this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
             this.CreateAndAddNode<FuncDeclNode>();
             this.CreateAndAddNode<ClassDeclNode>();
@@ -63,11 +66,17 @@ namespace code_in.Views.MainView
         }
         #endregion IVisualNodeContainerDragNDrop
         #region ICodeInVisual
-        public void SetDynamicResources(String keyPrefix)
-        {
 
-        }
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
+        public void SetThemeResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+        public void SetLanguageResources(String keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
         #endregion ICodeInVisual
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -83,14 +92,6 @@ namespace code_in.Views.MainView
         }
 
 
-        public ResourceDictionary GetLanguageResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
 
-        public void SetLanguageResources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
