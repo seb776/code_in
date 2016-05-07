@@ -5,6 +5,7 @@ using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
@@ -94,21 +95,15 @@ namespace code_in.Presenters.Nodal
                     parentNode = classDeclNode;
 
                     classDeclNode.SetName(tmpNode.Name);
-                    // TODO protected internal
-                    //switch (tmpNode.Modifiers.ToString()) // Puts the right scope // TODO
-                    //{
-                    //    case "Public":
-                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PUBLIC;
-                    //        break;
-                    //    case "Private":
-                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PRIVATE;
-                    //        break;
-                    //    case "Protected":
-                    //        classDeclNode.NodeScope.Scope = ScopeItem.EScope.PROTECTED;
-                    //        break;
-                    //    default:
-                    //        break;
-                    //}
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PUBLIC);
+                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
+                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PRIVATE);
+                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
+                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
+                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
+                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
+
                     //goDeeper = false;
                     foreach (var n in node.Children)
                     {
