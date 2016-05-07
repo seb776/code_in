@@ -108,6 +108,7 @@
     <Compile Include="Views\ConfigView\SubViews\ConfigSubViewTemplate.xaml.cs">
       <DependentUpon>ConfigSubViewTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
     <Compile Include="Views\MainView\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
@@ -150,6 +151,9 @@
     </Compile>
     <Compile Include="Views\NodalView\NodalView.xaml.cs">
       <DependentUpon>NodalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml.cs">
+      <DependentUpon>BaseNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AExpressionNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
@@ -226,7 +230,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
+    <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNodeOld.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -254,8 +258,8 @@
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml.cs">
-      <DependentUpon>BaseNode.xaml</DependentUpon>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNodeOld.xaml.cs">
+      <DependentUpon>BaseNodeOld.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\ClassDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />
@@ -277,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

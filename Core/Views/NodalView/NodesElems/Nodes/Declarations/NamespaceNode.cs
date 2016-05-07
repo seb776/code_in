@@ -17,9 +17,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : base(themeResDict)
         {
-            this.SetNodeType("Namespace");
-            this.SetName("TMP.DefaultNamespaceName");
-            this.SetThemeResources("NamespaceNode");
+            //this.SetNodeType("Namespace");
+            //this.SetName("TMP.DefaultNamespaceName");
+            //this.SetThemeResources("NamespaceNode");
         }
         #region IVisualNodeContainer
         public override void HighLightDropPlace(System.Windows.Point pos)

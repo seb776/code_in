@@ -25,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             resizeBtn.Cursor = Cursors.SizeNWSE;
             resizeBtn.PreviewMouseLeftButtonDown += EvtDragResize;
             resizeBtn.Fill = new SolidColorBrush(Colors.GreenYellow);
-            this.ContentGrid.Children.Add(resizeBtn);
+            this.ContentLayout.Children.Add(resizeBtn);
         }
 
         private void EvtDragResize(object sender, MouseButtonEventArgs e)
@@ -35,7 +35,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public override void AddNode<T>(T node, int index = -1)
         {
-            this.ContentGrid.Children.Add(node as UIElement);
+            this.ContentLayout.Children.Add(node as UIElement);
         }
     }
 }

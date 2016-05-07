@@ -3,62 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:items="clr-namespace:code_in.Views.NodalView.NodesElems.Items.Base"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             MinWidth="250" MinHeight="150" HorizontalAlignment="Left" VerticalAlignment="Top">
-    <UserControl.Resources>
-        <!--These values are only meant to have color in the designer-->
-        <SolidColorBrush x:Key="LocalNodeColor" Color="GreenYellow"/>
-        <SolidColorBrush x:Key="LocalNodeColorBack" Color="#424242"/>
-        <SolidColorBrush x:Key="ModifiersColorLocal" Color="#FF171717"/>
-    </UserControl.Resources>
-    <Grid x:Name="ColumnGrid">
-        <!-- this grid contains modifiers on the left the node itself on the right -->
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel x:Name="NodeAttributes" Grid.Row="0" Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="AttributesLayout" Orientation="Vertical" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                <!--<Label>[zefzef]</Label>
+                <Label>[zefzef]</Label>
+                <Label>[zefzef]</Label>-->
             </StackPanel>
-            <Border x:Name="NodeBorder"  Grid.Row="1" BorderThickness="4" CornerRadius="0,10,0,10" BorderBrush="{StaticResource LocalNodeColor}" Background="{StaticResource LocalNodeColorBack}">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="25"/>
-                </Border.Effect>
-                <Grid x:Name="BackGrid" MouseLeftButtonDown="EvtDragNode" Cursor="ScrollAll">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Border Background="{StaticResource LocalNodeColor}" CornerRadius="0,7,0,0">
-                        <Grid Grid.Row="0" x:Name="NodeHeader">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" x:Name="NodeType" Foreground="White" FontWeight="Bold" VerticalAlignment="Center">
-                                <Label.Effect>
-                                    <DropShadowEffect BlurRadius="5"   ShadowDepth="2"/>
-                                </Label.Effect>
-                                NodeType
-                            </Label>
-                            <Label Grid.Column="1" x:Name="NodeName" BorderThickness="0" VerticalAlignment="Center" Background="Transparent" Foreground="White">
-                                <Label.Effect>
-                                    <DropShadowEffect BlurRadius="5" ShadowDepth="2"/>
-                                </Label.Effect>
-                                Example
-                            </Label>
-                        </Grid>
-                    </Border>
-                    <Grid Grid.Row="1" x:Name="ContentGrid" MouseRightButtonDown="ContentGrid_MouseRightButtonDown">
-                    </Grid>
-                </Grid>
+            <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">
+                    <!--<Label>typeA</Label>
+                    <Label>typeA</Label>
+                    <Label>typeA</Label>
+                    <Label>typeA</Label>-->
+                </StackPanel>
             </Border>
         </Grid>
+
+        <Grid x:Name="ModifiersLayout" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top"></Grid>
+        <!--<Border Grid.Column="0" Grid.Row="1" Background="#212121" CornerRadius="5,0,0,5" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <Label Foreground="DodgerBlue">tatetiteta</Label>
+                <Label Foreground="DodgerBlue">tatetiteta</Label>
+                <Label Foreground="DodgerBlue">tatetiteta</Label>
+            </StackPanel>
+        </Border>-->
+        <!-- Node Content -->
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                <Border x:Name="HeaderLayout" Background="GreenYellow" CornerRadius="0,10,0,0">
+                    <Label Foreground="#424242">test</Label>
+                </Border>
+                <Border Background="#424242" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
+                    <StackPanel x:Name="ContentLayout" Orientation="Vertical">
+                        <!--<Label>machizefzefzefzef</Label>
+                        <Label>machizefzefzefzef</Label>
+                        <Label>machizefzefzefzef</Label>
+                        <Label>machizefzefzefzef</Label>
+                        <Label>machizefzefzefzef</Label>-->
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+        <Grid x:Name="ConstraintLayout" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
+            
+        </Grid>
+        <!--<Border Grid.Column="2" Grid.Row="1" Background="#212121" VerticalAlignment="Top" CornerRadius="0,5,5,0">
+            <StackPanel Orientation="Vertical">
+                <Label Foreground="DodgerBlue">where T :</Label>
+                <Label Foreground="White">Test</Label>
+            </StackPanel>
+        </Border>-->
+
+        <!-- The border under is for the selection -->
+        <Border x:Name="SelectionBorder" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="White" BorderThickness="3">
+            <Border.Effect>
+                <BlurEffect Radius="5"/>
+            </Border.Effect>
+        </Border>
     </Grid>
 </UserControl>
