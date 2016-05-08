@@ -50,5 +50,52 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
+
+        public enum EAccessModifier
+        {
+            PUBLIC = 0,
+            PRIVATE = 1,
+            PROTECTED = 2,
+            INTERNAL = 3,
+            PROTECTED_INTERNAL = 4
+        }
+        public void SetAccessModifiers(EAccessModifier mod)
+        {
+            switch (mod)
+            {
+                case EAccessModifier.PUBLIC:
+                    this.AccessModifierBlock.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF));
+                    this.AccessModifierSymbol.Content = "+";
+                    break;
+                case EAccessModifier.PRIVATE:
+                    this.AccessModifierBlock.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x00, 0x23));
+                    this.AccessModifierSymbol.Content = "-";
+                    break;
+                case EAccessModifier.PROTECTED:
+                    this.AccessModifierBlock.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x51, 0x00));
+                    this.AccessModifierSymbol.Content = "#";
+                    break;
+                case EAccessModifier.INTERNAL:
+                    this.AccessModifierBlock.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xCF, 0x09));
+                    this.AccessModifierSymbol.Content = "~";
+                    break;
+                case EAccessModifier.PROTECTED_INTERNAL:
+                    this.AccessModifierBlock.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xBC, 0xCF, 0x00));
+                    this.AccessModifierSymbol.Content = "#~";
+                    break;
+            }
+        }
+
+        public void SetModifiers(String[] modifiers)
+        {
+            this.ModifiersList.Children.Clear();
+            foreach (var mod in modifiers)
+            {
+                Label lbl = new Label();
+                lbl.Content = mod;
+                lbl.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF));
+                this.ModifiersList.Children.Add(lbl);
+            }
+        }
     }
 }

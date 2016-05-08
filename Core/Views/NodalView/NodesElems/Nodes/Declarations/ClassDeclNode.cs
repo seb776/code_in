@@ -20,6 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             CLASS = 1,
             INTERFACE = 2
         }
+        public Assets.ClassNodeModifiers Modifiers = null;
         private EType _type;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -27,11 +28,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
-            var modifiers = new Assets.ClassNodeModifiers(themeResDict);
-            modifiers.SetValue(Grid.ColumnProperty, 0);
-            this.ModifiersLayout.Children.Add(modifiers);
+            Modifiers = new Assets.ClassNodeModifiers(themeResDict);
+            Modifiers.SetValue(Grid.ColumnProperty, 0);
+            this.ModifiersLayout.Children.Add(Modifiers);
 
-            _type = EType.CLASS;
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
