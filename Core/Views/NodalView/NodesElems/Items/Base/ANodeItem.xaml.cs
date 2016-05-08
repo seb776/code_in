@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        protected INodeElem _parentView = null;
+        protected IVisualNodeContainer _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
@@ -59,11 +59,10 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         { }
 
         #region INodeElem
-        public void SetParentView(INodeElem parent) { _parentView = parent; }
-        public INodeElem GetParentView() { return _parentView; }
+        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
+        public IVisualNodeContainer GetParentView() { return _parentView; }
         public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
-        public void RemoveNode(INodeElem node) { }
         public void SetName(String name)
         {
             this.ItemName.Content = name;

@@ -17,8 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public UsingDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("Using");
-            this.SetNodeType("Declaration");
+            this.SetType("using");
             this.SetThemeResources("UsingDeclNode");
         }
 
@@ -34,7 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         #endregion ICodeInVisual
         public override void RemoveNode(INodeElem node)
         {
-            this.ContentGrid.Children.Remove(node as UIElement);
+            this.ContentLayout.Children.Remove(node as UIElement);
         }
 
     }

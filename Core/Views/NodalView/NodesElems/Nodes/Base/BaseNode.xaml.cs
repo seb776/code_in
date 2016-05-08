@@ -22,7 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
-        private INodeElem _parentView = null;
+        private IVisualNodeContainer _parentView = null;
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -62,30 +62,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion This
 
-
-        public void SetParentView(INodeElem vc)
-        {
-            _parentView = vc;
-        }
-
-        public INodeElem GetParentView()
-        {
-            return _parentView;
-        }
-
-        public virtual void SetRootView(IVisualNodeContainerDragNDrop dnd)
-        {
-            _rootView = dnd;
-        }
-
-
-        public IVisualNodeContainerDragNDrop GetRootView()
-        {
-            return _rootView;
-        }
-
-        public abstract void RemoveNode(INodeElem node);
-
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainer vc) { _parentView = vc; }
+        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public virtual void SetRootView(IVisualNodeContainerDragNDrop dnd) { _rootView = dnd; }
+        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        #endregion INodeElem
 
         public void MoveNode(Point pos)
         {

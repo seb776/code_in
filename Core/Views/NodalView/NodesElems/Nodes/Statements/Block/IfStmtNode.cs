@@ -16,7 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
         public IfStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("If");
+            this.SetType("if");
             var item = this.CreateAndAddInput<FlowNodeItem>();
             item.SetName("In");
             Condition = this.CreateAndAddInput<DataFlowItem>();

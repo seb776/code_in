@@ -31,7 +31,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             Modifiers = new Assets.ClassNodeModifiers(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
             this.ModifiersLayout.Children.Add(Modifiers);
-
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
@@ -39,5 +38,29 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
+        #region This
+        public void SetClassType(EType type)
+        {
+            string[] typeString = {
+                                      "struct",
+                                      "class",
+                                      "interface"
+                                  };
+            this.SetType(typeString[(int)type]);
+        }
+
+        public void AddInheritance(string type)
+        {
+            Label lbl = new Label();
+            lbl.Content = type;
+            // lbl.SetResourceReference(...) // TODO
+            this.InheritanceLayout.Children.Add(lbl);
+        }
+
+        public void RemoveInheritance(int idx)
+        {
+            this.InheritanceLayout.Children.RemoveAt(idx);
+        }
+        #endregion This
     }
 }

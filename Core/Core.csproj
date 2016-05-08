@@ -233,10 +233,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNodeOld.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,9 +256,6 @@
     </Compile>
     <Compile Include="Views\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNodeOld.xaml.cs">
-      <DependentUpon>BaseNodeOld.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\ClassDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />

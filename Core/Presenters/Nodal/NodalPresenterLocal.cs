@@ -70,7 +70,7 @@ namespace code_in.Presenters.Nodal
                 namespaceNode.SetName(tmpNode.Name);
             }
             #endregion
-            #region Classes (interface, class, enum)
+            #region Classes (interface, struct, class, enum)
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
@@ -136,7 +136,7 @@ namespace code_in.Presenters.Nodal
                 }
                 #endregion Class
             }
-            #endregion Classes (interface, class, enum)
+            #endregion Classes (interface, struct, class, enum)
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {

@@ -17,7 +17,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     /// <summary>
     /// Defines an abstract visual node that has Input and OutputList
     /// </summary>
-    public abstract class AIONode : BaseNode
+    public abstract class AIONode : BaseNode, IVisualNodeContainer
     {
         Grid _subGrid;
         protected StackPanel _inputs;
@@ -127,7 +127,6 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this.ContentLayout.Children.Add(_subGrid);
 
         }
-        public override void RemoveNode(NodesElems.INodeElem node) {}
         public override void MoveNodeSpecial()
         {
             Point nodeAnchorRelativeCoord;
@@ -157,6 +156,31 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
                     it._nodeAnchor.IOLine[j]._y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
                 }
             }
+        }
+
+        public T CreateAndAddNode<T>(EIOOption ioOption = EIOOption.NONE) where T : UIElement, INodeElem
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNode<T>(T noden, EIOOption ioOption = EIOOption.NONE, int idx = -1) where T : UIElement, INodeElem
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNode(INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetDropIndex(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HighLightDropPlace(Point pos)
+        {
+            throw new NotImplementedException();
         }
     }
 }

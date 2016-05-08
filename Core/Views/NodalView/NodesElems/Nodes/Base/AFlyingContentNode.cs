@@ -33,7 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             //throw new NotImplementedException();
         }
 
-        public override void AddNode<T>(T node, int index = -1)
+        public override void AddNode<T>(T node, EIOOption ioOption = EIOOption.NONE, int index = -1)
         {
             this.ContentLayout.Children.Add(node as UIElement);
         }

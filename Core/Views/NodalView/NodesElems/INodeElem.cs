@@ -11,10 +11,9 @@ namespace code_in.Views.NodalView.NodesElems
     {
         void SetName(String name);
         String GetName();
-        void SetParentView(INodeElem vc); // Each node elem is inside a masterView
-        INodeElem GetParentView();
+        void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
+        IVisualNodeContainer GetParentView();
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
         IVisualNodeContainerDragNDrop GetRootView();
-        void RemoveNode(INodeElem node);
     }
 }

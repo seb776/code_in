@@ -14,7 +14,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public AValueNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
             var expr = this.CreateAndAddOutput<DataFlowItem>();
-            expr.SetName("Expression");
+            expr.SetName("expression");
         }
     }
 }

@@ -34,7 +34,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         #region IVisualNodeContainer
         
-        public override void AddNode<T>(T node, int index = -1)
+        public override void AddNode<T>(T node, EIOOption ioOption = EIOOption.NONE, int index = -1)
         {
             if (index < 0)
                 this._orderedLayout.Children.Add(node as UIElement);
