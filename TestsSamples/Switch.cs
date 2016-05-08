@@ -1,4 +1,4 @@
-class SwitchTest {
+private class SwitchTest {
 	
 	void func()
 	{

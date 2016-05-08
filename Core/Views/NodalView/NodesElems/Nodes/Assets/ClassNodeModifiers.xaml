@@ -8,12 +8,12 @@
     <Grid>
         <Border CornerRadius="5,0,0,5" Background="#FF151515" Width="auto" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
-                <Border x:Name="AccessModifierBlock" CornerRadius="5,0,0,5" Background="#FF00A2FF" HorizontalAlignment="Stretch">
+                <Border x:Name="AccessModifierBlock" CornerRadius="5,0,0,5" Background="#FFBCCF00" HorizontalAlignment="Stretch">
                     <Label x:Name="AccessModifierSymbol" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold">+</Label>
                 </Border>
                 <StackPanel x:Name="ModifiersList" Orientation="Vertical">
-                    <Label Foreground="#FF00A2FF">static</Label>
-                    <Label Foreground="#FF00A2FF">abstract</Label>
+                    <!--<Label Foreground="#FF00A2FF">static</Label>
+                    <Label Foreground="#FF00A2FF">abstract</Label>-->
                 </StackPanel>
             </StackPanel>
         </Border>

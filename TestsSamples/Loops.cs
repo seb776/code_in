@@ -1,6 +1,6 @@
 namespace LoopsExample
 {
-    class Example
+    public class Example
     {
         void Function()
         {

@@ -21,8 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             INTERFACE = 2,
             ENUM = 3
         }
-        private EType _type;
-        public ScopeItem NodeScope = null;
+        public Assets.ClassNodeModifiers Modifiers = null;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
@@ -33,11 +32,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             //NodeScope.SetValue(Grid.ColumnProperty, 0);
             //NodeScope.Scope = ScopeItem.EScope.PRIVATE;
             //this.NodeHeader.Children.Add(this.NodeScope);
-            var modifiers = new Assets.ClassNodeModifiers(themeResDict);
-            modifiers.SetValue(Grid.ColumnProperty, 0);
-            this.ColumnGrid.Children.Add(modifiers);
+            Modifiers = new Assets.ClassNodeModifiers(themeResDict);
+            Modifiers.SetValue(Grid.ColumnProperty, 0);
+            this.ColumnGrid.Children.Add(Modifiers);
 
-            _type = EType.CLASS;
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
