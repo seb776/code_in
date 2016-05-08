@@ -121,7 +121,9 @@
       <DependentUpon>ParametersList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ATypedMemberItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Base\UsingMemberItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml.cs">
       <DependentUpon>ClassNodeModifiers.xaml</DependentUpon>
@@ -151,6 +153,7 @@
     <Compile Include="Views\NodalView\NodalView.xaml.cs">
       <DependentUpon>NodalView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\UsingDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AExpressionNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />

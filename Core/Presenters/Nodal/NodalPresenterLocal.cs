@@ -47,10 +47,13 @@ namespace code_in.Presenters.Nodal
 
         private void _generateVisualASTDeclaration(NodalModel model)
         {
-            this._generateVisualASTDeclarationRecur(model.AST, this._view);
+            UsingDeclNode usingNode;
+
+            usingNode = this._view.CreateAndAddNode<UsingDeclNode>();
+            this._generateVisualASTDeclarationRecur(model.AST, this._view, usingNode);
         }
 
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer)
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {
             bool goDeeper = true;
             IVisualNodeContainer parentNode = null;
@@ -158,11 +161,22 @@ namespace code_in.Presenters.Nodal
                 goDeeper = false;
             }
             #endregion
+            #region Using
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
+            {
+                UsingDeclItem UsingItem = UsingNode.CreateAndAddNode<UsingDeclItem>();
+                UsingDeclaration UsingAstNode = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
+
+                UsingItem.SetName(UsingAstNode.Namespace);
+                goDeeper = false;
+            }
+
+            #endregion
             //if (visualNode != null)
             //    parentContainer.AddNode(visualNode);
             if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
-                    this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer));
+                    this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer), UsingNode);
         }
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
