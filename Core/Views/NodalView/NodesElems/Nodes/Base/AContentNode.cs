@@ -58,7 +58,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region ICodeInVisual
         public override void SetThemeResources(string keyPrefix)
         {
-            throw new NotImplementedException();
         }
         #endregion ICodeInVisual
     }

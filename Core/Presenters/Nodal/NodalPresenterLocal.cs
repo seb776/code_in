@@ -158,8 +158,7 @@ namespace code_in.Presenters.Nodal
                 goDeeper = false;
             }
             #endregion
-            //if (visualNode != null)
-            //    parentContainer.AddNode(visualNode);
+
             if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
                     this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer));
@@ -297,7 +296,7 @@ namespace code_in.Presenters.Nodal
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
 
-                variableNode.SetNodeType("VarDecl");
+                variableNode.SetType("Variables");
                 foreach (var v in varStmt.Variables)
                 {
                     var item = variableNode.CreateAndAddOutput<DataFlowItem>();

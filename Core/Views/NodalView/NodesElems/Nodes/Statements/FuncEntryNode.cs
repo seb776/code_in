@@ -22,7 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetNodeType("FuncEntry");
+            this.SetType("FuncEntry");
             this.SetName("Inputs");
             this.SetThemeResources("FuncEntryNode");
             this.CreateAndAddOutput<FlowNodeItem>();

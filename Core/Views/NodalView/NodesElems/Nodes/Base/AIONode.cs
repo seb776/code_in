@@ -27,36 +27,36 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             base.SetRootView(root);
             foreach (var i in _inputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
                 it.SetRootView(this.GetRootView());
             }
             foreach (var i in _outputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
                 it.SetRootView(this.GetRootView());
             }
         }
 
-        public override void EvtRemoveNode(object sender, MouseButtonEventArgs e)
+        public void EvtRemoveNode(object sender, MouseButtonEventArgs e)
         {
             ((Panel)this.Parent).Children.Remove(this);
             foreach (var i in this._inputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
 
                 if (it.GetRootView().GetType() == typeof(NodalView))
                     (it.GetRootView() as NodalView).RemoveLink(it);
             }
             foreach (var i in this._outputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
 
                 if (it.GetRootView().GetType() == typeof(NodalView))
                     (it.GetRootView() as NodalView).RemoveLink(it);
             }
             e.Handled = true;
         }
-        public T CreateAndAddInput<T>() where T : IOItem
+        public T CreateAndAddInput<T>() where T : AOItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
@@ -64,18 +64,18 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             item.SetParentView(this);
             this.AddInput(item);            return item;
         }
-        public T CreateAndAddOutput<T>() where T : IOItem
+        public T CreateAndAddOutput<T>() where T : AOItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
 
             item.SetRootView(this.GetRootView());
             item.SetParentView(this);
 
-            item.Orientation = IOItem.EOrientation.RIGHT;
+            item.Orientation = AOItem.EOrientation.RIGHT;
             this.AddOutput(item);
             return item;
         }
-        public void AddInput(IOItem item, int index = -1)
+        public void AddInput(AOItem item, int index = -1)
         {
             var old = item.Margin;
             var n = new Thickness(old.Left - 13, old.Top, 0, 0);
@@ -85,7 +85,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             else
                 this._inputs.Children.Insert(index, item);
         }
-        public void AddOutput(IOItem item, int index = -1)
+        public void AddOutput(AOItem item, int index = -1)
         {
             var old = item.Margin;
             var n = new Thickness(0, old.Top, old.Right - 13, 0);
@@ -95,11 +95,11 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             else
                 this._outputs.Children.Insert(index, item);
         }
-        public void RemoveInput(IOItem item)
+        public void RemoveInput(AOItem item)
         {
             this._inputs.Children.Remove(item);
         }
-        public void RemoveOutput(IOItem item)
+        public void RemoveOutput(AOItem item)
         {
             this._outputs.Children.Remove(item);
         }
@@ -124,7 +124,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             _outputs.SetValue(Grid.ColumnProperty, 1);
             _subGrid.Children.Add(_inputs);
             _subGrid.Children.Add(_outputs);
-            this.ContentGrid.Children.Add(_subGrid);
+            this.ContentLayout.Children.Add(_subGrid);
 
         }
         public override void RemoveNode(NodesElems.INodeElem node) {}
@@ -134,7 +134,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 
             foreach (var i in _inputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
                 UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
                 nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
 
@@ -147,7 +147,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 
             foreach (var i in _outputs.Children)
             {
-                IOItem it = i as IOItem;
+                AOItem it = i as AOItem;
                 UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
                 nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
 

@@ -139,7 +139,7 @@
     <Compile Include="Views\NodalView\NodesElems\Items\ClassItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\DataFlowItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FlowNodeItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\IOItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Base\AOItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml.cs">
       <DependentUpon>ANodeItem.xaml</DependentUpon>
     </Compile>

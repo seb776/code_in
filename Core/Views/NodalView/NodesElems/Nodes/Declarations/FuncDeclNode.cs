@@ -17,22 +17,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     public class FuncDeclNode : AOrderedContentNode
     {
         public MethodDeclaration MethodNode = null;
-        private Line _editIcon;
 
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetNodeType("Declaration");
+            this.SetType("Declaration");
             this.SetName("Function");
-            _editIcon = new Line();
-            _editIcon.SetValue(Grid.ColumnProperty, 4);
-            _editIcon.X1 = _editIcon.Y1 = 0;
-            _editIcon.X2 = _editIcon.Y2 = 10;
-            _editIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            _editIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            _editIcon.StrokeThickness = 3;
-            _editIcon.MouseDown += editIcon_MouseDown;
-            this.NodeHeader.Children.Add(_editIcon);
             this.SetThemeResources("FuncDeclNode");
         }
 
@@ -51,16 +41,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public override void SetThemeResources(string keyPrefix)
         {
             base.SetThemeResources(keyPrefix);
-            if(_editIcon != null)
-            {
-                _editIcon.SetResourceReference(Line.StrokeProperty, keyPrefix + "SecondaryColor");
-            }
         }
         #endregion ICodeInVisual
-
-        public override void RemoveNode(INodeElem node)
-        {
-            this.ContentGrid.Children.Remove(node as UIElement);
-        }
     }
 }

@@ -37,5 +37,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             this.ContentLayout.Children.Add(node as UIElement);
         }
+
+        public override void RemoveNode(INodeElem node)
+        {
+            this.ContentLayout.Children.Remove(node as UIElement);
+        }
     }
 }

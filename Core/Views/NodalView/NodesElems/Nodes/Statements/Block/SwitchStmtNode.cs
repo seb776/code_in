@@ -14,7 +14,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             base(themeResDict)
         {
             this.SetName("");
-            this.SetNodeType("SwitchStmt");
+            this.SetType("Switch");
             
         }
     }

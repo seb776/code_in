@@ -15,10 +15,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : base(themeResDict)
+        public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : 
+            base(themeResDict)
         {
-            //this.SetNodeType("Namespace");
-            //this.SetName("TMP.DefaultNamespaceName");
+            this.SetType("namespace");
+            this.SetName("TMP.DefaultNamespaceName");
             //this.SetThemeResources("NamespaceNode");
         }
         #region IVisualNodeContainer
@@ -38,5 +39,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
 
         #endregion IVisualNodeContainer
+
+        public override void MoveNodeSpecial() { }
     } // Class
 } // Namespace

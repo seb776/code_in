@@ -7,10 +7,15 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
-    public class AExpressionNode : AValueNode
+    public abstract class AExpressionNode : AValueNode
     {
-        public AExpressionNode(ResourceDictionary themeResDict) : base(themeResDict)
+        public AExpressionNode(ResourceDictionary themeResDict)
+            : base(themeResDict)
         {
+        }
+        public override void SetThemeResources(string keyPrefix)
+        {
+            throw new NotImplementedException();
         }
     }
 }

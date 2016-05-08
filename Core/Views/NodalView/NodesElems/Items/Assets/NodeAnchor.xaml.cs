@@ -25,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         
-        public IOItem _parentItem;
+        public AOItem _parentItem;
 
         // Line of the NodeAnchor
         public List<Code_inLink> IOLine;
@@ -49,7 +49,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public void setParentAnchor(IOItem item) {
+        public void setParentAnchor(AOItem item) {
             _parentItem = item;
         }
 

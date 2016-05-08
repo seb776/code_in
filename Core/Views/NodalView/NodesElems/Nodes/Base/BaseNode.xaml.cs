@@ -21,6 +21,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
+        private IVisualNodeContainerDragNDrop _rootView = null;
+        private INodeElem _parentView = null;
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -34,8 +36,69 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-
-        public abstract void SetThemeResources(string keyPrefix);
+        public virtual void SetThemeResources(string keyPrefix)
+        {
+            this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");
+            this.ContentLayout.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
+            this.ContentLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
+            this.NodeName.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
+            this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
+        }
         #endregion ICodeInVisual
+
+        #region This
+        public void SetName(string name)
+        {
+            this.NodeName.Content = name;
+        }
+        public string GetName()
+        {
+            return this.NodeName.Content as string;
+        }
+
+        public void SetType(string type)
+        {
+            this.NodeType.Content = type;
+        }
+        #endregion This
+
+
+        public void SetParentView(INodeElem vc)
+        {
+            _parentView = vc;
+        }
+
+        public INodeElem GetParentView()
+        {
+            return _parentView;
+        }
+
+        public virtual void SetRootView(IVisualNodeContainerDragNDrop dnd)
+        {
+            _rootView = dnd;
+        }
+
+
+        public IVisualNodeContainerDragNDrop GetRootView()
+        {
+            return _rootView;
+        }
+
+        public abstract void RemoveNode(INodeElem node);
+
+
+        public void MoveNode(Point pos)
+        {
+            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
+            this.MoveNodeSpecial();
+        }
+        public abstract void MoveNodeSpecial();
+
+        private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+
+        }
     }
 }

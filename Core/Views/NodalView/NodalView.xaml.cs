@@ -79,9 +79,9 @@ namespace code_in.Views.NodalView
                 {
                     if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
                     {
-                        Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentGrid).Transform(new Point(0, 0));
+                        Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
                         _draggingNode.GetParentView().RemoveNode(_draggingNode);
-                        ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Add(_draggingNode as UIElement);
+                        ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Add(_draggingNode as UIElement);
                         (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
                     }
                 }
@@ -90,15 +90,15 @@ namespace code_in.Views.NodalView
                 {
                     Point nodeAnchorRelativeCoord;
                     if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
+                        nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
                     else
-                        nodeAnchorRelativeCoord = (_draggingNode as IOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
+                        nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
 
                     this._link = new Code_inLink();
 
                     Canvas.SetZIndex(_link, -9999999); // TODO Beuark
                     _link._x1 = nodeAnchorRelativeCoord.X;
-                    _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as IOItem)._nodeAnchor.ActualHeight / 2;
+                    _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as AOItem)._nodeAnchor.ActualHeight / 2;
                     _link._x2 = _link._x1;
                     _link._y2 = _link._y1;
 
@@ -196,7 +196,7 @@ namespace code_in.Views.NodalView
                 {
                     if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
                     {
-                        ((AOrderedContentNode)_draggingNode.GetParentView()).ContentGrid.Children.Remove(_draggingNode as UIElement);
+                        ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Remove(_draggingNode as UIElement);
                         MethodInfo mi = ((AOrderedContentNode)_draggingNode.GetParentView()).GetType().GetMethod("AddNode");
                         MethodInfo gmi = mi.MakeGenericMethod(_draggingNode.GetType());
                         Object[] prm = { _draggingNode, ((AOrderedContentNode)_draggingNode.GetParentView()).GetDropIndex(new Point(0, (_draggingNode as UserControl).Margin.Top)) };
@@ -208,8 +208,8 @@ namespace code_in.Views.NodalView
                 else if (_nodeTransform == TransformationMode.LINE)
                 {
                     if (node == null ||
-                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.LEFT) && (node as IOItem).Orientation == IOItem.EOrientation.LEFT || // line from input to input
-                            ((_draggingNode as IOItem).Orientation == IOItem.EOrientation.RIGHT) && (node as IOItem).Orientation == IOItem.EOrientation.RIGHT || // line from output to output
+                            ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.LEFT) && (node as AOItem).Orientation == AOItem.EOrientation.LEFT || // line from input to input
+                            ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.RIGHT) && (node as AOItem).Orientation == AOItem.EOrientation.RIGHT || // line from output to output
                             _draggingNode.GetParentView() == node.GetParentView())
                     {
                        
@@ -217,7 +217,7 @@ namespace code_in.Views.NodalView
                     }
                     else
                     {
-                        if ((_draggingNode as IOItem)._nodeAnchor._parentItem.Orientation == IOItem.EOrientation.LEFT)
+                        if ((_draggingNode as AOItem)._nodeAnchor._parentItem.Orientation == AOItem.EOrientation.LEFT)
                         {
                             Point tmpPoint = new Point();
                             tmpPoint.X = _link._x1;
@@ -229,10 +229,10 @@ namespace code_in.Views.NodalView
                         }
 
                         // storing line in nodeanchor
-                        (_draggingNode as IOItem)._nodeAnchor.IOLine.Add(_link);
-                        (node as IOItem)._nodeAnchor.IOLine.Add(_link);
-                        (_draggingNode as IOItem).IOAttached = node as IOItem;
-                        (node as IOItem).IOAttached = (_draggingNode as IOItem);
+                        (_draggingNode as AOItem)._nodeAnchor.IOLine.Add(_link);
+                        (node as AOItem)._nodeAnchor.IOLine.Add(_link);
+                        (_draggingNode as AOItem).IOAttached = node as AOItem;
+                        (node as AOItem).IOAttached = (_draggingNode as AOItem);
                     }
 
 
@@ -343,7 +343,7 @@ namespace code_in.Views.NodalView
             _draggingNode = null;
             _nodeTransform = TransformationMode.NONE;
         }
-        public void RemoveLink(IOItem node)
+        public void RemoveLink(AOItem node)
         {
            /* if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
             {

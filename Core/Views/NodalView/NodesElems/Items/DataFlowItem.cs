@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class DataFlowItem : Base.IOItem
+    public class DataFlowItem : Base.AOItem
     {
         public override void SetThemeResources(String keyprefix)
         { }

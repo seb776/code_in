@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems
 {
-    public interface IVisualNodeContainerDragNDrop
+    public interface IVisualNodeContainerDragNDrop : IVisualNodeContainer
     {
         void SelectNode(INodeElem node);
         void UnSelectNode(INodeElem node);

@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    class FlowNodeItem : IOItem
+    class FlowNodeItem : AOItem
     {
          public FlowNodeItem(ResourceDictionary themeResDict) :
             base(themeResDict)

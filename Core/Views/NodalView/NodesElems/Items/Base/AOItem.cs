@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
-    public abstract class IOItem : ANodeItem
+    public abstract class AOItem : ANodeItem
     {
         public enum EOrientation
         {
@@ -18,9 +18,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             RIGHT = 1,
         }
         public Assets.NodeAnchor _nodeAnchor; // The anchor point of the item
-        public IOItem IOAttached = null;  // The attached IOItem
+        public AOItem IOAttached = null;  // The attached IOItem
 
-        public IOItem(ResourceDictionary themeResDict) :
+        public AOItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             _nodeAnchor = new NodeAnchor(this.GetThemeResourceDictionary());
@@ -33,7 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             _nodeAnchor.setParentAnchor(this);
             this.BeforeName.Children.Add(_nodeAnchor);
         }
-        public IOItem() :
+        public AOItem() :
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");

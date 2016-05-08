@@ -18,24 +18,18 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             STRUCT = 0,
             CLASS = 1,
-            INTERFACE = 2,
-            ENUM = 3
+            INTERFACE = 2
         }
         private EType _type;
-        public ScopeItem NodeScope = null;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetNodeType("ClassDecl");
-            this.SetName("Class1");
-            this.SetThemeResources("ClassDeclNode");
-            //NodeScope = new ScopeItem(this.GetThemeResourceDictionary());
-            //NodeScope.SetValue(Grid.ColumnProperty, 0);
-            //NodeScope.Scope = ScopeItem.EScope.PRIVATE;
-            //this.NodeHeader.Children.Add(this.NodeScope);
+            this.SetType("class");
+            this.SetName("TMP.Class");
+            //this.SetThemeResources("ClassDeclNode");
             var modifiers = new Assets.ClassNodeModifiers(themeResDict);
             modifiers.SetValue(Grid.ColumnProperty, 0);
-            this.ColumnGrid.Children.Add(modifiers);
+            this.ModifiersLayout.Children.Add(modifiers);
 
             _type = EType.CLASS;
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);

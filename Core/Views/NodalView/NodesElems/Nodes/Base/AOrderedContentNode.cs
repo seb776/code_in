@@ -15,12 +15,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict)
             : base(themeResDict)
         {
-            this.SetNodeType("Namespace");
+            this.SetType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
             _orderedLayout = new System.Windows.Controls.StackPanel();
             _orderedLayout.SetValue(StackPanel.HeightProperty, double.NaN);
            // _orderedLayout.SetValue(StackPanel.fi)
-            this.ContentGrid.Children.Add(_orderedLayout);
+            this.ContentLayout.Children.Add(_orderedLayout);
             this.MouseMove += EvtOrderedContentNode_MouseMove;
         }
 
@@ -66,6 +66,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             _orderedLayout.Children.Remove(node as UIElement);
         }
         #endregion IVisualNodeContainer
+
+
 
     }
 }

@@ -14,7 +14,7 @@ namespace code_in.Views.NodalView.NodesElems
         void SetParentView(INodeElem vc); // Each node elem is inside a masterView
         INodeElem GetParentView();
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
-        void RemoveNode(INodeElem node);
         IVisualNodeContainerDragNDrop GetRootView();
+        void RemoveNode(INodeElem node);
     }
 }
