@@ -60,6 +60,19 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             this.NodeType.Content = type;
         }
+
+        /// <summary>
+        /// Sets the visual selected state of the node. It does not affect anything other than the visual.
+        /// </summary>
+        /// <param name="isSelected">
+        /// - True the node is highlighted
+        /// - False the node is not highlighted
+        /// </param>
+        public void SetSelected(bool isSelected)
+        {
+            this.SelectionBorder.IsEnabled = isSelected;
+            this.SelectionBorder.Visibility = (isSelected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
+        }
         #endregion This
 
         #region INodeElem

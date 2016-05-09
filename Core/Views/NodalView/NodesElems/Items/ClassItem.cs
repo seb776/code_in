@@ -17,7 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         public ClassItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            _scope.Scope = (ScopeItem.EScope)r.Next(0, 4);
+            Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
         }
         public ClassItem() :
             this(Code_inApplication.MainResourceDictionary)

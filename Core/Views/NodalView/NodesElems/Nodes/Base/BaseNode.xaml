@@ -82,7 +82,7 @@
         </Border>-->
 
         <!-- The border under is for the selection -->
-        <Border x:Name="SelectionBorder" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="White" BorderThickness="3">
+        <Border x:Name="SelectionBorder" IsEnabled="False" Visibility="Hidden" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="White" BorderThickness="3">
             <Border.Effect>
                 <BlurEffect Radius="5"/>
             </Border.Effect>

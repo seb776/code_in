@@ -36,18 +36,36 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
+        #region This
+        public void SetModifiers(String[] modifiers)
+        {
+            this._modifiersList.Children.Clear();
+            if (modifiers.Count() != 0)
+            {
+                this._modifiersBorder.IsEnabled = false;
+                this._modifiersBorder.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                this._modifiersBorder.IsEnabled = true;
+                this._modifiersBorder.Visibility = System.Windows.Visibility.Visible;
+            }
+            foreach (var mod in modifiers)
+            {
+                Label lbl = new Label();
+                //lbl.SetResourceReference(Label.ForegroundProperty, "whatever");
+                lbl.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF)); // TODO replace this by the line above for the value to be based on theme
+                this._modifiersList.Children.Add(lbl);
+            }
+        }
+        #endregion This
+
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
 
         public void SetThemeResources(String keyPrefix)
         {
 
-        }
-
-        public void SetLanguageResources(String keyPrefix)
-        {
-            throw new NotImplementedException();
         }
         #endregion ICodeInVisual
     }
