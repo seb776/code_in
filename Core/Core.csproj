@@ -104,7 +104,7 @@
     <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
-    <Compile Include="Presenters\Nodal\Nodes\ANodePresenter.cs" />
+    <Compile Include="Presenters\Nodal\Nodes\NodePresenter.cs" />
     <Compile Include="Views\ConfigView\SubViews\ConfigSubViewTemplate.xaml.cs">
       <DependentUpon>ConfigSubViewTemplate.xaml</DependentUpon>
     </Compile>
