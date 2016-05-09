@@ -21,7 +21,7 @@ namespace code_in.Presenters.Nodal.Nodes
     /// </summary>
     public class NodePresenter
     {
-        NodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model = null){
+        public NodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model = null){
             _view = view;
             _nodalPresenter = nodalPres;
             _model = model;
@@ -33,11 +33,11 @@ namespace code_in.Presenters.Nodal.Nodes
         INodeElem _view;
         INodalPresenter _nodalPresenter;
 
-        public void setName(String name){
+        public bool setName(String name){
             _name = name;
-            _view.SetName(_name);
+            //_view.SetName(_name);
             if (_model == null)
-                return;
+                return false;
             #region Classes (interface, class, enum
             if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)){
                 ((ICSharpCode.NRefactory.CSharp.TypeDeclaration)_model).Name = name;
@@ -52,6 +52,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 ((ICSharpCode.NRefactory.CSharp.MethodDeclaration)_model).Name = _name;
             }
             #endregion
+            return true;
         }
 
         public void setModel(AstNode model)

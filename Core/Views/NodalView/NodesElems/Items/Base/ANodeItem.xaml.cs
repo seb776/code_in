@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
+using code_in.Presenters.Nodal.Nodes;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -26,6 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private ResourceDictionary _languageResourceDictionary = null;
         protected IVisualNodeContainer _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
+        protected NodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
         {
@@ -70,6 +72,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public String GetName()
         {
             return this.ItemName.Content as String;
+        }
+        public void SetNodePresenter(NodePresenter nodePresenter)
+        {
+            System.Diagnostics.Debug.Assert(nodePresenter != null);
+            _nodePresenter = nodePresenter;
         }
         #endregion INodeElem
         #region ICodeInVisual

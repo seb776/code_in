@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Nodes.Base;
+﻿using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace code_in.Views.NodalView.NodesElems
         IVisualNodeContainer GetParentView();
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
         IVisualNodeContainerDragNDrop GetRootView();
+        void SetNodePresenter(NodePresenter nodePresenter);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using code_in.Models;
 using code_in.Models.NodalModel;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
@@ -64,6 +65,8 @@ namespace code_in.Presenters.Nodal
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
                 NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>();
+                namespaceNode.SetNodePresenter(new NodePresenter(namespaceNode, this, node));
+
                 parentNode = namespaceNode;
 
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
@@ -95,6 +98,7 @@ namespace code_in.Presenters.Nodal
                 else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Class)
                 {
                     ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
+                    classDeclNode.SetNodePresenter(new NodePresenter(classDeclNode, this, node));
                     parentNode = classDeclNode;
 
                     classDeclNode.SetName(tmpNode.Name);
@@ -116,21 +120,7 @@ namespace code_in.Presenters.Nodal
 
                             var item = classDeclNode.CreateAndAddNode<ClassItem>();
                             item.SetName(field.Variables.FirstOrNullObject().Name);
-                            //item.SetItemType(field.ReturnType.ToString());
-                            //switch (field.Modifiers.ToString()) // Puts the right scope
-                            //{
-                            //    case "Public":
-                            //        item.ItemScope.Scope = ScopeItem.EScope.PUBLIC;
-                            //        break;
-                            //    case "Private":
-                            //        item.ItemScope.Scope = ScopeItem.EScope.PRIVATE;
-                            //        break;
-                            //    case "Protected":
-                            //        item.ItemScope.Scope = ScopeItem.EScope.PROTECTED;
-                            //        break;
-                            //    default:
-                            //        break;
-                            //}
+                            //item.SetType(field.ReturnType.ToString());
                         }
                     }
                 }
@@ -143,6 +133,8 @@ namespace code_in.Presenters.Nodal
                 FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>();
                 funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+                funcDecl.SetNodePresenter(new NodePresenter(funcDecl, this, node));
+
 
                 var parameters = method.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; ++i)
