@@ -110,7 +110,6 @@ namespace code_in.Presenters.Nodal
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
                     else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
-
                     //goDeeper = false;
                     foreach (var n in node.Children)
                     {
@@ -295,7 +294,7 @@ namespace code_in.Presenters.Nodal
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
+                ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement.
                 variableNode.SetType("Variables");
                 foreach (var v in varStmt.Variables)
                 {
