@@ -110,6 +110,21 @@ namespace code_in.Presenters.Nodal
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
                     else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
+                    
+                    List<string> modifiersList = new List<string>();
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                        modifiersList.Add("partial");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                        modifiersList.Add("static");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                        modifiersList.Add("abstract");
+                        classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+                    //inheritance
+                    foreach (var par in tmpNode.BaseTypes)
+                        classDeclNode.AddInheritance(par.ToString());
+                    //Generic
+                    foreach (var typ in tmpNode.TypeParameters)
+                        classDeclNode.SetName(classDeclNode.GetName() + " | " + typ.ToString());
 
                     //goDeeper = false;
                     foreach (var n in node.Children)
@@ -295,7 +310,6 @@ namespace code_in.Presenters.Nodal
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
                 variableNode.SetType("Variables");
                 foreach (var v in varStmt.Variables)
                 {
