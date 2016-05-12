@@ -42,7 +42,7 @@ namespace code_in.Views.Utils
 
         private void HexaButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("yeah");
+            MessageBox.Show("LineModeChanged");
             if (_btnAction != null)
                 _btnAction.Invoke(_args);
         }

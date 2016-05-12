@@ -74,8 +74,17 @@ namespace code_in.Views.NodalView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
+            MessageBox.Show("toto");
+
             if (e.Key == Key.L)
             {
+                MessageBox.Show("TITI");
+
+                var lineType = Code_inApplication.MainResourceDictionary["linkType"];
+                if (lineType == null)
+                    Code_inApplication.MainResourceDictionary["linkType"] = 0;
+                else
+                    Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
                 if (_lineMode == LineMode.LINE)
                 {
                     _lineMode = LineMode.BEZIER;
@@ -252,7 +261,13 @@ namespace code_in.Views.NodalView
                 }
                 imageSrc.EndInit();
 
-                im.AddHexagonButtonCircle(buttonName, imageSrc, opt.Item2);
+                im.AddHexagonButtonCircle(buttonName, imageSrc, (parameters) => {
+                    var lineType = Code_inApplication.MainResourceDictionary["linkType"];
+                    if (lineType == null)
+                        Code_inApplication.MainResourceDictionary["linkType"] = 0;
+                    else
+                        Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
+                });
             }
 
             im.Placement = PlacementMode.Absolute;
