@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
-    enum ENodeActions
+    public enum ENodeActions
     {
         MODIFIERS = 1,
         NAME = 2,
