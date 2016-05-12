@@ -110,6 +110,18 @@ namespace code_in.Presenters.Nodal
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
                     else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
                         classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
+                    List<string> modifiersList = new List<string>();
+ 
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                        modifiersList.Add("partial");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                        modifiersList.Add("static");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                        modifiersList.Add("abstract");
+                        classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+
+                     //   classDeclNode.AddInheritance("toto");
+
                     //goDeeper = false;
                     foreach (var n in node.Children)
                     {
