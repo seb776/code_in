@@ -38,21 +38,14 @@ namespace code_in.Views.Utils
 
         void HexagonalMenu_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            //MessageBox.Show("BIPBIP");
-            //MouseButtonEventArgs args = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Right);
-            //args.RoutedEvent = PreviewMouseUpEvent;
-            //args.Source = this.GridHexa;
-            //RaiseEvent(args);
-            ////this.Raise
             IsOpen = false;
         }
         void HexagonalMenu_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             ReleaseMouseCapture();
-            //this.GridHexa.RaiseEvent(e);
         }
         private int _count = 0;
-        public void AddHexagonButton(int x, int y, String keyPrefix, ImageSource src, HexagonalButton.ButtonAction action, params object[] args)
+        public void AddHexagonButton(int x, int y, String keyPrefix, ImageSource src, Action<object[]> action, params object[] args)
         {
             var hexBtn = new HexagonalButton(this.GetThemeResourceDictionary(), action, args);
             hexBtn.SetImage(src);
@@ -62,7 +55,7 @@ namespace code_in.Views.Utils
             ++_count;
         }
 
-        public void AddHexagonButtonCircle(String keyPrefix, ImageSource src, HexagonalButton.ButtonAction action, params object[] args)
+        public void AddHexagonButtonCircle(String keyPrefix, ImageSource src, Action<object[]> action, params object[] args)
         {
             int[,] buttons = {
                      {1,0},
@@ -76,16 +69,7 @@ namespace code_in.Views.Utils
                 AddHexagonButton(buttons[_count, 0], buttons[_count, 1], keyPrefix, src, action, args);
         }
 
-        //public void ShowMenu()
-        //{
-        //    DoubleAnimation da = new DoubleAnimation();
-
-        //    da.From = 0;
-        //    da.To = 1;
-        //    da.Duration = new Duration(TimeSpan.FromMilliseconds(150));
-        //    this.BeginAnimation(OpacityProperty, da);
-        //}
-
+        #region Popup
         static Popup _parentPopup = null;
 
         //Placement
@@ -158,6 +142,7 @@ namespace code_in.Views.Utils
                 Mouse.Capture(ctrl, CaptureMode.SubTree);
             }
         }
+        #endregion Popup
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
