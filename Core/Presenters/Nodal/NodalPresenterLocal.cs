@@ -388,18 +388,15 @@ namespace code_in.Presenters.Nodal
             //sw.Write(_codeData.AST.ToString());
         }
 
-
-
-
-        public Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>[] GetMenuOptions()
+        Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()
         {
-            return new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>[] { 
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.ADD, null), 
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.ALIGN, null),
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.COLLAPSEALL, null),
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.SAVE, null),
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.CLOSE, null),
-                new Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>(EContextMenuOptions.HELP, null)
+            return new Tuple<EContextMenuOptions, Action<object[]>>[] { 
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, null), 
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, null),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, null),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, null),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, null),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.HELP, null)
             };
         }
     }

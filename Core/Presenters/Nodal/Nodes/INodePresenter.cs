@@ -13,18 +13,17 @@ namespace code_in.Presenters.Nodal.Nodes
     {
         MODIFIERS = 1,
         NAME = 2,
-        GENERICS = 4,
+        GENERICS = 4, // Type parameters, covariance-contravariance, constraints
         ATTRIBUTE = 8,
         INHERITANCE = 16,
-        CONSTRAINT = 32 // where T : ...
     }
-    public interface INodePresenter
+    public interface INodePresenter : IContextMenu
     {
         ENodeActions GetActions(); // Gets the possible actions for this node
-        void AddGeneric(String name);
-        void RemoveGeneric(int index);
-        void AddInheritance(String name);
+        void AddGeneric(bool updateView, String name);
+        void RemoveGeneric(bool updateView, int index);
+        void AddInheritance(bool updateView, String name);
         //bool AddConstraint() // TODO @z0rg
-        void SetName(String name);
+        void SetName(bool updateView, String name);
     }
 }

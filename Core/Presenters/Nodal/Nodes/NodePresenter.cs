@@ -19,46 +19,73 @@ namespace code_in.Presenters.Nodal.Nodes
     /// SetName
     /// Move (kinda)
     /// </summary>
-    public class NodePresenter
+    public class NodePresenter : INodePresenter // TODO @z0rg NodePresenter private and INodePresenter public ?
     {
-        public NodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model = null){
+        private AstNode _model;
+        private INodeElem _view;
+        private INodalPresenter _nodalPresenter;
+
+        public NodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model) {
+            System.Diagnostics.Debug.Assert(view != null);
+            System.Diagnostics.Debug.Assert(nodalPres != null);
+            System.Diagnostics.Debug.Assert(model != null);
             _view = view;
             _nodalPresenter = nodalPres;
             _model = model;
         }
 
-     //   Point _coords;
-        String _name;
-        AstNode _model;
-        INodeElem _view;
-        INodalPresenter _nodalPresenter;
+        public NodePresenter(INodeElem view, INodalPresenter nodalPres, Type modelType)
+        {
 
-        public bool setName(String name){
-            _name = name;
-            //_view.SetName(_name);
-            if (_model == null)
-                return false;
-            #region Classes (interface, class, enum
-            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)){
-                ((ICSharpCode.NRefactory.CSharp.TypeDeclaration)_model).Name = name;
-            }
-            #endregion
-            #region Namespace
-            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)){ 
-                ((ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)_model).Name = name; }
-            #endregion
-            #region Methods
-            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)){
-                ((ICSharpCode.NRefactory.CSharp.MethodDeclaration)_model).Name = _name;
-            }
-            #endregion
+        }
+
+
+
+        public bool SetName(bool updateView, String name)
+        {
+            Dictionary<Type, bool> setNameRoutines = new Dictionary<Type,bool>(); 
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
+
+            var routine = setNameRoutines[_model.GetType()];
+            if (routine != null && routine)
+                (_model as dynamic).Name = name;
+            else
+                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
+            if (updateView)
+                _view.SetName(name);
             return true;
         }
 
-        public void setModel(AstNode model)
-        { _model = model; }
+        public ENodeActions GetActions()
+        {
+            throw new NotImplementedException();
+        }
 
-       /* public void Move(Point point){
-            _coords = point;}*/
+        public void AddGeneric(bool updateView, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveGeneric(bool updateView, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddInheritance(bool updateView, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        void INodePresenter.SetName(bool updateView, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

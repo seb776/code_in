@@ -9,28 +9,13 @@ using System.Threading.Tasks;
 
 namespace code_in.Presenters.Nodal
 {
-    public interface INodalPresenter // For future network abstraction
+    public interface INodalPresenter : IContextMenu // For future network abstraction
     {
         void OpenFile(String path);
+        void SaveFile(String path);
         void EditFunction(FuncDeclItem node);
-        Tuple<EContextMenuOptions, HexagonalButton.ButtonAction>[] GetMenuOptions();
-        //List<Type>  GetContextListNodes(NodePresenter context)
+        // void EditProperty(object obj); // TODO @z0rg type is not created yet
     }
 
-    public enum EContextMenuOptions
-    {
-        REMOVE,
-        EDIT,
-        GOINTO,
-        EXPAND,
-        COLLAPSE,
-        EXPANDALL,
-        COLLAPSEALL,
-        HELP,
-        ADD,
-        ALIGN,
-        SAVE,
-        CLOSE,
-        DUPLICATE
-    }
+
 }
