@@ -92,6 +92,18 @@ namespace code_in.Presenters.Nodal
                         else
                             item.SetName(v.Name);
                     }
+                    List<string> modifiersList = new List<string>();
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                        modifiersList.Add("new");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                        modifiersList.Add("public");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
+                        modifiersList.Add("private");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
+                        modifiersList.Add("protected");
+                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
+                        modifiersList.Add("internal");
+                    enumDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
                 }
                 #endregion Enum
                 #region Class
@@ -136,8 +148,25 @@ namespace code_in.Presenters.Nodal
                             var item = classDeclNode.CreateAndAddNode<ClassItem>();
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetType(field.ReturnType.ToString());
+                            List<string> itemModifiersList = new List<string>();
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                                itemModifiersList.Add("async");
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                                itemModifiersList.Add("override");
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                                itemModifiersList.Add("virtual");
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                                item.Scope.Scope = ScopeItem.EScope.PUBLIC;
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
+                                item.Scope.Scope = ScopeItem.EScope.PRIVATE;
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
+                                item.Scope.Scope = ScopeItem.EScope.PROTECTED;
+                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
+                                item.Scope.Scope = ScopeItem.EScope.INTERNAL;
+                            item.Modifiers.SetModifiers(itemModifiersList.ToArray());
                         }
                     }
+
                 }
                 #endregion Class
             }
@@ -161,6 +190,23 @@ namespace code_in.Presenters.Nodal
                 }
                 funcDecl.SetName(method.Name);
                 goDeeper = false;
+                List<string> modifiersList = new List<string>();
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                    modifiersList.Add("async");
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                    modifiersList.Add("override");
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                    modifiersList.Add("virtual");
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                    funcDecl.Scope.Scope = ScopeItem.EScope.PUBLIC;
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
+                    funcDecl.Scope.Scope = ScopeItem.EScope.PRIVATE;
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
+                    funcDecl.Scope.Scope = ScopeItem.EScope.PROTECTED;
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
+                    funcDecl.Scope.Scope = ScopeItem.EScope.INTERNAL;
+                funcDecl.Modifiers.SetModifiers(modifiersList.ToArray());
+                
             }
             #endregion
             #region Using
