@@ -87,5 +87,16 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             throw new NotImplementedException();
         }
+
+
+        public string[] GetAvailableModifiers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string[] GetAvailableAccessModifiers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
