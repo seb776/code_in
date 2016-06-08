@@ -131,7 +131,7 @@ namespace code_in.Presenters.Nodal
                         modifiersList.Add("static");
                     if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
                         modifiersList.Add("abstract");
-                        classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+                    classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
                     //inheritance
                     foreach (var par in tmpNode.BaseTypes)
                         classDeclNode.AddInheritance(par.ToString());
@@ -198,6 +198,10 @@ namespace code_in.Presenters.Nodal
                     modifiersList.Add("override");
                 if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
                     modifiersList.Add("virtual");
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                    modifiersList.Add("abstract");
+                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                    modifiersList.Add("static");
                 if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
                     funcDecl.Scope.Scope = ScopeItem.EScope.PUBLIC;
                 if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
