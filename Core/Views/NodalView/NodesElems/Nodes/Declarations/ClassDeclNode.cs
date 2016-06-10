@@ -18,7 +18,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             STRUCT = 0,
             CLASS = 1,
-            INTERFACE = 2
+            INTERFACE = 2,
+            ENUM = 3
         }
         public Assets.ClassNodeModifiers Modifiers = null;
         private EType _type;
@@ -44,7 +45,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             string[] typeString = {
                                       "struct",
                                       "class",
-                                      "interface"
+                                      "interface",
+                                      "enum"
                                   };
             this.SetType(typeString[(int)type]);
         }
