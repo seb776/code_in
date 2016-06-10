@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,14 +52,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
         }
         #endregion ICodeInVisual
 
-        public enum EAccessModifier
-        {
-            PUBLIC = 0,
-            PRIVATE = 1,
-            PROTECTED = 2,
-            INTERNAL = 3,
-            PROTECTED_INTERNAL = 4
-        }
         public void SetAccessModifiers(EAccessModifier mod)
         {
             switch (mod)
@@ -97,5 +90,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
                 this.ModifiersList.Children.Add(lbl);
             }
         }
+
     }
 }

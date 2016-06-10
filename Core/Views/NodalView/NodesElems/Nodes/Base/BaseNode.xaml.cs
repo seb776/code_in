@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal.Nodes;
+﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
