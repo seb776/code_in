@@ -201,15 +201,7 @@ namespace code_in.Presenters.Nodal
                     parentNode = interfaceDeclNode;
                     interfaceDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)2);
                     interfaceDeclNode.SetName(tmpNode.Name);
-
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                        interfaceDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PUBLIC);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-                        interfaceDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PRIVATE);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-                        interfaceDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-                        interfaceDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
+                   interfaceDeclNode = setClassAccessModifier(interfaceDeclNode, tmpNode.Modifiers);
 
                     //inheritance
                     foreach (var par in tmpNode.BaseTypes)
