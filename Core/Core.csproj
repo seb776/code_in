@@ -135,7 +135,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AIONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
-    <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
+    <Compile Include="Presenters\Nodal\Nodes\INodeElem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AOrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>

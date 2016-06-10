@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Presenters.Nodal;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {

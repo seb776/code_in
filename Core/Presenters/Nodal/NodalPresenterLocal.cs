@@ -55,6 +55,64 @@ namespace code_in.Presenters.Nodal
             this._generateVisualASTDeclarationRecur(model.AST, this._view, usingNode);
         }
 
+        private List<string> setOtherModifiersList(Modifiers tmpModifiers)
+        {
+            List<string> modifiersList = new List<string>();
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                modifiersList.Add("new");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                modifiersList.Add("partial");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                modifiersList.Add("static");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                modifiersList.Add("abstract");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Const) == ICSharpCode.NRefactory.CSharp.Modifiers.Const)
+                modifiersList.Add("Const");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                modifiersList.Add("async");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                modifiersList.Add("override");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                modifiersList.Add("virtual");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
+                modifiersList.Add("extern");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                modifiersList.Add("override");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
+                modifiersList.Add("readonly");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
+                modifiersList.Add("sealed");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe) == ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe)
+                modifiersList.Add("unsafe");
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
+                modifiersList.Add("volatile");
+            return (modifiersList);
+        }
+
+        private ScopeItem.EScope setAccessModifierItem(Modifiers tmpModifiers)
+        {
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                return (ScopeItem.EScope.PUBLIC);
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
+                return(ScopeItem.EScope.PRIVATE);
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
+                return(ScopeItem.EScope.PROTECTED);
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
+                return(ScopeItem.EScope.INTERNAL);
+            return (0); //basic return, couldn't use null
+        }
+        private ClassDeclNode setClassAccessModifier(ClassDeclNode tmp, Modifiers tmpModifiers)
+        {
+            if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                tmp.Modifiers.SetAccessModifiers(EAccessModifier.PUBLIC);
+            else if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
+                tmp.Modifiers.SetAccessModifiers(EAccessModifier.PRIVATE);
+            else if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
+                tmp.Modifiers.SetAccessModifiers(EAccessModifier.PROTECTED);
+            else if ((tmpModifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
+                tmp.Modifiers.SetAccessModifiers(EAccessModifier.INTERNAL);
+            return (tmp);
+        }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {
             bool goDeeper = true;
@@ -92,17 +150,7 @@ namespace code_in.Presenters.Nodal
                         else
                             item.SetName(v.Name);
                     }
-                    List<string> modifiersList = new List<string>();
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
-                        modifiersList.Add("new");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                        modifiersList.Add("public");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                        modifiersList.Add("private");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                        modifiersList.Add("protected");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                        modifiersList.Add("internal");
+                    List<string> modifiersList = setOtherModifiersList(tmpNode.Modifiers);
                     enumDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
                 }
                 #endregion Enum
@@ -114,22 +162,8 @@ namespace code_in.Presenters.Nodal
                     parentNode = classDeclNode;
 
                     classDeclNode.SetName(tmpNode.Name);
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PUBLIC);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PRIVATE);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
-                    
-                    List<string> modifiersList = new List<string>();
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
-                        modifiersList.Add("partial");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
-                        modifiersList.Add("static");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
-                        modifiersList.Add("abstract");
+                    classDeclNode = setClassAccessModifier(classDeclNode, tmpNode.Modifiers);
+                    List<string> modifiersList = setOtherModifiersList(tmpNode.Modifiers);
                         classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
                     //inheritance
                     foreach (var par in tmpNode.BaseTypes)
@@ -149,20 +183,7 @@ namespace code_in.Presenters.Nodal
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetType(field.ReturnType.ToString());
                             List<string> itemModifiersList = new List<string>();
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
-                                itemModifiersList.Add("async");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                                itemModifiersList.Add("override");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
-                                itemModifiersList.Add("virtual");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                                item.Scope.Scope = ScopeItem.EScope.PUBLIC;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                                item.Scope.Scope = ScopeItem.EScope.PRIVATE;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                                item.Scope.Scope = ScopeItem.EScope.PROTECTED;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                                item.Scope.Scope = ScopeItem.EScope.INTERNAL;
+                            item.Scope.Scope = setAccessModifierItem(field.Modifiers);
                             item.Modifiers.SetModifiers(itemModifiersList.ToArray());
                         }
                     }
@@ -190,21 +211,8 @@ namespace code_in.Presenters.Nodal
                 }
                 funcDecl.SetName(method.Name);
                 goDeeper = false;
-                List<string> modifiersList = new List<string>();
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
-                    modifiersList.Add("async");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                    modifiersList.Add("override");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
-                    modifiersList.Add("virtual");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PUBLIC;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PRIVATE;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PROTECTED;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.INTERNAL;
+                List<string> modifiersList = setOtherModifiersList(method.Modifiers);
+                funcDecl.Scope.Scope = setAccessModifierItem(method.Modifiers);
                 funcDecl.Modifiers.SetModifiers(modifiersList.ToArray());
                 
             }

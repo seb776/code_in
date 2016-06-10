@@ -7,6 +7,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows;
+using code_in.Presenters.Nodal;
 
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
