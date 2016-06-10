@@ -23,12 +23,10 @@ namespace code_in.Views.Utils
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        ButtonAction _btnAction;
+        Action<object[]> _btnAction;
         object[] _args;
 
-        public delegate void ButtonAction(object[] args);
-
-        public HexagonalButton(ResourceDictionary themeResDict, ButtonAction btnAction, params object[] args)
+        public HexagonalButton(ResourceDictionary themeResDict, Action<object[]> btnAction, params object[] args)
         {
             this._themeResourceDictionary = themeResDict;
             this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;

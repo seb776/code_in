@@ -27,11 +27,12 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public class NodalPresenterLocal : INodalPresenter
     {
-        INodalView _view; // TODO INodalView
-        NodalModel _model = null;
-        CSharpParser _parser = null;
+        private INodalView _view = null; // TODO INodalView
+        private NodalModel _model = null;
+        private CSharpParser _parser = null;
         public NodalPresenterLocal(INodalView view)
         {
+            System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
 
@@ -164,7 +165,7 @@ namespace code_in.Presenters.Nodal
                     classDeclNode.SetName(tmpNode.Name);
                     classDeclNode = setClassAccessModifier(classDeclNode, tmpNode.Modifiers);
                     List<string> modifiersList = setOtherModifiersList(tmpNode.Modifiers);
-                        classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+                    classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
                     //inheritance
                     foreach (var par in tmpNode.BaseTypes)
                         classDeclNode.AddInheritance(par.ToString());

@@ -112,7 +112,7 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
-    <Compile Include="Views\MainView\EditNodePanel.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\INodalView.cs" />
@@ -184,9 +184,6 @@
     <Compile Include="Views\Utils\HexagonalMenu.xaml.cs">
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Utils\InteractiveMenu.xaml.cs">
-      <DependentUpon>InteractiveMenu.xaml</DependentUpon>
-    </Compile>
     <Page Include="Models\LanguageResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -219,7 +216,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView\EditNodePanel.xaml">
+    <Page Include="Views\NodalView\NodesElems\EditNodePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -291,10 +288,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Utils\HexagonalMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Utils\InteractiveMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
