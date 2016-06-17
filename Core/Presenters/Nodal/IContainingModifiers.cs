@@ -1,51 +1,16 @@
-﻿using code_in.Presenters.Nodal;
-using code_in.Views.NodalView.NodesElems.Items.Assets;
-using code_in.Views.NodalView.NodesElems.Items.Base;
-using code_in.Views.NodalView.NodesElems.Nodes.Base;
-using ICSharpCode.NRefactory.CSharp;
+﻿using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace code_in.Views.NodalView.NodesElems.Items
+namespace code_in.Presenters.Nodal
 {
-    public class ClassItem : ATypedMemberItem, IContainingModifiers, IContainingAccessModifiers
+    interface IContainingModifiers
     {
-        public override void SetThemeResources(String keyPrefix) { }
-        static Random r = new Random();
-        public ClassItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
-        {
-            //Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
-        }
-        public ClassItem() :
-            this(Code_inApplication.MainResourceDictionary)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
-
-        #region IContainingModifiers
-        public void setModifiersList(Modifiers modifiers)
-        {
-            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                Scope.Scope = ScopeItem.EScope.PUBLIC;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-                Scope.Scope = ScopeItem.EScope.PRIVATE;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-                Scope.Scope = ScopeItem.EScope.PROTECTED;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-                Scope.Scope = ScopeItem.EScope.INTERNAL;
-
-        }
-        #endregion
-        #region IContainingAccessModifiers
-        public void setAccessModifiers(Modifiers modifiers)
-        {
-            List<string> ModifiersList = new List<string>();
-
+        void setModifiersList(Modifiers modifiers);
+/*        {
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                 ModifiersList.Add("new");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
@@ -74,8 +39,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("unsafe");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
                 ModifiersList.Add("volatile");
-            Modifiers.SetModifiers(ModifiersList.ToArray());
-        }
-        #endregion
+
+        }*/
+
     }
 }
