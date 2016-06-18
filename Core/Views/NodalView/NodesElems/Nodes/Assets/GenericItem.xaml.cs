@@ -18,7 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
     /// <summary>
     /// Logique d'interaction pour ClassNodeGeneric.xaml
     /// </summary>
-    public partial class ClassNodeGeneric : UserControl, ICodeInVisual
+    public partial class GenericItem : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
@@ -26,7 +26,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
 
         public enum EGenericVariance { NOTHING, IN, OUT };
 
-        public ClassNodeGeneric(ResourceDictionary themeResDict)
+        public GenericItem(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
             this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
@@ -35,7 +35,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             GenericsAndTypes = new List<Tuple<string, EGenericVariance>>();
             InitializeComponent();
         }
-        public ClassNodeGeneric() :
+        public GenericItem() :
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");

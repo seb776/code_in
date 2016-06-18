@@ -22,7 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
         ParametersList _params;
         private Image _editButton;
-        public ClassNodeGeneric Generics = null;
+        public GenericItem Generics = null;
 
         public FuncDeclItem(ResourceDictionary themeResDict) :
             base(themeResDict)

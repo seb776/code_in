@@ -133,8 +133,8 @@
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeGeneric.xaml.cs">
-      <DependentUpon>ClassNodeGeneric.xaml</DependentUpon>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml.cs">
+      <DependentUpon>GenericItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml.cs">
       <DependentUpon>ClassNodeModifiers.xaml</DependentUpon>
@@ -237,7 +237,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeGeneric.xaml">
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

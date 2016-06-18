@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             ENUM = 3
         }
         public Assets.ClassNodeModifiers Modifiers = null;
-        public Assets.ClassNodeGeneric Generics = null;
+        public Assets.GenericItem Generics = null;
         private EType _type;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -32,7 +32,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
-            Generics = new Assets.ClassNodeGeneric(themeResDict);
+            Generics = new Assets.GenericItem(themeResDict);
             Modifiers = new Assets.ClassNodeModifiers(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
             this.ModifiersLayout.Children.Add(Modifiers);
