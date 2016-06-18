@@ -70,6 +70,11 @@ namespace code_in.Presenters.Nodal
         {
             view.ManageInheritance(typeDecl);
         }
+
+        private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
+        {
+            view.setGenerics(typeDecl);
+        }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {
             bool goDeeper = true;
@@ -125,8 +130,7 @@ namespace code_in.Presenters.Nodal
                     InitInheritance(classDeclNode, tmpNode);
 
                     //Generic
-                    foreach (var typ in tmpNode.TypeParameters)
-                        classDeclNode.SetName(classDeclNode.GetName() + " | " + typ.ToString());
+                    SetAllGenerics(classDeclNode, tmpNode);
 
                     //goDeeper = false;
                     foreach (var n in node.Children)
@@ -153,14 +157,13 @@ namespace code_in.Presenters.Nodal
                     parentNode = interfaceDeclNode;
                     interfaceDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)2);
                     interfaceDeclNode.SetName(tmpNode.Name);
-                   interfaceDeclNode = setClassAccessModifier(interfaceDeclNode, tmpNode.Modifiers);
+                    setAccessModifiers(interfaceDeclNode, tmpNode.Modifiers);
 
                     //inheritance
-                    foreach (var par in tmpNode.BaseTypes)
-                        interfaceDeclNode.AddInheritance(par.ToString());
+                    InitInheritance(interfaceDeclNode, tmpNode);
+
                     //Generic
-                    foreach (var typ in tmpNode.TypeParameters)
-                        interfaceDeclNode.SetName(interfaceDeclNode.GetName() + " | " + typ.ToString());
+                    SetAllGenerics(interfaceDeclNode, tmpNode);
 
                     //goDeeper = false;
                     foreach (var n in tmpNode.Members)

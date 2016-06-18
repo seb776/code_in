@@ -1,4 +1,4 @@
-public class voiture<T, T1, T2>
+public class voiture<out T, in T1, T2>
 {
 
 }

@@ -97,8 +97,10 @@
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
     <Compile Include="Presenters\Nodal\IContainingAccessModifiers.cs" />
+    <Compile Include="Presenters\Nodal\IContainingGenerics.cs" />
     <Compile Include="Presenters\Nodal\IContainingInheritance.cs" />
     <Compile Include="Presenters\Nodal\IContainingModifiers.cs" />
+    <Compile Include="Presenters\Nodal\IContainingStatement.cs" />
     <Compile Include="Presenters\Nodal\IContextMenu.cs" />
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
@@ -131,6 +133,9 @@
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeGeneric.xaml.cs">
+      <DependentUpon>ClassNodeGeneric.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml.cs">
       <DependentUpon>ClassNodeModifiers.xaml</DependentUpon>
     </Compile>
@@ -171,7 +176,6 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForeachStmtNode.cs" />
@@ -180,6 +184,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ReturnStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\SwitchStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
@@ -229,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ParametersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeGeneric.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,6 +2,7 @@
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers
+    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers, IContainingGenerics
     {
         public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
         ParametersList _params;
         private Image _editButton;
+        public ClassNodeGeneric Generics = null;
+
         public FuncDeclItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
@@ -139,6 +142,17 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         #endregion
 
+        #region IContainingGenerics
+        public void setGenerics(TypeDeclaration typeDecl)
+        {
+            List<string> Glist = new List<string>();
+
+            foreach (var typ in typeDecl.TypeParameters)
+                Glist.Add(typ.ToString());
+            Generics.SetGenerics(Glist.ToArray());
+
+        }
+        #endregion
 
     }
 }

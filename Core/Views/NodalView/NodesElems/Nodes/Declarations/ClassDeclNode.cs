@@ -14,7 +14,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     /// <summary>
     /// This defines the visual nodes for "classes", class here as a large meaning, it stand for enum, struct, class, interface
     /// </summary>
-    public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance
+    public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance, IContainingGenerics
     {
         public enum EType
         {
@@ -24,6 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             ENUM = 3
         }
         public Assets.ClassNodeModifiers Modifiers = null;
+        public Assets.ClassNodeGeneric Generics = null;
         private EType _type;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -31,9 +32,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
+            Generics = new Assets.ClassNodeGeneric(themeResDict);
             Modifiers = new Assets.ClassNodeModifiers(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
             this.ModifiersLayout.Children.Add(Modifiers);
+            this.GenericsField.Children.Add(Generics);
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
@@ -123,6 +126,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             foreach (var par in tmpNode.BaseTypes)
                 AddInheritance(par.ToString());
+        }
+        #endregion
+
+        #region IContainingGenerics
+        public void setGenerics(TypeDeclaration typeDecl)
+        {
+            List<string> Glist = new List<string>();
+
+            foreach (var typ in typeDecl.TypeParameters)
+                Glist.Add(typ.ToString());
+            Generics.SetGenerics(Glist.ToArray());
         }
         #endregion
     }
