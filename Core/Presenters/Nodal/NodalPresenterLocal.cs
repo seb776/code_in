@@ -36,12 +36,23 @@ namespace code_in.Presenters.Nodal
 
         private AIONode inputNode = null;
         private AIONode outputNode = null;
+        private AIONode saveFirstNodeBlockStatement = null; // no idea for the name of the var for the moment (hamham)
 
         private AOItem outputFlownode = null;
         private AOItem inputFlownode = null;
 
+        private enum EFlowMode
+        {
+            FLOWNODE = 1,
+            IFTRUE = 2,
+            IFFALSE = 3,
+        }
+
+        private EFlowMode flowMode;
+
         public NodalPresenterLocal(INodalView view)
         {
+            this.flowMode = EFlowMode.FLOWNODE;
             System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
@@ -262,6 +273,7 @@ namespace code_in.Presenters.Nodal
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
+              //  MessageBox.Show("block Statement");
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
                     posX += 250;
@@ -285,9 +297,15 @@ namespace code_in.Presenters.Nodal
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
                 drawAutoLink();
                 this._generateVisualASTExpressions(ifStmt.Condition, posX - 300, posY + 100);
+                this.flowMode = EFlowMode.IFTRUE;
                 this._generateVisualASTStatements(ifStmt.TrueStatement, posX, posY);
+                outputNode = saveFirstNodeBlockStatement;
+                this.flowMode = EFlowMode.IFFALSE;
                 this._generateVisualASTStatements(ifStmt.FalseStatement, posX, posY);
+                this.flowMode = EFlowMode.FLOWNODE;
+                outputNode = saveFirstNodeBlockStatement;
             }
+
 
             # endregion IfStmts
             # region Loops
@@ -458,10 +476,22 @@ namespace code_in.Presenters.Nodal
         {
             if (inputNode != null && outputNode != null)
             {
+               // MessageBox.Show(flowMode.ToString());
                 foreach (var i in outputNode._outputs.Children)
                 {
                     AOItem it = i as AOItem;
-                    if (it.GetType() == typeof(FlowNodeItem) && it.GetName() == "FlowNode") // eww need to change about the condition getname I guess (hamham)
+
+                    if (this.flowMode == EFlowMode.IFTRUE && it.GetType() == typeof(FlowNodeItem) && it.GetName() == "True") // eww need to change about the condition getname I guess (hamham)
+                    {
+                        outputFlownode = it;
+                        saveFirstNodeBlockStatement = outputNode;
+                    }
+                    else if (this.flowMode == EFlowMode.IFFALSE && it.GetType() == typeof(FlowNodeItem) && it.GetName() == "False") // eww need to change about the condition getname I guess (hamham)
+                    {
+                        outputFlownode = it;
+                        saveFirstNodeBlockStatement = outputNode;
+                    }
+                    else if (it.GetType() == typeof(FlowNodeItem) && it.GetName() == "FlowNode") // eww need to change about the condition getname I guess (hamham)
                         outputFlownode = it;
                 }
 
