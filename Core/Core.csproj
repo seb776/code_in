@@ -96,6 +96,11 @@
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
+    <Compile Include="Presenters\Nodal\IContainingAccessModifiers.cs" />
+    <Compile Include="Presenters\Nodal\IContainingGenerics.cs" />
+    <Compile Include="Presenters\Nodal\IContainingInheritance.cs" />
+    <Compile Include="Presenters\Nodal\IContainingModifiers.cs" />
+    <Compile Include="Presenters\Nodal\IContainingStatement.cs" />
     <Compile Include="Presenters\Nodal\IContextMenu.cs" />
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
@@ -112,7 +117,7 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
-    <Compile Include="Views\MainView\EditNodePanel.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\INodalView.cs" />
@@ -128,6 +133,9 @@
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml.cs">
+      <DependentUpon>GenericItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\ClassNodeModifiers.xaml.cs">
       <DependentUpon>ClassNodeModifiers.xaml</DependentUpon>
     </Compile>
@@ -135,7 +143,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AFlyingContentNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AIONode.cs" />
     <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainer.cs" />
-    <Compile Include="Views\NodalView\NodesElems\INodeElem.cs" />
+    <Compile Include="Presenters\Nodal\Nodes\INodeElem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\AOrderedContentNode.cs" />
     <Compile Include="Views\MainView\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
@@ -176,6 +184,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ReturnStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\SwitchStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
@@ -183,9 +192,6 @@
     </Compile>
     <Compile Include="Views\Utils\HexagonalMenu.xaml.cs">
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Utils\InteractiveMenu.xaml.cs">
-      <DependentUpon>InteractiveMenu.xaml</DependentUpon>
     </Compile>
     <Page Include="Models\LanguageResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -219,7 +225,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView\EditNodePanel.xaml">
+    <Page Include="Views\NodalView\NodesElems\EditNodePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ParametersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -291,10 +301,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Utils\HexagonalMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Utils\InteractiveMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

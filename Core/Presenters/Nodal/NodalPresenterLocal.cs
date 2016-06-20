@@ -2,9 +2,11 @@
 using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
@@ -19,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Presenters.Nodal
 {
@@ -27,11 +30,19 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public class NodalPresenterLocal : INodalPresenter
     {
-        INodalView _view; // TODO INodalView
-        NodalModel _model = null;
-        CSharpParser _parser = null;
+        private INodalView _view = null; // TODO INodalView
+        private NodalModel _model = null;
+        private CSharpParser _parser = null;
+
+        private AIONode inputNode = null;
+        private AIONode outputNode = null;
+
+        private AOItem outputFlownode = null;
+        private AOItem inputFlownode = null;
+
         public NodalPresenterLocal(INodalView view)
         {
+            System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
 
@@ -55,6 +66,25 @@ namespace code_in.Presenters.Nodal
             this._generateVisualASTDeclarationRecur(model.AST, this._view, usingNode);
         }
 
+        private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
+        {
+            view.setModifiersList(tmpModifiers);
+        }
+
+        private void setAccessModifiers(IContainingAccessModifiers view, Modifiers tmpModifiers)
+        {
+            view.setAccessModifiers(tmpModifiers);
+        }
+
+        private void InitInheritance(IContainingInheritance view, TypeDeclaration typeDecl)
+        {
+            view.ManageInheritance(typeDecl);
+        }
+
+        private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
+        {
+            view.setGenerics(typeDecl);
+        }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {
             bool goDeeper = true;
@@ -81,7 +111,8 @@ namespace code_in.Presenters.Nodal
                 if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Enum)
                 {
                     ClassDeclNode enumDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
-                    enumDeclNode.SetName("EnumDecl " + tmpNode.Name);
+                    enumDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)3);
+                    enumDeclNode.SetName(tmpNode.Name);
 
                     foreach (var v in tmpNode.Members)
                     {
@@ -92,18 +123,7 @@ namespace code_in.Presenters.Nodal
                         else
                             item.SetName(v.Name);
                     }
-                    List<string> modifiersList = new List<string>();
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
-                        modifiersList.Add("new");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                        modifiersList.Add("public");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                        modifiersList.Add("private");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                        modifiersList.Add("protected");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                        modifiersList.Add("internal");
-                    enumDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+                    setOtherModifiers(enumDeclNode, tmpNode.Modifiers);
                 }
                 #endregion Enum
                 #region Class
@@ -112,31 +132,15 @@ namespace code_in.Presenters.Nodal
                     ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
                     classDeclNode.SetNodePresenter(new NodePresenter(classDeclNode, this, node));
                     parentNode = classDeclNode;
-
                     classDeclNode.SetName(tmpNode.Name);
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PUBLIC);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PRIVATE);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.PROTECTED);
-                    else if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-                        classDeclNode.Modifiers.SetAccessModifiers(ClassNodeModifiers.EAccessModifier.INTERNAL);
-                    
-                    List<string> modifiersList = new List<string>();
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
-                        modifiersList.Add("partial");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
-                        modifiersList.Add("static");
-                    if ((tmpNode.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
-                        modifiersList.Add("abstract");
-                        classDeclNode.Modifiers.SetModifiers(modifiersList.ToArray());
+                    setAccessModifiers(classDeclNode, tmpNode.Modifiers);
+                    setOtherModifiers(classDeclNode, tmpNode.Modifiers);
+
                     //inheritance
-                    foreach (var par in tmpNode.BaseTypes)
-                        classDeclNode.AddInheritance(par.ToString());
+                    InitInheritance(classDeclNode, tmpNode);
+
                     //Generic
-                    foreach (var typ in tmpNode.TypeParameters)
-                        classDeclNode.SetName(classDeclNode.GetName() + " | " + typ.ToString());
+                    SetAllGenerics(classDeclNode, tmpNode);
 
                     //goDeeper = false;
                     foreach (var n in node.Children)
@@ -148,27 +152,43 @@ namespace code_in.Presenters.Nodal
                             var item = classDeclNode.CreateAndAddNode<ClassItem>();
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetType(field.ReturnType.ToString());
-                            List<string> itemModifiersList = new List<string>();
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
-                                itemModifiersList.Add("async");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                                itemModifiersList.Add("override");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
-                                itemModifiersList.Add("virtual");
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                                item.Scope.Scope = ScopeItem.EScope.PUBLIC;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                                item.Scope.Scope = ScopeItem.EScope.PRIVATE;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                                item.Scope.Scope = ScopeItem.EScope.PROTECTED;
-                            if ((field.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                                item.Scope.Scope = ScopeItem.EScope.INTERNAL;
-                            item.Modifiers.SetModifiers(itemModifiersList.ToArray());
+                            setAccessModifiers(item, field.Modifiers); // here just call setAccessModifiers from the interface
+                            setOtherModifiers(item, field.Modifiers);
                         }
                     }
 
                 }
                 #endregion Class
+                #region Interface
+                else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Interface)
+                {
+                    ClassDeclNode interfaceDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
+                    interfaceDeclNode.SetNodePresenter(new NodePresenter(interfaceDeclNode, this, node));
+                    parentNode = interfaceDeclNode;
+                    interfaceDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)2);
+                    interfaceDeclNode.SetName(tmpNode.Name);
+                    setAccessModifiers(interfaceDeclNode, tmpNode.Modifiers);
+
+                    //inheritance
+                    InitInheritance(interfaceDeclNode, tmpNode);
+
+                    //Generic
+                    SetAllGenerics(interfaceDeclNode, tmpNode);
+
+                    //goDeeper = false;
+                    foreach (var n in tmpNode.Members)
+                    {
+                        if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PropertyDeclaration))
+                        {
+                            ICSharpCode.NRefactory.CSharp.PropertyDeclaration properties = n as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
+
+                            var item = interfaceDeclNode.CreateAndAddNode<ClassItem>();
+                            item.SetName(properties.Name);
+                            
+                        }
+                    }
+                }
+                #endregion Interface
             }
             #endregion Classes (interface, struct, class, enum)
             #region Method
@@ -190,23 +210,9 @@ namespace code_in.Presenters.Nodal
                 }
                 funcDecl.SetName(method.Name);
                 goDeeper = false;
-                List<string> modifiersList = new List<string>();
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
-                    modifiersList.Add("async");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                    modifiersList.Add("override");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
-                    modifiersList.Add("virtual");
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PUBLIC;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) == ICSharpCode.NRefactory.CSharp.Modifiers.Private)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PRIVATE;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) == ICSharpCode.NRefactory.CSharp.Modifiers.Protected)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.PROTECTED;
-                if ((method.Modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) == ICSharpCode.NRefactory.CSharp.Modifiers.Internal)
-                    funcDecl.Scope.Scope = ScopeItem.EScope.INTERNAL;
-                funcDecl.Modifiers.SetModifiers(modifiersList.ToArray());
-                
+                setOtherModifiers(funcDecl, method.Modifiers);
+                setAccessModifiers(funcDecl, method.Modifiers);
+
             }
             #endregion
             #region Using
@@ -222,13 +228,15 @@ namespace code_in.Presenters.Nodal
             #endregion
             if (goDeeper)
                 foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
-                    this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer), UsingNode);
+                        this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer), UsingNode);
         }
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
             var entry = this._view.CreateAndAddNode<FuncEntryNode>();
             var exit = this._view.CreateAndAddNode<ReturnStmtNode>();
+
+            outputNode = entry;
 
             foreach (var i in method.Parameters)
             {
@@ -238,6 +246,9 @@ namespace code_in.Presenters.Nodal
             }
 
             this._generateVisualASTStatements(method.Body, 100, 250);
+
+            inputNode = exit;
+            drawAutoLink();
 
             var returnType = exit.CreateAndAddInput<FlowNodeItem>();
             returnType.SetName(method.ReturnType.ToString());
@@ -257,18 +268,23 @@ namespace code_in.Presenters.Nodal
                     this._generateVisualASTStatements(stmt, posX, posY);
                 }
             }
-
+            if (stmtArg.GetType() == typeof(TryCatchStatement))
+            {
+                var tryCatch = this._view.CreateAndAddNode<UnSupStmtDeclNode>();
+                var tryStmt = stmtArg as TryCatchStatement;
+                tryCatch.NodeText.Text = tryStmt.ToString();
+            }
             # region IfStmts
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements if");
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>();
                 ifNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
+                inputNode = ifNode;
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
-
+                drawAutoLink();
                 this._generateVisualASTExpressions(ifStmt.Condition, posX - 300, posY + 100);
-
                 this._generateVisualASTStatements(ifStmt.TrueStatement, posX, posY);
                 this._generateVisualASTStatements(ifStmt.FalseStatement, posX, posY);
             }
@@ -331,7 +347,7 @@ namespace code_in.Presenters.Nodal
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
                 _generateVisualASTExpressions(switchStmt.Expression, posX - 300, posY + 100);
-                foreach(var switchSection in switchStmt.SwitchSections)
+                foreach (var switchSection in switchStmt.SwitchSections)
                 {
                     foreach (var caseLabel in switchSection.CaseLabels)
                     {
@@ -353,10 +369,12 @@ namespace code_in.Presenters.Nodal
             #region Variable Declaration
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements variable");
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 variableNode.SetType("Variables");
+                inputNode = variableNode;
                 foreach (var v in varStmt.Variables)
                 {
                     var item = variableNode.CreateAndAddOutput<DataFlowItem>();
@@ -368,12 +386,13 @@ namespace code_in.Presenters.Nodal
             #region ExpressionStatement
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements expression");
                 var exprStmt = stmtArg as ExpressionStatement;
 
                 var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>();
                 exprStmtNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
                 exprStmtNode.Expression.SetName(exprStmt.ToString());
+                inputNode = exprStmtNode;
                 this._generateVisualASTExpressions(exprStmt.Expression, posX - 300, posY + 100);
             }
             #endregion ExpressionStatement
@@ -392,6 +411,7 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Return Statement
             #endregion Single Statement
+            drawAutoLink();
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, int posX, int posY)
         {
@@ -432,6 +452,30 @@ namespace code_in.Presenters.Nodal
             String code = "// Generated by Visual Studio's Code_in.";
             sw.WriteLine(code);
             //sw.Write(_codeData.AST.ToString());
+        }
+
+        private void drawAutoLink()
+        {
+            if (inputNode != null && outputNode != null)
+            {
+                foreach (var i in outputNode._outputs.Children)
+                {
+                    AOItem it = i as AOItem;
+                    if (it.GetType() == typeof(FlowNodeItem) && it.GetName() == "FlowNode") // eww need to change about the condition getname I guess (hamham)
+                        outputFlownode = it;
+                }
+
+                foreach (var i in inputNode._inputs.Children)
+                {
+                    AOItem it = i as AOItem;
+                    if (it.GetType() == typeof(FlowNodeItem))
+                        inputFlownode = it;
+                }
+
+                (outputFlownode.GetRootView() as NodalView).drawLink(outputFlownode, inputFlownode);
+                outputNode = inputNode;
+                inputNode = null;
+            }
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()

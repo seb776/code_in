@@ -680,6 +680,15 @@ namespace code_in.Views.NodalView
         {
             throw new NotImplementedException();
         }
+
+        public void drawLink(AOItem outputAnchor, AOItem inputAnchor)
+        {
+            Code_inLink line = new Code_inLink();
+            outputAnchor._nodeAnchor.IOLine.Add(line);
+            this.MainGrid.Children.Add(line); // add the line on maingrid
+            inputAnchor._nodeAnchor.IOLine.Add(line);
+        }
+
         public void HighLightDropPlace(Point pos) { }
         public int GetDropIndex(Point pos) { return 0; }
         #endregion IVisualNodeContainer

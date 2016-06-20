@@ -22,6 +22,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             Condition = this.CreateAndAddInput<DataFlowItem>();
             Condition.SetName("Condition");
             item = this.CreateAndAddOutput<FlowNodeItem>();
+            item.SetName("FlowNode");
+            item = this.CreateAndAddOutput<FlowNodeItem>();
             item.SetName("True");
             item = this.CreateAndAddOutput<FlowNodeItem>();
             item.SetName("False");

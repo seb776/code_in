@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems;
+﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
@@ -20,8 +21,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     public abstract class AIONode : BaseNode, IVisualNodeContainer
     {
         Grid _subGrid;
-        protected StackPanel _inputs;
-        protected StackPanel _outputs;
+        public StackPanel _inputs;  // public tmp (ham ham)
+        public StackPanel _outputs; // public tmp (ham ham)
         public override void SetRootView(IVisualNodeContainerDragNDrop root)
         {
             base.SetRootView(root);

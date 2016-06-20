@@ -1,6 +1,8 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,13 @@ using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class FuncDeclItem : ATypedMemberItem
+    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers, IContainingGenerics
     {
         public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
         ParametersList _params;
         private Image _editButton;
+        public GenericItem Generics = null;
+
         public FuncDeclItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
@@ -87,5 +91,68 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
 
         }
+        #region IContainingAccessModifiers
+        public void setAccessModifiers(Modifiers modifiers)
+        {
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                Scope.Scope = ScopeItem.EScope.PUBLIC;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
+                Scope.Scope = ScopeItem.EScope.PRIVATE;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
+                Scope.Scope = ScopeItem.EScope.PROTECTED;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
+                Scope.Scope = ScopeItem.EScope.INTERNAL;
+        }
+        #endregion
+
+        #region IContainingModifiers
+        public void setModifiersList(Modifiers modifiers)
+        {
+            List<string> ModifiersList = new List<string>();
+
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                ModifiersList.Add("new");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                ModifiersList.Add("partial");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                ModifiersList.Add("static");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                ModifiersList.Add("abstract");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Const) == ICSharpCode.NRefactory.CSharp.Modifiers.Const)
+                ModifiersList.Add("Const");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                ModifiersList.Add("async");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                ModifiersList.Add("override");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                ModifiersList.Add("virtual");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
+                ModifiersList.Add("extern");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                ModifiersList.Add("override");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
+                ModifiersList.Add("readonly");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
+                ModifiersList.Add("sealed");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe) == ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe)
+                ModifiersList.Add("unsafe");
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
+                ModifiersList.Add("volatile");
+            Modifiers.SetModifiers(ModifiersList.ToArray());
+        }
+        #endregion
+
+        #region IContainingGenerics
+        public void setGenerics(TypeDeclaration typeDecl)
+        {
+            List<string> Glist = new List<string>();
+
+            foreach (var typ in typeDecl.TypeParameters)
+                Glist.Add(typ.ToString());
+            Generics.SetGenerics(Glist.ToArray());
+
+        }
+        #endregion
+
     }
 }

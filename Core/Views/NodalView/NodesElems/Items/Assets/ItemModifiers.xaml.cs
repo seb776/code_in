@@ -40,7 +40,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         public void SetModifiers(String[] modifiers)
         {
             this._modifiersList.Children.Clear();
-            if (modifiers.Count() != 0)
+            foreach (var mod in modifiers)
+            {
+                Label lbl = new Label();
+                //lbl.SetResourceReference(Label.ForegroundProperty, "whatever");
+                lbl.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF)); // TODO replace this by the line above for the value to be based on theme
+                lbl.Content = mod;
+                this._modifiersList.Children.Add(lbl);
+            }
+            if (modifiers.Count() == 0)
             {
                 this._modifiersBorder.IsEnabled = false;
                 this._modifiersBorder.Visibility = System.Windows.Visibility.Hidden;
@@ -49,13 +57,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             {
                 this._modifiersBorder.IsEnabled = true;
                 this._modifiersBorder.Visibility = System.Windows.Visibility.Visible;
-            }
-            foreach (var mod in modifiers)
-            {
-                Label lbl = new Label();
-                //lbl.SetResourceReference(Label.ForegroundProperty, "whatever");
-                lbl.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF)); // TODO replace this by the line above for the value to be based on theme
-                this._modifiersList.Children.Add(lbl);
             }
         }
         #endregion This

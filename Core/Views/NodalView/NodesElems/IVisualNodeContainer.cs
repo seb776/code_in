@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using code_in.Views.NodalView.NodesElems;
 using System.Windows;
+using code_in.Presenters.Nodal;
 
 namespace code_in.Views.NodalView.NodesElems
 {
