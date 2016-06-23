@@ -353,14 +353,15 @@ namespace code_in.Views.NodalView
 
         private void changeResourceLink(object sender, ResourcesEventArgs e)
         {
-            foreach (var t in this.MainGrid.Children)
-            {
-                if (t.GetType() == typeof(Code_inLink))
+            if (this.MainGrid != null)
+                foreach (var t in this.MainGrid.Children)
                 {
-                    _link = (Code_inLink)t;
-                    _link.changeLineMode();
+                    if (t.GetType() == typeof(Code_inLink))
+                    {
+                        _link = (Code_inLink)t;
+                        _link.changeLineMode();
+                    }
                 }
-            }
         }
         #endregion Events
         #endregion This

@@ -36,16 +36,6 @@
 	char c, d, e;
     }
 
-    void loopWhile() 
-    {
-	int a;
-	
-	a = 0;
-	while (a < 42) 
-	{
-	}
-    }
-
     void ifStmt(char c) {
 	if (c == 'c')	    
             Console.WriteLine("Test");
@@ -89,6 +79,48 @@
 	}
 	Console.writeLine("END IF/ELSE");
    }
+
+    void loopWhile() {
+	int i;
+
+	i = 0;
+	while (i < 10)
+	    Console.writeLine("test while");
+    }
+
+    void loopWhileBlock() {
+	int i;
+
+	i = 0;
+	while (i < 10)
+	{
+	    Console.writeLine("test while 1");
+	    Console.writeLine("test while 2");
+	}
+     }
+
+    void loopDoWhile() {
+	int x = 0;
+        do 
+        {
+            Console.WriteLine(x);
+            x++;
+        } while (x < 42);
+    }
+
+    void loopFor() {
+	for (int x = 0; x < 42; x++) 
+    	{
+	    Console.writeLine(x);
+	}
+    }
+
+    void loopForEach() {
+	foreach (int x in truc)
+	{
+	    Console.writeLine(x);
+	}
+    }
 
 
 
