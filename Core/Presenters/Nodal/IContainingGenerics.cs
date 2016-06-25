@@ -1,4 +1,5 @@
-﻿using ICSharpCode.NRefactory.CSharp;
+﻿using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace code_in.Presenters.Nodal
 {
     interface IContainingGenerics
     {
-        void setGenerics(TypeDeclaration typeDecl);
+        void setGenerics(List<Tuple<string, EGenericVariance>> tmp);
     }
 }

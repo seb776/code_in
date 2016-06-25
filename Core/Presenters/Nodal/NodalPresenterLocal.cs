@@ -30,11 +30,13 @@ namespace code_in.Presenters.Nodal
         private INodalView _view = null; // TODO INodalView
         private NodalModel _model = null;
         private CSharpParser _parser = null;
+        List<Tuple<string, EGenericVariance>> GenericList;
         public NodalPresenterLocal(INodalView view)
         {
             System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
+            GenericList = new List<Tuple<string, EGenericVariance>>();
 
         }
 
@@ -73,7 +75,18 @@ namespace code_in.Presenters.Nodal
 
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
-            view.setGenerics(typeDecl);
+            Tuple<string, EGenericVariance> tuple;
+            foreach (var tmp in typeDecl.TypeParameters)
+            {
+                if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
+                    tuple = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
+                else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
+                    tuple = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
+                else
+                    tuple = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
+                GenericList.Add(tuple);
+            }
+            view.setGenerics(GenericList);
         }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {

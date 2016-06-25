@@ -8,7 +8,7 @@
     <Grid>
         <Border CornerRadius="5" Background="#FF151515" Width="auto" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,5">
             <StackPanel Orientation="Horizontal">
-                    <Label x:Name="GenericsNames" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"></Label>
+                <Label x:Name="GenericsNames" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"></Label>
             </StackPanel>
         </Border>
     </Grid>

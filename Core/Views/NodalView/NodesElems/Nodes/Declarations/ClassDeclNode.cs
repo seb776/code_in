@@ -1,5 +1,6 @@
 ﻿using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using ICSharpCode.NRefactory.CSharp;
 using System;
@@ -32,8 +33,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
-            Generics = new Assets.GenericItem(themeResDict);
-            Modifiers = new Assets.ClassNodeModifiers(themeResDict);
+            Generics = new GenericItem(themeResDict);
+            Modifiers = new ClassNodeModifiers(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
             this.ModifiersLayout.Children.Add(Modifiers);
             this.GenericsField.Children.Add(Generics);
@@ -130,13 +131,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         #endregion
 
         #region IContainingGenerics
-        public void setGenerics(TypeDeclaration typeDecl)
+        public void setGenerics(List<Tuple<string, EGenericVariance>> tmp)
         {
-            List<string> Glist = new List<string>();
-
-            foreach (var typ in typeDecl.TypeParameters)
-                Glist.Add(typ.ToString());
-            Generics.SetGenerics(Glist.ToArray());
+            Generics.SetGenerics(tmp);
         }
         #endregion
     }

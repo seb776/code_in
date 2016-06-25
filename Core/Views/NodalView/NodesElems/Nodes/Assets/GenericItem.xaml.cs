@@ -18,13 +18,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
     /// <summary>
     /// Logique d'interaction pour ClassNodeGeneric.xaml
     /// </summary>
+   
+    public enum EGenericVariance { NOTHING, IN, OUT };
     public partial class GenericItem : UserControl, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        List<Tuple<string, EGenericVariance>> GenericsAndTypes;
-
-        public enum EGenericVariance { NOTHING, IN, OUT };
 
         public GenericItem(ResourceDictionary themeResDict)
         {
@@ -32,7 +31,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
             this.Resources.MergedDictionaries.Add(_languageResourceDictionary);
-            GenericsAndTypes = new List<Tuple<string, EGenericVariance>>();
             InitializeComponent();
         }
         public GenericItem() :
@@ -57,36 +55,20 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
         }
         #endregion ICodeInVisual
 
-        // This part add all generics into a List and call the method to diplay it on node
-        public void SetGenerics(String[] generics)
-        {
-            Tuple<string, EGenericVariance> tmp;
-
-            GenericsNames.Content = "";
-            foreach (string mod in generics)
-            {
-                string GName = mod.Substring((mod.IndexOf(' ') + 1), (mod.Length - (mod.IndexOf(' ') + 1)));
-                if (mod.Contains("in"))
-                    tmp = new Tuple<string, EGenericVariance>(GName, EGenericVariance.IN);
-                else if (mod.Contains("out"))
-                    tmp = new Tuple<string, EGenericVariance>(GName, EGenericVariance.OUT);
-                else
-                    tmp = new Tuple<string, EGenericVariance>(GName, EGenericVariance.NOTHING);
-                GenericsAndTypes.Add(tmp);
-                SetAffGeneric(tmp);
-                if (mod != generics[generics.Length - 1]) // here the separator part
-                    GenericsNames.Content += " | ";
-            }
-        }
 
         // This part is for the display on the label content
-       public void SetAffGeneric(Tuple<string, EGenericVariance> tmp)
+       public void SetGenerics(List<Tuple<string, EGenericVariance>> tmp)
         {
-            GenericsNames.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF));
-            if (tmp.Item2 == EGenericVariance.NOTHING)
-                GenericsNames.Content += tmp.Item1;
+           foreach (var mod in tmp)
+           {
+            if (mod.Item2 == EGenericVariance.NOTHING)
+                GenericsNames.Content += mod.Item1;
             else
-                GenericsNames.Content += tmp.Item2.ToString().ToLower() + " " + tmp.Item1;
+                GenericsNames.Content += mod.Item2.ToString().ToLower() + " " + mod.Item1;
+            if (mod != tmp[tmp.Count() - 1]) // here the separator part
+                GenericsNames.Content += " | ";
+            GenericsNames.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF));
+           }
         }
     }
 }

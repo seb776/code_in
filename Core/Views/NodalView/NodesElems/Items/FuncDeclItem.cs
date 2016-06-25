@@ -47,6 +47,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 //_editButton.Visibility = System.Windows.Visibility.Visible;
                 _editButton.SetValue(Image.OpacityProperty, 0.0);
                 _editButton.IsEnabled = false;
+                Generics = new GenericItem(themeResDict);
             }
 
         }
@@ -143,14 +144,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
         #endregion
 
         #region IContainingGenerics
-        public void setGenerics(TypeDeclaration typeDecl)
+        public void setGenerics(List<Tuple<string, EGenericVariance>> tmp)
         {
-            List<string> Glist = new List<string>();
-
-            foreach (var typ in typeDecl.TypeParameters)
-                Glist.Add(typ.ToString());
-            Generics.SetGenerics(Glist.ToArray());
-
+            Generics.SetGenerics(tmp);
         }
         #endregion
 
