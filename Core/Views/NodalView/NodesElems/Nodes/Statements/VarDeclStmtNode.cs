@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     public class VarDeclStmtNode : AStatementNode
     {
+        public AOItem inAnchor = null;
+        public AOItem outAnchor = null;
+
         public VarDeclStmtNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
-            this.CreateAndAddInput<FlowNodeItem>();
-            this.CreateAndAddOutput<FlowNodeItem>();
+            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
+            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
             this.SetType("Declaration");
             this.SetName("Variables");
             this.SetThemeResources("VarDeclStmtNode");

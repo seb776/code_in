@@ -2,9 +2,11 @@
 using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
@@ -19,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Presenters.Nodal
 {
@@ -31,6 +34,10 @@ namespace code_in.Presenters.Nodal
         private NodalModel _model = null;
         private CSharpParser _parser = null;
         List<Tuple<string, EGenericVariance>> GenericList;
+        private AOItem outputFlownode = null;
+        private AOItem inputFlownode = null;
+        private AOItem nextOutputFlowNode = null;
+
         public NodalPresenterLocal(INodalView view)
         {
             System.Diagnostics.Debug.Assert(view != null);
@@ -239,6 +246,8 @@ namespace code_in.Presenters.Nodal
             var entry = this._view.CreateAndAddNode<FuncEntryNode>();
             var exit = this._view.CreateAndAddNode<ReturnStmtNode>();
 
+            outputFlownode = entry.outAnchor;
+
             foreach (var i in method.Parameters)
             {
                 var data = entry.CreateAndAddOutput<DataFlowItem>();
@@ -247,6 +256,9 @@ namespace code_in.Presenters.Nodal
             }
 
             this._generateVisualASTStatements(method.Body, 100, 250);
+
+            inputFlownode = exit.inAnchor;
+            drawAutoLink();
 
             var returnType = exit.CreateAndAddInput<FlowNodeItem>();
             returnType.SetName(method.ReturnType.ToString());
@@ -260,6 +272,7 @@ namespace code_in.Presenters.Nodal
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
+              //  MessageBox.Show("block Statement");
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
                     posX += 250;
@@ -275,17 +288,21 @@ namespace code_in.Presenters.Nodal
             # region IfStmts
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements if");
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>();
                 ifNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
+                inputFlownode = ifNode.inAnchor;
+                drawAutoLink();
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
-
                 this._generateVisualASTExpressions(ifStmt.Condition, posX - 300, posY + 100);
-
+                outputFlownode = ifNode.trueAnchor;
                 this._generateVisualASTStatements(ifStmt.TrueStatement, posX, posY);
+                outputFlownode = ifNode.falseAnchor;
                 this._generateVisualASTStatements(ifStmt.FalseStatement, posX, posY);
+                outputFlownode = ifNode.outAnchor;
             }
+
 
             # endregion IfStmts
             # region Loops
@@ -293,29 +310,32 @@ namespace code_in.Presenters.Nodal
                 stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
             if (isWhile)
             {
+                MessageBox.Show("_generateVisualASTStatements while");
                 dynamic whileStmt = stmtArg;
                 WhileStmtNode nodeLoop;
 
                 nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
                 nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
+                inputFlownode = nodeLoop.inAnchor;
+                drawAutoLink();
                 nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
-
                 this._generateVisualASTExpressions(whileStmt.Condition, posX - 300, posY + 100); // Expressions
+                outputFlownode = nodeLoop.trueAnchor;
                 this._generateVisualASTStatements(whileStmt.EmbeddedStatement, posX, posY);
+                outputFlownode = nodeLoop.outAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements for");
                 var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
                 var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>();
                 nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
-                nodeLoop.SetName("For");
-
+                inputFlownode = nodeLoop.inAnchor;
+                drawAutoLink();
                 foreach (var forStmts in forStmt.Initializers)
                     this._generateVisualASTStatements(forStmts, posX, posY);
-                //nodeLoop.Condition.SetName(forStmt.Condition.ToString());
+                nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
                 foreach (var forStmts in forStmt.Iterators)
                     this._generateVisualASTStatements(forStmts, posX, posY);
@@ -367,10 +387,13 @@ namespace code_in.Presenters.Nodal
             #region Variable Declaration
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements variable");
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 variableNode.SetType("Variables");
+                inputFlownode = variableNode.inAnchor;
+                nextOutputFlowNode = variableNode.outAnchor;
                 foreach (var v in varStmt.Variables)
                 {
                     var item = variableNode.CreateAndAddOutput<DataFlowItem>();
@@ -382,12 +405,14 @@ namespace code_in.Presenters.Nodal
             #region ExpressionStatement
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
+                MessageBox.Show("_generateVisualASTStatements expression");
                 var exprStmt = stmtArg as ExpressionStatement;
 
                 var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>();
                 exprStmtNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
                 exprStmtNode.Expression.SetName(exprStmt.ToString());
+                inputFlownode = exprStmtNode.inAnchor;
+                nextOutputFlowNode = exprStmtNode.outAnchor;
                 this._generateVisualASTExpressions(exprStmt.Expression, posX - 300, posY + 100);
             }
             #endregion ExpressionStatement
@@ -406,6 +431,7 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Return Statement
             #endregion Single Statement
+            drawAutoLink();
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, int posX, int posY)
         {
@@ -427,8 +453,6 @@ namespace code_in.Presenters.Nodal
             {
                 var invokExpr = this._view.CreateAndAddNode<FuncCallExprNode>();
                 invokExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
-
-
             }
         }
 
@@ -446,6 +470,17 @@ namespace code_in.Presenters.Nodal
             String code = "// Generated by Visual Studio's Code_in.";
             sw.WriteLine(code);
             //sw.Write(_codeData.AST.ToString());
+        }
+
+        private void drawAutoLink()
+        {
+            if (inputFlownode != null && outputFlownode != null)
+            {
+                (outputFlownode.GetRootView() as NodalView).drawLink(outputFlownode, inputFlownode);
+                outputFlownode = nextOutputFlowNode;
+                nextOutputFlowNode = null;
+                inputFlownode = null;
+            }
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()
