@@ -112,14 +112,18 @@
 	for (int x = 0; x < 42; x++) 
     	{
 	    Console.writeLine(x);
+	    Console.writeLine("test for");
 	}
+	Console.writeLine("fin du for");
     }
 
     void loopForEach() {
 	foreach (int x in truc)
 	{
 	    Console.writeLine(x);
+	    Console.writeLine("test foreach");
 	}
+	Console.writeLine("fin du foreach");
     }
 
 
