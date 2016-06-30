@@ -33,7 +33,6 @@ namespace code_in.Presenters.Nodal
         private INodalView _view = null; // TODO INodalView
         private NodalModel _model = null;
         private CSharpParser _parser = null;
-        List<Tuple<string, EGenericVariance>> GenericList;
         private AOItem outputFlownode = null;
         private AOItem inputFlownode = null;
         private AOItem nextOutputFlowNode = null;
@@ -43,8 +42,6 @@ namespace code_in.Presenters.Nodal
             System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
-            GenericList = new List<Tuple<string, EGenericVariance>>();
-
         }
 
         public void OpenFile(String path)
@@ -83,6 +80,8 @@ namespace code_in.Presenters.Nodal
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
             Tuple<string, EGenericVariance> tuple;
+            List<Tuple<string, EGenericVariance>> GenericList = new List<Tuple<string,EGenericVariance>>();
+
             foreach (var tmp in typeDecl.TypeParameters)
             {
                 if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
@@ -262,9 +261,6 @@ namespace code_in.Presenters.Nodal
 
             var returnType = exit.CreateAndAddInput<FlowNodeItem>();
             returnType.SetName(method.ReturnType.ToString());
-
-
-
             //exit.Margin = new Thickness(0, 150, 0, 0);
         }
         private void _generateVisualASTStatements(Statement stmtArg, int posX, int posY)
