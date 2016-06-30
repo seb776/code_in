@@ -11,10 +11,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public abstract class AValueNode : AIONode
     {
+        public DataFlowItem ExprOut = null;
         public AValueNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
-            var expr = this.CreateAndAddOutput<DataFlowItem>();
-            expr.SetName("expression");
+            ExprOut = this.CreateAndAddOutput<DataFlowItem>();
+            ExprOut.SetName("expression");
         }
     }
 }

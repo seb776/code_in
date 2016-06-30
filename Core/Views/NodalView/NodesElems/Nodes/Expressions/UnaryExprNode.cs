@@ -11,11 +11,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class UnaryExprNode : AExpressionNode
     {
         public DataFlowItem OperandA = null;
-        public UnaryExprNode(ResourceDictionary themeResDict) : base(themeResDict)
+        public UnaryExprNode(ResourceDictionary themeResDict)
+            : base(themeResDict)
         {
             OperandA = this.CreateAndAddInput<DataFlowItem>();
             OperandA.SetName("A");
             this.SetThemeResources("UnaryExprNode");
+            this.SetType("UnaryExpr");
         }
     }
 }

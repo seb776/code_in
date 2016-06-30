@@ -440,18 +440,81 @@ namespace code_in.Presenters.Nodal
                 var unaryExpr = this._view.CreateAndAddNode<UnaryExprNode>();
                 unaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 unaryExpr.SetName(unaryExprOp.OperatorToken.ToString());
+                this._generateVisualASTExpressions(unaryExprOp.Expression, posX, posY);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
+            {
+                var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
+                var objCreateExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                objCreateExprNode.SetType("ObjCreateExpr");
+                var newType = objCreateExprNode.CreateAndAddInput<DataFlowItem>(); // TODO text input
+                newType.SetName(objCreateExpr.Type.ToString());
+                int i = 0;
+                foreach (var param in objCreateExpr.Arguments)
+                {
+                    var arg = objCreateExprNode.CreateAndAddInput<DataFlowItem>();
+                    arg.SetName("param" + i);
+                    i++;
+                    _generateVisualASTExpressions(param, posX, posY);
+                }
+
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
+            {
+                var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
+                var identExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                identExprNode.SetType("IdentExpr");
+                identExprNode.ExprOut.SetName(identExpr.Identifier);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
+            {
+                var assignExpr = expr as ICSharpCode.NRefactory.CSharp.AssignmentExpression;
+                var assignExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
+                assignExprNode.SetType("AssignExpr");
+
+                this._generateVisualASTExpressions(assignExpr.Left, posX, posY);
+                this._generateVisualASTExpressions(assignExpr.Right, posX, posY);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
-                var binaryExpr = this._view.CreateAndAddNode<BinaryExprNode>();
-                binaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+                var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
+                var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
 
+                this._generateVisualASTExpressions(binaryExpr.Left, posX, posY);
+                this._generateVisualASTExpressions(binaryExpr.Right, posX, posY);
 
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
+            {
+                var memberRefExpr = expr as ICSharpCode.NRefactory.CSharp.MemberReferenceExpression;
+                var memberRefExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var inputTarget = memberRefExprNode.CreateAndAddInput<DataFlowItem>();
+                this._generateVisualASTExpressions(memberRefExpr.Target, posX, posY);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
+            {
+                var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
+                var primExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                primExprNode.SetType("PrimExpr");
+                primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
-                var invokExpr = this._view.CreateAndAddNode<FuncCallExprNode>();
-                invokExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+                var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
+                var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>();
+                var invokTargetNode = invokExprNode.CreateAndAddInput<DataFlowItem>();
+
+                this._generateVisualASTExpressions(invokExpr.Target, posX, posY);
+                // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
+                int i = 0;
+                foreach (var param in invokExpr.Arguments)
+                {
+                    var paramMeth = invokExprNode.CreateAndAddInput<DataFlowItem>();
+                    paramMeth.SetName("param" + i);
+                    this._generateVisualASTExpressions(param, posX, posY);
+                    i++;
+                }
+                invokExprNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
             }
         }
 

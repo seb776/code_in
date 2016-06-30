@@ -19,6 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandB = this.CreateAndAddInput<DataFlowItem>();
             OperandA.SetName("A");
             OperandB.SetName("B");
+            this.SetType("BinaryExpr");
         }
     }
 }

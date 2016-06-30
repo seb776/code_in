@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+﻿using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public FuncCallExprNode(ResourceDictionary themeResDict)
             : base(themeResDict)
         {
+            this.SetType("FuncCallExpr");
         }
     }
 }
