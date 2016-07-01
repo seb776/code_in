@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace code_in.Presenters.Nodal
 {
-    public interface INodeElem : IContextMenu
+    public interface INodeElem
     {
         void SetName(String name);
         String GetName();
@@ -19,7 +19,6 @@ namespace code_in.Presenters.Nodal
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
         IVisualNodeContainerDragNDrop GetRootView();
         void SetNodePresenter(NodePresenter nodePresenter);
-        Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions();
     }
     // enum globale
     public enum EAccessModifier

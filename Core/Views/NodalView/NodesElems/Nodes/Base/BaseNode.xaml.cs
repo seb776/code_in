@@ -26,6 +26,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private IVisualNodeContainerDragNDrop _rootView = null;
         private IVisualNodeContainer _parentView = null;
         private NodePresenter _nodePresenter = null;
+        private EditNodePanel EditMenu = null;
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -91,14 +92,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem
 
-        #region IContextMenu
-        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
-        {
-            throw new NotImplementedException();
-            //return (_nodePresenter.GetMenuOptions());
-        }
-        #endregion IContextMenu
-
         public void MoveNode(Point pos)
         {
             this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
@@ -115,7 +108,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            EditMenu = new EditNodePanel(_themeResourceDictionary);
+            EditMenu.SetFields(_nodePresenter);
+
         }
     }
 }
