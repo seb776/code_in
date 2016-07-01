@@ -136,12 +136,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             Generics.SetGenerics(tmp);
         }
         #endregion
-
-        #region IContextMenu
-        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
-        {
-            this._nodePresenter
-        }
-        #endregion IContexMenu
     }
 }

@@ -177,39 +177,10 @@ namespace code_in.Views.NodalView
             // need to remove line in nodeAnchor also
         }
 
-        private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
         {
-            var im = new HexagonalMenu(this.GetThemeResourceDictionary());
+            var im = new HexagonalMenu(themeResDict);
 
-            List<Type> listOfBs = new List<Type>();
-            foreach (var t in typeof(BaseNode).Assembly.GetTypes())
-            {
-
-                if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
-                {
-                    listOfBs.Add(t);
-                }
-            }
-            int xCount = (int)Math.Sqrt(listOfBs.Count);
-            int iX = 0;
-            int iY = 0;
-            Color[] testColors = {
-                                     Colors.DodgerBlue,
-                                     Color.FromArgb(0xFF, 0x42, 0x42, 0x42),
-                                     Colors.GreenYellow,
-                                     Colors.OrangeRed,
-                                 };
-            //foreach (var t in listOfBs)
-            //{
-            //    im.AddHexagonButton(iX, iY, testColors[iX % 4], null);
-            //    ++iX;
-            //    if (iX == xCount)
-            //    {
-            //        iX = 0;
-            //        iY++;
-            //    }
-            //}
-            var options = _nodalPresenter.GetMenuOptions();
             foreach (var opt in options)
             {
                 String buttonName = "Default";
@@ -261,13 +232,15 @@ namespace code_in.Views.NodalView
                 }
                 imageSrc.EndInit();
 
-                im.AddHexagonButtonCircle(buttonName, imageSrc, (parameters) => {
-                    var lineType = Code_inApplication.MainResourceDictionary["linkType"];
-                    if (lineType == null)
-                        Code_inApplication.MainResourceDictionary["linkType"] = 0;
-                    else
-                        Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
-                });
+                im.AddHexagonButtonCircle(buttonName, imageSrc, opt.Item2, presenter);
+                //im.AddHexagonButtonCircle(buttonName, imageSrc, (parameters) =>
+                //{
+                //    var lineType = Code_inApplication.MainResourceDictionary["linkType"];
+                //    if (lineType == null)
+                //        Code_inApplication.MainResourceDictionary["linkType"] = 0;
+                //    else
+                //        Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
+                //});
             }
 
             im.Placement = PlacementMode.Absolute;
@@ -276,50 +249,12 @@ namespace code_in.Views.NodalView
             im.HorizontalOffset = tC.X - (im.DesiredSize.Width / 2);
             im.VerticalOffset = tC.Y - (im.DesiredSize.Height / 2);
             im.IsOpen = true;
+        }
 
-            return;
-            //var hexMenu = new HexagonalMenu();
-
-            //hexMenu.AddHexagonButton(0, 0);
-            //hexMenu.AddHexagonButton(-1, -1);
-            //hexMenu.AddHexagonButton(-1, 0);
-            //hexMenu.AddHexagonButton(-1, 1);
-            //hexMenu.AddHexagonButton(1, 1);
-            //hexMenu.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            //this.MainGrid.Children.Add(hexMenu);
-            //hexMenu.ShowMenu();
-
-            // This automatically updates the list of accessible nodes
-            // Need to be optimized (compute only the first time, as it uses reflection)
-            //List<Type> listOfBs = new List<Type>();
-            //foreach (var t in typeof(BaseNode).Assembly.GetTypes())
-            //{
-
-            //    if (t.IsSubclassOf(typeof(BaseNode)) && !t.IsAbstract)
-            //    {
-            //        listOfBs.Add(t);
-            //    }
-            //}
-            //var cm = new ContextMenu();
-            //foreach (var t in listOfBs)
-            //{
-            //    var m1 = new MenuItem();
-            //    m1.Header = t.Name;
-            //    m1.DataContext = t;
-            //    m1.Click += m1_Click;
-            //    cm.Items.Add(m1);
-            //}
-
-            //var m2 = new MenuItem();
-            //m2.Header = "change line mode";
-            //m2.Click += clickChangeMode;
-            //cm.Items.Add(m2);
-
-            //cm.Margin = new Thickness(e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).X, e.GetPosition((this.Parent as FrameworkElement).Parent as FrameworkElement).Y, 0, 0);
-            //cm.IsOpen = true;
-            //// Setting the position of the node if we create one to the place the menu has been opened
-            //_newNodePos.X = e.GetPosition(this).X;
-            //_newNodePos.Y = e.GetPosition(this).Y;
+        private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var options = _nodalPresenter.GetMenuOptions();
+            CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this._nodalPresenter);
         }
 
         void clickChangeMode(object sender, RoutedEventArgs e)
