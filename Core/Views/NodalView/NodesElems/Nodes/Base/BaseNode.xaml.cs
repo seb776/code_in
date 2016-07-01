@@ -108,9 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            EditMenu = new EditNodePanel(_themeResourceDictionary);
-            EditMenu.SetFields(_nodePresenter);
-
+            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
     }
 }

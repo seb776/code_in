@@ -83,9 +83,19 @@ namespace code_in.Presenters.Nodal.Nodes
             throw new NotImplementedException();
         }
 
+        static void AddNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+
         public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
         {
-            throw new NotImplementedException();
+            List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions,Action<object[]>>>();
+            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration))
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+            }
+            return optionsList.ToArray();
         }
 
 
