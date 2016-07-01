@@ -148,7 +148,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
             Generics.SetGenerics(tmp);
         }
-        #endregion
+        #endregion IContainingGenerics
 
     }
 }

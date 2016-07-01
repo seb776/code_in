@@ -66,6 +66,10 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public IVisualNodeContainer GetParentView() { return _parentView; }
         public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
+        {
+            throw new NotImplementedException();
+        }
         public void SetName(String name)
         {
             this.ItemName.Content = name;

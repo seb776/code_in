@@ -49,7 +49,7 @@ namespace code_in.Presenters.Nodal.Nodes
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
 
             var routine = setNameRoutines[_model.GetType()];
-            if (routine != null && routine)
+            if ((routine != null) && routine)
                 (_model as dynamic).Name = name;
             else
                 throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
