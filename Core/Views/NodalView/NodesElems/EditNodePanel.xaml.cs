@@ -50,30 +50,53 @@ namespace code_in.Views.NodalView
                 Grid.SetColumn(FirstBorder, 1);
                 Grid.SetColumn(_modifiersArea, 2);
             }
-            else
+/*            else
             {
                 _accessModifiers.IsEnabled = false;
                 _accessModifiers.Visibility = System.Windows.Visibility.Hidden;
-            }
+            }*/
             if ((actions & ENodeActions.MODIFIERS) == ENodeActions.MODIFIERS)
             {
                 modifiersArea = true;
+                _modifiersArea.Visibility = System.Windows.Visibility.Visible;
+                _modifiersArea.IsEnabled = true;
+                _modifiersList.IsEnabled = true;
+                _modifiersList.Visibility = System.Windows.Visibility.Visible;
+                Grid.SetColumn(_modifiersList, 2);
             }
-            if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE)
+            if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE) // TODO mais pas forcement pour la beta
             {
             }
             if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT) // @Seb on oublie pour la beta
             {
+                _commentArea.Visibility = System.Windows.Visibility.Visible;
+                _commentArea.IsEnabled = true;
+                FourthBorder.Visibility = System.Windows.Visibility.Visible;
+                FourthBorder.IsEnabled = true;
+                Grid.SetColumn(FourthBorder, 7);
+                Grid.SetColumn(_commentArea, 8);
             }
             if ((actions & ENodeActions.GENERICS) == ENodeActions.GENERICS)
             {
+                DeclGenericsField.IsEnabled = true;
+                DeclGenericsField.Visibility = System.Windows.Visibility.Visible;
+                SecondBorder.IsEnabled = true;
+                SecondBorder.Visibility = System.Windows.Visibility.Visible;
+                Grid.SetColumn(SecondBorder, 3);
+                Grid.SetColumn(DeclGenericsField, 4);
             }
             if ((actions & ENodeActions.INHERITANCE) == ENodeActions.INHERITANCE)
             {
+                InheritanceField.IsEnabled = true;
+                InheritanceField.Visibility = System.Windows.Visibility.Visible;
+                ThirdBorder.IsEnabled = true;
+                ThirdBorder.Visibility = System.Windows.Visibility.Visible;
+                Grid.SetColumn(ThirdBorder, 5);
+                Grid.SetColumn(InheritanceField, 6);
             }
             if ((actions & ENodeActions.NAME) == ENodeActions.NAME)
             {
-
+                // already set always visible because all nodes will need a setName
             }
             this._modifiersArea.IsEnabled = modifiersArea;
             this._modifiersArea.Visibility = (modifiersArea ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
