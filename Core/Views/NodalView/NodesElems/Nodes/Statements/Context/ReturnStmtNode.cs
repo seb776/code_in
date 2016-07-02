@@ -12,11 +12,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
 {
     public class ReturnStmtNode : AContextStmtNode
     {
-        public AOItem inAnchor = null;
+        public DataFlowItem ExprIn = null;
         public ReturnStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
+            ExprIn = this.CreateAndAddInput<DataFlowItem>();
             this.SetThemeResources("ReturnStmtNode");
             this.SetName("Return");
         }

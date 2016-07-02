@@ -13,13 +13,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     public class ExpressionStmtNode : AStatementNode
     {
         public DataFlowItem Expression = null;
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
+        public FlowNodeItem outAnchor = null;
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("ExpressionStmt");
-            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
             Expression = this.CreateAndAddInput<DataFlowItem>();
             Expression.SetName("Expression");
             outAnchor = this.CreateAndAddOutput<FlowNodeItem>();

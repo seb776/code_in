@@ -13,15 +13,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
     class ForeachStmtNode : ABlockStmtNodes
     {
         public DataFlowItem Condition = null;
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
-        public AOItem trueAnchor = null;
+        public FlowNodeItem outAnchor = null;
+        public FlowNodeItem trueAnchor = null;
         public ForeachStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
              this.SetName("ForEach");
-             inAnchor = this.CreateAndAddInput<FlowNodeItem>();
-             inAnchor.SetName("In");
              Condition = this.CreateAndAddInput<DataFlowItem>();
              Condition.SetName("Condition");
              outAnchor = this.CreateAndAddOutput<FlowNodeItem>();

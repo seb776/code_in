@@ -175,6 +175,8 @@ namespace code_in.Presenters.Nodal.Nodes
         public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
         {
             List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions,Action<object[]>>>();
+            if (_model == null)
+                return optionsList.ToArray();
             if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // for classes, enums, interfaces
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));

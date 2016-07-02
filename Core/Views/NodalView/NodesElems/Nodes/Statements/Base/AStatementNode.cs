@@ -13,11 +13,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
 {
     public abstract class AStatementNode : AIONode
     {
+        public FlowNodeItem FlowInAnchor = null;
         public AStatementNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            //this.SetNodeType("Statement");
-            //this.SetThemeResources("DefaultStmtNode");
+            FlowInAnchor = this.CreateAndAddInput<FlowNodeItem>();
         }
 
         #region ICodeInVisual
