@@ -15,27 +15,27 @@
         <StackPanel x:Name="General_layout" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
             <GroupBox Width="auto" HorizontalAlignment="Left" Padding="10">
                 <GroupBox.Header>
-                    <Label Foreground="#ebebeb" FontSize="20">Langue</Label>
+                    <Label Foreground="#ebebeb"  x:Name="LanguageSelectField" FontSize="20">TMP: Langue</Label>
                 </GroupBox.Header>
-                <ComboBox  MinWidth="200" HorizontalAlignment="Left">
-                    <ComboBoxItem x:Name="FrancaisField" Content="Francais"/>
-                    <ComboBoxItem x:Name="AnglaisField" Content="Anglais"/>
+                <ComboBox  MinWidth="200" HorizontalAlignment="Left" SelectionChanged="ComboBox_Selected">
+                    <ComboBoxItem x:Name="FrancaisField" Content="TMP: Francais"/>
+                    <ComboBoxItem x:Name="EnglishField" Content="TMP: Anglais"/>
                 </ComboBox>
             </GroupBox>
 
             <!-- "Updates" -->
             <GroupBox HorizontalAlignment="Left" Width="auto" Padding="10">
                 <GroupBox.Header>
-                    <Label x:Name="UpdateField" Foreground="#ebebeb" FontSize="20">Mises à jour</Label>
+                    <Label x:Name="UpdateField" Foreground="#ebebeb" FontSize="20">TMP: Mises à jour</Label>
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
                     <ComboBox  MinWidth="200" HorizontalAlignment="Left">
-                        <ComboBoxItem x:Name="UpdateBootField" Content="Au démarrage"/>
-                        <ComboBoxItem x:Name="UpdateDayField" Content="Journalier"/>
-                        <ComboBoxItem x:Name="UpdateMonthField" Content="Mensuel"/>
-                        <ComboBoxItem x:Name="UpdateNeverField" Content="Jamais"/>
+                        <ComboBoxItem x:Name="UpdateBootField" Content="TMP: Au démarrage"/>
+                        <ComboBoxItem x:Name="UpdateDayField" Content="TMP: Journalier"/>
+                        <ComboBoxItem x:Name="UpdateMonthField" Content="TMP: Mensuel"/>
+                        <ComboBoxItem x:Name="UpdateNeverField" Content="TMP: Jamais"/>
                     </ComboBox>
-                    <Button Margin="0,5,0,0"  Name="maj_menu" HorizontalAlignment="Stretch" Height="25" Content="Vérifier mises à jour" Click="maj_menu_Click"/>
+                    <Button Margin="0,5,0,0"  Name="maj_menu" HorizontalAlignment="Stretch" Height="25" Content= "TMP:Vérifier mises à jour" Click="maj_menu_Click"/>
                 </StackPanel>
             </GroupBox>
 
@@ -43,15 +43,15 @@
         <StackPanel Grid.Column="2" Orientation="Vertical">
             <GroupBox Padding="10">
                 <GroupBox.Header>
-                    <Label Foreground="#ebebeb" FontSize="20">TMP: Options</Label>
+                    <Label Foreground="#ebebeb" x:Name="OptionsField" FontSize="20">TMP: Options</Label>
                 </GroupBox.Header>
                 <StackPanel Orientation="Vertical">
                     <!-- "Activate Tutorial" -->
                     <CheckBox x:Name="TutorialModeField"   Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20">
-                        <Label Foreground="#ebebeb" Margin="5,0,0,0">TMP: Mode tutoriel</Label>
+                        <Label Foreground="#ebebeb" x:Name="TutorialMode" Margin="5,0,0,0">TMP: Mode tutoriel</Label>
                     </CheckBox>
                     <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="20">
-                        <Label Foreground="#ebebeb" Margin="5,0,0,0">TMP: Activer les drops shadows</Label>
+                        <Label Foreground="#ebebeb" x:Name="DropShadow" Margin="5,0,0,0">TMP: Activer les drops shadows</Label>
                     </CheckBox>
                 </StackPanel>
             </GroupBox>

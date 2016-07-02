@@ -3,13 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="DefaultNodeType">Type de nœud</sys:String>
-    <sys:String x:Key="CategoryName">General</sys:String>
-    <sys:String x:Key="TutorialMode">Type de nœud</sys:String>
     <sys:String x:Key="Update">Type de nœud</sys:String>
-    <sys:String x:Key="BootUpdate">Type de nœud</sys:String>
-    <sys:String x:Key="DayUpdate">Type de nœud</sys:String>
-    <sys:String x:Key="MonthUpdate">Type de nœud</sys:String>
-    <sys:String x:Key="NeverUpdate">Type de nœud</sys:String>
     <sys:String x:Key="UpdateButton">Type de nœud</sys:String>
     <sys:String x:Key="ConfigFolder">Type de nœud</sys:String>
     <sys:String x:Key="Browse">Type de nœud</sys:String>
@@ -24,4 +18,29 @@
     <!-- Config.Theme tabs-->
     <sys:String x:Key="ConfigThemeGeneralHeader">RES: Général</sys:String>
     <sys:String x:Key="ConfigThemeNodalHeader">RES: Vue nodale</sys:String>
+    <sys:String x:Key="CurrentThemeLabel">RES: Thème actuel</sys:String>
+    <sys:String x:Key="DefaultTheme">RES: Thème par défaut</sys:String>
+    <sys:String x:Key="SaveTheme">RES: Sauvergarder</sys:String>
+    <sys:String x:Key="RemoveTheme">RES: Supprimer</sys:String>
+    <sys:String x:Key="ThemeBackground">RES: Fond personnalisé</sys:String>
+    <sys:String x:Key="ThemeGeneral">RES: Général</sys:String>
+    <sys:String x:Key="ThemeGrid">RES: Grille</sys:String>
+    <sys:String x:Key="ThemeNodes">RES: Nodes</sys:String>
+    <sys:String x:Key="ThemeSettings">RES: Paramètres</sys:String>
+    <sys:String x:Key="ThemePreview">RES: Aperçu</sys:String>
+
+
+    <!-- Config.General tabs-->
+    <sys:String x:Key="LanguageSelectCategoryTitle">RES: Langue</sys:String>
+    <sys:String x:Key="FrenchField">RES: Français</sys:String>
+    <sys:String x:Key="EnglishField">RES: Anglais</sys:String>
+    <sys:String x:Key="BootUpdate">RES: Au démarrage</sys:String>
+    <sys:String x:Key="DailyUpdate">RES: Quotidien</sys:String>
+    <sys:String x:Key="MonthlyUpdate">RES: Mensuel</sys:String>
+    <sys:String x:Key="NeverUpdate">RES: Jamais</sys:String>
+    <sys:String x:Key="UpdateField">RES: Mises à jour</sys:String>
+    <sys:String x:Key="CheckUpdate">RES: Verifier les mises à jour</sys:String>
+    <sys:String x:Key="OptionField">RES: Options</sys:String>
+    <sys:String x:Key="TutorialMode">RES:Mode Tutoriel</sys:String>
+    <sys:String x:Key="DropShadow">RES: Activer les drops shadows</sys:String>
 </ResourceDictionary>

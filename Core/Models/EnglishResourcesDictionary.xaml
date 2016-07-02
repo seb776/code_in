@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="DefaultNodeType">Type de nœud</sys:String>
+    <sys:String x:Key="Update">Type de nœud</sys:String>
+    <sys:String x:Key="UpdateButton">Type de nœud</sys:String>
+    <sys:String x:Key="ConfigFolder">Type de nœud</sys:String>
+    <sys:String x:Key="Browse">Type de nœud</sys:String>
+    <sys:String x:Key="Confirm">Type de nœud</sys:String>
+    <sys:String x:Key="Cancel">Type de nœud</sys:String>
+
+    <!-- Config panels -->
+    <sys:String x:Key="GeneralConfigPanelTitle">General</sys:String>
+    <sys:String x:Key="ThemeConfigPanelTitle">Themes</sys:String>
+    <sys:String x:Key="ShortcutsConfigPanelTitle">Shortcuts</sys:String>
+    
+    <!-- Config.Theme tabs-->
+    <sys:String x:Key="ConfigThemeGeneralHeader">General</sys:String>
+    <sys:String x:Key="ConfigThemeNodalHeader">Nodal view</sys:String>
+    <sys:String x:Key="CurrentThemeLabel">Current theme</sys:String>
+    <sys:String x:Key="DefaultTheme">Default theme</sys:String>
+    <sys:String x:Key="SaveTheme">Save</sys:String>
+    <sys:String x:Key="RemoveTheme">Delete</sys:String>
+
+    <sys:String x:Key="ThemeBackground">Personalized Background</sys:String>
+    <sys:String x:Key="ThemeGeneral">General</sys:String>
+    <sys:String x:Key="ThemeGrid">Grid</sys:String>
+    <sys:String x:Key="ThemeNodes">Nodes</sys:String>
+    <sys:String x:Key="ThemeSettings">Settings</sys:String>
+    <sys:String x:Key="ThemePreview">Preview</sys:String>
+
+
+    <!-- Config.General tabs-->
+    <sys:String x:Key="LanguageSelectCategoryTitle">Language</sys:String>
+    <sys:String x:Key="FrenchField">French</sys:String>
+    <sys:String x:Key="EnglishField">English</sys:String>
+    <sys:String x:Key="BootUpdate">At boot</sys:String>
+    <sys:String x:Key="DailyUpdate">Daily</sys:String>
+    <sys:String x:Key="MonthlyUpdate">Monthly</sys:String>
+    <sys:String x:Key="NeverUpdate">Never</sys:String>
+    <sys:String x:Key="UpdateField">Updates</sys:String>
+    <sys:String x:Key="CheckUpdate">Check update</sys:String>
+    <sys:String x:Key="OptionField">Options</sys:String>
+    <sys:String x:Key="TutorialMode">Tutorial Mode</sys:String>
+    <sys:String x:Key="DropShadow">Activate drops shadows</sys:String>
+</ResourceDictionary>
