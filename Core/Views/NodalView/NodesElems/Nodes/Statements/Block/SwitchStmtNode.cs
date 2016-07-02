@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class SwitchStmtNode : ABlockStmtNodes
     {
-        public AOItem outAnchor = null;
+        public FlowNodeItem outAnchor = null;
         public SwitchStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {

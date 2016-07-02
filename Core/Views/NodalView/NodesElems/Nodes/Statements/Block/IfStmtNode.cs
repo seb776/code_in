@@ -14,17 +14,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
     public class IfStmtNode : ABlockStmtNodes
     {
         public DataFlowItem Condition = null;
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
-        public AOItem trueAnchor = null;
-        public AOItem falseAnchor = null;
+        public FlowNodeItem outAnchor = null;
+        public FlowNodeItem trueAnchor = null;
+        public FlowNodeItem falseAnchor = null;
         
         public IfStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("if");
-            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
-            inAnchor.SetName("In");
             Condition = this.CreateAndAddInput<DataFlowItem>();
             Condition.SetName("Condition");
             outAnchor = this.CreateAndAddOutput<FlowNodeItem>();

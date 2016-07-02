@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     /// </summary>
     public class FuncEntryNode : AStatementNode
     {
-        public AOItem outAnchor = null;
+        public FlowNodeItem FlowOutAnchor = null;
         
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -27,7 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             this.SetType("FuncEntry");
             this.SetName("Inputs");
             this.SetThemeResources("FuncEntryNode");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeItem>();
         }
     }
 }
