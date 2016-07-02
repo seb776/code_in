@@ -242,6 +242,7 @@ namespace code_in.Views.NodalView
             }
 
             im.Placement = PlacementMode.Absolute;
+            im.PlacementTarget = null;
             var tC = System.Windows.Forms.Control.MousePosition;
             im.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             im.HorizontalOffset = tC.X - (im.DesiredSize.Width / 2);
