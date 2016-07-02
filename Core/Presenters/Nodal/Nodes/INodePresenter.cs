@@ -22,7 +22,11 @@ namespace code_in.Presenters.Nodal.Nodes
         ATTRIBUTE = 16,
         INHERITANCE = 32,
         COMMENT = 64,
-        EXEC_GENERICS = 128
+        EXEC_GENERICS = 128,
+        EXEC_TYPE = 256,
+        TYPE = 512,
+        TEXT = 1024,
+        EXEC_PARAMETERS = 2048
     }
     public interface INodePresenter : IContextMenu
     {

@@ -71,12 +71,29 @@ namespace code_in.Presenters.Nodal.Nodes
             if (_model != null)
             {
                 if (_model.GetType() == typeof(TypeDeclaration))
-                {
-                    return (ENodeActions.GENERICS & ENodeActions.NAME & ENodeActions.ACCESS_MODIFIERS & ENodeActions.INHERITANCE & ENodeActions.MODIFIERS & ENodeActions.ATTRIBUTE);
-                }
-
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.INHERITANCE | ENodeActions.MODIFIERS | ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.GENERICS);
+                if (_model.GetType() == typeof(NamespaceDeclaration))
+                    return (ENodeActions.NAME | ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(MethodDeclaration))
+                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS);
+                if (_model.GetType() == typeof(FieldDeclaration))
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE);
+                if (_model.GetType() == typeof(PropertyDeclaration))
+                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(UsingDeclaration))
+                    return (ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(ObjectCreateExpression))
+                    return (ENodeActions.COMMENT | ENodeActions.EXEC_TYPE);
+                if (_model.GetType() == typeof(IdentifierExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(MemberReferenceExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(InvocationExpression))
+                    return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
+                if (_model.GetType() == typeof(PrimitiveExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
             }
-            return (ENodeActions.GENERICS & ENodeActions.NAME & ENodeActions.ACCESS_MODIFIERS & ENodeActions.INHERITANCE & ENodeActions.MODIFIERS & ENodeActions.ATTRIBUTE);
+            return (0);
         }
 
         public void AddGeneric(bool updateView, string name)
@@ -125,7 +142,10 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void EditNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            NodePresenter nodePresenter = objects[0] as NodePresenter;
+
+            nodePresenter._view.ShowEditMenu();
+
         }
         static void ExpandNode(object[] objects)
         {
