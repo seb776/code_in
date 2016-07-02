@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual T CreateAndAddNode<T>(EIOOption ioOption = EIOOption.NONE) where T : UIElement, INodeElem
+        public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
             T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
             node.SetParentView(this);
             node.SetRootView(this.GetRootView());
+            node.SetNodePresenter(nodePresenter);
+            nodePresenter.SetView(node);
             try
             {
                 this.AddNode(node);
@@ -44,7 +47,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             }
             return node;
         }
-        public abstract void AddNode<T>(T node, EIOOption ioOption = EIOOption.NONE, int index = -1) where T : UIElement, INodeElem;
+        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
         public abstract void RemoveNode(INodeElem node);
 
         public abstract int GetDropIndex(Point pos);
