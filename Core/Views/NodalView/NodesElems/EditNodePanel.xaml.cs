@@ -57,7 +57,7 @@ namespace code_in.Views.NodalView
             if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE)
             {
             }
-            if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT)
+            if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT) // @Seb on oublie pour la beta
             {
             }
             if ((actions & ENodeActions.GENERICS) == ENodeActions.GENERICS)
