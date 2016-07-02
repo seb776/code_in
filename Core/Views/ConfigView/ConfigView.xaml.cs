@@ -22,7 +22,7 @@ namespace code_in.Views.ConfigView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual
+    public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual, ICodeInTextLanguage
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;

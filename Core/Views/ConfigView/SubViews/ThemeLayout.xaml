@@ -18,7 +18,7 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Label x:Name="CurrentThemeLabel" Grid.Row="0" FontSize="20" Foreground="White">TMP: Theme actuel</Label>
                     <ComboBox MinWidth="200" Margin="5,0,0,0">
-                        <ComboBoxItem>Theme par defaut</ComboBoxItem>
+                        <ComboBoxItem x:Name="DefaultTheme">Theme par defaut</ComboBoxItem>
                     </ComboBox>
                     <Button x:Name="SaveCurrentTheme" Margin="5,0,0,0" Padding="10,0,10,0">TMP: Sauvegarder</Button>
                     <Button x:Name="RemoveCurrentTheme" Margin="5,0,0,0" Padding="10,0,10,0">TMP: Supprimer</Button>
@@ -34,25 +34,25 @@
                 </Grid.ColumnDefinitions>
                 <GroupBox Grid.Column="0">
                     <GroupBox.Header>
-                        <Label Foreground="#FFEBEBEB" FontSize="20">TMP: Parametres</Label>
+                        <Label Foreground="#FFEBEBEB" x:Name="NodalThemeSettings" FontSize="20">TMP: Parametres</Label>
                     </GroupBox.Header>
                 <TreeView Grid.Column="0" Background="Transparent" Padding="0,0,20,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <TreeViewItem IsExpanded="true" Header="TMP: General" Foreground="White" FontSize="20">
                         <RadioButton GroupName="NodalBackgroundMode">
-                            <Label FontSize="20" Foreground="White">TMP: Grille</Label>
+                            <Label FontSize="20" x:Name="NodalThemeGrid" Foreground="White">TMP: Grille</Label>
                         </RadioButton>
                         <RadioButton GroupName="NodalBackgroundMode">
-                            <Label FontSize="20" Foreground="White">TMP: Fond personnalisé</Label>
+                            <Label FontSize="20" x:Name="NodalThemeBackground" Foreground="White">TMP: Fond personnalisé</Label>
                         </RadioButton>
                     </TreeViewItem>
-                    <TreeViewItem IsExpanded="false" Header="TMP: Nodes" Foreground="White" FontSize="20">
-                        <Label FontSize="20" Foreground="White">TMP: General</Label>
+                    <TreeViewItem IsExpanded="false" x:Name="NodalThemeNodes" Header="TMP: Nodes" Foreground="White" FontSize="20">
+                        <Label FontSize="20" x:Name="NodalThemeGeneral" Foreground="White">TMP: General</Label>
                     </TreeViewItem>
                 </TreeView>
                 </GroupBox>
                 <GroupBox x:Name="PreviewArea" Grid.Column="2">
                     <GroupBox.Header>
-                        <Label Foreground="#FFEBEBEB" FontSize="20">TMP: Aperçu</Label>
+                        <Label Foreground="#FFEBEBEB" x:Name="NodalThemePreview" FontSize="20">TMP: Aperçu</Label>
 
                     </GroupBox.Header>
                 </GroupBox>

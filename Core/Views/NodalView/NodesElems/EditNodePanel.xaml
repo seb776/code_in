@@ -40,7 +40,7 @@
             <Border Grid.Column="3" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
             <StackPanel x:Name="_commentArea" Grid.Column="4" Orientation="Vertical">
                 <Label Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Comment</Label>
-                <TextBlock Foreground="Green" Background="#6B000000" TextWrapping="Wrap">I am a fucking long</TextBlock>
+                <TextBlock Foreground="Green" Background="#6B000000" TextWrapping="Wrap">here comments</TextBlock>
             </StackPanel>
         </Grid>
     </Grid>

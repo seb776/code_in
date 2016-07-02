@@ -33,7 +33,6 @@ namespace code_in.Presenters.Nodal
         private INodalView _view = null; // TODO INodalView
         private NodalModel _model = null;
         private CSharpParser _parser = null;
-        List<Tuple<string, EGenericVariance>> GenericList;
         private AOItem outputFlownode = null;
         private AOItem inputFlownode = null;
         private AOItem nextOutputFlowNode = null;
@@ -43,8 +42,6 @@ namespace code_in.Presenters.Nodal
             System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
-            GenericList = new List<Tuple<string, EGenericVariance>>();
-
         }
 
         public void OpenFile(String path)
@@ -83,6 +80,8 @@ namespace code_in.Presenters.Nodal
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
             Tuple<string, EGenericVariance> tuple;
+            List<Tuple<string, EGenericVariance>> GenericList = new List<Tuple<string,EGenericVariance>>();
+
             foreach (var tmp in typeDecl.TypeParameters)
             {
                 if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
@@ -262,9 +261,6 @@ namespace code_in.Presenters.Nodal
 
             var returnType = exit.CreateAndAddInput<FlowNodeItem>();
             returnType.SetName(method.ReturnType.ToString());
-
-
-
             //exit.Margin = new Thickness(0, 150, 0, 0);
         }
         private void _generateVisualASTStatements(Statement stmtArg, int posX, int posY)
@@ -272,7 +268,6 @@ namespace code_in.Presenters.Nodal
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
-              //  MessageBox.Show("block Statement");
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
                     posX += 250;
@@ -288,7 +283,6 @@ namespace code_in.Presenters.Nodal
             # region IfStmts
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
-                MessageBox.Show("_generateVisualASTStatements if");
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>();
                 ifNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
@@ -310,7 +304,6 @@ namespace code_in.Presenters.Nodal
                 stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
             if (isWhile)
             {
-                MessageBox.Show("_generateVisualASTStatements while");
                 dynamic whileStmt = stmtArg;
                 WhileStmtNode nodeLoop;
 
@@ -327,13 +320,12 @@ namespace code_in.Presenters.Nodal
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
-                MessageBox.Show("_generateVisualASTStatements for");
                 var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
                 var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>();
                 nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
-                foreach (var forStmts in forStmt.Initializers)
+               foreach (var forStmts in forStmt.Initializers)
                     this._generateVisualASTStatements(forStmts, posX, posY);
                 nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
@@ -341,19 +333,23 @@ namespace code_in.Presenters.Nodal
                     this._generateVisualASTStatements(forStmts, posX, posY);
 
                 this._generateVisualASTExpressions(forStmt.Condition, posX - 300, posY + 100); // Expressions
+                outputFlownode = nodeLoop.trueAnchor;
                 this._generateVisualASTStatements(forStmt.EmbeddedStatement, posX, posY);
+                outputFlownode = nodeLoop.outAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForeachStatement;
                 var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>();
                 nodeLoop.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+                inputFlownode = nodeLoop.inAnchor;
+                drawAutoLink();
 
-                nodeLoop.SetName("ForEach");
-                //nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString());
+                nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString()); // is it the good condition? seems weird (hamham)
                 this._generateVisualASTExpressions(forEachStmt.InExpression, posX - 300, posY + 100);
+                outputFlownode = nodeLoop.trueAnchor;
                 this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, posX, posY);
-
+                outputFlownode = nodeLoop.outAnchor;
             }
             # endregion Loops
             #region Switch
@@ -364,6 +360,8 @@ namespace code_in.Presenters.Nodal
                 var switchStmt = (stmtArg as SwitchStatement);
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
+                inputFlownode = exprInput;
+                drawAutoLink();
                 _generateVisualASTExpressions(switchStmt.Expression, posX - 300, posY + 100);
                 foreach (var switchSection in switchStmt.SwitchSections)
                 {
@@ -371,7 +369,9 @@ namespace code_in.Presenters.Nodal
                     {
                         var caseInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                         var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeItem>();
+                        outputFlownode = caseOutput;
                         caseInput.SetName(caseLabel.Expression.ToString());
+                        caseOutput.SetName("Case");
                         _generateVisualASTExpressions(caseLabel.Expression, posX - 300, posY + 100);
                     }
                     foreach (var switchSectionStmt in switchSection.Statements)
@@ -380,6 +380,7 @@ namespace code_in.Presenters.Nodal
                         _generateVisualASTStatements(switchSectionStmt, posX, posY);
                     }
                 }
+                outputFlownode = switchStmtNode.outAnchor;
             }
             #endregion Switch
             #endregion Block Statement
@@ -387,7 +388,6 @@ namespace code_in.Presenters.Nodal
             #region Variable Declaration
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
-                MessageBox.Show("_generateVisualASTStatements variable");
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
                 variableNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
@@ -405,7 +405,6 @@ namespace code_in.Presenters.Nodal
             #region ExpressionStatement
             if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
-                MessageBox.Show("_generateVisualASTStatements expression");
                 var exprStmt = stmtArg as ExpressionStatement;
 
                 var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>();
@@ -441,18 +440,81 @@ namespace code_in.Presenters.Nodal
                 var unaryExpr = this._view.CreateAndAddNode<UnaryExprNode>();
                 unaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
                 unaryExpr.SetName(unaryExprOp.OperatorToken.ToString());
+                this._generateVisualASTExpressions(unaryExprOp.Expression, posX, posY);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
+            {
+                var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
+                var objCreateExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                objCreateExprNode.SetType("ObjCreateExpr");
+                var newType = objCreateExprNode.CreateAndAddInput<DataFlowItem>(); // TODO text input
+                newType.SetName(objCreateExpr.Type.ToString());
+                int i = 0;
+                foreach (var param in objCreateExpr.Arguments)
+                {
+                    var arg = objCreateExprNode.CreateAndAddInput<DataFlowItem>();
+                    arg.SetName("param" + i);
+                    i++;
+                    _generateVisualASTExpressions(param, posX, posY);
+                }
+
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
+            {
+                var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
+                var identExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                identExprNode.SetType("IdentExpr");
+                identExprNode.ExprOut.SetName(identExpr.Identifier);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
+            {
+                var assignExpr = expr as ICSharpCode.NRefactory.CSharp.AssignmentExpression;
+                var assignExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
+                assignExprNode.SetType("AssignExpr");
+
+                this._generateVisualASTExpressions(assignExpr.Left, posX, posY);
+                this._generateVisualASTExpressions(assignExpr.Right, posX, posY);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
-                var binaryExpr = this._view.CreateAndAddNode<BinaryExprNode>();
-                binaryExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+                var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
+                var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
 
+                this._generateVisualASTExpressions(binaryExpr.Left, posX, posY);
+                this._generateVisualASTExpressions(binaryExpr.Right, posX, posY);
 
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
+            {
+                var memberRefExpr = expr as ICSharpCode.NRefactory.CSharp.MemberReferenceExpression;
+                var memberRefExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var inputTarget = memberRefExprNode.CreateAndAddInput<DataFlowItem>();
+                this._generateVisualASTExpressions(memberRefExpr.Target, posX, posY);
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
+            {
+                var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
+                var primExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                primExprNode.SetType("PrimExpr");
+                primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
-                var invokExpr = this._view.CreateAndAddNode<FuncCallExprNode>();
-                invokExpr.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
+                var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
+                var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>();
+                var invokTargetNode = invokExprNode.CreateAndAddInput<DataFlowItem>();
+
+                this._generateVisualASTExpressions(invokExpr.Target, posX, posY);
+                // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
+                int i = 0;
+                foreach (var param in invokExpr.Arguments)
+                {
+                    var paramMeth = invokExprNode.CreateAndAddInput<DataFlowItem>();
+                    paramMeth.SetName("param" + i);
+                    this._generateVisualASTExpressions(param, posX, posY);
+                    i++;
+                }
+                invokExprNode.Margin = new System.Windows.Thickness(posX, posY, 0, 0);
             }
         }
 

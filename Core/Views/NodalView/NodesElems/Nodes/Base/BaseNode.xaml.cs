@@ -91,6 +91,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem
 
+        #region IContextMenu
+        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
+        {
+            throw new NotImplementedException();
+            //return (_nodePresenter.GetMenuOptions());
+        }
+        #endregion IContextMenu
+
         public void MoveNode(Point pos)
         {
             this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
@@ -103,6 +111,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
+        }
+
+        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 }

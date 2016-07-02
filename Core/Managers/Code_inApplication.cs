@@ -1,6 +1,8 @@
 ﻿using code_in.Presenters;
 using System;
+using System.IO;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace code_in
 {
@@ -11,6 +13,7 @@ namespace code_in
         private static readonly String _languageResourceDictionaryPath = "/code_inCore;component/Models/LanguageResourcesDictionary.xaml";
         private static IEnvironmentWrapper _environmentWrapper = null;
         private static ThemePresenter _themePresenter = null;
+        private static LanguagePresenter _languagePresenter = null;
         private static ResourceDictionary _languageResourceDictionary = null;
         private static ResourceDictionary _themePreviewResourceDictionary = null;
         private static ResourceDictionary _mainResourceDictionary = null;
@@ -18,6 +21,17 @@ namespace code_in
         {
             System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valid wrapper in order to start the application !");
             _environmentWrapper = wrapper;
+             ResourceDictionary retResDict = null;
+            try
+            {
+                var reader = new FileStream("C:/FrenchResourcesDictionary.xaml", FileMode.Open, FileAccess.Read, FileShare.Read);
+                retResDict = XamlReader.Load(reader) as ResourceDictionary;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            LanguagePresenter.ApplyLanguage(retResDict);
             // Code_inApplication.ThemeMgr.setMainTheme(new DefaultThemeData()); // TODO when theme management is complete and functional, load default theme
         }
 
@@ -29,6 +43,16 @@ namespace code_in
                 if (_themePresenter == null)
                     _themePresenter = new ThemePresenter();
                 return _themePresenter;
+            }
+        }
+
+        public static LanguagePresenter LanguagePresenter
+        {
+            get
+            {
+                if (_languagePresenter == null)
+                    _languagePresenter = new LanguagePresenter();
+                return _languagePresenter;
             }
         }
         public static IEnvironmentWrapper EnvironmentWrapper

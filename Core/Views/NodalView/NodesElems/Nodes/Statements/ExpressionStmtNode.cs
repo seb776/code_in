@@ -18,6 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
+            this.SetType("ExpressionStmt");
             inAnchor = this.CreateAndAddInput<FlowNodeItem>();
             Expression = this.CreateAndAddInput<DataFlowItem>();
             Expression.SetName("Expression");
