@@ -87,14 +87,91 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             MessageBox.Show(objects[0].GetType().ToString());
         }
+        static void AlignNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void CloseNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void CollapseNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void CollapseAllNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void DuplicateNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void EditNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void ExpandNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void ExpandAllNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void GoIntoNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void HelpNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void RemoveNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void SaveNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
 
         public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
         {
             List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions,Action<object[]>>>();
-            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration))
+            if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // for classes, enums, interfaces
             {
-                optionsList.Add(new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
             }
+            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)) // for FuncDeclItem and other items?
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.GOINTO, GoIntoNode));
+            }
+            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)) // for namespace
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+            }
+/*            else // basic behaviour to avoid crashes
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
+            } */
             return optionsList.ToArray();
         }
 

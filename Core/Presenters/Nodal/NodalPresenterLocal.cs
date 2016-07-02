@@ -548,13 +548,38 @@ namespace code_in.Presenters.Nodal
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()
         {
             return new Tuple<EContextMenuOptions, Action<object[]>>[] { 
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, null), 
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, null),
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, null),
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, null),
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, null),
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.HELP, null)
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode), 
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, AlignNode),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, CollapseAllNode),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, SaveNode),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, CloseNode),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.HELP, HelpNode)
             };
         }
+        static void AddNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void AlignNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void CloseNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void CollapseAllNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void HelpNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void SaveNode(object[] objects)
+        {
+            MessageBox.Show(objects[0].GetType().ToString());
+        }
+
     }
 }
