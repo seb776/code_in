@@ -19,8 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
         {
             inAnchor = this.CreateAndAddInput<FlowNodeItem>();
             outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
-            this.SetType("Declaration");
-            this.SetName("Variables");
+            this.SetType("VarDecl");
             this.SetThemeResources("VarDeclStmtNode");
         }
     }

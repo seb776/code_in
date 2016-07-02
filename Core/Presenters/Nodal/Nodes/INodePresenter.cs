@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
+    /// <summary>
+    /// DECL_* for Declaration side nodes modifications
+    /// EXEC_* for Execution side nodes modifications (like nodes in the method view)
+    /// </summary>
     public enum ENodeActions
     {
         ACCESS_MODIFIERS = 1,
@@ -18,6 +22,7 @@ namespace code_in.Presenters.Nodal.Nodes
         ATTRIBUTE = 16,
         INHERITANCE = 32,
         COMMENT = 64,
+        EXEC_GENERICS = 128
     }
     public interface INodePresenter : IContextMenu
     {
