@@ -251,6 +251,10 @@ namespace code_in.Presenters.Nodal
 
             this._generateVisualASTStatements(method.Body);
         }
+        /// <summary>
+        /// This function displays the execution code from stmtArg to the NodalView attached.
+        /// </summary>
+        /// <param name="stmtArg"></param>
         private void _generateVisualASTStatements(Statement stmtArg)
         {
             var nodePresenter = new NodePresenter(this, stmtArg);
@@ -258,18 +262,10 @@ namespace code_in.Presenters.Nodal
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
                 foreach (var stmt in (stmtArg as BlockStatement))
-                {
                     this._generateVisualASTStatements(stmt);
-                }
-            }
-            if (stmtArg.GetType() == typeof(TryCatchStatement))
-            {
-                var tryCatch = this._view.CreateAndAddNode<UnSupStmtDeclNode>(nodePresenter);
-                var tryStmt = stmtArg as TryCatchStatement;
-                tryCatch.NodeText.Text = tryStmt.ToString();
             }
             # region IfStmts
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>(nodePresenter);
@@ -283,21 +279,19 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(ifStmt.FalseStatement);
                 outputFlownode = ifNode.outAnchor;
             }
-
-
             # endregion IfStmts
             # region Loops
-            bool isWhile = (isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
-                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
-            if (isWhile)
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ||
+                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement))
             {
+                bool isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement);
                 dynamic whileStmt = stmtArg;
                 WhileStmtNode nodeLoop;
 
                 nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>(nodePresenter);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
-                nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
+                nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition); // Expressions
                 outputFlownode = nodeLoop.trueAnchor;
@@ -310,7 +304,7 @@ namespace code_in.Presenters.Nodal
                 var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>(nodePresenter);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
-               foreach (var forStmts in forStmt.Initializers)
+                foreach (var forStmts in forStmt.Initializers)
                     this._generateVisualASTStatements(forStmts);
                 nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
@@ -337,7 +331,7 @@ namespace code_in.Presenters.Nodal
             }
             # endregion Loops
             #region Switch
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
             {
                 var switchStmtNode = this._view.CreateAndAddNode<SwitchStmtNode>(nodePresenter);
                 var switchStmt = (stmtArg as SwitchStatement);
@@ -366,7 +360,7 @@ namespace code_in.Presenters.Nodal
             #endregion Block Statement
             #region Single Statement
             #region Variable Declaration
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>(nodePresenter);
@@ -384,7 +378,7 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Variable Declaration
             #region ExpressionStatement
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
                 var exprStmt = stmtArg as ExpressionStatement;
 
@@ -396,10 +390,9 @@ namespace code_in.Presenters.Nodal
             }
             #endregion ExpressionStatement
             #region Return Statement
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
             {
                 var returnStmt = stmtArg as ExpressionStatement;
-
                 var returnStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>(nodePresenter);
 
                 if (returnStmt != null)
@@ -407,6 +400,13 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Return Statement
             #endregion Single Statement
+            else // Default Node
+            {
+                var unSupStmt = this._view.CreateAndAddNode<UnSupStmtDeclNode>(nodePresenter);
+                unSupStmt.NodeText.Text = stmtArg.ToString();
+                inputFlownode = unSupStmt.FlowInAnchor;
+                nextOutputFlowNode = unSupStmt.FlowOutAnchor;
+            }
             drawAutoLink();
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
