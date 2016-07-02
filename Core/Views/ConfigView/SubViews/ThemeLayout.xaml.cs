@@ -19,7 +19,7 @@ namespace code_in.Views.ConfigView.SubViews
     /// <summary>
     /// Logique d'interaction pour CreateTheme.xaml
     /// </summary>
-    public partial class ThemeLayout : UserControl, ICodeInVisual
+    public partial class ThemeLayout : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
 
         private ResourceDictionary _themeResourceDictionary = null;
@@ -59,6 +59,16 @@ namespace code_in.Views.ConfigView.SubViews
         {
             this.HeaderGeneral.SetResourceReference(TabItem.HeaderProperty, keyPrefix + "GeneralHeader");
             this.HeaderNodal.SetResourceReference(TabItem.HeaderProperty, keyPrefix + "NodalHeader");
+            CurrentThemeLabel.SetResourceReference(Label.ContentProperty, "CurrentTheme");
+            DefaultTheme.SetResourceReference(ComboBoxItem.ContentProperty, "DefaultTheme");
+            SaveCurrentTheme.SetResourceReference(Button.ContentProperty, "SaveTheme");
+            RemoveCurrentTheme.SetResourceReference(Button.ContentProperty, "RemoveTheme");
+            NodalThemeBackground.SetResourceReference(Label.ContentProperty, "ThemeBackground");
+            NodalThemeGeneral.SetResourceReference(Label.ContentProperty, "ThemeGeneral");
+            NodalThemeGrid.SetResourceReference(Label.ContentProperty, "ThemeGrid");
+            NodalThemeNodes.SetResourceReference(Label.ContentProperty, "ThemeNodes");
+            NodalThemeSettings.SetResourceReference(Label.ContentProperty, "ThemeSettings");
+            NodalThemePreview.SetResourceReference(Label.ContentProperty, "ThemePreview");
         }
         #endregion ICode_inVisual
     }
