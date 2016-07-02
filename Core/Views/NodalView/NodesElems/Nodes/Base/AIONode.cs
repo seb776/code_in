@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
@@ -159,12 +160,12 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             }
         }
 
-        public T CreateAndAddNode<T>(EIOOption ioOption = EIOOption.NONE) where T : UIElement, INodeElem
+        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
             throw new NotImplementedException();
         }
 
-        public void AddNode<T>(T noden, EIOOption ioOption = EIOOption.NONE, int idx = -1) where T : UIElement, INodeElem
+        public void AddNode<T>(T noden, int idx = -1) where T : UIElement, INodeElem
         {
             throw new NotImplementedException();
         }

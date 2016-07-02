@@ -1,5 +1,6 @@
 ﻿using code_in.Managers;
 using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
@@ -597,17 +598,20 @@ namespace code_in.Views.NodalView
         }
         #endregion create
         #region IVisualNodeContainer
-        public T CreateAndAddNode<T>(EIOOption ioOption = EIOOption.NONE) where T : UIElement, INodeElem
+        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
+            System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
 
             node.SetParentView(null);
             node.SetRootView(this);
+            node.SetNodePresenter(nodePresenter);
+            nodePresenter.SetView(node);
 
             this.AddNode(node);
             return node;
         }
-        public void AddNode<T>(T node, EIOOption ioOption = EIOOption.NONE, int index = -1) where T : UIElement, INodeElem
+        public void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem
         {
             this.MainGrid.Children.Add(node as UIElement);
         }

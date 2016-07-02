@@ -29,7 +29,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         EditNodePanel EditMenu = null;
         protected IVisualNodeContainer _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
-        protected NodePresenter _nodePresenter = null;
+        protected INodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
         {
@@ -81,7 +81,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             return this.ItemName.Content as String;
         }
-        public void SetNodePresenter(NodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;

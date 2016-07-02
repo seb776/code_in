@@ -14,13 +14,15 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Markup;
 
 namespace code_in.Views.ConfigView.SubViews
 {
     /// <summary>
     /// Logique d'interaction pour GeneralLayout.xaml
     /// </summary>
-    public partial class GeneralLayout : UserControl, ICodeInVisual
+    public partial class GeneralLayout : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
 
         private ResourceDictionary _themeResourceDictionary = null;
@@ -34,6 +36,7 @@ namespace code_in.Views.ConfigView.SubViews
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
 
             InitializeComponent();
+            SetLanguageResources("");
         }
         public GeneralLayout() :
             this(Code_inApplication.MainResourceDictionary)
@@ -63,7 +66,7 @@ namespace code_in.Views.ConfigView.SubViews
             {
                 MessageBox.Show("Hello ! You just checked the tutorial mode !", "Confirmation"); // Juste une petite fenêtre qui s'ouvre pour vérifier que la checkbox fonctionne bien ;)
             }
-            
+
             // if box unchecked (doesn't work if it wasn't checked before)
             else
             {
@@ -118,8 +121,42 @@ namespace code_in.Views.ConfigView.SubViews
         }
         public void SetLanguageResources(String keyPrefix)
         {
-            throw new NotImplementedException();
+            LanguageSelectField.SetResourceReference(Label.ContentProperty, "LanguageSelectCategoryTitle");
+            FrancaisField.SetResourceReference(ComboBoxItem.ContentProperty, "FrenchField");
+            EnglishField.SetResourceReference(ComboBoxItem.ContentProperty, "EnglishField");
+            UpdateBootField.SetResourceReference(ComboBoxItem.ContentProperty, "BootUpdate");
+            UpdateDayField.SetResourceReference(ComboBoxItem.ContentProperty, "DailyUpdate");
+            UpdateMonthField.SetResourceReference(ComboBoxItem.ContentProperty, "MonthlyUpdate");
+            UpdateNeverField.SetResourceReference(ComboBoxItem.ContentProperty, "NeverUpdate");
+            UpdateField.SetResourceReference(Label.ContentProperty, "UpdateField");
+            maj_menu.SetResourceReference(Button.ContentProperty, "CheckUpdate");
+            OptionsField.SetResourceReference(Label.ContentProperty, "OptionField");
+            TutorialMode.SetResourceReference(Label.ContentProperty, "TutorialMode");
+            DropShadow.SetResourceReference(Label.ContentProperty, "DropShadow");
+
         }
         #endregion ICodeInVisual
+
+        private void ComboBox_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = sender as ComboBox;
+            string selectedName = (item.SelectedItem as ComboBoxItem).Name;
+            string path;
+            if (selectedName == "FrancaisField")
+                path = "C:/FrenchResourcesDictionary.xaml";
+            else
+                path = "C:/EnglishResourcesDictionary.xaml";
+            ResourceDictionary retResDict = null;
+            try
+            {
+                var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                retResDict = XamlReader.Load(reader) as ResourceDictionary;
+            }
+            catch (Exception except)
+            {
+                Console.Error.WriteLine(except.Message);
+            }
+            Code_inApplication.LanguagePresenter.ApplyLanguage(retResDict);
+        }
     }
 }

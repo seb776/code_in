@@ -21,25 +21,33 @@ namespace code_in.Presenters.Nodal.Nodes
     /// </summary>
     public class NodePresenter : INodePresenter // TODO @z0rg NodePresenter private and INodePresenter public ?
     {
-        private AstNode _model;
-        private INodeElem _view;
-        private INodalPresenter _nodalPresenter;
+        private AstNode _model = null;
+        private INodeElem _view = null;
+        private INodalPresenter _nodalPresenter = null;
+        private EVirtualNodeType _virtualType;
 
-        public NodePresenter(INodeElem view, INodalPresenter nodalPres, AstNode model) {
-            System.Diagnostics.Debug.Assert(view != null);
+        public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
             System.Diagnostics.Debug.Assert(model != null);
-            _view = view;
             _nodalPresenter = nodalPres;
             _model = model;
+            _virtualType = EVirtualNodeType.AST_NODE;
         }
-
-        public NodePresenter(INodeElem view, INodalPresenter nodalPres, Type modelType)
+        /// <summary>
+        /// This describes the type of node when it's a node that does not exist in the AST
+        /// </summary>
+        public enum EVirtualNodeType
         {
-
+            AST_NODE,
+            FUNC_ENTRY
         }
-
-
+        public NodePresenter(INodalPresenter nodalPres, EVirtualNodeType nodeType)
+        {
+            System.Diagnostics.Debug.Assert(nodalPres != null);
+            _nodalPresenter = nodalPres;
+            _model = null;
+            _virtualType = nodeType;
+        }
 
         public bool SetName(bool updateView, String name)
         {
@@ -117,9 +125,7 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void EditNode(object[] objects)
         {
-            NodePresenter tmpEdit = objects[0] as NodePresenter;
-            tmpEdit._view.ShowEditMenu();
-            //            MessageBox.Show(objects[0].GetType().ToString());
+            MessageBox.Show(objects[0].GetType().ToString());
         }
         static void ExpandNode(object[] objects)
         {
@@ -173,6 +179,15 @@ namespace code_in.Presenters.Nodal.Nodes
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
+/*            else // basic behaviour to avoid crashes
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
+            } */
             return optionsList.ToArray();
         }
 
@@ -185,6 +200,13 @@ namespace code_in.Presenters.Nodal.Nodes
         public string[] GetAvailableAccessModifiers()
         {
             throw new NotImplementedException();
+        }
+
+
+        public void SetView(INodeElem visualNode)
+        {
+            System.Diagnostics.Debug.Assert(visualNode != null);
+            this._view = visualNode;
         }
     }
 }

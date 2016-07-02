@@ -56,10 +56,10 @@ namespace code_in.Presenters.Nodal
 
         private void _generateVisualASTDeclaration(NodalModel model)
         {
-            UsingDeclNode usingNode;
+            //UsingDeclNode usingNode;
+            //usingNode = this._view.CreateAndAddNode<UsingDeclNode>(); // TODO @Seb @Mo make it work again
 
-            usingNode = this._view.CreateAndAddNode<UsingDeclNode>();
-            this._generateVisualASTDeclarationRecur(model.AST, this._view, usingNode);
+            this._generateVisualASTDeclarationRecur(model.AST, this._view, null/*usingNode*/);
         }
 
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
@@ -96,6 +96,7 @@ namespace code_in.Presenters.Nodal
         }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, IVisualNodeContainer UsingNode)
         {
+            var nodePresenter = new NodePresenter(this, node);
             bool goDeeper = true;
             IVisualNodeContainer parentNode = null;
             if (node.Children == null)
@@ -103,11 +104,8 @@ namespace code_in.Presenters.Nodal
             #region Namespace
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>();
-                namespaceNode.SetNodePresenter(new NodePresenter(namespaceNode, this, node));
-
+                NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>(nodePresenter);
                 parentNode = namespaceNode;
-
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
                 namespaceNode.SetName(tmpNode.Name);
             }
@@ -119,14 +117,14 @@ namespace code_in.Presenters.Nodal
                 #region Enum
                 if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Enum)
                 {
-                    ClassDeclNode enumDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
+                    ClassDeclNode enumDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
                     enumDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)3);
                     enumDeclNode.SetName(tmpNode.Name);
 
                     foreach (var v in tmpNode.Members)
                     {
                         var tmp = v as EnumMemberDeclaration;
-                        var item = enumDeclNode.CreateAndAddNode<DataFlowItem>();
+                        var item = enumDeclNode.CreateAndAddNode<DataFlowItem>(nodePresenter);
                         if (tmp.Initializer.IsNull == false)
                             item.SetName(v.Name + " = " + tmp.Initializer.ToString());
                         else
@@ -138,8 +136,7 @@ namespace code_in.Presenters.Nodal
                 #region Class
                 else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Class)
                 {
-                    ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
-                    classDeclNode.SetNodePresenter(new NodePresenter(classDeclNode, this, node));
+                    ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
                     parentNode = classDeclNode;
                     classDeclNode.SetName(tmpNode.Name);
                     setAccessModifiers(classDeclNode, tmpNode.Modifiers);
@@ -158,7 +155,7 @@ namespace code_in.Presenters.Nodal
                         {
                             ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
 
-                            var item = classDeclNode.CreateAndAddNode<ClassItem>();
+                            var item = classDeclNode.CreateAndAddNode<ClassItem>(nodePresenter);
                             item.SetName(field.Variables.FirstOrNullObject().Name);
                             //item.SetType(field.ReturnType.ToString());
                             setAccessModifiers(item, field.Modifiers); // here just call setAccessModifiers from the interface
@@ -171,8 +168,7 @@ namespace code_in.Presenters.Nodal
                 #region Interface
                 else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Interface)
                 {
-                    ClassDeclNode interfaceDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>();
-                    interfaceDeclNode.SetNodePresenter(new NodePresenter(interfaceDeclNode, this, node));
+                    ClassDeclNode interfaceDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
                     parentNode = interfaceDeclNode;
                     interfaceDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)2);
                     interfaceDeclNode.SetName(tmpNode.Name);
@@ -180,7 +176,6 @@ namespace code_in.Presenters.Nodal
 
                     //inheritance
                     InitInheritance(interfaceDeclNode, tmpNode);
-
                     //Generic
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
@@ -191,7 +186,7 @@ namespace code_in.Presenters.Nodal
                         {
                             ICSharpCode.NRefactory.CSharp.PropertyDeclaration properties = n as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
 
-                            var item = interfaceDeclNode.CreateAndAddNode<ClassItem>();
+                            var item = interfaceDeclNode.CreateAndAddNode<ClassItem>(nodePresenter);
                             item.SetName(properties.Name);
                             
                         }
@@ -203,10 +198,9 @@ namespace code_in.Presenters.Nodal
             #region Method
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
-                FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>();
+                FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
                 funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
-                funcDecl.SetNodePresenter(new NodePresenter(funcDecl, this, node));
 
 
                 var parameters = method.Parameters.ToList();
@@ -227,11 +221,12 @@ namespace code_in.Presenters.Nodal
             #region Using
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
             {
-                UsingDeclItem UsingItem = UsingNode.CreateAndAddNode<UsingDeclItem>();
-                UsingDeclaration UsingAstNode = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
+                // TODO @Seb @Mo make it work and do better
+                //UsingDeclItem UsingItem = UsingNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
+                //UsingDeclaration UsingAstNode = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
 
-                UsingItem.SetName(UsingAstNode.Namespace);
-                goDeeper = false;
+                //UsingItem.SetName(UsingAstNode.Namespace);
+                //goDeeper = false;
             }
 
             #endregion
@@ -242,8 +237,8 @@ namespace code_in.Presenters.Nodal
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
-            var entry = this._view.CreateAndAddNode<FuncEntryNode>();
-            var exit = this._view.CreateAndAddNode<ReturnStmtNode>();
+            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
+            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
 
             outputFlownode = entry.outAnchor;
 
@@ -255,34 +250,25 @@ namespace code_in.Presenters.Nodal
             }
 
             this._generateVisualASTStatements(method.Body);
-
-            inputFlownode = exit.inAnchor;
-            drawAutoLink();
-
-            var returnType = exit.CreateAndAddInput<FlowNodeItem>();
-            returnType.SetName(method.ReturnType.ToString());
         }
+        /// <summary>
+        /// This function displays the execution code from stmtArg to the NodalView attached.
+        /// </summary>
+        /// <param name="stmtArg"></param>
         private void _generateVisualASTStatements(Statement stmtArg)
         {
+            var nodePresenter = new NodePresenter(this, stmtArg);
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
                 foreach (var stmt in (stmtArg as BlockStatement))
-                {
                     this._generateVisualASTStatements(stmt);
-                }
-            }
-            if (stmtArg.GetType() == typeof(TryCatchStatement))
-            {
-                var tryCatch = this._view.CreateAndAddNode<UnSupStmtDeclNode>();
-                var tryStmt = stmtArg as TryCatchStatement;
-                tryCatch.NodeText.Text = tryStmt.ToString();
             }
             # region IfStmts
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                var ifNode = this._view.CreateAndAddNode<IfStmtNode>();
+                var ifNode = this._view.CreateAndAddNode<IfStmtNode>(nodePresenter);
                 inputFlownode = ifNode.inAnchor;
                 drawAutoLink();
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
@@ -293,21 +279,19 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(ifStmt.FalseStatement);
                 outputFlownode = ifNode.outAnchor;
             }
-
-
             # endregion IfStmts
             # region Loops
-            bool isWhile = (isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement)) ||
-                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement);
-            if (isWhile)
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ||
+                stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DoWhileStatement))
             {
+                bool isWhile = stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement);
                 dynamic whileStmt = stmtArg;
                 WhileStmtNode nodeLoop;
 
-                nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>();
+                nodeLoop = this._view.CreateAndAddNode<WhileStmtNode>(nodePresenter);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
-                nodeLoop.SetName((stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement) ? "While" : "DoWhile")); // TODO Remove
+                nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition); // Expressions
                 outputFlownode = nodeLoop.trueAnchor;
@@ -317,10 +301,10 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
                 var forStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForStatement;
-                var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>(nodePresenter);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
-               foreach (var forStmts in forStmt.Initializers)
+                foreach (var forStmts in forStmt.Initializers)
                     this._generateVisualASTStatements(forStmts);
                 nodeLoop.Condition.SetName(forStmt.Condition.ToString());
 
@@ -335,7 +319,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ICSharpCode.NRefactory.CSharp.ForeachStatement;
-                var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>();
+                var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>(nodePresenter);
                 inputFlownode = nodeLoop.inAnchor;
                 drawAutoLink();
 
@@ -347,9 +331,9 @@ namespace code_in.Presenters.Nodal
             }
             # endregion Loops
             #region Switch
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
             {
-                var switchStmtNode = this._view.CreateAndAddNode<SwitchStmtNode>();
+                var switchStmtNode = this._view.CreateAndAddNode<SwitchStmtNode>(nodePresenter);
                 var switchStmt = (stmtArg as SwitchStatement);
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowItem>();
                 exprInput.SetName(switchStmt.Expression.ToString());
@@ -376,10 +360,10 @@ namespace code_in.Presenters.Nodal
             #endregion Block Statement
             #region Single Statement
             #region Variable Declaration
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
                 var varStmt = (ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement)stmtArg;
-                var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>();
+                var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>(nodePresenter);
                 variableNode.SetName(varStmt.Type.ToString());
                 inputFlownode = variableNode.inAnchor;
                 nextOutputFlowNode = variableNode.outAnchor;
@@ -394,11 +378,11 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Variable Declaration
             #region ExpressionStatement
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
                 var exprStmt = stmtArg as ExpressionStatement;
 
-                var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>();
+                var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>(nodePresenter);
                 exprStmtNode.Expression.SetName(exprStmt.ToString());
                 inputFlownode = exprStmtNode.inAnchor;
                 nextOutputFlowNode = exprStmtNode.outAnchor;
@@ -406,32 +390,41 @@ namespace code_in.Presenters.Nodal
             }
             #endregion ExpressionStatement
             #region Return Statement
-            if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
             {
                 var returnStmt = stmtArg as ExpressionStatement;
-
-                var returnStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>();
+                var returnStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>(nodePresenter);
 
                 if (returnStmt != null)
                     this._generateVisualASTExpressions(returnStmt.Expression);
             }
             #endregion Return Statement
             #endregion Single Statement
+            else // Default Node
+            {
+                var unSupStmt = this._view.CreateAndAddNode<UnSupStmtDeclNode>(nodePresenter);
+                unSupStmt.NodeText.Text = stmtArg.ToString();
+                inputFlownode = unSupStmt.FlowInAnchor;
+                nextOutputFlowNode = unSupStmt.FlowOutAnchor;
+            }
             drawAutoLink();
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
         {
+            if (expr.IsNull)
+                return;
+            var nodePresenter = new NodePresenter(this, expr);
             if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
-                var unaryExpr = this._view.CreateAndAddNode<UnaryExprNode>();
+                var unaryExpr = this._view.CreateAndAddNode<UnaryExprNode>(nodePresenter);
                 unaryExpr.SetName(unaryExprOp.OperatorToken.ToString());
                 this._generateVisualASTExpressions(unaryExprOp.Expression);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
             {
                 var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
-                var objCreateExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var objCreateExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 objCreateExprNode.SetType("ObjCreateExpr");
                 var newType = objCreateExprNode.CreateAndAddInput<DataFlowItem>(); // TODO text input
                 newType.SetName(objCreateExpr.Type.ToString());
@@ -448,14 +441,14 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
             {
                 var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
-                var identExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var identExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 identExprNode.SetType("IdentExpr");
                 identExprNode.ExprOut.SetName(identExpr.Identifier);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
             {
                 var assignExpr = expr as ICSharpCode.NRefactory.CSharp.AssignmentExpression;
-                var assignExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
+                var assignExprNode = this._view.CreateAndAddNode<BinaryExprNode>(nodePresenter);
                 assignExprNode.SetType("AssignExpr");
 
                 this._generateVisualASTExpressions(assignExpr.Left);
@@ -464,7 +457,7 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
-                var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>();
+                var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>(nodePresenter);
 
                 this._generateVisualASTExpressions(binaryExpr.Left);
                 this._generateVisualASTExpressions(binaryExpr.Right);
@@ -473,21 +466,21 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
                 var memberRefExpr = expr as ICSharpCode.NRefactory.CSharp.MemberReferenceExpression;
-                var memberRefExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var memberRefExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 var inputTarget = memberRefExprNode.CreateAndAddInput<DataFlowItem>();
                 this._generateVisualASTExpressions(memberRefExpr.Target);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
             {
                 var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
-                var primExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(); // TODO Create a node for that
+                var primExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 primExprNode.SetType("PrimExpr");
                 primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
                 var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
-                var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>();
+                var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter);
                 var invokTargetNode = invokExprNode.CreateAndAddInput<DataFlowItem>();
 
                 this._generateVisualASTExpressions(invokExpr.Target);
@@ -500,6 +493,11 @@ namespace code_in.Presenters.Nodal
                     this._generateVisualASTExpressions(param);
                     i++;
                 }
+            }
+            else
+            {
+                var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>(nodePresenter);
+                defaultUnsupportedNode.NodeText.Text = expr.ToString();
             }
         }
 

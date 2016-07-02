@@ -11,7 +11,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     class UnSupStmtDeclNode : AStatementNode
     {
-        public TextBox NodeText;
+        public TextBox NodeText = null;
+        public FlowNodeItem FlowInAnchor = null;
+        public FlowNodeItem FlowOutAnchor = null;
 
         public UnSupStmtDeclNode() :
             this(Code_inApplication.MainResourceDictionary)
@@ -23,11 +25,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             base(themeResDict)
         {
             this.SetType("Unsupported Stmt");
-            this.CreateAndAddInput<FlowNodeItem>();
-            this.CreateAndAddOutput<FlowNodeItem>();
-            TextBox tb = new TextBox();
-            this.NodeText = tb;
-            this.ContentLayout.Children.Add(tb);
+            FlowInAnchor = this.CreateAndAddInput<FlowNodeItem>();
+            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            this.NodeText = new TextBox();
+            this.ContentLayout.Children.Add(this.NodeText);
         }
     }
 }

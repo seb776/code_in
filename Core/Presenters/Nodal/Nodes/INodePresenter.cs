@@ -34,5 +34,11 @@ namespace code_in.Presenters.Nodal.Nodes
         void AddInheritance(bool updateView, String name);
         //bool AddConstraint() // TODO @z0rg
         void SetName(bool updateView, String name);
+
+        /// <summary>
+        /// This function is used to associate the visual node to the node presenter.
+        /// </summary>
+        /// <param name="visualNode"></param>
+        void SetView(INodeElem visualNode);
     }
 }

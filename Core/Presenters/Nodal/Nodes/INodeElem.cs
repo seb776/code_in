@@ -18,7 +18,7 @@ namespace code_in.Presenters.Nodal
         IVisualNodeContainer GetParentView();
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
         IVisualNodeContainerDragNDrop GetRootView();
-        void SetNodePresenter(NodePresenter nodePresenter);
+        void SetNodePresenter(INodePresenter nodePresenter);
         void ShowEditMenu();
     }
     // enum globale

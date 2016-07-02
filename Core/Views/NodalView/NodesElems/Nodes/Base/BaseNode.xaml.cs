@@ -25,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private ResourceDictionary _themeResourceDictionary = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
         private IVisualNodeContainer _parentView = null;
-        private NodePresenter _nodePresenter = null;
+        private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
         public BaseNode(ResourceDictionary themeResDict)
         {
@@ -78,7 +78,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.SelectionBorder.Visibility = (isSelected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
         }
 
-        public void SetNodePresenter(NodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
