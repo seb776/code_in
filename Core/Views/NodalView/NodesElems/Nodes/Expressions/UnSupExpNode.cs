@@ -11,7 +11,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     class UnSupExpNode : AExpressionNode
     {
         public TextBox NodeText;
-        public DataFlowItem OperandA = null;
 
         public UnSupExpNode() :
             this(Code_inApplication.MainResourceDictionary)
@@ -22,8 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public UnSupExpNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetType("Unsupported Stmt");
-            OperandA = this.CreateAndAddOutput<DataFlowItem>();
+            this.SetType("Unsupported Expr");
             TextBox tb = new TextBox();
             this.NodeText = tb;
             this.ContentLayout.Children.Add(tb);

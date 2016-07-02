@@ -421,6 +421,8 @@ namespace code_in.Presenters.Nodal
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr)
         {
+            if (expr.IsNull)
+                return;
             if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
@@ -500,6 +502,11 @@ namespace code_in.Presenters.Nodal
                     this._generateVisualASTExpressions(param);
                     i++;
                 }
+            }
+            else
+            {
+                var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>();
+                defaultUnsupportedNode.NodeText.Text = expr.ToString();
             }
         }
 
