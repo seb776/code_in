@@ -75,12 +75,9 @@ namespace code_in.Views.NodalView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
-            MessageBox.Show("toto");
 
             if (e.Key == Key.L)
             {
-                MessageBox.Show("TITI");
-
                 var lineType = Code_inApplication.MainResourceDictionary["linkType"];
                 if (lineType == null)
                     Code_inApplication.MainResourceDictionary["linkType"] = 0;

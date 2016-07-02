@@ -38,6 +38,16 @@ namespace code_in.Views.NodalView
         {
             var actions = nodePresenter.GetActions();
             bool modifiersArea = false;
+            int i = 0; // i begin to 1 because grid.column"0" is the name as a default area
+
+            if ((actions & ENodeActions.NAME) == ENodeActions.NAME)
+            {
+                _mainArea.Visibility = System.Windows.Visibility.Visible;
+                _mainArea.IsEnabled = true;
+                Grid.SetColumn(_mainArea, i);
+                ++i;
+                // already set always visible because all nodes will need a setName, like a default area - Not really needed
+            }
 
             if ((actions & ENodeActions.ACCESS_MODIFIERS) == ENodeActions.ACCESS_MODIFIERS)
             {
@@ -47,8 +57,9 @@ namespace code_in.Views.NodalView
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
                 FirstBorder.IsEnabled = true;
                 FirstBorder.Visibility = System.Windows.Visibility.Visible;
-                Grid.SetColumn(FirstBorder, 1);
-                Grid.SetColumn(_modifiersArea, 2);
+                Grid.SetColumn(FirstBorder, i); // i = 1
+                ++i;
+                Grid.SetColumn(_modifiersArea, i); // i = 2
             }
 /*            else
             {
@@ -62,19 +73,8 @@ namespace code_in.Views.NodalView
                 _modifiersArea.IsEnabled = true;
                 _modifiersList.IsEnabled = true;
                 _modifiersList.Visibility = System.Windows.Visibility.Visible;
-                Grid.SetColumn(_modifiersList, 2);
-            }
-            if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE) // TODO mais pas forcement pour la beta
-            {
-            }
-            if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT) // @Seb on oublie pour la beta
-            {
-                _commentArea.Visibility = System.Windows.Visibility.Visible;
-                _commentArea.IsEnabled = true;
-                FourthBorder.Visibility = System.Windows.Visibility.Visible;
-                FourthBorder.IsEnabled = true;
-                Grid.SetColumn(FourthBorder, 7);
-                Grid.SetColumn(_commentArea, 8);
+                Grid.SetColumn(_modifiersList, i); // i = 2
+                ++i;
             }
             if ((actions & ENodeActions.GENERICS) == ENodeActions.GENERICS)
             {
@@ -82,8 +82,10 @@ namespace code_in.Views.NodalView
                 DeclGenericsField.Visibility = System.Windows.Visibility.Visible;
                 SecondBorder.IsEnabled = true;
                 SecondBorder.Visibility = System.Windows.Visibility.Visible;
-                Grid.SetColumn(SecondBorder, 3);
-                Grid.SetColumn(DeclGenericsField, 4);
+                Grid.SetColumn(SecondBorder, i); // i = 3
+                ++i;
+                Grid.SetColumn(DeclGenericsField, i); // i = 4
+                ++i;
             }
             if ((actions & ENodeActions.INHERITANCE) == ENodeActions.INHERITANCE)
             {
@@ -91,15 +93,90 @@ namespace code_in.Views.NodalView
                 InheritanceField.Visibility = System.Windows.Visibility.Visible;
                 ThirdBorder.IsEnabled = true;
                 ThirdBorder.Visibility = System.Windows.Visibility.Visible;
-                Grid.SetColumn(ThirdBorder, 5);
-                Grid.SetColumn(InheritanceField, 6);
+                Grid.SetColumn(ThirdBorder, i); // i = 5
+                ++i;
+                Grid.SetColumn(InheritanceField, i); // i = 6
+                ++i;
             }
-            if ((actions & ENodeActions.NAME) == ENodeActions.NAME)
+            if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT)
             {
-                // already set always visible because all nodes will need a setName
+                _commentArea.Visibility = System.Windows.Visibility.Visible;
+                _commentArea.IsEnabled = true;
+                FourthBorder.Visibility = System.Windows.Visibility.Visible;
+                FourthBorder.IsEnabled = true;
+                Grid.SetColumn(FourthBorder, i); // i = 7
+                ++i;
+                Grid.SetColumn(_commentArea, i); // i = 8
+                ++i;
+            }
+            if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE)
+            {
+                AttributesField.Visibility = System.Windows.Visibility.Visible;
+                AttributesField.IsEnabled = true;
+                FifthBorder.Visibility = System.Windows.Visibility.Visible;
+                FifthBorder.IsEnabled = true;
+                Grid.SetColumn(FifthBorder, i); // i = 9
+                ++i;
+                Grid.SetColumn(AttributesField, i); // i = 10
+                ++i;
             }
             this._modifiersArea.IsEnabled = modifiersArea;
             this._modifiersArea.Visibility = (modifiersArea ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
+
+            if ((actions & ENodeActions.EXEC_TYPE) == ENodeActions.EXEC_TYPE)
+            {
+                ExecTypeField.Visibility = System.Windows.Visibility.Visible;
+                ExecTypeField.IsEnabled = true;
+                SixthBorder.Visibility = System.Windows.Visibility.Visible;
+                SixthBorder.IsEnabled = true;
+                Grid.SetColumn(SixthBorder, i); // i = 11
+                ++i;
+                Grid.SetColumn(ExecTypeField, i); // i = 12
+                ++i;
+            }
+            if ((actions & ENodeActions.EXEC_PARAMETERS) == ENodeActions.EXEC_PARAMETERS)
+            {
+                ExecParametersField.Visibility = System.Windows.Visibility.Visible;
+                ExecParametersField.IsEnabled = true;
+                SeventhBorder.Visibility = System.Windows.Visibility.Visible;
+                SeventhBorder.IsEnabled = true;
+                Grid.SetColumn(SeventhBorder, i); // i = 13
+                ++i;
+                Grid.SetColumn(ExecParametersField, i); // i = 14
+                ++i;
+            }
+            if ((actions & ENodeActions.EXEC_GENERICS) == ENodeActions.EXEC_GENERICS)
+            {
+                ExecGenericsField.Visibility = System.Windows.Visibility.Visible;
+                ExecGenericsField.IsEnabled = true;
+                EighthBorder.Visibility = System.Windows.Visibility.Visible;
+                EighthBorder.IsEnabled = true;
+                Grid.SetColumn(EighthBorder, i); // i = 15
+                ++i;
+                Grid.SetColumn(ExecGenericsField, i); // i = 16
+                ++i;
+            }
+            if ((actions & ENodeActions.TYPE) == ENodeActions.TYPE)
+            {
+                TypeField.Visibility = System.Windows.Visibility.Visible;
+                TypeField.IsEnabled = true;
+                NinthBorder.Visibility = System.Windows.Visibility.Visible;
+                NinthBorder.IsEnabled = true;
+                Grid.SetColumn(NinthBorder, i); // i = 17
+                ++i;
+                Grid.SetColumn(TypeField, i); // i = 18
+                ++i;
+            }
+            if ((actions & ENodeActions.TEXT) == ENodeActions.TEXT)
+            {
+                TextField.Visibility = System.Windows.Visibility.Visible;
+                TextField.IsEnabled = true;
+                TenthBorder.Visibility = System.Windows.Visibility.Visible;
+                TenthBorder.IsEnabled = true;
+                Grid.SetColumn(TenthBorder, i); // i = 19
+                ++i;
+                Grid.SetColumn(TextField, i); // i = 20
+            }
         }
 
         #region ICodeInVisual
@@ -131,6 +208,42 @@ namespace code_in.Views.NodalView
         }
 
         private void AddGeneric(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void QuitEditMenu(object sender, RoutedEventArgs e)
+        {
+            ((StackPanel)this.Parent).Children.Clear();
+        }
+
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void _accessModifiersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
