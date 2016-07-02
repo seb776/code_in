@@ -100,14 +100,14 @@ namespace code_in.Views.NodalView
             }
             if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT)
             {
-                _commentArea.Visibility = System.Windows.Visibility.Visible;
+/*                _commentArea.Visibility = System.Windows.Visibility.Visible;
                 _commentArea.IsEnabled = true;
                 FourthBorder.Visibility = System.Windows.Visibility.Visible;
                 FourthBorder.IsEnabled = true;
                 Grid.SetColumn(FourthBorder, i); // i = 7
                 ++i;
                 Grid.SetColumn(_commentArea, i); // i = 8
-                ++i;
+                ++i;*/
             }
             if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE)
             {
