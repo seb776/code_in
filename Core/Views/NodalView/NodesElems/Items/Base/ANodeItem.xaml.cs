@@ -26,6 +26,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
+        EditNodePanel EditMenu = null;
         protected IVisualNodeContainer _parentView = null;
         private IVisualNodeContainerDragNDrop _rootView = null;
         protected NodePresenter _nodePresenter = null;
@@ -60,6 +61,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         { }
         public virtual void OnMouseLeave()
         { }
+
+        public void ShowEditMenu()
+        {
+            EditMenu = new EditNodePanel(_themeResourceDictionary);
+            //this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
+        }
 
         #region INodeElem
         public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }

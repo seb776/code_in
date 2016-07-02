@@ -109,7 +109,9 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void EditNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            NodePresenter tmpEdit = objects[0] as NodePresenter;
+            tmpEdit._view.ShowEditMenu();
+            //            MessageBox.Show(objects[0].GetType().ToString());
         }
         static void ExpandNode(object[] objects)
         {
@@ -163,15 +165,6 @@ namespace code_in.Presenters.Nodal.Nodes
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
-/*            else // basic behaviour to avoid crashes
-            {
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
-            } */
             return optionsList.ToArray();
         }
 

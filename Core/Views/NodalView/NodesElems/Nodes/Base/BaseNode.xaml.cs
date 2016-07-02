@@ -110,5 +110,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
+
+
+        public void ShowEditMenu()
+        {
+            EditMenu = new EditNodePanel(_themeResourceDictionary);
+            this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
+        }
     }
 }

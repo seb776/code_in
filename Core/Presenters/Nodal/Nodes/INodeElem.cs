@@ -19,6 +19,7 @@ namespace code_in.Presenters.Nodal
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
         IVisualNodeContainerDragNDrop GetRootView();
         void SetNodePresenter(NodePresenter nodePresenter);
+        void ShowEditMenu();
     }
     // enum globale
     public enum EAccessModifier
