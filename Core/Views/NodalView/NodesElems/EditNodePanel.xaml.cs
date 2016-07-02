@@ -95,5 +95,15 @@ namespace code_in.Views.NodalView
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
+
+        private void DeleteGeneric(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddGeneric(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

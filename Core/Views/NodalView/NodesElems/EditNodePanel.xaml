@@ -13,6 +13,10 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="_modifiersArea" Grid.Column="0" Orientation="Vertical" Height="auto">
                 <Label x:Name="_modifiersAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Modifiers</Label>
@@ -41,6 +45,27 @@
             <StackPanel x:Name="_commentArea" Grid.Column="4" Orientation="Vertical">
                 <Label Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Comment</Label>
                 <TextBlock Foreground="Green" Background="#6B000000" TextWrapping="Wrap">here comments</TextBlock>
+            </StackPanel>
+            <Border Grid.Column="5" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
+            <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" Grid.Column="6">
+                <Label Foreground="White">Generics</Label>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Foreground="White" Margin="0,0,10,0">In</RadioButton>
+                    <RadioButton Foreground="White" Margin="0,0,10,0">Out</RadioButton>
+                    <RadioButton Foreground="White" Margin="0,0,10,0">Nothing</RadioButton>
+                    <TextBlock Foreground="Black" Background="White">Name</TextBlock>
+                    <Button Click="DeleteGeneric" HorizontalAlignment="Right" Width="20">X</Button>
+                </StackPanel>
+                <Button Click="AddGeneric" Width="40">+</Button>
+            </StackPanel>
+            <Border Grid.Column="7" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
+            <StackPanel x:Name="InheritanceField" Orientation="Vertical" Grid.Column="8">
+                <Label Foreground="White">Inheritance</Label>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="Black" Background="White" HorizontalAlignment="Stretch">Name</TextBlock>
+                    <Button HorizontalAlignment="Right">X</Button>
+                </StackPanel>
+                <Button Width="40">+</Button>
             </StackPanel>
         </Grid>
     </Grid>
