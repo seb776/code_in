@@ -60,7 +60,15 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public ENodeActions GetActions()
         {
-            throw new NotImplementedException();
+            if (_model != null)
+            {
+                if (_model.GetType() == typeof(TypeDeclaration))
+                {
+                    return (ENodeActions.GENERICS & ENodeActions.NAME & ENodeActions.ACCESS_MODIFIERS & ENodeActions.INHERITANCE & ENodeActions.MODIFIERS & ENodeActions.ATTRIBUTE);
+                }
+
+            }
+            return (ENodeActions.GENERICS & ENodeActions.NAME & ENodeActions.ACCESS_MODIFIERS & ENodeActions.INHERITANCE & ENodeActions.MODIFIERS & ENodeActions.ATTRIBUTE);
         }
 
         public void AddGeneric(bool updateView, string name)

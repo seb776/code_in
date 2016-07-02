@@ -18,54 +18,54 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="_modifiersArea" Grid.Column="0" Orientation="Vertical" Height="auto">
+            <StackPanel x:Name="_modifiersArea" Orientation="Vertical" Height="auto"  IsEnabled="False" Visibility="Hidden">
                 <Label x:Name="_modifiersAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Modifiers</Label>
-                <StackPanel x:Name="_accessModifiers" Orientation="Horizontal">
+                <StackPanel x:Name="_accessModifiers" Orientation="Horizontal" IsEnabled="False" Visibility="Hidden">
                     <Label x:Name="_accessModifiersLabel" Foreground="White">Access modifiers</Label>
                     <ComboBox x:Name="_accessModifiersList" Margin="5,0,0,0" Width="150">
                         <ComboBoxItem>public</ComboBoxItem>
                         <ComboBoxItem>private</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden">
                     <CheckBox Foreground="White">virtual</CheckBox>
                     <CheckBox Foreground="White">abstract</CheckBox>
                     <CheckBox Foreground="White">override</CheckBox>
                 </StackPanel>
             </StackPanel>
-            <Border Grid.Column="1" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="_mainArea" Grid.Column="2" Orientation="Vertical">
+            <Border x:Name="FirstBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+            <StackPanel x:Name="_mainArea" Grid.Column="0" Orientation="Vertical">
                 <Label x:Name="_mainAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">General</Label>
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="_nameFieldTitle" Foreground="White">Name</Label>
                     <TextBox Foreground="Gray">Type a name</TextBox>
                 </StackPanel>
             </StackPanel>
-            <Border Grid.Column="3" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="_commentArea" Grid.Column="4" Orientation="Vertical">
+            <Border x:Name="SecondBorder" Grid.Column="3" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+            <StackPanel x:Name="_commentArea" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Comment</Label>
                 <TextBlock Foreground="Green" Background="#6B000000" TextWrapping="Wrap">here comments</TextBlock>
             </StackPanel>
-            <Border Grid.Column="5" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" Grid.Column="6">
+            <Border x:Name="ThirdBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+            <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White">Generics</Label>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Foreground="White" Margin="0,0,10,0">In</RadioButton>
                     <RadioButton Foreground="White" Margin="0,0,10,0">Out</RadioButton>
                     <RadioButton Foreground="White" Margin="0,0,10,0">Nothing</RadioButton>
-                    <TextBlock Foreground="Black" Background="White">Name</TextBlock>
-                    <Button Click="DeleteGeneric" HorizontalAlignment="Right" Width="20">X</Button>
+                    <TextBox Foreground="Gray" Background="White">Type a name</TextBox>
+                    <Button Click="DeleteGeneric" HorizontalAlignment="Right" Width="20" Margin="10, 0, 0, 0">X</Button>
                 </StackPanel>
-                <Button Click="AddGeneric" Width="40">+</Button>
+                <Button Click="AddGeneric" Width="40" Margin="0, 10, 0, 0">+</Button>
             </StackPanel>
-            <Border Grid.Column="7" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="InheritanceField" Orientation="Vertical" Grid.Column="8">
+            <Border x:Name="FourthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+            <StackPanel x:Name="InheritanceField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White">Inheritance</Label>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="Black" Background="White" HorizontalAlignment="Stretch">Name</TextBlock>
-                    <Button HorizontalAlignment="Right">X</Button>
+                    <TextBox Foreground="Gray" Background="White">Type a name</TextBox>
+                    <Button HorizontalAlignment="Right" Margin="10, 0, 0, 0" Width="20">X</Button>
                 </StackPanel>
-                <Button Width="40">+</Button>
+                <Button x:Name="AddInheritance" Width="40" Margin="0, 10, 0, 0">+</Button>
             </StackPanel>
         </Grid>
     </Grid>

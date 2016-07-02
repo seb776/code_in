@@ -44,6 +44,11 @@ namespace code_in.Views.NodalView
                 _accessModifiers.IsEnabled = true;
                 _accessModifiers.Visibility = System.Windows.Visibility.Visible;
                 modifiersArea = true;
+                _modifiersArea.Visibility = System.Windows.Visibility.Visible;
+                FirstBorder.IsEnabled = true;
+                FirstBorder.Visibility = System.Windows.Visibility.Visible;
+                Grid.SetColumn(FirstBorder, 1);
+                Grid.SetColumn(_modifiersArea, 2);
             }
             else
             {
@@ -68,6 +73,7 @@ namespace code_in.Views.NodalView
             }
             if ((actions & ENodeActions.NAME) == ENodeActions.NAME)
             {
+
             }
             this._modifiersArea.IsEnabled = modifiersArea;
             this._modifiersArea.Visibility = (modifiersArea ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);

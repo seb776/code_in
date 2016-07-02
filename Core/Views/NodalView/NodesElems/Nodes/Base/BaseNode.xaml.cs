@@ -115,6 +115,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void ShowEditMenu()
         {
             EditMenu = new EditNodePanel(_themeResourceDictionary);
+            EditMenu.SetFields(_nodePresenter);
             this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
         }
     }
