@@ -49,19 +49,20 @@ namespace code_in.Presenters.Nodal.Nodes
             _virtualType = nodeType;
         }
 
-        public bool SetName(bool updateView, String name)
+        public bool SetName(String name)
         {
             Dictionary<Type, bool> setNameRoutines = new Dictionary<Type,bool>(); 
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
 
             var routine = setNameRoutines[_model.GetType()];
             if ((routine != null) && routine)
                 (_model as dynamic).Name = name;
             else
                 throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
-            if (updateView)
+ //           if (updateView)
                 _view.SetName(name);
             return true;
         }
@@ -96,22 +97,22 @@ namespace code_in.Presenters.Nodal.Nodes
             return (0);
         }
 
-        public void AddGeneric(bool updateView, string name)
+        public void AddGeneric(string name)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveGeneric(bool updateView, int index)
+        public void RemoveGeneric(int index)
         {
             throw new NotImplementedException();
         }
 
-        public void AddInheritance(bool updateView, string name)
+        public void AddInheritance(string name)
         {
             throw new NotImplementedException();
         }
 
-        void INodePresenter.SetName(bool updateView, string name)
+        void INodePresenter.SetName(string name)
         {
             throw new NotImplementedException();
         }

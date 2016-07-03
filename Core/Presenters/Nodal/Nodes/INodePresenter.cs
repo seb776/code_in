@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,11 +34,14 @@ namespace code_in.Presenters.Nodal.Nodes
         ENodeActions GetActions(); // Gets the possible actions for this node
         String[] GetAvailableModifiers(); // TODO @z0rg: String ? :S
         String[] GetAvailableAccessModifiers();
-        void AddGeneric(bool updateView, String name);
-        void RemoveGeneric(bool updateView, int index);
-        void AddInheritance(bool updateView, String name);
+        void AddGeneric(String name, EGenericVariance variance);
+        void RemoveGeneric(int index);
+        void AddInheritance(String name);
+        void RemoveInheritance(int index);
+        void SetAccesModifier(string AccessModifier);
+        void SetOtherModifiers();
         //bool AddConstraint() // TODO @z0rg
-        void SetName(bool updateView, String name);
+        void SetName(String name);
 
         /// <summary>
         /// This function is used to associate the visual node to the node presenter.

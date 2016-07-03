@@ -40,13 +40,12 @@ namespace code_in.Views.NodalView
             bool modifiersArea = false;
             int i = 0; // i begin to 1 because grid.column"0" is the name as a default area
 
-            if ((actions & ENodeActions.NAME) == ENodeActions.NAME)
+            if ((actions & ENodeActions.NAME) == ENodeActions.NAME) // TODO for optimisation, create borders and columns at runtime -> light optimisation
             {
                 _mainArea.Visibility = System.Windows.Visibility.Visible;
                 _mainArea.IsEnabled = true;
                 Grid.SetColumn(_mainArea, i);
                 ++i;
-                // already set always visible because all nodes will need a setName, like a default area - Not really needed
             }
 
             if ((actions & ENodeActions.ACCESS_MODIFIERS) == ENodeActions.ACCESS_MODIFIERS)
