@@ -9,7 +9,7 @@ namespace code_in.Presenters.Nodal
 {
     interface IContainingModifiers
     {
-        void setModifiersList(Modifiers modifiers);
+        void setModifiersList(Modifiers modifiers); // TODO @Mo the view should not be aware of NRefactory types
 /*        {
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                 ModifiersList.Add("new");

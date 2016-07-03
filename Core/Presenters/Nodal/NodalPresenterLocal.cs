@@ -57,9 +57,6 @@ namespace code_in.Presenters.Nodal
 
         private void _generateVisualASTDeclaration(NodalModel model)
         {
-            //UsingDeclNode usingNode;
-            //usingNode = this._view.CreateAndAddNode<UsingDeclNode>(); // TODO @Seb @Mo make it work again
-
             this._generateVisualASTDeclarationRecur(model.AST, this._view /*,usingNode*/);
         }
 
@@ -98,28 +95,35 @@ namespace code_in.Presenters.Nodal
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer)
         {
             var nodePresenter = new NodePresenter(this, node);
-            bool goDeeper = true;
-            IVisualNodeContainer parentNode = null;
             if (node.Children == null)
                 return;
+            #region Global scope
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SyntaxTree))
+            {
+                var syntaxTree = node as ICSharpCode.NRefactory.CSharp.SyntaxTree;
+                foreach (var decl in syntaxTree.Members)
+                    this._generateVisualASTDeclarationRecur(decl, parentContainer);
+            }
+            #endregion Global scope
             #region Namespace
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
                 NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>(nodePresenter);
-                parentNode = namespaceNode;
-                var tmpNode = (ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)node;
-                namespaceNode.SetName(tmpNode.Name);
+                var namespaceDecl = node as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
+                namespaceNode.SetName(namespaceDecl.Name);
+                foreach (var member in namespaceDecl.Members)
+                    this._generateVisualASTDeclarationRecur(member, namespaceNode);
             }
             #endregion
             #region Classes (interface, struct, class, enum)
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
                 var tmpNode = (ICSharpCode.NRefactory.CSharp.TypeDeclaration)node;
                 #region Enum
                 if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Enum)
                 {
                     ClassDeclNode enumDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
-                    enumDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)3);
+                    enumDeclNode.SetClassType(code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType.ENUM);
                     enumDeclNode.SetName(tmpNode.Name);
 
                     foreach (var v in tmpNode.Members)
@@ -138,7 +142,6 @@ namespace code_in.Presenters.Nodal
                 else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Class)
                 {
                     ClassDeclNode classDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
-                    parentNode = classDeclNode;
                     classDeclNode.SetName(tmpNode.Name);
                     setAccessModifiers(classDeclNode, tmpNode.Modifiers);
                     setOtherModifiers(classDeclNode, tmpNode.Modifiers);
@@ -148,29 +151,15 @@ namespace code_in.Presenters.Nodal
                     //Generic
                     SetAllGenerics(classDeclNode, tmpNode);
 
-                    //goDeeper = false;
-                    foreach (var n in node.Children)
-                    {
-                        if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
-                        {
-                            ICSharpCode.NRefactory.CSharp.FieldDeclaration field = n as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
-
-                            var item = classDeclNode.CreateAndAddNode<ClassItem>(nodePresenter);
-                            item.SetName(field.Variables.FirstOrNullObject().Name);
-                            //item.SetType(field.ReturnType.ToString());
-                            setAccessModifiers(item, field.Modifiers); // here just call setAccessModifiers from the interface
-                            setOtherModifiers(item, field.Modifiers);
-                        }
-                    }
-
+                    foreach (var member in tmpNode.Members)
+                        _generateVisualASTDeclarationRecur(member, classDeclNode);
                 }
                 #endregion Class
                 #region Interface
                 else if (tmpNode.ClassType == ICSharpCode.NRefactory.CSharp.ClassType.Interface)
                 {
                     ClassDeclNode interfaceDeclNode = parentContainer.CreateAndAddNode<ClassDeclNode>(nodePresenter);
-                    parentNode = interfaceDeclNode;
-                    interfaceDeclNode.SetClassType((code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType)2);
+                    interfaceDeclNode.SetClassType(code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode.EType.INTERFACE);
                     interfaceDeclNode.SetName(tmpNode.Name);
                     setAccessModifiers(interfaceDeclNode, tmpNode.Modifiers);
 
@@ -179,24 +168,34 @@ namespace code_in.Presenters.Nodal
                     //Generic
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
-                    //goDeeper = false;
-                    foreach (var n in tmpNode.Members)
-                    {
-                        if (n.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PropertyDeclaration))
-                        {
-                            ICSharpCode.NRefactory.CSharp.PropertyDeclaration properties = n as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
-
-                            var item = interfaceDeclNode.CreateAndAddNode<ClassItem>(nodePresenter);
-                            item.SetName(properties.Name);
-                            
-                        }
-                    }
+                    foreach (var member in tmpNode.Members)
+                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode);
                 }
                 #endregion Interface
             }
             #endregion Classes (interface, struct, class, enum)
+            #region Field
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
+            {
+                var fieldDecl = node as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
+                var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
+                item.SetName(fieldDecl.ReturnType.ToString() + " ");
+                foreach (var variable in fieldDecl.Variables)
+                    item.SetName(item.GetName() + ", " + variable.Name);
+                setAccessModifiers(item, fieldDecl.Modifiers); // here just call setAccessModifiers from the interface
+                setOtherModifiers(item, fieldDecl.Modifiers);
+            }
+            #endregion Field
+            #region Property (get, set)
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PropertyDeclaration))
+            {
+                var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
+                var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
+                item.SetName(propertyDecl.ToString()); // TODO Complete
+            }
+            #endregion Property (get, set)
             #region Method
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
                 FuncDeclItem funcDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
                 funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
@@ -212,27 +211,19 @@ namespace code_in.Presenters.Nodal
                     //item.SetItemType(parameters[i].Type.ToString());
                 }
                 funcDecl.SetName(method.Name);
-                goDeeper = false;
                 setOtherModifiers(funcDecl, method.Modifiers);
                 setAccessModifiers(funcDecl, method.Modifiers);
-
             }
-            #endregion
+            #endregion Method
             #region Using
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
             {
-                // TODO @Seb @Mo make it work and do better
-                //UsingDeclItem UsingItem = UsingNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
-                //UsingDeclaration UsingAstNode = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
-
-                //UsingItem.SetName(UsingAstNode.Namespace);
-                //goDeeper = false;
+                var usingDecl = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
+                var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
+                UsingDeclItem UsingItem = usingDeclNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
+                UsingItem.SetName(usingDecl.Namespace);
             }
-
-            #endregion
-            if (goDeeper)
-                foreach (var n in node.Children) if (n.GetType() != typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
-                        this._generateVisualASTDeclarationRecur(n, (parentNode != null ? parentNode : parentContainer));
+            #endregion Using
         }
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
