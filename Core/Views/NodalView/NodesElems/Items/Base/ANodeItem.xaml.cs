@@ -16,6 +16,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -86,6 +87,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
         }
+        public void AddGeneric(string name, EGenericVariance variance)
+        { }
         #endregion INodeElem
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }

@@ -49,7 +49,7 @@ namespace code_in.Presenters.Nodal.Nodes
             _virtualType = nodeType;
         }
 
-        public bool SetName(String name)
+        public void SetName(String name)
         {
             Dictionary<Type, bool> setNameRoutines = new Dictionary<Type,bool>(); 
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
@@ -62,11 +62,9 @@ namespace code_in.Presenters.Nodal.Nodes
                 (_model as dynamic).Name = name;
             else
                 throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
- //           if (updateView)
                 _view.SetName(name);
-            return true;
         }
-
+        // Return actions according to types
         public ENodeActions GetActions()
         {
             if (_model != null)
@@ -97,11 +95,12 @@ namespace code_in.Presenters.Nodal.Nodes
             return (0);
         }
 
-        public void AddGeneric(string name)
+        // methods for the Nodes modification
+
+        public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
         {
             throw new NotImplementedException();
         }
-
         public void RemoveGeneric(int index)
         {
             throw new NotImplementedException();
@@ -111,12 +110,58 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             throw new NotImplementedException();
         }
-
-        void INodePresenter.SetName(string name)
+        public void RemoveInheritance(int index)
         {
             throw new NotImplementedException();
         }
 
+/*        void INodePresenter.SetName(string name)
+        {
+//            throw new NotImplementedException();
+            (_model as dynamic).Name = name;
+        }*/
+
+
+        public void SetAccesModifier(string AccessModifier)
+        {
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                MessageBox.Show(_model.GetType().ToString() + " " + AccessModifier);
+                var typeDecl = (_model as TypeDeclaration);
+                Modifiers tmp = typeDecl.Modifiers;
+                typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
+                if (AccessModifier == "public")
+                    typeDecl.Modifiers |= Modifiers.Public;
+                if (AccessModifier == "private")
+                    typeDecl.Modifiers |= Modifiers.Private;
+                if (AccessModifier == "protected")
+                    typeDecl.Modifiers |= Modifiers.Protected;
+                if (AccessModifier == "internal")
+                    typeDecl.Modifiers |= Modifiers.Internal;
+                (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
+            }
+            //            throw new NotImplementedException();
+        }
+
+        public void SetOtherModifiers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetExecParams(int paramsNumber)
+        {
+            while (paramsNumber >= 0)
+            {
+//                _view.
+            }
+        }
+
+        public void AddExecGeneric()
+        {
+
+        }
+
+        // methods for the contextMenu
         static void AddNode(object[] objects)
         {
             MessageBox.Show(objects[0].GetType().ToString());
@@ -173,6 +218,7 @@ namespace code_in.Presenters.Nodal.Nodes
             MessageBox.Show(objects[0].GetType().ToString());
         }
 
+        //This part bind methods to the options of the contextMenu
         public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
         {
             List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions,Action<object[]>>>();
@@ -230,27 +276,6 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             System.Diagnostics.Debug.Assert(visualNode != null);
             this._view = visualNode;
-        }
-
-
-        public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveInheritance(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetAccesModifier(string AccessModifier)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetOtherModifiers()
-        {
-            throw new NotImplementedException();
         }
     }
 }

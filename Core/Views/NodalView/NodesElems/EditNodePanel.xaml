@@ -38,6 +38,8 @@
                     <ComboBox x:Name="_accessModifiersList" Margin="5,0,0,0" Width="150" SelectionChanged="_accessModifiersList_SelectionChanged">
                         <ComboBoxItem>public</ComboBoxItem>
                         <ComboBoxItem>private</ComboBoxItem>
+                        <ComboBoxItem>protected</ComboBoxItem>
+                        <ComboBoxItem>internal</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
                 <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden">
@@ -51,7 +53,7 @@
                 <Label x:Name="_mainAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">General</Label>
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="_nameFieldTitle" Foreground="White">Name</Label>
-                    <TextBox Foreground="Gray" TextChanged="TextBox_TextChanged" Width="80">Type a name</TextBox>
+                    <TextBox x:Name="NodeName" Foreground="Gray" TextChanged="GeneralNameChanged" Width="80">Type a name</TextBox>
                 </StackPanel>
             </StackPanel>
             <Border x:Name="SecondBorder" Grid.Column="3" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>

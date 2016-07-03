@@ -21,10 +21,12 @@ namespace code_in.Views.NodalView
     /// </summary>
     public partial class EditNodePanel : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
+        INodePresenter _nodePresenter = null;
         public EditNodePanel(ResourceDictionary themeResDict)
         {
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
+//            _nodePresenter = new NodePresenter(themeResDict);
         }
 
         public EditNodePanel() :
@@ -36,6 +38,7 @@ namespace code_in.Views.NodalView
         /// </summary>
         public void SetFields(INodePresenter nodePresenter)
         {
+            _nodePresenter = nodePresenter;
             var actions = nodePresenter.GetActions();
             bool modifiersArea = false;
             int i = 0; // i begin to 1 because grid.column"0" is the name as a default area
@@ -232,9 +235,10 @@ namespace code_in.Views.NodalView
 
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void GeneralNameChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (_nodePresenter != null)
+            _nodePresenter.SetName(NodeName.Text);
         }
 
         private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
@@ -244,7 +248,8 @@ namespace code_in.Views.NodalView
 
         private void _accessModifiersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ComboBoxItem tmp = _accessModifiersList.SelectedItem as ComboBoxItem;
+            _nodePresenter.SetAccesModifier(tmp.Content.ToString());
         }
     }
 }

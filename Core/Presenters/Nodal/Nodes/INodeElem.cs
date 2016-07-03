@@ -1,5 +1,6 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace code_in.Presenters.Nodal
     {
         void SetName(String name);
         String GetName();
+        void AddGeneric(string name, EGenericVariance variance);
         void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
         IVisualNodeContainer GetParentView();
         void SetRootView(IVisualNodeContainerDragNDrop dnd);
