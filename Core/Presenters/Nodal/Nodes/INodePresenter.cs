@@ -40,6 +40,8 @@ namespace code_in.Presenters.Nodal.Nodes
         void RemoveInheritance(int index);
         void SetAccesModifier(string AccessModifier);
         void SetOtherModifiers();
+        void SetExecParams(int paramsNumber);
+        void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg
         void SetName(String name);
 

@@ -1,5 +1,6 @@
 ﻿using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.NodeType.Content = type;
         }
 
+        public void AddGeneric(string name, EGenericVariance variance)
+        {
+            GenericLabel.Content += variance.ToString().ToLower() + " " + name;
+        }
         /// <summary>
         /// Sets the visual selected state of the node. It does not affect anything other than the visual.
         /// </summary>
