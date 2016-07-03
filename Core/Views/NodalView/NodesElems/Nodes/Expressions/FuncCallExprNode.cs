@@ -11,10 +11,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class FuncCallExprNode : AExpressionNode
     {
+        public DataFlowItem TargetIn = null; // The method name
         public FuncCallExprNode(ResourceDictionary themeResDict)
             : base(themeResDict)
         {
             this.SetType("FuncCallExpr");
+            TargetIn = this.CreateAndAddInput<DataFlowItem>();
+            TargetIn.SetName("MethodName");
         }
     }
 }

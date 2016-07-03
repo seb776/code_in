@@ -486,9 +486,8 @@ namespace code_in.Presenters.Nodal
                 var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
                 var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter);
                 visualNode = invokExprNode;
-                var invokTargetNode = invokExprNode.CreateAndAddInput<DataFlowItem>();
 
-                this._generateVisualASTExpressions(invokExpr.Target, invokExprNode.ExprOut);
+                this._generateVisualASTExpressions(invokExpr.Target, invokExprNode.TargetIn);
                 // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
                 int i = 0;
                 foreach (var param in invokExpr.Arguments)

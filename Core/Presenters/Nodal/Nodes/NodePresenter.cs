@@ -231,5 +231,26 @@ namespace code_in.Presenters.Nodal.Nodes
             System.Diagnostics.Debug.Assert(visualNode != null);
             this._view = visualNode;
         }
+
+
+        public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveInheritance(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetAccesModifier(string AccessModifier)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetOtherModifiers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
