@@ -20,6 +20,8 @@ namespace code_in.Presenters.Nodal
         IVisualNodeContainerDragNDrop GetRootView();
         void SetNodePresenter(INodePresenter nodePresenter);
         void ShowEditMenu();
+        void SetPosition(int posX, int posY);
+        void GetSize(out int x, out int y);
     }
     // enum globale
     public enum EAccessModifier

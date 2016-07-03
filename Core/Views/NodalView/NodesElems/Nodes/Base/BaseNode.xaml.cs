@@ -119,5 +119,22 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             EditMenu.SetFields(_nodePresenter);
             this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
         }
+
+
+        public void SetPosition(int posX, int posY)
+        {
+            this.Margin = new Thickness(posX, posY, 0, 0);
+        }
+
+
+        public void GetSize(out int x, out int y)
+        {
+            //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            this.Arrange(new Rect(0, 0, this.DesiredSize.Width, this.DesiredSize.Height));
+            x = (int)this.ActualWidth;
+            y = (int)this.ActualHeight;
+        }
     }
 }
