@@ -65,6 +65,10 @@ namespace code_in.Views.NodalView
         {
             int step = 2;
             Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
+            if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                this._nodalPresenter.SaveFile("TestOutput.cs");
+            }
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -225,7 +229,8 @@ namespace code_in.Views.NodalView
                         buttonName = "Remove";
                         break;
                     case EContextMenuOptions.SAVE:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        // remove icon to distinguish save from the others
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/remove.png");
                         break;
                 }
                 imageSrc.EndInit();
