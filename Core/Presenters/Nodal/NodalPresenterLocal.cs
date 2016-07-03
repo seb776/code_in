@@ -31,12 +31,11 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public class NodalPresenterLocal : INodalPresenter
     {
-        private INodalView _view = null; // TODO INodalView
+        private INodalView _view = null;
         private NodalModel _model = null;
         private CSharpParser _parser = null;
-        //private AOItem outputFlownode = null;
-        //private AOItem inputFlownode = null;
-        //private AOItem nextOutputFlowNode = null;
+        const int nodeHorizontalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
+        const int nodeVerticalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
 
         public NodalPresenterLocal(INodalView view)
         {
@@ -55,8 +54,6 @@ namespace code_in.Presenters.Nodal
             this._generateVisualASTFunctionBody(node.MethodNode);
         }
 
-        const int nodeHorizontalOffset = 50;
-        const int nodeVerticalOffset = 50;
         private void _generateVisualASTDeclaration(NodalModel model)
         {
             int accHorizontal = 0;
@@ -98,6 +95,8 @@ namespace code_in.Presenters.Nodal
         }
         private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY)
         {
+            int currentPosX = posX;
+            int currentPosY = posY;
             int horizontalStep = 20;
             int verticalStep = 20;
             INodeElem visualNode = null;
@@ -246,7 +245,7 @@ namespace code_in.Presenters.Nodal
 
             if (visualNode != null)
             {
-                visualNode.SetPosition(posX, posY);
+                visualNode.SetPosition(currentPosX, currentPosY);
                 int nodeWidth = 0, nodeHeight = 0;
                 visualNode.GetSize(out nodeWidth, out nodeHeight);
                 //posX += nodeWidth + horizontalStep;
