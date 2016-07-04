@@ -303,16 +303,18 @@ namespace code_in.Views.NodalView
         }
         public void UpdateGenericListInEditMenu()
         {
-            List<Tuple<string, EGenericVariance>> tmp = _nodePresenter.getGenericList();
-            if (tmp != null)
+            if (_nodePresenter != null)
             {
-                foreach (Tuple<string, EGenericVariance> generic in tmp)
+                List<Tuple<string, EGenericVariance>> tmp = _nodePresenter.getGenericList();
+                if (tmp != null)
                 {
-                AddExistingGenericsToEditMenu(generic.Item1, generic.Item2);
+                    foreach (Tuple<string, EGenericVariance> generic in tmp)
+                    {
+                        AddExistingGenericsToEditMenu(generic.Item1, generic.Item2);
+                    }
                 }
             }
         }
-
         private void GenericNameChanged(object sender, TextChangedEventArgs e)
         {
             TextBox name = sender as TextBox;
