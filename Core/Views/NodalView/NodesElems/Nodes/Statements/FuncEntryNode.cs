@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
@@ -19,7 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     /// </summary>
     public class FuncEntryNode : AStatementNode
     {
-        public FlowNodeItem FlowOutAnchor = null;
+        public FlowNodeAnchor FlowOutAnchor = null;
         
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -27,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             this.SetType("FuncEntry");
             this.SetName("Inputs");
             this.SetThemeResources("FuncEntryNode");
-            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
         }
     }
 }

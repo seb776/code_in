@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class TernaryExprNode : AExpressionNode
     {
-        public DataFlowItem OperandA = null;
-        public DataFlowItem OperandB = null;
-        public DataFlowItem OperandC = null;
+        public DataFlowAnchor OperandA = null;
+        public DataFlowAnchor OperandB = null;
+        public DataFlowAnchor OperandC = null;
         public TernaryExprNode(ResourceDictionary themeResDict)
             : base(themeResDict)
         {
-            OperandA = this.CreateAndAddInput<DataFlowItem>();
-            OperandB = this.CreateAndAddInput<DataFlowItem>();
-            OperandC = this.CreateAndAddInput<DataFlowItem>();
+            OperandA = this.CreateAndAddInput<DataFlowAnchor>();
+            OperandB = this.CreateAndAddInput<DataFlowAnchor>();
+            OperandC = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             OperandB.SetName("B");
             OperandC.SetName("C");

@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     class UnSupStmtDeclNode : AStatementNode
     {
         public TextBox NodeText = null;
-        public FlowNodeItem FlowOutAnchor = null;
+        public FlowNodeAnchor FlowOutAnchor = null;
 
         public UnSupStmtDeclNode() :
             this(Code_inApplication.MainResourceDictionary)
@@ -24,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             base(themeResDict)
         {
             this.SetType("Unsupported Stmt");
-            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             this.NodeText = new TextBox();
             this.ContentLayout.Children.Add(this.NodeText);
         }

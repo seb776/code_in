@@ -6,14 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace code_in.Views.NodalView.NodesElems.Items
+namespace code_in.Views.NodalView.NodesElems.Anchors
 {
-    public class DataFlowItem : Base.AOItem
+    public class DataFlowAnchor : AIOAnchor
     {
-        public override void SetThemeResources(String keyprefix)
-        { }
-
-        public DataFlowItem(ResourceDictionary themeResDict) :
+        public DataFlowAnchor(ResourceDictionary themeResDict) :
             base(themeResDict)
         { }
     }

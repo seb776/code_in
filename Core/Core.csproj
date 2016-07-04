@@ -118,11 +118,15 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
+      <DependentUpon>AIOAnchor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
+    <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -150,9 +154,8 @@
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\ClassItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\DataFlowItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\FlowNodeItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\AOItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\DataFlowAnchor.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\FlowNodeAnchor.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml.cs">
       <DependentUpon>ANodeItem.xaml</DependentUpon>
     </Compile>
@@ -235,6 +238,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NodalView\NodesElems\EditNodePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,10 +266,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
@@ -283,9 +286,6 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\FuncEntryNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\NamespaceNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml.cs">
-      <DependentUpon>NodeAnchor.xaml</DependentUpon>
-    </Compile>
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
