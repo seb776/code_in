@@ -29,7 +29,7 @@ namespace code_in.Views.NodalView
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
 //            _nodePresenter = new NodePresenter(themeResDict);
-            UpdateGenericListInEditMenu();
+//            UpdateGenericListInEditMenu();
         }
 
         public EditNodePanel() :
@@ -182,6 +182,7 @@ namespace code_in.Views.NodalView
                 ++i;
                 Grid.SetColumn(TextField, i); // i = 20
             }
+            UpdateGenericListInEditMenu();
         }
 
         #region ICodeInVisual
@@ -209,7 +210,15 @@ namespace code_in.Views.NodalView
 
         private void DeleteGeneric(object sender, RoutedEventArgs e)
         {
+            Button deleteButton = sender as Button;
+            StackPanel parent = deleteButton.Parent as StackPanel;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+            StackPanel parentOfParent = parent.Parent as StackPanel;
 
+            int index = int.Parse(stringIndex, null);
+            _nodePresenter.RemoveGeneric(index);
+            parentOfParent.Children.Clear();
+            UpdateGenericListInEditMenu();
         }
 
         private void EventAddGenericIntoEditMenu(object sender, RoutedEventArgs e)
@@ -223,7 +232,7 @@ namespace code_in.Views.NodalView
 
             NewGeneric.Orientation = Orientation.Horizontal;
             NewGeneric.Margin = new Thickness(0, 10, 0, 0);
-            NewGeneric.Name = "Generic" + (DeclGenericsField.Children.Count - 2);
+            NewGeneric.Name = "Generic" + (DeclGenericsPanel.Children.Count);
             VarianceIn.Content = "In";
             VarianceIn.Margin = new Thickness(0, 0, 10, 0);
             VarianceIn.Checked += VarianceInChecked;
@@ -235,7 +244,6 @@ namespace code_in.Views.NodalView
             VarianceNothing.Checked += VarianceNothingChecked;
             GenericName.Width = 80;
             GenericName.TextChanged += GenericNameChanged;
-            //GenericName.Text = "name";
             GenericName.Name = "TextBoxGenericName";
             deleteGeneric.Width = 20;
             deleteGeneric.Height = 20;
@@ -247,7 +255,7 @@ namespace code_in.Views.NodalView
             NewGeneric.Children.Add(VarianceNothing);
             NewGeneric.Children.Add(GenericName);
             NewGeneric.Children.Add(deleteGeneric);
-            DeclGenericsField.Children.Insert(1, NewGeneric);
+            DeclGenericsPanel.Children.Add(NewGeneric);
         }
 
         public void AddExistingGenericsToEditMenu(string name, EGenericVariance variance)
@@ -267,7 +275,7 @@ namespace code_in.Views.NodalView
                 VarianceNothing.IsChecked = true;
             NewGeneric.Orientation = Orientation.Horizontal;
             NewGeneric.Margin = new Thickness(0, 10, 0, 0);
-            NewGeneric.Name = "Generic" + (DeclGenericsField.Children.Count - 2);
+            NewGeneric.Name = "Generic" + (DeclGenericsPanel.Children.Count);
             VarianceIn.Content = "In";
             VarianceIn.Margin = new Thickness(0, 0, 10, 0);
             VarianceIn.Checked += VarianceInChecked;
@@ -291,25 +299,32 @@ namespace code_in.Views.NodalView
             NewGeneric.Children.Add(VarianceNothing);
             NewGeneric.Children.Add(GenericName);
             NewGeneric.Children.Add(deleteGeneric);
-            DeclGenericsField.Children.Insert(1, NewGeneric);
+            DeclGenericsPanel.Children.Add(NewGeneric);
         }
         public void UpdateGenericListInEditMenu()
         {
             List<Tuple<string, EGenericVariance>> tmp = _nodePresenter.getGenericList();
-            foreach (Tuple<string, EGenericVariance> generic in tmp)
+            if (tmp != null)
             {
+                foreach (Tuple<string, EGenericVariance> generic in tmp)
+                {
                 AddExistingGenericsToEditMenu(generic.Item1, generic.Item2);
+                }
             }
         }
 
         private void GenericNameChanged(object sender, TextChangedEventArgs e)
         {
             TextBox name = sender as TextBox;
-            StackPanel parent = name.Parent as StackPanel;
-            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
 
-            int index = int.Parse(stringIndex, null);
-            _nodePresenter.ModifGenericName(name.Text, index);
+            if (name.Parent != null)
+            {
+                StackPanel parent = name.Parent as StackPanel;
+                string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+                int index = int.Parse(stringIndex, null);
+                _nodePresenter.ModifGenericName(name.Text, index);
+            }
         }
 
         private void VarianceNothingChecked(object sender, RoutedEventArgs e)

@@ -26,7 +26,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private INodeElem _view = null;
         private INodalPresenter _nodalPresenter = null;
         private EVirtualNodeType _virtualType;
-        public List<Tuple<string, EGenericVariance>> GenericList = null;
+        private List<Tuple<string, EGenericVariance>> GenericList = null;
 
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
@@ -71,21 +71,6 @@ namespace code_in.Presenters.Nodal.Nodes
             _virtualType = nodeType;
         }
 
-        public void SetName(String name)
-        {
-            Dictionary<Type, bool> setNameRoutines = new Dictionary<Type,bool>(); 
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
-
-            var routine = setNameRoutines[_model.GetType()];
-            if ((routine != null) && routine)
-                (_model as dynamic).Name = name;
-            else
-                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
-                _view.SetName(name);
-        }
         // Return actions according to types
         public ENodeActions GetActions()
         {
@@ -119,6 +104,25 @@ namespace code_in.Presenters.Nodal.Nodes
 
         // methods for the Nodes modification
 
+        // this method changes the name into ast and update the view
+        public void SetName(String name)
+        {
+            Dictionary<Type, bool> setNameRoutines = new Dictionary<Type, bool>();
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
+
+            var routine = setNameRoutines[_model.GetType()];
+            if ((routine != null) && routine)
+                (_model as dynamic).Name = name;
+            else
+                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
+            _view.SetName(name);
+        }
+
+        // this method add a generic into the genericList and update the view -> add the new generic to view
+
         public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
         {
             if (_model.GetType() == typeof(TypeDeclaration))
@@ -146,7 +150,10 @@ namespace code_in.Presenters.Nodal.Nodes
                 GenericList.Add(NewGenericInList);
             }
             (_view as IContainingGenerics).setGenerics(GenericList);
+            UpdateGenericsInAst();
         }
+
+        // this method allow the get of the GenericList
 
         public List<Tuple<string, EGenericVariance>> getGenericList()
         {
@@ -155,6 +162,8 @@ namespace code_in.Presenters.Nodal.Nodes
             else
                 return (new List<Tuple<string,EGenericVariance>>());
         }
+
+        // this method is an event called when the Generic name is modified
 
         public void ModifGenericName(string name, int index)
         {
@@ -167,17 +176,23 @@ namespace code_in.Presenters.Nodal.Nodes
                 GenericList.Insert(index, ModifTuple);
                 (_view as IContainingGenerics).setGenerics(GenericList);
             }
+            UpdateGenericsInAst();
         }
+
+        // this method allow the modification of an existing Generic variance's
         public void ModifGenericVariance(int index, EGenericVariance variance, string name)
         {
-            if (GenericList.Count > 0)
+            if (GenericList.Count > index)
             {
                 GenericList.RemoveAt(index);
                 Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, variance);
                 GenericList.Insert(index, ModifTuple);
                 (_view as IContainingGenerics).setGenerics(GenericList);
             }
+            UpdateGenericsInAst();
         }
+
+        // return true if the genericName in parameters match in List
 
         public bool ifGenericExist(string name)
         {
@@ -189,9 +204,46 @@ namespace code_in.Presenters.Nodal.Nodes
             return false;
         }
 
+        // this method allow the remove of and existing generic
+
         public void RemoveGeneric(int index)
         {
-            throw new NotImplementedException();
+            if (GenericList.Count > index)
+            {
+                GenericList.RemoveAt(index);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+            UpdateGenericsInAst();
+        }
+
+        public void UpdateGenericsInAst()
+        {
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var TypeDecl = (_model as TypeDeclaration);
+
+                TypeDecl.TypeParameters.Clear();
+                TypeParameterDeclaration updatedGeneric;
+                foreach(Tuple<string, EGenericVariance> generic in GenericList)
+                {
+                    if (generic.Item2 == EGenericVariance.IN)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    }
+                    else if (generic.Item2 == EGenericVariance.OUT)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    }
+                    else
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    }
+                    TypeDecl.TypeParameters.Add(updatedGeneric);
+                }
+            }
         }
 
         public void AddInheritance(string name)
@@ -202,12 +254,6 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             throw new NotImplementedException();
         }
-
-/*        void INodePresenter.SetName(string name)
-        {
-//            throw new NotImplementedException();
-            (_model as dynamic).Name = name;
-        }*/
 
 
         public void SetAccesModifier(string AccessModifier)
@@ -227,7 +273,6 @@ namespace code_in.Presenters.Nodal.Nodes
                     typeDecl.Modifiers |= Modifiers.Internal;
                 (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
             }
-            //            throw new NotImplementedException();
         }
 
         public void SetOtherModifiers(string OtherModifiers, bool AddOrRemove) // if true -> Add, else -> Remove
@@ -264,10 +309,10 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void SetExecParams(int paramsNumber)
         {
-            while (paramsNumber >= 0)
+/*            while (paramsNumber >= 0)
             {
 //                _view.
-            }
+            }*/
         }
 
         public void AddExecGeneric()
