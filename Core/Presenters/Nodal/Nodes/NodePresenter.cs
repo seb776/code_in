@@ -26,7 +26,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private INodeElem _view = null;
         private INodalPresenter _nodalPresenter = null;
         private EVirtualNodeType _virtualType;
-        private List<Tuple<string, EGenericVariance>> GenericList = null;
+        public List<Tuple<string, EGenericVariance>> GenericList = null;
 
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
@@ -35,6 +35,25 @@ namespace code_in.Presenters.Nodal.Nodes
             _model = model;
             _virtualType = EVirtualNodeType.AST_NODE;
             GenericList = new List<Tuple<string, EGenericVariance>>();
+            GetExistingGenericsFromNode();
+        }
+
+        private void GetExistingGenericsFromNode()
+        {
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                Tuple<string, EGenericVariance> ExistingGeneric;
+                foreach (var tmp in (_model as TypeDeclaration).TypeParameters)
+                {
+                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
+                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
+                    else
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
+                    GenericList.Add(ExistingGeneric);
+                }
+            }
         }
         /// <summary>
         /// This describes the type of node when it's a node that does not exist in the AST
@@ -127,6 +146,14 @@ namespace code_in.Presenters.Nodal.Nodes
                 GenericList.Add(NewGenericInList);
             }
             (_view as IContainingGenerics).setGenerics(GenericList);
+        }
+
+        public List<Tuple<string, EGenericVariance>> getGenericList()
+        {
+            if (GenericList != null)
+                return (GenericList);
+            else
+                return (new List<Tuple<string,EGenericVariance>>());
         }
 
         public void ModifGenericName(string name, int index)

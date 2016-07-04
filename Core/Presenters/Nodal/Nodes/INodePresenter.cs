@@ -43,7 +43,7 @@ namespace code_in.Presenters.Nodal.Nodes
         void ModifGenericName(string name, int index);
         void ModifGenericVariance(int index, EGenericVariance variance, string name);
         bool ifGenericExist(string name);
-
+        List<Tuple<string, EGenericVariance>> getGenericList();
         void SetExecParams(int paramsNumber);
         void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg

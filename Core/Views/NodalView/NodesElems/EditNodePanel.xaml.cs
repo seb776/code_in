@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,6 +29,7 @@ namespace code_in.Views.NodalView
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
 //            _nodePresenter = new NodePresenter(themeResDict);
+            UpdateGenericListInEditMenu();
         }
 
         public EditNodePanel() :
@@ -247,9 +249,57 @@ namespace code_in.Views.NodalView
             NewGeneric.Children.Add(deleteGeneric);
             DeclGenericsField.Children.Insert(1, NewGeneric);
         }
+
+        public void AddExistingGenericsToEditMenu(string name, EGenericVariance variance)
+        {
+            StackPanel NewGeneric = new StackPanel();
+            RadioButton VarianceIn = new RadioButton();
+            RadioButton VarianceOut = new RadioButton();
+            RadioButton VarianceNothing = new RadioButton();
+            TextBox GenericName = new TextBox();
+            Button deleteGeneric = new Button();
+
+            if (variance == EGenericVariance.IN)
+                VarianceIn.IsChecked = true;
+            if (variance == EGenericVariance.OUT)
+                VarianceOut.IsChecked = true;
+            if (variance == EGenericVariance.NOTHING)
+                VarianceNothing.IsChecked = true;
+            NewGeneric.Orientation = Orientation.Horizontal;
+            NewGeneric.Margin = new Thickness(0, 10, 0, 0);
+            NewGeneric.Name = "Generic" + (DeclGenericsField.Children.Count - 2);
+            VarianceIn.Content = "In";
+            VarianceIn.Margin = new Thickness(0, 0, 10, 0);
+            VarianceIn.Checked += VarianceInChecked;
+            VarianceOut.Content = "Out";
+            VarianceOut.Margin = new Thickness(0, 0, 10, 0);
+            VarianceOut.Checked += VarianceOutChecked;
+            VarianceNothing.Content = "Nothing";
+            VarianceNothing.Margin = new Thickness(0, 0, 10, 0);
+            VarianceNothing.Checked += VarianceNothingChecked;
+            GenericName.Width = 80;
+            GenericName.TextChanged += GenericNameChanged;
+            GenericName.Text = name;
+            GenericName.Name = "TextBoxGenericName";
+            deleteGeneric.Width = 20;
+            deleteGeneric.Height = 20;
+            deleteGeneric.Margin = new Thickness(10, 0, 0, 0);
+            deleteGeneric.Content = "X";
+            deleteGeneric.Click += DeleteGeneric;
+            NewGeneric.Children.Add(VarianceIn);
+            NewGeneric.Children.Add(VarianceOut);
+            NewGeneric.Children.Add(VarianceNothing);
+            NewGeneric.Children.Add(GenericName);
+            NewGeneric.Children.Add(deleteGeneric);
+            DeclGenericsField.Children.Insert(1, NewGeneric);
+        }
         public void UpdateGenericListInEditMenu()
         {
-            foreach ()
+            List<Tuple<string, EGenericVariance>> tmp = _nodePresenter.getGenericList();
+            foreach (Tuple<string, EGenericVariance> generic in tmp)
+            {
+                AddExistingGenericsToEditMenu(generic.Item1, generic.Item2);
+            }
         }
 
         private void GenericNameChanged(object sender, TextChangedEventArgs e)
