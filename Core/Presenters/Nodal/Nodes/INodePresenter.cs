@@ -39,7 +39,11 @@ namespace code_in.Presenters.Nodal.Nodes
         void AddInheritance(String name);
         void RemoveInheritance(int index);
         void SetAccesModifier(string AccessModifier);
-        void SetOtherModifiers();
+        void SetOtherModifiers(string OtherModifiers, bool AddOrRemove);
+        void ModifGenericName(string name, int index);
+        void ModifGenericVariance(int index, EGenericVariance variance, string name);
+        bool ifGenericExist(string name);
+
         void SetExecParams(int paramsNumber);
         void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg

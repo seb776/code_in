@@ -1,6 +1,7 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -209,9 +210,98 @@ namespace code_in.Views.NodalView
 
         }
 
-        private void AddGeneric(object sender, RoutedEventArgs e)
+        private void EventAddGenericIntoEditMenu(object sender, RoutedEventArgs e)
         {
+            StackPanel NewGeneric = new StackPanel();
+            RadioButton VarianceIn = new RadioButton();
+            RadioButton VarianceOut = new RadioButton();
+            RadioButton VarianceNothing = new RadioButton();
+            TextBox GenericName = new TextBox();
+            Button deleteGeneric = new Button();
 
+            NewGeneric.Orientation = Orientation.Horizontal;
+            NewGeneric.Margin = new Thickness(0, 10, 0, 0);
+            NewGeneric.Name = "Generic" + (DeclGenericsField.Children.Count - 2);
+            VarianceIn.Content = "In";
+            VarianceIn.Margin = new Thickness(0, 0, 10, 0);
+            VarianceIn.Checked += VarianceInChecked;
+            VarianceOut.Content = "Out";
+            VarianceOut.Margin = new Thickness(0, 0, 10, 0);
+            VarianceOut.Checked += VarianceOutChecked;
+            VarianceNothing.Content = "Nothing";
+            VarianceNothing.Margin = new Thickness(0, 0, 10, 0);
+            VarianceNothing.Checked += VarianceNothingChecked;
+            GenericName.Width = 80;
+            GenericName.TextChanged += GenericNameChanged;
+            //GenericName.Text = "name";
+            GenericName.Name = "TextBoxGenericName";
+            deleteGeneric.Width = 20;
+            deleteGeneric.Height = 20;
+            deleteGeneric.Margin = new Thickness(10, 0, 0, 0);
+            deleteGeneric.Content = "X";
+            deleteGeneric.Click += DeleteGeneric;
+            NewGeneric.Children.Add(VarianceIn);
+            NewGeneric.Children.Add(VarianceOut);
+            NewGeneric.Children.Add(VarianceNothing);
+            NewGeneric.Children.Add(GenericName);
+            NewGeneric.Children.Add(deleteGeneric);
+            DeclGenericsField.Children.Insert(1, NewGeneric);
+        }
+        public void UpdateGenericListInEditMenu()
+        {
+            foreach ()
+        }
+
+        private void GenericNameChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox name = sender as TextBox;
+            StackPanel parent = name.Parent as StackPanel;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            _nodePresenter.ModifGenericName(name.Text, index);
+        }
+
+        private void VarianceNothingChecked(object sender, RoutedEventArgs e)
+        {
+            RadioButton variance = sender as RadioButton;
+            StackPanel parent = variance.Parent as StackPanel;
+            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            if (_nodePresenter.ifGenericExist(name.Text))
+                _nodePresenter.ModifGenericVariance(index, NodesElems.Nodes.Assets.EGenericVariance.NOTHING, name.Text);
+            else
+                _nodePresenter.AddGeneric(name.Text, NodesElems.Nodes.Assets.EGenericVariance.NOTHING);
+        }
+
+        private void VarianceOutChecked(object sender, RoutedEventArgs e)
+        {
+            RadioButton variance = sender as RadioButton;
+            StackPanel parent = variance.Parent as StackPanel;
+            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            if (_nodePresenter.ifGenericExist(name.Text))
+                _nodePresenter.ModifGenericVariance(index, NodesElems.Nodes.Assets.EGenericVariance.OUT, name.Text);
+            else
+                _nodePresenter.AddGeneric(name.Text, NodesElems.Nodes.Assets.EGenericVariance.OUT);
+        }
+
+        private void VarianceInChecked(object sender, RoutedEventArgs e)
+        {
+            RadioButton variance = sender as RadioButton;
+            StackPanel parent = variance.Parent as StackPanel;
+            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            if (_nodePresenter.ifGenericExist(name.Text))
+                _nodePresenter.ModifGenericVariance(index, NodesElems.Nodes.Assets.EGenericVariance.IN, name.Text);
+            else
+                _nodePresenter.AddGeneric(name.Text, NodesElems.Nodes.Assets.EGenericVariance.IN);
         }
 
         private void QuitEditMenu(object sender, RoutedEventArgs e)
@@ -220,19 +310,22 @@ namespace code_in.Views.NodalView
         }
 
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void VirtualChecked(object sender, RoutedEventArgs e)
         {
-
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
         }
 
-        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        private void AbstractChecked(object sender, RoutedEventArgs e)
         {
-
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
         }
 
-        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
+        private void OverrideChecked(object sender, RoutedEventArgs e)
         {
-
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
         }
 
         private void GeneralNameChanged(object sender, TextChangedEventArgs e)
@@ -250,6 +343,27 @@ namespace code_in.Views.NodalView
         {
             ComboBoxItem tmp = _accessModifiersList.SelectedItem as ComboBoxItem;
             _nodePresenter.SetAccesModifier(tmp.Content.ToString());
+        }
+
+        private void VirtualUnchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
+
+        }
+
+        private void AbstractUnchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
+
+        }
+
+        private void OverrideUnchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox tmp = sender as CheckBox;
+            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
+
         }
     }
 }

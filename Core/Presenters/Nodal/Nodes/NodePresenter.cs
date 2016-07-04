@@ -7,6 +7,7 @@ using System.Windows;
 using ICSharpCode.NRefactory.CSharp;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
@@ -25,6 +26,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private INodeElem _view = null;
         private INodalPresenter _nodalPresenter = null;
         private EVirtualNodeType _virtualType;
+        private List<Tuple<string, EGenericVariance>> GenericList = null;
 
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
@@ -32,6 +34,7 @@ namespace code_in.Presenters.Nodal.Nodes
             _nodalPresenter = nodalPres;
             _model = model;
             _virtualType = EVirtualNodeType.AST_NODE;
+            GenericList = new List<Tuple<string, EGenericVariance>>();
         }
         /// <summary>
         /// This describes the type of node when it's a node that does not exist in the AST
@@ -99,8 +102,66 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
         {
-            throw new NotImplementedException();
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
+                Tuple<string, EGenericVariance> NewGenericInList = null;
+                var typeDecl = _model as TypeDeclaration;
+                NewGeneric.Name = name;
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
+                }
+                typeDecl.TypeParameters.Add(NewGeneric);
+                GenericList.Add(NewGenericInList);
+            }
+            (_view as IContainingGenerics).setGenerics(GenericList);
         }
+
+        public void ModifGenericName(string name, int index)
+        {
+            if (GenericList.Count > index)
+            {
+                EGenericVariance CopyVariance;
+                CopyVariance = GenericList[index].Item2;
+                GenericList.RemoveAt(index);
+                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, CopyVariance);
+                GenericList.Insert(index, ModifTuple);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+        }
+        public void ModifGenericVariance(int index, EGenericVariance variance, string name)
+        {
+            if (GenericList.Count > 0)
+            {
+                GenericList.RemoveAt(index);
+                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, variance);
+                GenericList.Insert(index, ModifTuple);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+        }
+
+        public bool ifGenericExist(string name)
+        {
+            foreach (var tmp in GenericList)
+            {
+                if (tmp.Item1.Equals(name))
+                    return true;
+            }
+            return false;
+        }
+
         public void RemoveGeneric(int index)
         {
             throw new NotImplementedException();
@@ -126,7 +187,6 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             if (_model.GetType() == typeof(TypeDeclaration))
             {
-                MessageBox.Show(_model.GetType().ToString() + " " + AccessModifier);
                 var typeDecl = (_model as TypeDeclaration);
                 Modifiers tmp = typeDecl.Modifiers;
                 typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
@@ -143,9 +203,36 @@ namespace code_in.Presenters.Nodal.Nodes
             //            throw new NotImplementedException();
         }
 
-        public void SetOtherModifiers()
+        public void SetOtherModifiers(string OtherModifiers, bool AddOrRemove) // if true -> Add, else -> Remove
         {
-            throw new NotImplementedException();
+            if (AddOrRemove == true)
+            {
+                if (_model.GetType() == typeof(TypeDeclaration))
+                {
+                    var typeDecl = (_model as TypeDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers |= Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers |= Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers |= Modifiers.Override;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers); // update more than a set-> semantic detail
+                }
+            }
+            else if (AddOrRemove == false)
+            {
+                if (_model.GetType() == typeof(TypeDeclaration))
+                {
+                    var typeDecl = (_model as TypeDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers &= ~Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers &= ~Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers &= ~Modifiers.Override;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers);
+                }
+            }
         }
 
         public void SetExecParams(int paramsNumber)

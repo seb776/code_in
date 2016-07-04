@@ -43,9 +43,9 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden">
-                    <CheckBox Foreground="White" Checked="CheckBox_Checked">virtual</CheckBox>
-                    <CheckBox Foreground="White" Checked="CheckBox_Checked_1">abstract</CheckBox>
-                    <CheckBox Foreground="White" Checked="CheckBox_Checked_2">override</CheckBox>
+                    <CheckBox Foreground="White" Checked="VirtualChecked" Unchecked="VirtualUnchecked">virtual</CheckBox>
+                    <CheckBox Foreground="White" Checked="AbstractChecked" Unchecked="AbstractUnchecked">abstract</CheckBox>
+                    <CheckBox Foreground="White" Checked="OverrideChecked" Unchecked="OverrideUnchecked">override</CheckBox>
                 </StackPanel>
             </StackPanel>
             <Border x:Name="FirstBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
@@ -64,14 +64,7 @@
             <Border x:Name="ThirdBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
             <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" Margin="0,0,0,5">Generics</Label>
-                <StackPanel x:Name="OneDeclGeneric" Orientation="Horizontal">
-                    <RadioButton Foreground="White" Margin="0,0,10,0">In</RadioButton>
-                    <RadioButton Foreground="White" Margin="0,0,10,0">Out</RadioButton>
-                    <RadioButton Foreground="White" Margin="0,0,10,0">Nothing</RadioButton>
-                    <TextBox Foreground="Gray" Background="White" Width="80">Type a name</TextBox>
-                    <Button Click="DeleteGeneric" HorizontalAlignment="Right" Width="20" Margin="10, 0, 0, 0">X</Button>
-                </StackPanel>
-                <Button Click="AddGeneric" Width="40" Margin="0, 10, 0, 0">+</Button>
+                <Button Click="EventAddGenericIntoEditMenu" Width="40" Margin="0, 10, 0, 0">+</Button>
             </StackPanel>
             <Border x:Name="FourthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
             <StackPanel x:Name="InheritanceField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">

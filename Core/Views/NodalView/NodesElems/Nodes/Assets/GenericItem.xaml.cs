@@ -59,6 +59,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
         // This part is for the display on the label content
        public void SetGenerics(List<Tuple<string, EGenericVariance>> tmp)
         {
+            GenericsNames.ClearValue(Label.ContentProperty);
            foreach (var mod in tmp)
            {
             if (mod.Item2 == EGenericVariance.NOTHING)

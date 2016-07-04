@@ -111,6 +111,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
             List<string> ModifiersList = new List<string>();
 
+            ModifiersList.Clear();
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                 ModifiersList.Add("new");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
