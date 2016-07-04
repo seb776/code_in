@@ -183,6 +183,7 @@ namespace code_in.Views.NodalView
                 Grid.SetColumn(TextField, i); // i = 20
             }
             UpdateGenericListInEditMenu();
+            UpdateInheritanceInEditMenu();
         }
 
         #region ICodeInVisual
@@ -401,7 +402,7 @@ namespace code_in.Views.NodalView
             _nodePresenter.SetName(NodeName.Text);
         }
 
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        private void CommentsAreaTextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
@@ -431,6 +432,81 @@ namespace code_in.Views.NodalView
             CheckBox tmp = sender as CheckBox;
             _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
 
+        }
+
+        private void EventAddInheritance(object sender, RoutedEventArgs e)
+        {
+            StackPanel NewInheritance = new StackPanel();
+            TextBox InheritanceName = new TextBox();
+            Button deleteInheritance = new Button();
+
+            NewInheritance.Orientation = Orientation.Horizontal;
+            NewInheritance.Name = "Inheritance" + InheritancePanel.Children.Count.ToString();
+            InheritanceName.Width = 100;
+            InheritanceName.TextChanged += InheritanceNameTextChanged;
+            InheritanceName.Text = "name";
+            deleteInheritance.Click += DeleteInheritance;
+            deleteInheritance.Margin = new Thickness(10, 0, 0, 0);
+            deleteInheritance.Width = 20;
+            deleteInheritance.Height = 20;
+            deleteInheritance.Content = "X";
+            NewInheritance.Children.Add(InheritanceName);
+            NewInheritance.Children.Add(deleteInheritance);
+            InheritancePanel.Children.Add(NewInheritance);
+            _nodePresenter.AddInheritance(InheritanceName.Text);
+        }
+
+        public void AddInheritanceToEditMenu(string name)
+        {
+            StackPanel NewInheritance = new StackPanel();
+            TextBox InheritanceName = new TextBox();
+            Button deleteInheritance = new Button();
+
+            NewInheritance.Orientation = Orientation.Horizontal;
+            NewInheritance.Name = "Inheritance" + InheritancePanel.Children.Count.ToString();
+            InheritanceName.Width = 100;
+            InheritanceName.TextChanged += InheritanceNameTextChanged;
+            InheritanceName.Text = name;
+            deleteInheritance.Click += DeleteInheritance;
+            deleteInheritance.Margin = new Thickness(10, 0, 0, 0);
+            deleteInheritance.Width = 20;
+            deleteInheritance.Height = 20;
+            deleteInheritance.Content = "X";
+            NewInheritance.Children.Add(InheritanceName);
+            NewInheritance.Children.Add(deleteInheritance);
+            InheritancePanel.Children.Add(NewInheritance);
+        }
+
+        public void UpdateInheritanceInEditMenu()
+        {
+            InheritancePanel.Children.Clear();
+            if (_nodePresenter != null && _nodePresenter.getInheritanceList() != null)
+            {
+                List<string> List = _nodePresenter.getInheritanceList();
+                foreach (string inherit in List)
+                {
+                    AddInheritanceToEditMenu(inherit);
+                }
+            }
+        }
+
+        private void InheritanceNameTextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox NameBox = sender as TextBox;
+            StackPanel Inheritance = NameBox.Parent as StackPanel;
+
+        }
+
+        private void DeleteInheritance(object sender, RoutedEventArgs e)
+        {
+            Button delButton = sender as Button;
+            StackPanel parent = delButton.Parent as StackPanel;
+//            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            _nodePresenter.RemoveInheritance(index);
+            UpdateInheritanceInEditMenu();
         }
     }
 }

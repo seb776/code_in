@@ -27,6 +27,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private INodalPresenter _nodalPresenter = null;
         private EVirtualNodeType _virtualType;
         private List<Tuple<string, EGenericVariance>> GenericList = null;
+        private List<string> InheritanceList = null;
 
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
@@ -36,6 +37,8 @@ namespace code_in.Presenters.Nodal.Nodes
             _virtualType = EVirtualNodeType.AST_NODE;
             GenericList = new List<Tuple<string, EGenericVariance>>();
             GetExistingGenericsFromNode();
+            InheritanceList = new List<string>();
+            GetExistingInheritanceFromNode();
         }
 
         private void GetExistingGenericsFromNode()
@@ -53,6 +56,15 @@ namespace code_in.Presenters.Nodal.Nodes
                         ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
                     GenericList.Add(ExistingGeneric);
                 }
+            }
+        }
+
+        private void GetExistingInheritanceFromNode()
+        {
+            if (_model.GetType() == typeof(TypeDeclaration) && (_model as TypeDeclaration).BaseTypes != null)
+            {
+                foreach (var inherit in (_model as TypeDeclaration).BaseTypes)
+                    InheritanceList.Add(inherit.ToString());
             }
         }
         /// <summary>
@@ -248,13 +260,33 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddInheritance(string name)
         {
-            throw new NotImplementedException();
+            InheritanceList.Add(name);
+            // update l'ast en fonction de la list
+            SimpleType NewInheriance = new SimpleType();
+            NewInheriance.Identifier = name;
+            (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
+            (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here view update
+            // TODO update ast
         }
         public void RemoveInheritance(int index)
         {
-            throw new NotImplementedException();
+            if (InheritanceList.Count > index)
+            {
+                InheritanceList.RemoveAt(index);
+                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
+                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here view update
+                // update l'ast en fonction de la list 
+            }
         }
 
+        public void ChangeInheritanceName(int index, string name)
+        {
+        }
+
+        public List<string> getInheritanceList()
+        {
+            return (InheritanceList);
+        }
 
         public void SetAccesModifier(string AccessModifier)
         {

@@ -121,10 +121,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         #endregion
 
         #region IContainingInheritance
-        public void ManageInheritance(TypeDeclaration tmpNode)
+        public void ManageInheritance(List<string> InheritanceList)
         {
-            foreach (var par in tmpNode.BaseTypes)
-                AddInheritance(par.ToString());
+            InheritanceLayout.Children.Clear();
+            foreach (string inherit in InheritanceList)
+                AddInheritance(inherit);
         }
         #endregion
 
