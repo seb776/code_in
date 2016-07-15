@@ -9,6 +9,6 @@ namespace code_in.Presenters.Nodal
 {
     interface IContainingInheritance
     {
-        void ManageInheritance(TypeDeclaration typeDecl);
+        void ManageInheritance(List<string> List);
     }
 }

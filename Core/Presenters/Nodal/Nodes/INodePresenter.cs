@@ -44,6 +44,7 @@ namespace code_in.Presenters.Nodal.Nodes
         void ModifGenericVariance(int index, EGenericVariance variance, string name);
         bool ifGenericExist(string name);
         List<Tuple<string, EGenericVariance>> getGenericList();
+        List<string> getInheritanceList();
         void SetExecParams(int paramsNumber);
         void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg

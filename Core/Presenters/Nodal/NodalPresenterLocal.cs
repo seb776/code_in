@@ -74,7 +74,10 @@ namespace code_in.Presenters.Nodal
 
         private void InitInheritance(IContainingInheritance view, TypeDeclaration typeDecl)
         {
-            view.ManageInheritance(typeDecl);
+            List<string> InheritanceList = new List<string>();
+            foreach (var inherit in typeDecl.BaseTypes)
+                InheritanceList.Add(inherit.ToString());
+            view.ManageInheritance(InheritanceList);
         }
 
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
