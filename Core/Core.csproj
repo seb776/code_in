@@ -127,6 +127,8 @@
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
     <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IRootDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -370,11 +372,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Graphics\inheritance.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Graphics\remove.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -393,6 +390,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\SpritesMainBtn\Top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\add.png" />
+    <Resource Include="Resources\Graphics\align.png" />
+    <Resource Include="Resources\Graphics\go_into.png" />
+    <Resource Include="Resources\Graphics\help.png" />
+    <Resource Include="Resources\Graphics\save.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

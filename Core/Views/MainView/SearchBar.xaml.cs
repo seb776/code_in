@@ -11,9 +11,8 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Logique d'interaction pour SearchBar.xaml
     /// </summary>
-    public partial class SearchBar : UserControl, IVisualNodeContainerDragNDrop, ICodeInVisual
+    public partial class SearchBar : UserControl, IRootDragNDrop, ICodeInVisual
     {
-        INodeElem _draggingNode = null;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         public SearchBar(ResourceDictionary themeResDict)
@@ -32,7 +31,7 @@ namespace code_in.Views.MainView
         {
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
             node.SetParentView(null);
-            node.SetRootView(this);
+            node.SetRootView(this); // TODO
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             this.AddNode(node);
@@ -122,6 +121,18 @@ namespace code_in.Views.MainView
         }
 
         public void UpdateDragState()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool IsDropNodeValid()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void RevertChange()
         {
             throw new NotImplementedException();
         }

@@ -20,12 +20,13 @@ namespace code_in.Presenters.Nodal
         // END
         void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
         IVisualNodeContainer GetParentView();
-        void SetRootView(IVisualNodeContainerDragNDrop dnd);
-        IVisualNodeContainerDragNDrop GetRootView();
+        void SetRootView(IRootDragNDrop dnd);
+        IRootDragNDrop GetRootView();
         void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)
         void ShowEditMenu();
         void SetPosition(int posX, int posY);
         void GetSize(out int x, out int y);
+        void SetSelected(bool isSelected); // Highlight the nodeElem if isSelected = true
     }
     // enum globale
     public enum EAccessModifier

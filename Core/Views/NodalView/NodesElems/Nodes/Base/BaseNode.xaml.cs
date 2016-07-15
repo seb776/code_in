@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
         private ResourceDictionary _themeResourceDictionary = null;
-        private IVisualNodeContainerDragNDrop _rootView = null;
+        private IRootDragNDrop _rootView = null;
         private IVisualNodeContainer _parentView = null;
         private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
@@ -50,7 +50,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
         }
         #endregion ICodeInVisual
-
         #region This
         public void SetName(string name)
         {
@@ -88,34 +87,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
         }
-        #endregion This
-
-        #region INodeElem
-        public void SetParentView(IVisualNodeContainer vc) { _parentView = vc; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
-        public virtual void SetRootView(IVisualNodeContainerDragNDrop dnd) { _rootView = dnd; }
-        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
-        #endregion INodeElem
-
-        public void MoveNode(Point pos)
-        {
-            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
-            this.MoveNodeSpecial();
-        }
-        public abstract void MoveNodeSpecial();
-
-        private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
-            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
-
-        }
-
-        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
-        }
-
 
         public void ShowEditMenu()
         {
@@ -131,7 +102,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.Margin = new Thickness(posX, posY, 0, 0);
         }
 
-
         public void GetSize(out int x, out int y)
         {
             //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -141,5 +111,37 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             x = (int)this.ActualWidth;
             y = (int)this.ActualHeight;
         }
+
+        #region Events
+        private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.Assert(_rootView != null);
+            if (!Keyboard.IsKeyDown(Key.LeftShift))
+                this._rootView.UnSelectAllNodes();
+            try
+            {
+                this._rootView.SelectNode(this);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
+            this._rootView.UpdateDragState();
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+
+        }
+
+        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+        }
+        #endregion Events
+        #endregion This
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainer vc) { _parentView = vc; }
+        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
+        public IRootDragNDrop GetRootView() { return _rootView; }
+        #endregion INodeElem
     }
 }

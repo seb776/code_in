@@ -29,7 +29,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private ResourceDictionary _languageResourceDictionary = null;
         EditNodePanel EditMenu = null;
         protected IVisualNodeContainer _parentView = null;
-        private IVisualNodeContainerDragNDrop _rootView = null;
+        private IRootDragNDrop _rootView = null;
         protected INodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
@@ -72,8 +72,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         #region INodeElem
         public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
         public IVisualNodeContainer GetParentView() { return _parentView; }
-        public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
-        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
+        public void SetRootView(IRootDragNDrop root) { _rootView = root; }
+        public IRootDragNDrop GetRootView() { return _rootView; }
         public void SetName(String name)
         {
             this.ItemName.Content = name;
@@ -114,6 +114,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             x = 0;
             y = 0;
             //throw new NotImplementedException();
+        }
+
+
+        public void SetSelected(bool isSelected)
+        {
+            throw new NotImplementedException();
         }
     } // Class
 } // Namespace

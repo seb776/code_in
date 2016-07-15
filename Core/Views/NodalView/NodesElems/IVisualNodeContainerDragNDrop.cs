@@ -11,19 +11,10 @@ namespace code_in.Views.NodalView.NodesElems
 {
     public interface IVisualNodeContainerDragNDrop : IVisualNodeContainer
     {
-        // Nodes
-        void SelectNode(INodeElem node);
-        void UnSelectNode(INodeElem node);
-        void UnSelectAllNodes();
-        void DragNodes();
-        void DropNodes(IVisualNodeContainerDragNDrop container);
+        // IVisualNodeContainerDragNDrop
+        bool IsDropNodeValid();
         int GetDropNodeIndex(Point pos); // Gets the index where the element will be pushed
         void HighLightDropNodePlace(Point pos); // Displays a visual element to show where the node will be dropped
-
-        // Links
-        void DragLink(AIOAnchor from);
-        void DropLink(AIOAnchor to);
-        void UpdateDragState(); // This function is here to update the view when mouse is moving (update view and links)
     }
 
     struct VisualNodeInteractionState

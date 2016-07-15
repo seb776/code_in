@@ -30,6 +30,8 @@ namespace code_in.Views.NodalView
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private INodalPresenter _nodalPresenter = null;
+        private List<INodeElem> _selectedNodes = null; // Selected nodes are stored with their positions to revert in case of failure
+        private List<Thickness> _selectedNodesPositions = null;
 
         public NodalView(ResourceDictionary themeResDict)
         {
@@ -37,6 +39,8 @@ namespace code_in.Views.NodalView
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+            _selectedNodes = new List<INodeElem>();
+            _selectedNodesPositions = new List<Thickness>();
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
@@ -56,7 +60,7 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.DropNodes(null);
+            //this.DropNodes(null);
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
@@ -169,14 +173,14 @@ namespace code_in.Views.NodalView
                 switch (opt.Item1)
                 {
                     case EContextMenuOptions.ADD:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/add.png");
                         buttonName = "Add";
                         break;
                     case EContextMenuOptions.ALIGN:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/align.png");
                         break;
                     case EContextMenuOptions.CLOSE:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/remove.png");
                         break;
                     case EContextMenuOptions.COLLAPSE:
                         imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/collapse.png");
@@ -197,18 +201,17 @@ namespace code_in.Views.NodalView
                         imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/expand.png");
                         break;
                     case EContextMenuOptions.GOINTO:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/go_into.png");
                         break;
                     case EContextMenuOptions.HELP:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/help.png");
                         break;
                     case EContextMenuOptions.REMOVE:
                         imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/remove.png");
                         buttonName = "Remove";
                         break;
                     case EContextMenuOptions.SAVE:
-                        // remove icon to distinguish save from the others
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/remove.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/save.png");
                         break;
                 }
                 imageSrc.EndInit();
@@ -261,7 +264,8 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            this.DropNodes(null);
+            this.UnSelectAllNodes();
+            //this.DropNodes(null);
         }
 
         private void changeResourceLink(object sender, ResourcesEventArgs e)
@@ -280,12 +284,34 @@ namespace code_in.Views.NodalView
         #endregion This
 
         #region IVisualNodeContainerDragNDrop
-        public void SelectNode(INodeElem node) { }
-        public void UnSelectNode(INodeElem node) { }
-        public void UnSelectAll() { }
-
-        public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
+        public void SelectNode(INodeElem node)
         {
+            // TODO if correct to select these nodes together
+            _selectedNodes.Add(node);
+            _selectedNodesPositions.Add(new Thickness());
+            node.SetSelected(true);
+        }
+        public void UnSelectNode(INodeElem node)
+        {
+            node.SetSelected(false);
+            int idx = _selectedNodes.FindIndex(n => n == node);
+            if (idx != -1)
+            {
+                _selectedNodes.RemoveAt(idx);
+                _selectedNodesPositions.RemoveAt(idx);
+            }
+
+        }
+        public void UnSelectAllNodes()
+        {
+            foreach (var n in _selectedNodes)
+                n.SetSelected(false);
+            _selectedNodes.Clear();
+            _selectedNodesPositions.Clear();
+        }
+
+        //public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
+        //{
             //_nodeTransform = transform;
             //_draggingNode = node;
             //if (_draggingNode != null && _draggingNode.GetParentView() != null)
@@ -327,7 +353,7 @@ namespace code_in.Views.NodalView
             //        this.MainGrid.Children.Add(_link);
             //    }
             //}
-        }
+        //}
 
         public void DropNodes(INodeElem node)
         {
@@ -440,5 +466,50 @@ namespace code_in.Views.NodalView
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
 
+        public void DragNodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DropNodes(IVisualNodeContainerDragNDrop container)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropNodeValid()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetDropNodeIndex(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HighLightDropNodePlace(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DragLink(AIOAnchor from)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DropLink(AIOAnchor to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragState()
+        {
+            //throw new NotImplementedException();
+        }
+
+
+        public void RevertChange()
+        {
+            throw new NotImplementedException();
+        }
     } // Class
 } // Namespace

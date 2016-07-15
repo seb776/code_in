@@ -61,8 +61,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         /// TODO rename UpdateLocalNodePosition
         /// This function is used to update the position of Code_inLinks when moving the node
         /// </summary>
-        public override void MoveNodeSpecial()
-        {
+        //public override void MoveNodeSpecial()
+        //{
             // TODO @Seb 04/07/2016
             //Point nodeAnchorRelativeCoord;
 
@@ -91,7 +91,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             //        it._nodeAnchor.IOLine[j]._y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
             //    }
             //}
-        }
+        //}
 
         public T CreateAndAddInput<T>() where T : AIOAnchor
         {
