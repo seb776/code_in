@@ -120,7 +120,7 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
 
-        public void UpdateDragState()
+        public void UpdateDragState(Point mousePosition)
         {
             throw new NotImplementedException();
         }

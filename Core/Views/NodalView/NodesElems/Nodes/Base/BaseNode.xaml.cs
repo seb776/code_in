@@ -126,7 +126,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             {
                 MessageBox.Show(except.Message);
             }
-            this._rootView.UpdateDragState();
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
         }

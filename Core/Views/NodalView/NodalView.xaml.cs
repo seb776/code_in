@@ -32,6 +32,8 @@ namespace code_in.Views.NodalView
         private INodalPresenter _nodalPresenter = null;
         private List<INodeElem> _selectedNodes = null; // Selected nodes are stored with their positions to revert in case of failure
         private List<Thickness> _selectedNodesPositions = null;
+        private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless)
+        private Point _lastPosition;
 
         public NodalView(ResourceDictionary themeResDict)
         {
@@ -41,6 +43,8 @@ namespace code_in.Views.NodalView
             InitializeComponent();
             _selectedNodes = new List<INodeElem>();
             _selectedNodesPositions = new List<Thickness>();
+            _selectedNodesIndexes = new List<int>();
+            _lastPosition = new Point();
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
@@ -60,6 +64,7 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            this.DropNodes(this);
             //this.DropNodes(null);
         }
 
@@ -94,14 +99,8 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            //Vector diff;
-            //if ((_lastPosition.X + _lastPosition.Y) < 0.01)
-            //    diff = new Vector(0, 0);
-            //else
-            //{
-            //    diff = _lastPosition - e.GetPosition(this.MainGrid);
-            //}
-            //_lastPosition = e.GetPosition(this.MainGrid);
+            if (e.LeftButton == MouseButtonState.Pressed)
+                this.UpdateDragState(e.GetPosition(this.MainGrid));
 
             //if (_nodeTransform != TransformationMode.NONE /*&& _transformingNodes.Count() > 0*/)
             //{
@@ -287,8 +286,12 @@ namespace code_in.Views.NodalView
         public void SelectNode(INodeElem node)
         {
             // TODO if correct to select these nodes together
+            if (_selectedNodes.Count > 0)
+                if (_selectedNodes[0].GetParentView() != node.GetParentView())
+                    throw new Exception("Cannot select multiple elements that have not the same parent.");
             _selectedNodes.Add(node);
             _selectedNodesPositions.Add(new Thickness());
+            _selectedNodesIndexes.Add(0);
             node.SetSelected(true);
         }
         public void UnSelectNode(INodeElem node)
@@ -299,6 +302,7 @@ namespace code_in.Views.NodalView
             {
                 _selectedNodes.RemoveAt(idx);
                 _selectedNodesPositions.RemoveAt(idx);
+                _selectedNodesIndexes.RemoveAt(idx);
             }
 
         }
@@ -308,6 +312,7 @@ namespace code_in.Views.NodalView
                 n.SetSelected(false);
             _selectedNodes.Clear();
             _selectedNodesPositions.Clear();
+            _selectedNodesIndexes.Clear();
         }
 
         //public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
@@ -466,14 +471,9 @@ namespace code_in.Views.NodalView
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
 
-        public void DragNodes()
-        {
-            throw new NotImplementedException();
-        }
-
         public void DropNodes(IVisualNodeContainerDragNDrop container)
         {
-            throw new NotImplementedException();
+
         }
 
         public bool IsDropNodeValid()
@@ -501,15 +501,62 @@ namespace code_in.Views.NodalView
             throw new NotImplementedException();
         }
 
-        public void UpdateDragState()
+        public void DragNodes()
         {
-            //throw new NotImplementedException();
+            //for (int i = 0; i < _selectedNodes.Count; ++i)
+            //{
+        }
+
+        public void UpdateDragState(Point mousePosition)
+        {
+            Vector diff;
+            if ((_lastPosition.X + _lastPosition.Y) < 0.01)
+                diff = new Vector(0, 0);
+            else
+                diff = _lastPosition - mousePosition;
+            _lastPosition = mousePosition;
+
+            for (int i = 0; i < _selectedNodes.Count; ++i)
+            {
+                dynamic draggingNode = _selectedNodes[i];
+                Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
+                double marginLeft = margin.Left;
+                double marginTop = margin.Top;
+                Thickness newMargin = margin;
+                if (draggingNode.GetParentView() == null)
+                {
+                    newMargin.Left -= diff.X;
+                    newMargin.Top -= diff.Y;
+                }
+                //else
+                //{
+                //    if (!draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+                //        newMargin.Left -= diff.X;
+                //    newMargin.Top -= diff.Y;
+                //}
+
+                newMargin.Left = Math.Max(newMargin.Left, 0);
+                newMargin.Top = Math.Max(newMargin.Top, 0);
+
+                draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
+
+                //dynamic draggingNode = _selectedNodes[i];
+                //Point relativeCoord = ((UIElement)draggingNode).TransformToAncestor((draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
+                //draggingNode.GetParentView().RemoveNode(draggingNode);
+                //((AOrderedContentNode)draggingNode.GetParentView()).ContentLayout.Children.Add(draggingNode as UIElement);
+                //(draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
+            }
         }
 
 
         public void RevertChange()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < _selectedNodes.Count; ++i)
+            {
+                _selectedNodes[i].SetPosition((int)_selectedNodesPositions[i].Left, (int)_selectedNodesPositions[i].Top);
+                dynamic curNode = _selectedNodes[i];
+                _selectedNodes[i].GetParentView().AddNode(curNode, _selectedNodesIndexes[i]);
+            }
         }
     } // Class
 } // Namespace
