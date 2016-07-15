@@ -1,33 +1,46 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems
 {
     public interface IVisualNodeContainerDragNDrop : IVisualNodeContainer
     {
+        // Nodes
         void SelectNode(INodeElem node);
         void UnSelectNode(INodeElem node);
-        void UnSelectAll();
-        void DragNodes(TransformationMode transform, INodeElem node, LineMode lm);
-        void DropNodes(INodeElem container);
-    }
-    public enum TransformationMode
-    {
-        NONE = 0,
-        RESIZE,
-        LINE,
-        MOVE
+        void UnSelectAllNodes();
+        void DragNodes();
+        void DropNodes(IVisualNodeContainerDragNDrop container);
+        int GetDropNodeIndex(Point pos); // Gets the index where the element will be pushed
+        void HighLightDropNodePlace(Point pos); // Displays a visual element to show where the node will be dropped
+
+        // Links
+        void DragLink(AIOAnchor from);
+        void DropLink(AIOAnchor to);
+        void UpdateDragState(); // This function is here to update the view when mouse is moving (update view and links)
     }
 
-    public enum LineMode
+    struct VisualNodeInteractionState
     {
-        NONE = 0,
-        LINE = 1,
-        SQUARE = 2,
-        BEZIER = 3
+        enum EInteractionType
+        {
+            NONE = 0,
+            RESIZE = 1,
+            LINE = 2,
+            MOVE = 3
+        }
+        List<INodeElem> SelectedNodes;
+        EInteractionType InteractionType; // Create link, move node... (ancient TransformationMode)
+        // For MOVE
+        private Point _newNodePos;
+        private Point _lastPosition;
+        // For link creation
+        Code_inLink _currentDrawingLink;
     }
 }

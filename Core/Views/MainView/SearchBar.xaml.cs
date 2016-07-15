@@ -11,7 +11,7 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Logique d'interaction pour SearchBar.xaml
     /// </summary>
-    public partial class SearchBar : UserControl, IVisualNodeContainer, IVisualNodeContainerDragNDrop, ICodeInVisual
+    public partial class SearchBar : UserControl, IVisualNodeContainerDragNDrop, ICodeInVisual
     {
         INodeElem _draggingNode = null;
         private ResourceDictionary _themeResourceDictionary = null;
@@ -49,22 +49,12 @@ namespace code_in.Views.MainView
         {
             throw new NotImplementedException();
         }
-        public void HighLightDropPlace(Point pos) { }
-        public int GetDropIndex(Point pos) { return 0; }
+
         #endregion IVisualNodeContainer
         #region IVisualNodeContainerDragNDrop
         public void SelectNode(INodeElem node) { } // Do nothing
         public void UnSelectNode(INodeElem node) { } // Do nothing
-        public void UnSelectAll() { } // Do nothing
-        public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
-        {
-            //if (transform == TransformationMode.MOVE)
-            //    _draggingNode = node;
-        }
-        public void DropNodes(INodeElem container)
-        {
 
-        }
         #endregion IVisualNodeContainerDragNDrop
         #region ICodeInVisual
 
@@ -94,5 +84,46 @@ namespace code_in.Views.MainView
 
 
 
+
+
+        public void UnSelectAllNodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DragNodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DropNodes(IVisualNodeContainerDragNDrop container)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetDropNodeIndex(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HighLightDropNodePlace(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DragLink(NodalView.NodesElems.Anchors.AIOAnchor from)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DropLink(NodalView.NodesElems.Anchors.AIOAnchor to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragState()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

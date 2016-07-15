@@ -22,23 +22,7 @@ using System.Windows.Media.Imaging;
 namespace code_in.Views.NodalView
 {
 
-    struct NodalViewInteractionState
-    {
-        enum EInteractionType
-        {
-            NONE = 0,
-            RESIZE = 1,
-            LINE = 2,
-            MOVE = 3
-        }
-        List<INodeElem> SelectedNodes;
-        EInteractionType InteractionType; // Create link, move node... (ancient TransformationMode)
-        // For MOVE
-        private Point _newNodePos;
-        private Point _lastPosition;
-        // For link creation
-        Code_inLink _currentDrawingLink;
-    }
+
     /// <summary>
     /// The Nodal view is the layout that is able to display Nodes From the NodalPresenter;
     /// </summary>
