@@ -261,12 +261,10 @@ namespace code_in.Presenters.Nodal.Nodes
         public void AddInheritance(string name)
         {
             InheritanceList.Add(name);
-            // update l'ast en fonction de la list
             SimpleType NewInheriance = new SimpleType();
             NewInheriance.Identifier = name;
             (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
-            (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here view update
-            // TODO update ast
+            (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
         }
         public void RemoveInheritance(int index)
         {
@@ -274,13 +272,23 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 InheritanceList.RemoveAt(index);
                 (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
-                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here view update
-                // update l'ast en fonction de la list 
+                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
             }
         }
 
         public void ChangeInheritanceName(int index, string name)
         {
+            SimpleType newNamedInheritance = new SimpleType();
+            newNamedInheritance.Identifier = name;
+            if (InheritanceList.Count > index)
+            {
+                InheritanceList.RemoveAt(index);
+                InheritanceList.Insert(index, name);
+                (_model as TypeDeclaration).BaseTypes.InsertAfter((_model as TypeDeclaration).BaseTypes.ElementAt(index), newNamedInheritance);
+                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
+                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
+            }
+
         }
 
         public List<string> getInheritanceList()

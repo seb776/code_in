@@ -63,10 +63,16 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public virtual void OnMouseLeave()
         { }
 
+        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+        }
         public void ShowEditMenu()
         {
+/*            this.EditMenuAndAttributesLayout.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
-            //this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
+            EditMenu.SetFields(_nodePresenter);
+            this.EditMenuAndAttributesLayout.Children.Add(EditMenu);*/
         }
 
         #region INodeElem

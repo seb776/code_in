@@ -493,8 +493,13 @@ namespace code_in.Views.NodalView
         private void InheritanceNameTextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox NameBox = sender as TextBox;
-            StackPanel Inheritance = NameBox.Parent as StackPanel;
-
+            if (NameBox.Parent != null)
+            {
+                StackPanel Inheritance = NameBox.Parent as StackPanel;
+                string stringIndex = Inheritance.Name.Substring(Inheritance.Name.Count() - 1, 1);
+                int index = int.Parse(stringIndex, null);
+                _nodePresenter.ChangeInheritanceName(index, NameBox.Text);
+            }
         }
 
         private void DeleteInheritance(object sender, RoutedEventArgs e)

@@ -45,6 +45,7 @@ namespace code_in.Presenters.Nodal.Nodes
         bool ifGenericExist(string name);
         List<Tuple<string, EGenericVariance>> getGenericList();
         List<string> getInheritanceList();
+        void ChangeInheritanceName(int index, string name);
         void SetExecParams(int paramsNumber);
         void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg
