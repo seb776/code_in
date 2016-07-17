@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class UnaryExprNode : AExpressionNode
     {
-        public DataFlowItem OperandA = null;
+        public DataFlowAnchor OperandA = null;
         public UnaryExprNode(ResourceDictionary themeResDict)
             : base(themeResDict)
         {
-            OperandA = this.CreateAndAddInput<DataFlowItem>();
+            OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             this.SetThemeResources("UnaryExprNode");
             this.SetType("UnaryExpr");

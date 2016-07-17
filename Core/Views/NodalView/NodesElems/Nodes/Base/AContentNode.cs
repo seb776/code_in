@@ -20,7 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         void EvtDropNode(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this.GetRootView().DropNodes(this);
+            //this.GetRootView().DropNodes(this);
             e.Handled = true;
         }
         #region IVisualNodeContainer
@@ -52,10 +52,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public abstract int GetDropIndex(Point pos);
         public abstract void HighLightDropPlace(Point pos);
-
-        public override void MoveNodeSpecial()
-        {
-        }
 
         #endregion IVisualNodeContainer
 

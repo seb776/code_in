@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -12,18 +13,18 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     class ForStmtNode : ABlockStmtNodes
     {
-        public DataFlowItem Condition = null;
-        public FlowNodeItem outAnchor = null;
-        public FlowNodeItem trueAnchor = null;
+        public DataFlowAnchor Condition = null;
+        public FlowNodeAnchor outAnchor = null;
+        public FlowNodeAnchor trueAnchor = null;
         public ForStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetName("For");
-            Condition = this.CreateAndAddInput<DataFlowItem>();
+            Condition = this.CreateAndAddInput<DataFlowAnchor>();
             Condition.SetName("Condition");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             outAnchor.SetName("FlowNode");
-            trueAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            trueAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             trueAnchor.SetName("True");
         }
     }

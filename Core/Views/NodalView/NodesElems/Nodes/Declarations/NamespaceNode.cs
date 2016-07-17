@@ -40,7 +40,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
 
         #endregion IVisualNodeContainer
-
-        public override void MoveNodeSpecial() { }
     } // Class
 } // Namespace

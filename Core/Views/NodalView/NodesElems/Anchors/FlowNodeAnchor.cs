@@ -7,22 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace code_in.Views.NodalView.NodesElems.Items
+namespace code_in.Views.NodalView.NodesElems.Anchors
 {
-    public class FlowNodeItem : AOItem
+    public class FlowNodeAnchor : AIOAnchor
     {
-         public FlowNodeItem(ResourceDictionary themeResDict) :
+         public FlowNodeAnchor(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("FlowNode");
+            //this.SetName("FlowNode");
         }
-         public FlowNodeItem() :
-             base()
+         public FlowNodeAnchor() :
+             this(Code_inApplication.MainResourceDictionary)
          { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
-
-        #region ICodeInVisual
-        public override void SetThemeResources(String keyPrefix)
-        { }
-        #endregion ICodeInVisual
     }
 }

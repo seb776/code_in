@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
         public BreakStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.CreateAndAddInput<FlowNodeItem>();
         }
     }
 }

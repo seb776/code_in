@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
@@ -13,22 +14,22 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class IfStmtNode : ABlockStmtNodes
     {
-        public DataFlowItem Condition = null;
-        public FlowNodeItem outAnchor = null;
-        public FlowNodeItem trueAnchor = null;
-        public FlowNodeItem falseAnchor = null;
+        public DataFlowAnchor Condition = null;
+        public FlowNodeAnchor outAnchor = null;
+        public FlowNodeAnchor trueAnchor = null;
+        public FlowNodeAnchor falseAnchor = null;
         
         public IfStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("if");
-            Condition = this.CreateAndAddInput<DataFlowItem>();
+            Condition = this.CreateAndAddInput<DataFlowAnchor>();
             Condition.SetName("Condition");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             outAnchor.SetName("FlowNode");
-            trueAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            trueAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             trueAnchor.SetName("True");
-            falseAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            falseAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             falseAnchor.SetName("False");
             //this.SetDynamicResources("IfStmtNode");
         }

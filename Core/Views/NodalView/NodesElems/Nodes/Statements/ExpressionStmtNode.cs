@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -12,15 +13,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     public class ExpressionStmtNode : AStatementNode
     {
-        public DataFlowItem Expression = null;
-        public FlowNodeItem outAnchor = null;
+        public DataFlowAnchor Expression = null;
+        public FlowNodeAnchor outAnchor = null;
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("ExpressionStmt");
-            Expression = this.CreateAndAddInput<DataFlowItem>();
+            Expression = this.CreateAndAddInput<DataFlowAnchor>();
             Expression.SetName("Expression");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             this.SetThemeResources("ExprStmtNode");
         }
     }

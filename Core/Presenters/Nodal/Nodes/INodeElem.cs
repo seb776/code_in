@@ -13,17 +13,20 @@ namespace code_in.Presenters.Nodal
 {
     public interface INodeElem
     {
+        // Actions to change/get visualAST displayed state
         void SetName(String name);
         String GetName();
         void AddGeneric(string name, EGenericVariance variance);
+        // END
         void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
         IVisualNodeContainer GetParentView();
-        void SetRootView(IVisualNodeContainerDragNDrop dnd);
-        IVisualNodeContainerDragNDrop GetRootView();
-        void SetNodePresenter(INodePresenter nodePresenter);
+        void SetRootView(IRootDragNDrop dnd);
+        IRootDragNDrop GetRootView();
+        void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)
         void ShowEditMenu();
         void SetPosition(int posX, int posY);
         void GetSize(out int x, out int y);
+        void SetSelected(bool isSelected); // Highlight the nodeElem if isSelected = true
     }
     // enum globale
     public enum EAccessModifier
