@@ -65,7 +65,7 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.DropNodes(this);
+            this.DropNodes(null);
             this.DropLink(null);
             //this.DropNodes(null);
         }
@@ -303,6 +303,7 @@ namespace code_in.Views.NodalView
             _selectedNodesPositions.Add(new Thickness());
             _selectedNodesIndexes.Add(0);
             node.SetSelected(true);
+            _selectedNodes = _selectedNodes.Distinct().ToList(); // Quick fix @z0rg
         }
         public void UnSelectNode(INodeElem node)
         {
@@ -370,8 +371,8 @@ namespace code_in.Views.NodalView
             //}
         //}
 
-        public void DropNodes(INodeElem node)
-        {
+        //public void DropNodes(INodeElem node)
+        //{
             //// Moving inside orderedContentNode
             //if (_draggingNode != null && _draggingNode.GetParentView() != null)
             //{
@@ -424,7 +425,7 @@ namespace code_in.Views.NodalView
             //// Reset transformation
             //_draggingNode = null;
             //_nodeTransform = TransformationMode.NONE;
-        }
+        //}
         public void RemoveLink(AIOAnchor node)
         {
             ///* if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
@@ -487,7 +488,10 @@ namespace code_in.Views.NodalView
 
         public void DropNodes(IVisualNodeContainerDragNDrop container)
         {
-
+            if (container == null)
+            {
+                _lastPosition = new Point(0, 0);
+            }
         }
 
         public bool IsDropNodeValid()
@@ -596,13 +600,18 @@ namespace code_in.Views.NodalView
                 diff = _lastPosition - mousePosition;
             _lastPosition = mousePosition;
 
+            //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
             for (int i = 0; i < _selectedNodes.Count; ++i)
             {
                 dynamic draggingNode = _selectedNodes[i];
                 Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
                 double marginLeft = margin.Left;
                 double marginTop = margin.Top;
-                Thickness newMargin = margin;
+                Thickness newMargin = new Thickness();
+                newMargin.Left = margin.Left;
+                newMargin.Top = margin.Top;
+                newMargin.Right = margin.Right;
+                newMargin.Bottom = margin.Bottom;
                 if (draggingNode.GetParentView() == null)
                 {
                     newMargin.Left -= diff.X;
