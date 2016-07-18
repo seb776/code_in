@@ -97,15 +97,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
 
-        public void SetPosition(int left, int top)
+        public virtual void SetPosition(int left, int top)
         {
             this.Margin = new Thickness(left, top, 0, 0);
         }
 
         public void GetSize(out int x, out int y)
         {
-            //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-
             this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             this.Arrange(new Rect(0, 0, this.DesiredSize.Width, this.DesiredSize.Height));
             x = (int)this.ActualWidth;
