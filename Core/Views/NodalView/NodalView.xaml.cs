@@ -1,6 +1,7 @@
 ﻿using code_in.Managers;
 using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
@@ -30,9 +31,9 @@ namespace code_in.Views.NodalView
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private INodalPresenter _nodalPresenter = null;
-        private List<INodeElem> _selectedNodes = null; // Selected nodes are stored with their positions to revert in case of failure
-        private List<Thickness> _selectedNodesPositions = null;
-        private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless)
+        private List<INodeElem> _selectedNodes = null;
+        private List<Thickness> _selectedNodesPositions = null; // Selected nodes are stored with their positions to revert in case of failure
+        private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless) to revert them if the move is wrong
         private Point _lastPosition;
 
         public NodalView(ResourceDictionary themeResDict)
@@ -65,6 +66,7 @@ namespace code_in.Views.NodalView
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.DropNodes(this);
+            this.DropLink(null);
             //this.DropNodes(null);
         }
 
@@ -100,7 +102,14 @@ namespace code_in.Views.NodalView
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-                this.UpdateDragState(e.GetPosition(this.MainGrid));
+            {
+                if (_currentLink == null)
+                    this.UpdateDragState(e.GetPosition(this.MainGrid));
+                else
+                    this.UpdateLinkDraw(e.GetPosition(this.MainGrid));
+
+            }
+            
 
             //if (_nodeTransform != TransformationMode.NONE /*&& _transformingNodes.Count() > 0*/)
             //{
@@ -264,6 +273,7 @@ namespace code_in.Views.NodalView
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
             this.UnSelectAllNodes();
+            this.DropLink(null);
             //this.DropNodes(null);
         }
 
@@ -441,6 +451,10 @@ namespace code_in.Views.NodalView
             node.SetRootView(this);
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
+            if (typeof(AIONode).IsAssignableFrom(typeof(T)))
+            {
+                (node as AIONode).SetParentLinksContainer(this);
+            }
 
             this.AddNode(node);
             return node;
@@ -491,14 +505,80 @@ namespace code_in.Views.NodalView
             throw new NotImplementedException();
         }
 
+        private AIOAnchor _linkStart = null;
+        private Code_inLink _currentLink = null;
+
         public void DragLink(AIOAnchor from)
         {
-            throw new NotImplementedException();
+            _linkStart = from;
+            _currentLink = new Code_inLink();
+            this.MainGrid.Children.Add(_currentLink);
+            this.UpdateLinkDraw(Mouse.GetPosition(this.MainGrid));
         }
 
         public void DropLink(AIOAnchor to)
         {
-            throw new NotImplementedException();
+            if (to == null)
+            {
+                _linkStart = null;
+                if (_currentLink != null)
+                    this.MainGrid.Children.Remove(_currentLink);
+                _currentLink = null;
+            }
+            else
+            {
+                if (_currentLink != null)
+                {
+                    try
+                    {
+                        if (_linkStart.Orientation == to.Orientation)
+                            throw new Exception("Cannot link two IO of the same type (input and input, or output and output)");
+                        if (_linkStart == to)
+                            throw new Exception("Cannot create a link between an IO and itself.");
+                        if (_linkStart.ParentNode == to.ParentNode)
+                            throw new Exception("Cannot create a link between two IO that belongs to the same node.");
+                    }
+                    catch (Exception except)
+                    {
+                        this.MainGrid.Children.Remove(_currentLink);
+                        _linkStart = null;
+                        _currentLink = null;
+                        throw except;
+                    }
+                    IOLink link = new IOLink();
+                    link.Input = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? _linkStart : to);
+                    link.Output = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
+                    link.Link = _currentLink;
+                    _linkStart.AttachNewLink(link);
+                    to.AttachNewLink(link);
+                    this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));
+                    _linkStart = null;
+                    _currentLink = null;
+                }
+            }
+        }
+
+        public void UpdateLinkDraw(Point curPosUnattachedLinkSide)
+        {
+            System.Diagnostics.Debug.Assert(_currentLink != null);
+            if (_linkStart != null)
+            {
+                Point startPosition = _linkStart.GetAnchorPosition(this.MainGrid);
+                if (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT) // Input
+                {
+                    _currentLink._x2 = startPosition.X;
+                    _currentLink._y2 = startPosition.Y;
+                    _currentLink._x1 = curPosUnattachedLinkSide.X;
+                    _currentLink._y1 = curPosUnattachedLinkSide.Y;
+                }
+                else
+                {
+                    _currentLink._x1 = startPosition.X;
+                    _currentLink._y1 = startPosition.Y;
+                    _currentLink._x2 = curPosUnattachedLinkSide.X;
+                    _currentLink._y2 = curPosUnattachedLinkSide.Y;
+                }
+            }
         }
 
         public void DragNodes()

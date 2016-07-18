@@ -438,9 +438,10 @@ namespace code_in.Presenters.Nodal
                 unSupStmt.NodeText.Text = stmtArg.ToString();
                 defaultFlowOut = unSupStmt.FlowOutAnchor;
             }
-            DrawFlowLinkNode(lastOutput, visualNode);
+            
             if (visualNode != null)
             {
+                _createVisualLink(lastOutput, visualNode.FlowInAnchor);
                 visualNode.SetPosition(currentX, currentY);
                 int nodeWidth = 0, nodeHeight = 0;
                 visualNode.GetSize(out nodeWidth, out nodeHeight);
@@ -547,14 +548,8 @@ namespace code_in.Presenters.Nodal
                 visualNode = defaultUnsupportedNode;
                 defaultUnsupportedNode.NodeText.Text = expr.ToString();
             }
-            DrawDataFlowLinkNode(outAnchor, visualNode);
-        }
-
-        private void DrawDataFlowLinkNode(DataFlowAnchor lastOutput, AValueNode valNode)
-        {
-            //System.Diagnostics.Debug.Assert(stmtNode != null);
-            //if (lastOutput != null && valNode != null)
-            //    (lastOutput.GetRootView() as NodalView).drawLink(lastOutput, valNode.ExprOut);
+            if (visualNode != null)
+                _createVisualLink(outAnchor, visualNode.ExprOut);
         }
 
         public NodalModel ParseFile(String path)
@@ -578,22 +573,12 @@ namespace code_in.Presenters.Nodal
             }
         }
 
-        //private void drawAutoLink()
-        //{
-        //    if (inputFlownode != null && outputFlownode != null)
-        //    {
-        //        (outputFlownode.GetRootView() as NodalView).drawLink(outputFlownode, inputFlownode);
-        //        outputFlownode = nextOutputFlowNode;
-        //        nextOutputFlowNode = null;
-        //        inputFlownode = null;
-        //    }
-        //}
-
-        private void DrawFlowLinkNode(FlowNodeAnchor lastOutput, AStatementNode stmtNode)
+        private void _createVisualLink(AIOAnchor a, AIOAnchor b)
         {
-            //System.Diagnostics.Debug.Assert(stmtNode != null);
-            //if (lastOutput != null && stmtNode != null)
-            //    (lastOutput.GetRootView() as NodalView).drawLink(lastOutput, stmtNode.FlowInAnchor);
+            if (a == null || b == null)
+                return;
+            _view.DragLink(a);
+            _view.DropLink(b);
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()

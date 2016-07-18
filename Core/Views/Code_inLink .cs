@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -14,7 +15,7 @@ namespace code_in.Views
     {
         public Code_inLink()
         {
-
+            this.IsHitTestVisible = false;
         }
 
         public enum ELineMode {
@@ -22,7 +23,7 @@ namespace code_in.Views
             BEZIER = 1
         }
 
-        public ELineMode _lineMode = ELineMode.LINE;
+        public ELineMode _lineMode = ELineMode.BEZIER;
         PathGeometry _line = new PathGeometry();
         public double _x1 { get; set; }
         public double _y1 { get; set; }

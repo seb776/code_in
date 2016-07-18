@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems
 {
@@ -11,6 +12,6 @@ namespace code_in.Views.NodalView.NodesElems
     {
         void DragLink(AIOAnchor from);
         void DropLink(AIOAnchor to);
-        void UpdateLinkDraw(); // This function is here to update the view when mouse is moving (update view and links)
+        void UpdateLinkDraw(Point mousePosRelToParentLinkContainer); // This function is here to update the view when mouse is moving (update view and links)
     }
 }

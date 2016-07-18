@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView
 {
-    public interface INodalView : IRootDragNDrop
+    public interface INodalView : IRootDragNDrop, ILinkContainer
     {
     }
 }
