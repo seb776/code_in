@@ -108,7 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
         #endregion ICodeInVisual
 
-
+        
         public void SetPosition(int posX, int posY)
         {
             //throw new InvalidOperationException("As an item cannot be outside a node and cannot be flying, we cannot not set its position.");
