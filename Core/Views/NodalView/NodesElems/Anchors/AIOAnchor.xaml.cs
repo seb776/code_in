@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,61 @@ using System.Windows.Shapes;
 
 namespace code_in.Views.NodalView.NodesElems.Anchors
 {
+    public class IOLink
+    {
+        public IOLink()
+        {
+        }
+        public Code_inLink Link = null;
+        public AIOAnchor Input = null;
+        public AIOAnchor Output = null; // The node where the link starts
+        public void CheckAssert()
+        {
+            System.Diagnostics.Debug.Assert(Link != null && Input != null && Output != null && Input != Output);
+        }
+    }
+
     /// <summary>
     /// Logique d'interaction pour AIOAnchor.xaml
     /// </summary>
     public partial class AIOAnchor : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
+        public AIONode ParentNode { get; private set; }
+        public void UpdateLinksPosition()
+        {
+            Point halfRectAnchorSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
+            Point anchorPos = this.LinkAttach.TranslatePoint(halfRectAnchorSize, (this._parentLinksContainer as UIElement));
+            foreach (var l in _links)
+            {
+                IOLink link = l as IOLink;
+                if (this.Orientation == EOrientation.LEFT)
+                {
+                    link.Link._x2 = anchorPos.X;
+                    link.Link._y2 = anchorPos.Y;
+                }
+                else if (this.Orientation == EOrientation.RIGHT)
+                {
+                    link.Link._x1 = anchorPos.X;
+                    link.Link._y1 = anchorPos.Y;
+                }
+            }
+        }
+        List<IOLink> _links = null;
+        public void AttachNewLink(IOLink link)
+        {
+            System.Diagnostics.Debug.Assert(link != null);
+            link.CheckAssert();
+            _links.Add(link);
+        }
+        public void RemoveLink(IOLink link)
+        {
+            _links.Remove(link);
+        }
+        public Point GetAnchorPosition(UIElement relative)
+        {
+            Point attachLinkHelfSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
+            return this.LinkAttach.TranslatePoint(attachLinkHelfSize, relative);
+        }
         public enum EOrientation
         {
             LEFT = 0,
@@ -27,6 +78,26 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
         private ResourceDictionary _themeResourceDictionary = null;
         private EOrientation _orientation = EOrientation.LEFT;
+        private ILinkContainer _parentLinksContainer = null;
+        public ILinkContainer ParentLinksContainer
+        {
+            get
+            {
+                return _parentLinksContainer;
+            }
+        }
+
+        public void SetParentLinksContainer(ILinkContainer linksContainer)
+        {
+            System.Diagnostics.Debug.Assert(linksContainer != null);
+            _parentLinksContainer = linksContainer;
+        }
+
+        public void SetParentNode(AIONode parentNode)
+        {
+            System.Diagnostics.Debug.Assert(parentNode != null);
+            ParentNode = parentNode;
+        }
 
         public EOrientation Orientation
         {
@@ -47,6 +118,27 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+            this._links = new List<IOLink>();
+            this.MouseLeftButtonDown += AIOAnchor_MouseLeftButtonDown;
+            this.MouseLeftButtonUp += AIOAnchor_MouseLeftButtonUp;
+        }
+
+        void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                _parentLinksContainer.DropLink(this);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.ToString());
+            }
+            e.Handled = true;
+        }
+
+        void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _parentLinksContainer.DragLink(this);
         }
 
         #region This

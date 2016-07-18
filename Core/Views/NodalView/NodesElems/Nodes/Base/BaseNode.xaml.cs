@@ -97,7 +97,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
 
-        public void SetPosition(int posX, int posY)
+        public virtual void SetPosition(int posX, int posY)
         {
             this.Margin = new Thickness(posX, posY, 0, 0);
         }

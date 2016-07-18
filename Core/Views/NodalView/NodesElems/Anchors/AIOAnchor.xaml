@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" x:Name="AssetsContainer" VerticalAlignment="Top">
-        <Rectangle Fill="GreenYellow" Width="10" Height="20"/>
+        <Rectangle x:Name="LinkAttach" Fill="GreenYellow" Width="10" Height="20"/>
         <Label x:Name="IOTextContent" Foreground="White">TMP: IOAnchor</Label>
     </StackPanel>
 </UserControl>
