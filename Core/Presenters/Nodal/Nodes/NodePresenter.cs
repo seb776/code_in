@@ -28,7 +28,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private EVirtualNodeType _virtualType;
         private List<Tuple<string, EGenericVariance>> GenericList = null;
         private List<string> InheritanceList = null;
-
+        private List<string> ModifiersList = null;
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
             System.Diagnostics.Debug.Assert(model != null);
@@ -39,6 +39,49 @@ namespace code_in.Presenters.Nodal.Nodes
             GetExistingGenericsFromNode();
             InheritanceList = new List<string>();
             GetExistingInheritanceFromNode();
+            ModifiersList = new List<string>();
+            GetExistingModifiersFromNode();
+            //TODO getExistingmodifiers then 
+        }
+
+        public List<string> getModifiersList()
+        {
+            return (ModifiersList);
+        }
+
+        private void GetExistingModifiersFromNode()
+        {
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+
+                Modifiers modifiers = (_model as TypeDeclaration).Modifiers;
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                    ModifiersList.Add("new");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                    ModifiersList.Add("partial");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                    ModifiersList.Add("static");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                    ModifiersList.Add("abstract");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Const) == ICSharpCode.NRefactory.CSharp.Modifiers.Const)
+                    ModifiersList.Add("Const");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                    ModifiersList.Add("async");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                    ModifiersList.Add("override");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                    ModifiersList.Add("virtual");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
+                    ModifiersList.Add("extern");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
+                    ModifiersList.Add("readonly");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
+                    ModifiersList.Add("sealed");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe) == ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe)
+                    ModifiersList.Add("unsafe");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
+                    ModifiersList.Add("volatile");
+            }
         }
 
         private void GetExistingGenericsFromNode()
@@ -328,6 +371,26 @@ namespace code_in.Presenters.Nodal.Nodes
                         typeDecl.Modifiers |= Modifiers.Abstract;
                     if (OtherModifiers == "override")
                         typeDecl.Modifiers |= Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers |= Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers |= Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers |= Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers |= Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers |= Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers |= Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers |= Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers |= Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers |= Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers |= Modifiers.Volatile;
                     (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers); // update more than a set-> semantic detail
                 }
             }
@@ -342,6 +405,26 @@ namespace code_in.Presenters.Nodal.Nodes
                         typeDecl.Modifiers &= ~Modifiers.Abstract;
                     if (OtherModifiers == "override")
                         typeDecl.Modifiers &= ~Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers &= ~Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers &= ~Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers &= ~Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers &= ~Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers &= ~Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers &= ~Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers &= ~Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers &= ~Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers &= ~Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers &= ~Modifiers.Volatile;
                     (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers);
                 }
             }

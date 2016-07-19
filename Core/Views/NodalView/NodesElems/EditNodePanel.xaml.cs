@@ -184,6 +184,40 @@ namespace code_in.Views.NodalView
             }
             UpdateGenericListInEditMenu();
             UpdateInheritanceInEditMenu();
+            UpdateModifiersListInEditMenu();
+        }
+
+        private void UpdateModifiersListInEditMenu()
+        {
+            foreach (var tmp in _nodePresenter.getModifiersList())
+            {
+                if (tmp == "new")
+                    NewBox.IsChecked = true;
+                if (tmp == "partial")
+                    PartialBox.IsChecked = true;
+                if (tmp == "static")
+                    StaticBox.IsChecked = true;
+                if (tmp == "abstract")
+                    AbstractBox.IsChecked = true;
+                if (tmp == "const")
+                    ConstBox.IsChecked = true;
+                if (tmp == "async")
+                    AsyncBox.IsChecked = true;
+                if (tmp == "override")
+                    OverrideBox.IsChecked = true;
+                if (tmp == "virtual")
+                    virtualBox.IsChecked = true;
+                if (tmp == "extern")
+                    ExternBox.IsChecked = true;
+                if (tmp == "readonly")
+                    ReadonlyBox.IsChecked = true;
+                if (tmp == "sealed")
+                    SealedBox.IsChecked = true;
+                if (tmp == "unsafe")
+                    UnsafeBox.IsChecked = true;
+                if (tmp == "volatile")
+                    VolatileBox.IsChecked = true;
+            }
         }
 
         #region ICodeInVisual
@@ -377,20 +411,7 @@ namespace code_in.Views.NodalView
             ((StackPanel)this.Parent).Children.Clear();
         }
 
-
-        private void VirtualChecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox tmp = sender as CheckBox;
-            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
-        }
-
-        private void AbstractChecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox tmp = sender as CheckBox;
-            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
-        }
-
-        private void OverrideChecked(object sender, RoutedEventArgs e)
+        private void CheckedModifier(object sender, RoutedEventArgs e)
         {
             CheckBox tmp = sender as CheckBox;
             _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), true);
@@ -413,25 +434,10 @@ namespace code_in.Views.NodalView
             _nodePresenter.SetAccesModifier(tmp.Content.ToString());
         }
 
-        private void VirtualUnchecked(object sender, RoutedEventArgs e)
+        private void UncheckedModifier(object sender, RoutedEventArgs e)
         {
             CheckBox tmp = sender as CheckBox;
             _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
-
-        }
-
-        private void AbstractUnchecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox tmp = sender as CheckBox;
-            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
-
-        }
-
-        private void OverrideUnchecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox tmp = sender as CheckBox;
-            _nodePresenter.SetOtherModifiers(tmp.Content.ToString(), false);
-
         }
 
         private void EventAddInheritance(object sender, RoutedEventArgs e)
