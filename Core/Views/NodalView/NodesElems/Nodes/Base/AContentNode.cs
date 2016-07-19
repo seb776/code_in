@@ -14,15 +14,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         protected AContentNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.MouseUp += EvtDropNode;
 //            this.SetDynamicResources("AcontentNode");
         }
 
-        void EvtDropNode(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            //this.GetRootView().DropNodes(this);
-            e.Handled = true;
-        }
         #region IVisualNodeContainer
         /// <summary>
         /// Creates a INodeElem of type T and add it to this control by passing all required parameters (theme, language...)
