@@ -109,7 +109,7 @@ namespace code_in.Views.NodalView
                     this.UpdateLinkDraw(e.GetPosition(this.MainGrid));
 
             }
-            
+
 
             //if (_nodeTransform != TransformationMode.NONE /*&& _transformingNodes.Count() > 0*/)
             //{
@@ -328,103 +328,103 @@ namespace code_in.Views.NodalView
 
         //public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
         //{
-            //_nodeTransform = transform;
-            //_draggingNode = node;
-            //if (_draggingNode != null && _draggingNode.GetParentView() != null)
-            //{
-            //    if (_nodeTransform == TransformationMode.MOVE)
-            //    {
-            //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-            //        {
-            //            Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
-            //            _draggingNode.GetParentView().RemoveNode(_draggingNode);
-            //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Add(_draggingNode as UIElement);
-            //            (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
-            //        }
-            //    }
+        //_nodeTransform = transform;
+        //_draggingNode = node;
+        //if (_draggingNode != null && _draggingNode.GetParentView() != null)
+        //{
+        //    if (_nodeTransform == TransformationMode.MOVE)
+        //    {
+        //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+        //        {
+        //            Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
+        //            _draggingNode.GetParentView().RemoveNode(_draggingNode);
+        //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Add(_draggingNode as UIElement);
+        //            (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
+        //        }
+        //    }
 
-            //    else if (_nodeTransform == TransformationMode.LINE)
-            //    {
-            //        Point nodeAnchorRelativeCoord;
-            //        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-            //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
-            //        else
-            //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
+        //    else if (_nodeTransform == TransformationMode.LINE)
+        //    {
+        //        Point nodeAnchorRelativeCoord;
+        //        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
+        //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
+        //        else
+        //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
 
-            //        this._link = new Code_inLink();
+        //        this._link = new Code_inLink();
 
-            //        Canvas.SetZIndex(_link, -9999999); // TODO Beuark
-            //        _link._x1 = nodeAnchorRelativeCoord.X;
-            //        _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as AOItem)._nodeAnchor.ActualHeight / 2;
-            //        _link._x2 = _link._x1;
-            //        _link._y2 = _link._y1;
+        //        Canvas.SetZIndex(_link, -9999999); // TODO Beuark
+        //        _link._x1 = nodeAnchorRelativeCoord.X;
+        //        _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as AOItem)._nodeAnchor.ActualHeight / 2;
+        //        _link._x2 = _link._x1;
+        //        _link._y2 = _link._y1;
 
-            //        if (_lineMode == LineMode.LINE)
-            //            _link.changeLineMode(Code_inLink.ELineMode.LINE);
-            //        else if (_lineMode == LineMode.BEZIER)
-            //            _link.changeLineMode(Code_inLink.ELineMode.BEZIER);
+        //        if (_lineMode == LineMode.LINE)
+        //            _link.changeLineMode(Code_inLink.ELineMode.LINE);
+        //        else if (_lineMode == LineMode.BEZIER)
+        //            _link.changeLineMode(Code_inLink.ELineMode.BEZIER);
 
-            //        this._link.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
+        //        this._link.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
 
-            //        this.MainGrid.Children.Add(_link);
-            //    }
-            //}
+        //        this.MainGrid.Children.Add(_link);
+        //    }
+        //}
         //}
 
         //public void DropNodes(INodeElem node)
         //{
-            //// Moving inside orderedContentNode
-            //if (_draggingNode != null && _draggingNode.GetParentView() != null)
-            //{
+        //// Moving inside orderedContentNode
+        //if (_draggingNode != null && _draggingNode.GetParentView() != null)
+        //{
 
-            //    if (_nodeTransform == TransformationMode.MOVE)
-            //    {
-            //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-            //        {
-            //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Remove(_draggingNode as UIElement);
-            //            MethodInfo mi = ((AOrderedContentNode)_draggingNode.GetParentView()).GetType().GetMethod("AddNode");
-            //            MethodInfo gmi = mi.MakeGenericMethod(_draggingNode.GetType());
-            //            Object[] prm = { _draggingNode, ((AOrderedContentNode)_draggingNode.GetParentView()).GetDropIndex(new Point(0, (_draggingNode as UserControl).Margin.Top)) };
-            //            gmi.Invoke(_draggingNode.GetParentView(), prm);
-            //            ((UserControl)_draggingNode).Margin = new Thickness();
-            //        }
-            //    }
+        //    if (_nodeTransform == TransformationMode.MOVE)
+        //    {
+        //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
+        //        {
+        //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Remove(_draggingNode as UIElement);
+        //            MethodInfo mi = ((AOrderedContentNode)_draggingNode.GetParentView()).GetType().GetMethod("AddNode");
+        //            MethodInfo gmi = mi.MakeGenericMethod(_draggingNode.GetType());
+        //            Object[] prm = { _draggingNode, ((AOrderedContentNode)_draggingNode.GetParentView()).GetDropIndex(new Point(0, (_draggingNode as UserControl).Margin.Top)) };
+        //            gmi.Invoke(_draggingNode.GetParentView(), prm);
+        //            ((UserControl)_draggingNode).Margin = new Thickness();
+        //        }
+        //    }
 
-            //    else if (_nodeTransform == TransformationMode.LINE)
-            //    {
-            //        if (node == null ||
-            //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.LEFT) && (node as AOItem).Orientation == AOItem.EOrientation.LEFT || // line from input to input
-            //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.RIGHT) && (node as AOItem).Orientation == AOItem.EOrientation.RIGHT || // line from output to output
-            //                _draggingNode.GetParentView() == node.GetParentView())
-            //        {
+        //    else if (_nodeTransform == TransformationMode.LINE)
+        //    {
+        //        if (node == null ||
+        //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.LEFT) && (node as AOItem).Orientation == AOItem.EOrientation.LEFT || // line from input to input
+        //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.RIGHT) && (node as AOItem).Orientation == AOItem.EOrientation.RIGHT || // line from output to output
+        //                _draggingNode.GetParentView() == node.GetParentView())
+        //        {
 
-            //            this.MainGrid.Children.Remove(_link);
-            //        }
-            //        else
-            //        {
-            //            if ((_draggingNode as AOItem)._nodeAnchor._parentItem.Orientation == AOItem.EOrientation.LEFT)
-            //            {
-            //                Point tmpPoint = new Point();
-            //                tmpPoint.X = _link._x1;
-            //                tmpPoint.Y = _link._y1;
-            //                _link._x1 = _link._x2;
-            //                _link._y1 = _link._y2;
-            //                _link._x2 = tmpPoint.X;
-            //                _link._y2 = tmpPoint.Y;
-            //            }
+        //            this.MainGrid.Children.Remove(_link);
+        //        }
+        //        else
+        //        {
+        //            if ((_draggingNode as AOItem)._nodeAnchor._parentItem.Orientation == AOItem.EOrientation.LEFT)
+        //            {
+        //                Point tmpPoint = new Point();
+        //                tmpPoint.X = _link._x1;
+        //                tmpPoint.Y = _link._y1;
+        //                _link._x1 = _link._x2;
+        //                _link._y1 = _link._y2;
+        //                _link._x2 = tmpPoint.X;
+        //                _link._y2 = tmpPoint.Y;
+        //            }
 
-            //            // storing line in nodeanchor
-            //            (_draggingNode as AOItem)._nodeAnchor.IOLine.Add(_link);
-            //            (node as AOItem)._nodeAnchor.IOLine.Add(_link);
-            //            (_draggingNode as AOItem).IOAttached = node as AOItem;
-            //            (node as AOItem).IOAttached = (_draggingNode as AOItem);
-            //        }
-            //    }
-            //}
+        //            // storing line in nodeanchor
+        //            (_draggingNode as AOItem)._nodeAnchor.IOLine.Add(_link);
+        //            (node as AOItem)._nodeAnchor.IOLine.Add(_link);
+        //            (_draggingNode as AOItem).IOAttached = node as AOItem;
+        //            (node as AOItem).IOAttached = (_draggingNode as AOItem);
+        //        }
+        //    }
+        //}
 
-            //// Reset transformation
-            //_draggingNode = null;
-            //_nodeTransform = TransformationMode.NONE;
+        //// Reset transformation
+        //_draggingNode = null;
+        //_nodeTransform = TransformationMode.NONE;
         //}
         public void RemoveLink(AIOAnchor node)
         {
@@ -608,32 +608,19 @@ namespace code_in.Views.NodalView
                 double marginLeft = margin.Left;
                 double marginTop = margin.Top;
                 Thickness newMargin = new Thickness();
+
                 newMargin.Left = margin.Left;
                 newMargin.Top = margin.Top;
                 newMargin.Right = margin.Right;
                 newMargin.Bottom = margin.Bottom;
-                if (draggingNode.GetParentView() == null)
-                {
-                    newMargin.Left -= diff.X;
-                    newMargin.Top -= diff.Y;
-                }
-                //else
-                //{
-                //    if (!draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-                //        newMargin.Left -= diff.X;
-                //    newMargin.Top -= diff.Y;
-                //}
+
+                newMargin.Left -= diff.X;
+                newMargin.Top -= diff.Y;
 
                 newMargin.Left = Math.Max(newMargin.Left, 0);
                 newMargin.Top = Math.Max(newMargin.Top, 0);
 
                 draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
-
-                //dynamic draggingNode = _selectedNodes[i];
-                //Point relativeCoord = ((UIElement)draggingNode).TransformToAncestor((draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
-                //draggingNode.GetParentView().RemoveNode(draggingNode);
-                //((AOrderedContentNode)draggingNode.GetParentView()).ContentLayout.Children.Add(draggingNode as UIElement);
-                //(draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
             }
         }
 
