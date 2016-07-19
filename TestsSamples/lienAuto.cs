@@ -20,6 +20,12 @@
     {
         return a;
     }
+	
+	void DepthExpressions()
+	{
+		int variable;
+		variable = 5 + 3 + (2 - 9) + 10 + 9 + (8 * 9);
+	}
 
     int returnDeclParam()
     {
