@@ -22,8 +22,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace code_in.Presenters.Nodal
 {
@@ -622,10 +624,15 @@ namespace code_in.Presenters.Nodal
         {
             MessageBox.Show(objects[0].GetType().ToString());
         }
+        private static Action EmptyDelegate = delegate() { };
         static void AlignNode(object[] objects)
         {
-            for (int i = 0; i < 1; ++i)
-                (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.05);
+            for (int i = 0; i < 100; ++i)
+            {
+                Thread.Sleep(10);
+                (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.1);
+                ((UIElement)(objects[0] as NodalPresenterLocal)._view).Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+            }
                 //MessageBox.Show(objects[0].GetType().ToString());
         }
         static void CloseNode(object[] objects)

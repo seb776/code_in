@@ -705,7 +705,7 @@ namespace code_in.Views.NodalView
                             int sizeX = 0, sizeY = 0;
                             curNode.GetSize(out sizeX, out sizeY);
                             double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
-                            //double curXDelta = (deltaTime * pixelsBySec) / deltaX;
+                            deltaX = deltaX / (deltaTime * pixelsBySec);
                             deltaX *= 0.5;
                             calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, 0.0));
                             //calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-curXDelta, 0.0));
