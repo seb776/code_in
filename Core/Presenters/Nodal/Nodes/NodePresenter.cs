@@ -29,6 +29,10 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<Tuple<string, EGenericVariance>> GenericList = null;
         private List<string> InheritanceList = null;
         private List<string> ModifiersList = null;
+        public AstNode GetASTNode()
+        {
+            return _model;
+        }
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
             System.Diagnostics.Debug.Assert(model != null);

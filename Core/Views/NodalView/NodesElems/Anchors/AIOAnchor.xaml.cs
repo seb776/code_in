@@ -55,7 +55,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                 }
             }
         }
-        List<IOLink> _links = null;
+        public List<IOLink> _links = null;
         public void AttachNewLink(IOLink link)
         {
             System.Diagnostics.Debug.Assert(link != null);
@@ -64,6 +64,8 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
         public void RemoveLink(IOLink link)
         {
+            if (link.Input is DataFlowAnchor)
+                (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
             _links.Remove(link);
         }
         public Point GetAnchorPosition(UIElement relative)

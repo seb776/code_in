@@ -515,8 +515,20 @@ namespace code_in.Views.NodalView
         public void DragLink(AIOAnchor from)
         {
             _linkStart = from;
-            _currentLink = new Code_inLink();
-            this.MainGrid.Children.Add(_currentLink);
+            if (_linkStart._links.Count != 0)
+            {
+                _currentLink = _linkStart._links[0].Link;
+                var ioLink = _linkStart._links[0];
+                var output = _linkStart._links[0].Output;
+                var input = _linkStart._links[0].Input;
+                output.RemoveLink(ioLink);
+                input.RemoveLink(ioLink);
+            }
+            else
+            {
+                _currentLink = new Code_inLink();
+                this.MainGrid.Children.Add(_currentLink);
+            }
             this.UpdateLinkDraw(Mouse.GetPosition(this.MainGrid));
         }
 
@@ -553,6 +565,8 @@ namespace code_in.Views.NodalView
                     link.Input = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? _linkStart : to);
                     link.Output = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
                     link.Link = _currentLink;
+                    if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
+                        (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
                     this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));
@@ -582,6 +596,7 @@ namespace code_in.Views.NodalView
                     _currentLink._x2 = curPosUnattachedLinkSide.X;
                     _currentLink._y2 = curPosUnattachedLinkSide.Y;
                 }
+                _currentLink.InvalidateVisual();
             }
         }
 

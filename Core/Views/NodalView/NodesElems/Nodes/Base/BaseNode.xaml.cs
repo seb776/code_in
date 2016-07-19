@@ -88,6 +88,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             _nodePresenter = nodePresenter;
         }
 
+        public INodePresenter GetNodePresenter()
+        {
+            return _nodePresenter;
+        }
+
         public void ShowEditMenu()
         {
             this.EditMenuAndAttributesLayout.Children.Clear();

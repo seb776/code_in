@@ -12,6 +12,12 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
     {
         public DataFlowAnchor(ResourceDictionary themeResDict) :
             base(themeResDict)
-        { }
+        {
+        }
+        public Action<ICSharpCode.NRefactory.CSharp.Expression> MethodAttachASTExpr = null;
+        public void SetASTNodeReference(Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttach)
+        {
+            MethodAttachASTExpr = methodAttach;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace code_in.Presenters.Nodal.Nodes
     }
     public interface INodePresenter : IContextMenu
     {
+        AstNode GetASTNode();
         ENodeActions GetActions(); // Gets the possible actions for this node
         String[] GetAvailableModifiers(); // TODO @z0rg: String ? :S
         String[] GetAvailableAccessModifiers();
