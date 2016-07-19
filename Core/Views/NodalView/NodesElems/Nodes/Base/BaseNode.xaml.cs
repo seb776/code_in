@@ -25,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private IRootDragNDrop _rootView = null;
-        private IVisualNodeContainer _parentView = null;
+        private IVisualNodeContainerDragNDrop _parentView = null;
         private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
         public BaseNode(ResourceDictionary themeResDict)
@@ -135,8 +135,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #endregion Events
         #endregion This
         #region INodeElem
-        public void SetParentView(IVisualNodeContainer vc) { _parentView = vc; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetParentView(IVisualNodeContainerDragNDrop vc) { _parentView = vc; }
+        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
         public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
         public IRootDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem

@@ -28,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         EditNodePanel EditMenu = null;
-        protected IVisualNodeContainer _parentView = null;
+        protected IVisualNodeContainerDragNDrop _parentView = null;
         private IRootDragNDrop _rootView = null;
         protected INodePresenter _nodePresenter = null;
 
@@ -76,8 +76,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
 
         #region INodeElem
-        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
+        public void SetParentView(IVisualNodeContainerDragNDrop parent) { _parentView = parent; }
+        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
         public void SetRootView(IRootDragNDrop root) { _rootView = root; }
         public IRootDragNDrop GetRootView() { return _rootView; }
         public void SetName(String name)

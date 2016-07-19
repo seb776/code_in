@@ -18,8 +18,8 @@ namespace code_in.Presenters.Nodal
         String GetName();
         void AddGeneric(string name, EGenericVariance variance);
         // END
-        void SetParentView(IVisualNodeContainer vc); // Each node elem is inside a masterView
-        IVisualNodeContainer GetParentView();
+        void SetParentView(IVisualNodeContainerDragNDrop vc); // Each node elem is inside a masterView
+        IVisualNodeContainerDragNDrop GetParentView();
         void SetRootView(IRootDragNDrop dnd);
         IRootDragNDrop GetRootView();
         void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)

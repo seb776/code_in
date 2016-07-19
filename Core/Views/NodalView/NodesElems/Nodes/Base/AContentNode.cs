@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
-    public abstract class AContentNode : BaseNode, IVisualNodeContainer
+    public abstract class AContentNode : BaseNode, IVisualNodeContainerDragNDrop
     {
         protected AContentNode(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -54,5 +54,20 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
         }
         #endregion ICodeInVisual
+
+        public bool IsDropNodeValid()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetDropNodeIndex(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HighLightDropNodePlace(Point pos)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
