@@ -43,9 +43,19 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden">
-                    <CheckBox Foreground="White" Checked="VirtualChecked" Unchecked="VirtualUnchecked">virtual</CheckBox>
-                    <CheckBox Foreground="White" Checked="AbstractChecked" Unchecked="AbstractUnchecked">abstract</CheckBox>
-                    <CheckBox Foreground="White" Checked="OverrideChecked" Unchecked="OverrideUnchecked">override</CheckBox>
+                    <CheckBox x:Name="virtualBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">virtual</CheckBox>
+                    <CheckBox x:Name="AbstractBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">abstract</CheckBox>
+                    <CheckBox x:Name="OverrideBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">override</CheckBox>
+                    <CheckBox x:Name="NewBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">new</CheckBox>
+                    <CheckBox x:Name="PartialBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">partial</CheckBox>
+                    <CheckBox x:Name="StaticBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">static</CheckBox>
+                    <CheckBox x:Name="SealedBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">sealed</CheckBox>
+                    <CheckBox x:Name="ExternBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">extern</CheckBox>
+                    <CheckBox x:Name="ConstBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">const</CheckBox>
+                    <CheckBox x:Name="AsyncBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">async</CheckBox>
+                    <CheckBox x:Name="ReadonlyBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">readonly</CheckBox>
+                    <CheckBox x:Name="VolatileBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">volatile</CheckBox>
+                    <CheckBox x:Name="UnsafeBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">unsafe</CheckBox>
                 </StackPanel>
             </StackPanel>
             <Border x:Name="FirstBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
