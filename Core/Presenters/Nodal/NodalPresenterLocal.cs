@@ -624,7 +624,9 @@ namespace code_in.Presenters.Nodal
         }
         static void AlignNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            for (int i = 0; i < 1; ++i)
+                (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.05);
+                //MessageBox.Show(objects[0].GetType().ToString());
         }
         static void CloseNode(object[] objects)
         {

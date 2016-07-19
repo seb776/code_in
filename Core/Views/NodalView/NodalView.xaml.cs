@@ -7,6 +7,8 @@ using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
+using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.Utils;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,7 @@ namespace code_in.Views.NodalView
     /// </summary>
     public partial class NodalView : UserControl, INodalView, ICodeInVisual
     {
+        List<INodeElem> _visualNodes; // TODO @z0rg Beaurk: beta quick implementation
         private ResourceDictionary _themeResourceDictionary = null;
         private INodalPresenter _nodalPresenter = null;
         private List<INodeElem> _selectedNodes = null;
@@ -46,6 +49,7 @@ namespace code_in.Views.NodalView
             _selectedNodesPositions = new List<Thickness>();
             _selectedNodesIndexes = new List<int>();
             _lastPosition = new Point();
+            _visualNodes = new List<INodeElem>();
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
@@ -442,6 +446,7 @@ namespace code_in.Views.NodalView
             //node.RemoveLink();
         }
         #endregion create
+
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
@@ -456,7 +461,7 @@ namespace code_in.Views.NodalView
             {
                 (node as AIONode).SetParentLinksContainer(this);
             }
-
+            _visualNodes.Add(node);
             this.AddNode(node);
             return node;
         }
@@ -647,6 +652,68 @@ namespace code_in.Views.NodalView
                 _selectedNodes[i].SetPosition((int)_selectedNodesPositions[i].Left, (int)_selectedNodesPositions[i].Top);
                 dynamic curNode = _selectedNodes[i];
                 _selectedNodes[i].GetParentView().AddNode(curNode, _selectedNodesIndexes[i]);
+            }
+        }
+
+        List<AValueNode> GetExpressionsAttachedToStatement(AStatementNode stmtNode)
+        {
+            List<AValueNode> attachedNodes = new List<AValueNode>();
+
+            foreach (var n in _visualNodes)
+            {
+                if (n is AValueNode)
+                {
+                    AValueNode curNode = n as AValueNode;
+                    while (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0 && !(curNode.ExprOut._links[0].Input.ParentNode is AStatementNode) && (curNode.ExprOut._links[0].Input.ParentNode is AValueNode))
+                    {
+                        curNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
+                    }
+                    if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0 && curNode.ExprOut._links[0].Input.ParentNode is AStatementNode && curNode.ExprOut._links[0].Input.ParentNode == stmtNode)
+                        attachedNodes.Add(n as AValueNode);
+                }
+            }
+            return attachedNodes;
+        }
+
+        public void AlignNodes(double deltaTime)
+        {
+            const double pixelsBySec = 25.0;
+            const double expressionLinksWidth = 100.0;
+            const double expressionsHeightDiff = 25.0;
+            Dictionary<AStatementNode, List<AValueNode>> _expressionsUnderStatement = new Dictionary<AStatementNode, List<AValueNode>>();
+
+
+            foreach (var curNode in _visualNodes)
+            {
+                if (curNode is AStatementNode)
+                    _expressionsUnderStatement[curNode as AStatementNode] = GetExpressionsAttachedToStatement(curNode as AStatementNode);
+            }
+
+            foreach (var couple in _expressionsUnderStatement)
+            {
+                Dictionary<INodeElem, Point> calculatedPositions = new Dictionary<INodeElem, Point>();
+                // TODO calculate size of Expression block
+                foreach (var curNode in couple.Value)
+                    calculatedPositions[curNode] = curNode.GetPosition();
+                foreach (var curNode in couple.Value)
+                {
+                    if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0)
+                    {
+                        if (curNode.ExprOut._links[0].Input.ParentNode is AValueNode)
+                        {
+                            AValueNode rightNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
+                            int sizeX = 0, sizeY = 0;
+                            curNode.GetSize(out sizeX, out sizeY);
+                            double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
+                            //double curXDelta = (deltaTime * pixelsBySec) / deltaX;
+                            deltaX *= 0.5;
+                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, 0.0));
+                            //calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-curXDelta, 0.0));
+                        }
+                    }
+                }
+                foreach (var n in calculatedPositions)
+                    n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
             }
         }
     } // Class

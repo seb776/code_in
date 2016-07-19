@@ -87,7 +87,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
         }
-
+        public Point GetPosition()
+        {
+            return new Point(this.Margin.Left, this.Margin.Top);
+        }
         public INodePresenter GetNodePresenter()
         {
             return _nodePresenter;

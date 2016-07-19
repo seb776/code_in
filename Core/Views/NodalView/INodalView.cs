@@ -9,5 +9,6 @@ namespace code_in.Views.NodalView
 {
     public interface INodalView : IRootDragNDrop, ILinkContainer
     {
+        void AlignNodes(double deltaTime);
     }
 }

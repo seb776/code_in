@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace code_in.Presenters.Nodal
@@ -25,6 +26,7 @@ namespace code_in.Presenters.Nodal
         void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)
         void ShowEditMenu();
         void SetPosition(int posX, int posY);
+        Point GetPosition();
         void GetSize(out int x, out int y);
         void SetSelected(bool isSelected); // Highlight the nodeElem if isSelected = true
     }

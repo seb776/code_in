@@ -127,5 +127,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             throw new NotImplementedException();
         }
+
+
+        public Point GetPosition()
+        {
+            return new Point(this.Margin.Left, this.Margin.Top);
+        }
     } // Class
 } // Namespace
