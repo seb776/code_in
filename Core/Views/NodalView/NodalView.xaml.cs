@@ -682,7 +682,6 @@ namespace code_in.Views.NodalView
             const double expressionsHeightDiff = 25.0;
             Dictionary<AStatementNode, List<AValueNode>> _expressionsUnderStatement = new Dictionary<AStatementNode, List<AValueNode>>();
 
-
             foreach (var curNode in _visualNodes)
             {
                 if (curNode is AStatementNode)
@@ -707,13 +706,33 @@ namespace code_in.Views.NodalView
                             double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
                             deltaX = deltaX / (deltaTime * pixelsBySec);
                             deltaX *= 0.5;
-                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, 0.0));
+
+                            AValueNode firstLeftNode = null;
+                            AValueNode secondLeftNode = null;
+                            if ((rightNode._inputs.Children[0] as AIOAnchor) != null && (rightNode._inputs.Children[0] as AIOAnchor)._links[0] != null)
+                                firstLeftNode = (rightNode._inputs.Children[0] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
+                            if ((rightNode._inputs.Children[1] as AIOAnchor) != null && (rightNode._inputs.Children[1] as AIOAnchor)._links[0] != null)
+                                secondLeftNode = (rightNode._inputs.Children[1] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
+                            double deltaY = 0.0;
+                            if (firstLeftNode != null && firstLeftNode == curNode)
+                                deltaY = rightNode.GetPosition().Y - curNode.GetPosition().Y - expressionsHeightDiff;
+                            if (secondLeftNode != null && secondLeftNode == curNode) {
+                                int sizeXRightNode, sizeYRightNode = 0;
+                                rightNode.GetSize(out sizeXRightNode, out sizeYRightNode);
+                                deltaY = rightNode.GetPosition().Y - curNode.GetPosition().Y + sizeYRightNode - expressionsHeightDiff;
+                            }
+                            deltaY = deltaY / (deltaTime * pixelsBySec);
+                            deltaY *= 0.5;
+                                                    
+                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
                             //calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-curXDelta, 0.0));
                         }
                     }
                 }
                 foreach (var n in calculatedPositions)
+                {
                     n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
+                }
             }
         }
     } // Class
