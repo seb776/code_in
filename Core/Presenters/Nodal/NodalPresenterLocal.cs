@@ -10,6 +10,7 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
@@ -22,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -454,11 +456,6 @@ namespace code_in.Presenters.Nodal
                 _createVisualLink(lastOutput, visualNode.FlowInAnchor);
             lastOutput.MethodAttachASTStmt = MethodAttachSTMT;
             lastOutput.MethodDetachASTStmt = MethodDetachStmt;
-            if (defaultFlowOut != null)
-            {
-                MessageBox.Show("_generateStmt" + stmtArg.GetType().ToString());
-
-            }
             return defaultFlowOut;
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
@@ -626,12 +623,51 @@ namespace code_in.Presenters.Nodal
             ContextMenu cm = new ContextMenu();
             UIElement view = (objects[0] as NodalPresenterLocal)._view as UIElement;
             cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
-            MenuItem mi = new MenuItem();
-            mi.Header = "Yeah";
-            cm.Items.Add(mi);
+
+            //var listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+            //                from assemblyType in domainAssembly.GetTypes()
+            //                where typeof(BaseNode).IsAssignableFrom(assemblyType)
+            //                select assemblyType).ToArray();
+
+            var listOfBs = new List<Type>();
+            listOfBs.Add(typeof(ClassDeclNode));
+            listOfBs.Add(typeof(NamespaceNode));
+            listOfBs.Add(typeof(ReturnStmtNode));
+            listOfBs.Add(typeof(BreakStmtNode));
+            listOfBs.Add(typeof(IfStmtNode));
+            listOfBs.Add(typeof(ExpressionStmtNode));
+            listOfBs.Add(typeof(UnaryExprNode));
+            listOfBs.Add(typeof(BinaryExprNode));
+            listOfBs.Add(typeof(FuncCallExprNode));
+            listOfBs.Add(typeof(VarDeclStmtNode));
+
+            foreach (var entry in listOfBs)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = entry.Name;
+                mi.Click += mi_Click;
+                mi.DataContext = entry;
+                cm.Items.Add(mi);
+            }
             cm.IsOpen = true;
-            //MessageBox.Show("Add");
+            _viewStatic = ((objects[0] as NodalPresenterLocal)._view) as NodalView;
         }
+
+        static void mi_Click(object sender, RoutedEventArgs e)
+        {
+            //if (((MenuItem)sender).DataContext != null)
+            //{
+            //    //(((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+            //    MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
+            //    MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
+            //    BaseNode node = gmi.Invoke(_viewStatic, null) as BaseNode;
+            //    var pos = Mouse.GetPosition(_viewStatic.MainGrid);
+            //    node.SetPosition((int)pos.X, (int)pos.Y);
+            //}
+            _viewStatic = null;
+        }
+        static NodalView _viewStatic = null;
+
         private static Action EmptyDelegate = delegate() { };
         static void AlignNode(object[] objects)
         {
