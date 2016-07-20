@@ -65,14 +65,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
             NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
         public void ShowEditMenu()
         {
-/*            this.EditMenuAndAttributesLayout.Children.Clear();
+            this.EditItemPanelField.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(_nodePresenter);
-            this.EditMenuAndAttributesLayout.Children.Add(EditMenu);*/
+            this.EditItemPanelField.Children.Add(EditMenu);
         }
 
         #region INodeElem
@@ -94,7 +95,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             _nodePresenter = nodePresenter;
         }
         public void AddGeneric(string name, EGenericVariance variance)
-        { }
+        {
+            GenericLabel.Content += variance.ToString().ToLower() + " " + name;
+        }
         #endregion INodeElem
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }

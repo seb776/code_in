@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -76,6 +77,10 @@ namespace Code_in.VSCode_in
                 CommandID configMenuCommandID = new CommandID(GuidList.guidVSCode_inCmdSet, (int)PkgCmdIDList.cmdidConfigMenu);
                 MenuCommand configMenuItem = new MenuCommand(ConfigCallback, configMenuCommandID);
                 mcs.AddCommand(configMenuItem);
+
+                CommandID newFileMenuCommandId = new CommandID(GuidList.guidVSCode_inCmdSet, (int)PkgCmdIDList.cmdidNewFile);
+                MenuCommand newFileMenuItem = new MenuCommand(NewFileCallback, newFileMenuCommandId);
+                mcs.AddCommand(newFileMenuItem);
             }
             Code_inApplication.StartApplication(this);
         }
@@ -86,6 +91,32 @@ namespace Code_in.VSCode_in
         /// See the Initialize method to see how the menu item is associated to this function using
         /// the OleMenuCommandService service and the MenuCommand class.
         /// </summary>
+
+        private void NewFileCallback(object sender, EventArgs e)
+        {
+            int i = 0;
+
+            while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
+                ++i;
+            ToolWindowPane wp = this.CreateToolWindow(typeof(NodalWindowPane), i) as ToolWindowPane;
+            if (wp != null)
+            {
+                IVsWindowFrame frame = wp.Frame as IVsWindowFrame;
+                if (frame != null)
+                {
+                    frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
+                    frame.Show();
+                    (wp as NodalWindowPane).PaneId = i;
+                    SaveFileDialog dialog = new SaveFileDialog();
+                    dialog.Filter = "C# File (*.cs)|*.cs";
+                    if (dialog.ShowDialog() == true && File.Exists(dialog.FileName) == false)
+                    {
+                        File.Create(dialog.FileName);
+                    }
+                }
+            }
+        }
+
         private void OpenFileCallback(object sender, EventArgs e)
         {
             int i = 0;

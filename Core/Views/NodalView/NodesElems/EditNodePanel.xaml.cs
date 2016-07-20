@@ -43,8 +43,7 @@ namespace code_in.Views.NodalView
         {
             _nodePresenter = nodePresenter;
             var actions = nodePresenter.GetActions();
-            bool modifiersArea = false;
-            int i = 0; // i begin to 1 because grid.column"0" is the name as a default area
+            int i = 0;
 
             if ((actions & ENodeActions.NAME) == ENodeActions.NAME) // TODO for optimisation, create borders and columns at runtime -> light optimisation
             {
@@ -58,10 +57,10 @@ namespace code_in.Views.NodalView
             {
                 _accessModifiers.IsEnabled = true;
                 _accessModifiers.Visibility = System.Windows.Visibility.Visible;
-                modifiersArea = true;
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
                 FirstBorder.IsEnabled = true;
                 FirstBorder.Visibility = System.Windows.Visibility.Visible;
+                FirstBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(FirstBorder, i); // i = 1
                 ++i;
                 Grid.SetColumn(_modifiersArea, i); // i = 2
@@ -73,7 +72,6 @@ namespace code_in.Views.NodalView
             }*/
             if ((actions & ENodeActions.MODIFIERS) == ENodeActions.MODIFIERS)
             {
-                modifiersArea = true;
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
                 _modifiersArea.IsEnabled = true;
                 _modifiersList.IsEnabled = true;
@@ -87,6 +85,7 @@ namespace code_in.Views.NodalView
                 DeclGenericsField.Visibility = System.Windows.Visibility.Visible;
                 SecondBorder.IsEnabled = true;
                 SecondBorder.Visibility = System.Windows.Visibility.Visible;
+                SecondBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(SecondBorder, i); // i = 3
                 ++i;
                 Grid.SetColumn(DeclGenericsField, i); // i = 4
@@ -98,6 +97,7 @@ namespace code_in.Views.NodalView
                 InheritanceField.Visibility = System.Windows.Visibility.Visible;
                 ThirdBorder.IsEnabled = true;
                 ThirdBorder.Visibility = System.Windows.Visibility.Visible;
+                ThirdBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(ThirdBorder, i); // i = 5
                 ++i;
                 Grid.SetColumn(InheritanceField, i); // i = 6
@@ -105,14 +105,15 @@ namespace code_in.Views.NodalView
             }
             if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT)
             {
-/*                _commentArea.Visibility = System.Windows.Visibility.Visible;
+                _commentArea.Visibility = System.Windows.Visibility.Visible;
                 _commentArea.IsEnabled = true;
                 FourthBorder.Visibility = System.Windows.Visibility.Visible;
                 FourthBorder.IsEnabled = true;
+                FourthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(FourthBorder, i); // i = 7
                 ++i;
                 Grid.SetColumn(_commentArea, i); // i = 8
-                ++i;*/
+                ++i;
             }
             if ((actions & ENodeActions.ATTRIBUTE) == ENodeActions.ATTRIBUTE)
             {
@@ -120,13 +121,14 @@ namespace code_in.Views.NodalView
                 AttributesField.IsEnabled = true;
                 FifthBorder.Visibility = System.Windows.Visibility.Visible;
                 FifthBorder.IsEnabled = true;
+                FifthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(FifthBorder, i); // i = 9
                 ++i;
                 Grid.SetColumn(AttributesField, i); // i = 10
                 ++i;
             }
-            this._modifiersArea.IsEnabled = modifiersArea;
-            this._modifiersArea.Visibility = (modifiersArea ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
+/*            this._modifiersArea.IsEnabled = modifiersArea;
+            this._modifiersArea.Visibility = (modifiersArea ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);*/
 
             if ((actions & ENodeActions.EXEC_TYPE) == ENodeActions.EXEC_TYPE)
             {
@@ -134,6 +136,7 @@ namespace code_in.Views.NodalView
                 ExecTypeField.IsEnabled = true;
                 SixthBorder.Visibility = System.Windows.Visibility.Visible;
                 SixthBorder.IsEnabled = true;
+                SixthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(SixthBorder, i); // i = 11
                 ++i;
                 Grid.SetColumn(ExecTypeField, i); // i = 12
@@ -145,6 +148,7 @@ namespace code_in.Views.NodalView
                 ExecParametersField.IsEnabled = true;
                 SeventhBorder.Visibility = System.Windows.Visibility.Visible;
                 SeventhBorder.IsEnabled = true;
+                SeventhBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(SeventhBorder, i); // i = 13
                 ++i;
                 Grid.SetColumn(ExecParametersField, i); // i = 14
@@ -156,6 +160,7 @@ namespace code_in.Views.NodalView
                 ExecGenericsField.IsEnabled = true;
                 EighthBorder.Visibility = System.Windows.Visibility.Visible;
                 EighthBorder.IsEnabled = true;
+                EighthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(EighthBorder, i); // i = 15
                 ++i;
                 Grid.SetColumn(ExecGenericsField, i); // i = 16
@@ -167,6 +172,7 @@ namespace code_in.Views.NodalView
                 TypeField.IsEnabled = true;
                 NinthBorder.Visibility = System.Windows.Visibility.Visible;
                 NinthBorder.IsEnabled = true;
+                NinthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(NinthBorder, i); // i = 17
                 ++i;
                 Grid.SetColumn(TypeField, i); // i = 18
@@ -178,6 +184,7 @@ namespace code_in.Views.NodalView
                 TextField.IsEnabled = true;
                 TenthBorder.Visibility = System.Windows.Visibility.Visible;
                 TenthBorder.IsEnabled = true;
+                TenthBorder.BorderThickness = new Thickness(1);
                 Grid.SetColumn(TenthBorder, i); // i = 19
                 ++i;
                 Grid.SetColumn(TextField, i); // i = 20
@@ -518,6 +525,11 @@ namespace code_in.Views.NodalView
             int index = int.Parse(stringIndex, null);
             _nodePresenter.RemoveInheritance(index);
             UpdateInheritanceInEditMenu();
+        }
+
+        private void ParametersNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
