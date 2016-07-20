@@ -52,7 +52,19 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             return (ModifiersList);
         }
-
+        public void InsertStatementAfter(Statement stmt)
+        {
+            if (this._model is Statement)
+            {
+                Statement curStmt = this._model as Statement;
+                if (curStmt.Parent is BlockStatement)
+                {
+                    var parentBlock = curStmt.Parent as BlockStatement;
+                    //parentBlock.Statements.Ins
+                }
+                // listStmts
+            }
+        }
         private void GetExistingModifiersFromNode()
         {
             if (_model.GetType() == typeof(TypeDeclaration))

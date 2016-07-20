@@ -15,7 +15,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
     public class WhileStmtNode : ABlockStmtNodes
     {
         public DataFlowAnchor Condition = null;
-        public FlowNodeAnchor outAnchor = null;
         public FlowNodeAnchor trueAnchor = null;
         public WhileStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -23,8 +22,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             this.SetName("While");
             Condition = this.CreateAndAddInput<DataFlowAnchor>();
             Condition.SetName("Condition");
-            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
-            outAnchor.SetName("FlowNode");
             trueAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             trueAnchor.SetName("True");
             //this.SetDynamicResources("WhileStmtNode");

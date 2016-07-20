@@ -11,17 +11,15 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class ExpressionStmtNode : AStatementNode
+    public class ExpressionStmtNode : ADefaultStatementNode
     {
         public DataFlowAnchor Expression = null;
-        public FlowNodeAnchor outAnchor = null;
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("ExpressionStmt");
             Expression = this.CreateAndAddInput<DataFlowAnchor>();
             Expression.SetName("Expression");
-            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             this.SetThemeResources("ExprStmtNode");
         }
     }

@@ -18,17 +18,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     /// This is a special node that has no equivalent in the AST. Its only goal is to provide
     /// a clear and simple entry point for function editing.
     /// </summary>
-    public class FuncEntryNode : AStatementNode
+    public class FuncEntryNode : ADefaultStatementNode
     {
-        public FlowNodeAnchor FlowOutAnchor = null;
-        
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("FuncEntry");
             this.SetName("Inputs");
             this.SetThemeResources("FuncEntryNode");
-            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
         }
     }
 }

@@ -10,10 +10,9 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    class UnSupStmtDeclNode : AStatementNode
+    class UnSupStmtDeclNode : ADefaultStatementNode
     {
         public TextBox NodeText = null;
-        public FlowNodeAnchor FlowOutAnchor = null;
 
         public UnSupStmtDeclNode() :
             this(Code_inApplication.MainResourceDictionary)
@@ -25,7 +24,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             base(themeResDict)
         {
             this.SetType("Unsupported Stmt");
-            FlowOutAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             this.NodeText = new TextBox();
             this.ContentLayout.Children.Add(this.NodeText);
         }
