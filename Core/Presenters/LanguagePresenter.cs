@@ -11,7 +11,6 @@ namespace code_in.Presenters
     {
         public void ApplyLanguage(ResourceDictionary resDict)
         {
-            return; // TODO @Seb quick fix
             foreach (var t in resDict.Keys)
             {
                 Code_inApplication.LanguageResourcesDictionary[t as String] = resDict[t as String];

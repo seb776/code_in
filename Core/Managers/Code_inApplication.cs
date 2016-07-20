@@ -24,7 +24,7 @@ namespace code_in
              ResourceDictionary retResDict = null;
             try
             {
-                var reader = new FileStream("C:/FrenchResourcesDictionary.xaml", FileMode.Open, FileAccess.Read, FileShare.Read);
+                var reader = new FileStream("FrenchResourcesDictionary.xaml", FileMode.Open, FileAccess.Read, FileShare.Read);
                 retResDict = XamlReader.Load(reader) as ResourceDictionary;
             }
             catch (Exception e)
