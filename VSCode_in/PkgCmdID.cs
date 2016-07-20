@@ -8,5 +8,6 @@ namespace Code_in.VSCode_in
     {
         public const uint cmdidOpenFile =       0x102;
         public const uint cmdidConfigMenu =     0x103;
+        public const uint cmdidNewFile =        0x104;
     };
 }
