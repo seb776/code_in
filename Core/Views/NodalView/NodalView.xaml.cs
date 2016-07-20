@@ -559,8 +559,6 @@ namespace code_in.Views.NodalView
                             throw new Exception("Cannot create a link between an IO and itself.");
                         if (_linkStart.ParentNode == to.ParentNode)
                             throw new Exception("Cannot create a link between two IO that belongs to the same node.");
-                        if (_linkStart.GetType() != to.GetType())
-                            throw new Exception("Cannot create a link between a DataFlowAnchor and a FlowNodeAnchor.");
                     }
                     catch (Exception except)
                     {
@@ -584,8 +582,6 @@ namespace code_in.Views.NodalView
                     link.Output._links.Clear();
                     if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
                         (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
-                    //else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor)
-                    //    (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input);
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
                     this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));
@@ -717,6 +713,7 @@ namespace code_in.Views.NodalView
                 // TODO calculate size of Expression block
                 foreach (var curNode in couple.Value)
                     calculatedPositions[curNode] = curNode.GetPosition();
+                bool first = true;
                 foreach (var curNode in couple.Value)
                 {
                     if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0)
@@ -724,7 +721,21 @@ namespace code_in.Views.NodalView
                         if (curNode.ExprOut._links[0].Input.ParentNode is AValueNode)
                         {
                             AValueNode rightNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
-                            rightNode.SetName("JIO");
+                            if (first)
+                            {
+                                first = false;
+                                var parentStatementNode = (rightNode._outputs.Children[0] as AIOAnchor)._links[0].Input.ParentNode;
+                                Point parentStatementPos = parentStatementNode.GetPosition();
+                                int parentStatementSizeX, parentStatementSizeY = 0;
+                                parentStatementNode.GetSize(out parentStatementSizeX, out parentStatementSizeY);
+                                int tmpSizeX, tmpSizeY = 0;
+                                rightNode.GetSize(out tmpSizeX, out tmpSizeY);
+                                double deltaXParentStatement = parentStatementPos.X - (tmpSizeX + rightNode.GetPosition().X + expressionLinksWidth);
+                                deltaXParentStatement = deltaXParentStatement / (deltaTime * pixelsBySec);
+                                deltaXParentStatement *= 0.5;
+                                double deltaYParentStatement = parentStatementPos.Y - rightNode.GetPosition().Y + parentStatementSizeY;
+                                calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-deltaXParentStatement, -deltaYParentStatement));
+                            }
                             int sizeX = 0, sizeY = 0;
                             curNode.GetSize(out sizeX, out sizeY);
                             double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
@@ -757,6 +768,7 @@ namespace code_in.Views.NodalView
                         }
                     }
                 }
+
                 foreach (var n in calculatedPositions)
                 {
                     n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
@@ -767,7 +779,7 @@ namespace code_in.Views.NodalView
                 {
                     Point topLeftCorner = new Point();
                     Point bottomRightCorner = new Point();
-                    bool first = true;
+                    first = true;
 
                     foreach (var expr in _expressionsUnderStatement[n.Key])
                     {
