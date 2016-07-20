@@ -707,25 +707,27 @@ namespace code_in.Views.NodalView
                             deltaX = deltaX / (deltaTime * pixelsBySec);
                             deltaX *= 0.5;
 
-                            AValueNode firstLeftNode = null;
-                            AValueNode secondLeftNode = null;
-                            if ((rightNode._inputs.Children[0] as AIOAnchor) != null && (rightNode._inputs.Children[0] as AIOAnchor)._links[0] != null)
-                                firstLeftNode = (rightNode._inputs.Children[0] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
-                            if ((rightNode._inputs.Children[1] as AIOAnchor) != null && (rightNode._inputs.Children[1] as AIOAnchor)._links[0] != null)
-                                secondLeftNode = (rightNode._inputs.Children[1] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
+
                             double deltaY = 0.0;
-                            if (firstLeftNode != null && firstLeftNode == curNode)
-                                deltaY = rightNode.GetPosition().Y - curNode.GetPosition().Y - expressionsHeightDiff;
-                            if (secondLeftNode != null && secondLeftNode == curNode) {
-                                int sizeXRightNode, sizeYRightNode = 0;
-                                rightNode.GetSize(out sizeXRightNode, out sizeYRightNode);
-                                deltaY = rightNode.GetPosition().Y - curNode.GetPosition().Y + sizeYRightNode - expressionsHeightDiff;
+                            if (rightNode._inputs.Children != null)
+                            {
+                                double totalSizeYNode = 0.0;
+                                for (int i = 0; i < rightNode._inputs.Children.Count; ++i) {
+
+                                    AValueNode leftNode = (rightNode._inputs.Children[i] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
+                                    int sizeXLeftNode, sizeYLeftNode = 0;
+                                    leftNode.GetSize(out sizeXLeftNode, out sizeYLeftNode);
+
+                                    if (leftNode == curNode)
+                                    {
+                                        deltaY = rightNode.GetPosition().Y - leftNode.GetPosition().Y + expressionsHeightDiff * i + totalSizeYNode;
+                                        deltaY = deltaY / (deltaTime * pixelsBySec);
+                                        deltaY *= 0.5;
+                                        calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
+                                    }
+                                    totalSizeYNode += sizeYLeftNode;     
+                                }
                             }
-                            deltaY = deltaY / (deltaTime * pixelsBySec);
-                            deltaY *= 0.5;
-                                                    
-                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
-                            //calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-curXDelta, 0.0));
                         }
                     }
                 }
