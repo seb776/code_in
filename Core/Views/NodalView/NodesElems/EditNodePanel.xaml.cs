@@ -58,11 +58,14 @@ namespace code_in.Views.NodalView
                 _accessModifiers.IsEnabled = true;
                 _accessModifiers.Visibility = System.Windows.Visibility.Visible;
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
-                FirstBorder.IsEnabled = true;
-                FirstBorder.Visibility = System.Windows.Visibility.Visible;
-                FirstBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(FirstBorder, i); // i = 1
-                ++i;
+                if (i != 0)
+                {
+                    FirstBorder.IsEnabled = true;
+                    FirstBorder.Visibility = System.Windows.Visibility.Visible;
+                    FirstBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(FirstBorder, i); // i = 1
+                    ++i;
+                }
                 Grid.SetColumn(_modifiersArea, i); // i = 2
             }
 /*            else
@@ -78,40 +81,52 @@ namespace code_in.Views.NodalView
                 _modifiersList.Visibility = System.Windows.Visibility.Visible;
                 Grid.SetColumn(_modifiersList, i); // i = 2
                 ++i;
+                UpdateModifiersListInEditMenu();
             }
             if ((actions & ENodeActions.GENERICS) == ENodeActions.GENERICS)
             {
                 DeclGenericsField.IsEnabled = true;
                 DeclGenericsField.Visibility = System.Windows.Visibility.Visible;
-                SecondBorder.IsEnabled = true;
-                SecondBorder.Visibility = System.Windows.Visibility.Visible;
-                SecondBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(SecondBorder, i); // i = 3
+                if (i != 0)
+                {
+                    SecondBorder.IsEnabled = true;
+                    SecondBorder.Visibility = System.Windows.Visibility.Visible;
+                    SecondBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(SecondBorder, i); // i = 3
                 ++i;
+                }
                 Grid.SetColumn(DeclGenericsField, i); // i = 4
                 ++i;
+                UpdateGenericListInEditMenu();
             }
             if ((actions & ENodeActions.INHERITANCE) == ENodeActions.INHERITANCE)
             {
                 InheritanceField.IsEnabled = true;
                 InheritanceField.Visibility = System.Windows.Visibility.Visible;
-                ThirdBorder.IsEnabled = true;
-                ThirdBorder.Visibility = System.Windows.Visibility.Visible;
-                ThirdBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(ThirdBorder, i); // i = 5
-                ++i;
+                if (i != 0)
+                {
+                    ThirdBorder.IsEnabled = true;
+                    ThirdBorder.Visibility = System.Windows.Visibility.Visible;
+                    ThirdBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(ThirdBorder, i); // i = 5
+                    ++i;
+                }
                 Grid.SetColumn(InheritanceField, i); // i = 6
                 ++i;
+                UpdateInheritanceInEditMenu();
             }
             if ((actions & ENodeActions.COMMENT) == ENodeActions.COMMENT)
             {
                 _commentArea.Visibility = System.Windows.Visibility.Visible;
                 _commentArea.IsEnabled = true;
-                FourthBorder.Visibility = System.Windows.Visibility.Visible;
-                FourthBorder.IsEnabled = true;
-                FourthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(FourthBorder, i); // i = 7
-                ++i;
+                if (i != 0)
+                {
+                    FourthBorder.Visibility = System.Windows.Visibility.Visible;
+                    FourthBorder.IsEnabled = true;
+                    FourthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(FourthBorder, i); // i = 7
+                    ++i;
+                }
                 Grid.SetColumn(_commentArea, i); // i = 8
                 ++i;
             }
@@ -119,11 +134,14 @@ namespace code_in.Views.NodalView
             {
                 AttributesField.Visibility = System.Windows.Visibility.Visible;
                 AttributesField.IsEnabled = true;
-                FifthBorder.Visibility = System.Windows.Visibility.Visible;
-                FifthBorder.IsEnabled = true;
-                FifthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(FifthBorder, i); // i = 9
-                ++i;
+                if (i != 0)
+                {
+                    FifthBorder.Visibility = System.Windows.Visibility.Visible;
+                    FifthBorder.IsEnabled = true;
+                    FifthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(FifthBorder, i); // i = 9
+                    ++i;
+                }
                 Grid.SetColumn(AttributesField, i); // i = 10
                 ++i;
             }
@@ -134,11 +152,14 @@ namespace code_in.Views.NodalView
             {
                 ExecTypeField.Visibility = System.Windows.Visibility.Visible;
                 ExecTypeField.IsEnabled = true;
-                SixthBorder.Visibility = System.Windows.Visibility.Visible;
-                SixthBorder.IsEnabled = true;
-                SixthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(SixthBorder, i); // i = 11
-                ++i;
+                if (i != 0)
+                {
+                    SixthBorder.Visibility = System.Windows.Visibility.Visible;
+                    SixthBorder.IsEnabled = true;
+                    SixthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(SixthBorder, i); // i = 11
+                    ++i;
+                }
                 Grid.SetColumn(ExecTypeField, i); // i = 12
                 ++i;
             }
@@ -146,11 +167,14 @@ namespace code_in.Views.NodalView
             {
                 ExecParametersField.Visibility = System.Windows.Visibility.Visible;
                 ExecParametersField.IsEnabled = true;
-                SeventhBorder.Visibility = System.Windows.Visibility.Visible;
-                SeventhBorder.IsEnabled = true;
-                SeventhBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(SeventhBorder, i); // i = 13
-                ++i;
+                if (i != 0)
+                {
+                    SeventhBorder.Visibility = System.Windows.Visibility.Visible;
+                    SeventhBorder.IsEnabled = true;
+                    SeventhBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(SeventhBorder, i); // i = 13
+                    ++i;
+                }
                 Grid.SetColumn(ExecParametersField, i); // i = 14
                 ++i;
             }
@@ -158,23 +182,30 @@ namespace code_in.Views.NodalView
             {
                 ExecGenericsField.Visibility = System.Windows.Visibility.Visible;
                 ExecGenericsField.IsEnabled = true;
-                EighthBorder.Visibility = System.Windows.Visibility.Visible;
-                EighthBorder.IsEnabled = true;
-                EighthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(EighthBorder, i); // i = 15
-                ++i;
+                if (i != 0)
+                {
+                    EighthBorder.Visibility = System.Windows.Visibility.Visible;
+                    EighthBorder.IsEnabled = true;
+                    EighthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(EighthBorder, i); // i = 15
+                    ++i;
+                }
                 Grid.SetColumn(ExecGenericsField, i); // i = 16
                 ++i;
+                UpdateGenericListInEditMenu();
             }
             if ((actions & ENodeActions.TYPE) == ENodeActions.TYPE)
             {
                 TypeField.Visibility = System.Windows.Visibility.Visible;
                 TypeField.IsEnabled = true;
-                NinthBorder.Visibility = System.Windows.Visibility.Visible;
-                NinthBorder.IsEnabled = true;
-                NinthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(NinthBorder, i); // i = 17
-                ++i;
+                if (i != 0)
+                {
+                    NinthBorder.Visibility = System.Windows.Visibility.Visible;
+                    NinthBorder.IsEnabled = true;
+                    NinthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(NinthBorder, i); // i = 17
+                    ++i;
+                }
                 Grid.SetColumn(TypeField, i); // i = 18
                 ++i;
             }
@@ -182,16 +213,16 @@ namespace code_in.Views.NodalView
             {
                 TextField.Visibility = System.Windows.Visibility.Visible;
                 TextField.IsEnabled = true;
-                TenthBorder.Visibility = System.Windows.Visibility.Visible;
-                TenthBorder.IsEnabled = true;
-                TenthBorder.BorderThickness = new Thickness(1);
-                Grid.SetColumn(TenthBorder, i); // i = 19
-                ++i;
+                if (i != 0)
+                {
+                    TenthBorder.Visibility = System.Windows.Visibility.Visible;
+                    TenthBorder.IsEnabled = true;
+                    TenthBorder.BorderThickness = new Thickness(1);
+                    Grid.SetColumn(TenthBorder, i); // i = 19
+                    ++i;
+                }
                 Grid.SetColumn(TextField, i); // i = 20
             }
-            UpdateGenericListInEditMenu();
-            UpdateInheritanceInEditMenu();
-            UpdateModifiersListInEditMenu();
         }
 
         private void UpdateModifiersListInEditMenu()
