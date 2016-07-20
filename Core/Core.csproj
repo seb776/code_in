@@ -103,6 +103,7 @@
     <Compile Include="Presenters\Nodal\IContainingModifiers.cs" />
     <Compile Include="Presenters\Nodal\IContextMenu.cs" />
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
+    <Compile Include="Presenters\Nodal\ParenthesisExprNode.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
     <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
@@ -176,14 +177,17 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\FuncCallExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ParenthesizedExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TernaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnSupExpNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ValueExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ADefaultStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AFinalStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ContinueStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForeachStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForStmtNode.cs" />
