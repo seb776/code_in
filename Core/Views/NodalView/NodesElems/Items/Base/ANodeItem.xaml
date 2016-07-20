@@ -11,12 +11,17 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+        <StackPanel x:Name="EditItemPanelField"></StackPanel>
+        <StackPanel x:Name="ItemField" Orientation="Horizontal">
         <StackPanel Grid.Column="0" x:Name="BeforeName" Orientation="Horizontal">
         </StackPanel>
         <Label VerticalAlignment="Center" Grid.Column="1" x:Name="ItemName" Margin="2,4,2,4"  BorderThickness="0"  Background="#422557C3" Foreground="White">
             NodeItem
         </Label>
         <StackPanel Grid.Column="2" x:Name="AfterName" Orientation="Horizontal">
+        </StackPanel>
+        </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

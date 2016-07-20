@@ -69,8 +69,67 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             if (_model.GetType() == typeof(TypeDeclaration))
             {
-
                 Modifiers modifiers = (_model as TypeDeclaration).Modifiers;
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                    ModifiersList.Add("new");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                    ModifiersList.Add("partial");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                    ModifiersList.Add("static");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                    ModifiersList.Add("abstract");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Const) == ICSharpCode.NRefactory.CSharp.Modifiers.Const)
+                    ModifiersList.Add("Const");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                    ModifiersList.Add("async");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                    ModifiersList.Add("override");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                    ModifiersList.Add("virtual");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
+                    ModifiersList.Add("extern");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
+                    ModifiersList.Add("readonly");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
+                    ModifiersList.Add("sealed");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe) == ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe)
+                    ModifiersList.Add("unsafe");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
+                    ModifiersList.Add("volatile");
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                Modifiers modifiers = (_model as MethodDeclaration).Modifiers;
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
+                    ModifiersList.Add("new");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
+                    ModifiersList.Add("partial");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Static) == ICSharpCode.NRefactory.CSharp.Modifiers.Static)
+                    ModifiersList.Add("static");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Abstract) == ICSharpCode.NRefactory.CSharp.Modifiers.Abstract)
+                    ModifiersList.Add("abstract");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Const) == ICSharpCode.NRefactory.CSharp.Modifiers.Const)
+                    ModifiersList.Add("Const");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Async) == ICSharpCode.NRefactory.CSharp.Modifiers.Async)
+                    ModifiersList.Add("async");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
+                    ModifiersList.Add("override");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Virtual) == ICSharpCode.NRefactory.CSharp.Modifiers.Virtual)
+                    ModifiersList.Add("virtual");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
+                    ModifiersList.Add("extern");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
+                    ModifiersList.Add("readonly");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
+                    ModifiersList.Add("sealed");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe) == ICSharpCode.NRefactory.CSharp.Modifiers.Unsafe)
+                    ModifiersList.Add("unsafe");
+                if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
+                    ModifiersList.Add("volatile");
+            }
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                Modifiers modifiers = (_model as FieldDeclaration).Modifiers;
                 if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                     ModifiersList.Add("new");
                 if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
@@ -106,6 +165,20 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 Tuple<string, EGenericVariance> ExistingGeneric;
                 foreach (var tmp in (_model as TypeDeclaration).TypeParameters)
+                {
+                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
+                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
+                    else
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
+                    GenericList.Add(ExistingGeneric);
+                }
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                Tuple<string, EGenericVariance> ExistingGeneric;
+                foreach (var tmp in (_model as MethodDeclaration).TypeParameters)
                 {
                     if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
                         ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
@@ -220,6 +293,30 @@ namespace code_in.Presenters.Nodal.Nodes
                 typeDecl.TypeParameters.Add(NewGeneric);
                 GenericList.Add(NewGenericInList);
             }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
+                Tuple<string, EGenericVariance> NewGenericInList = null;
+                var typeDecl = _model as MethodDeclaration;
+                NewGeneric.Name = name;
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
+                }
+                typeDecl.TypeParameters.Add(NewGeneric);
+                GenericList.Add(NewGenericInList);
+            }
             (_view as IContainingGenerics).setGenerics(GenericList);
             UpdateGenericsInAst();
         }
@@ -295,7 +392,33 @@ namespace code_in.Presenters.Nodal.Nodes
 
                 TypeDecl.TypeParameters.Clear();
                 TypeParameterDeclaration updatedGeneric;
-                foreach(Tuple<string, EGenericVariance> generic in GenericList)
+                foreach (Tuple<string, EGenericVariance> generic in GenericList)
+                {
+                    if (generic.Item2 == EGenericVariance.IN)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    }
+                    else if (generic.Item2 == EGenericVariance.OUT)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    }
+                    else
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    }
+                    TypeDecl.TypeParameters.Add(updatedGeneric);
+                }
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var TypeDecl = (_model as MethodDeclaration);
+
+                TypeDecl.TypeParameters.Clear();
+                TypeParameterDeclaration updatedGeneric;
+                foreach (Tuple<string, EGenericVariance> generic in GenericList)
                 {
                     if (generic.Item2 == EGenericVariance.IN)
                     {
@@ -319,10 +442,13 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddInheritance(string name)
         {
-            InheritanceList.Add(name);
-            SimpleType NewInheriance = new SimpleType();
-            NewInheriance.Identifier = name;
-            (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                InheritanceList.Add(name);
+                SimpleType NewInheriance = new SimpleType();
+                NewInheriance.Identifier = name;
+                (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
+            }
             (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
         }
         public void RemoveInheritance(int index)
@@ -372,6 +498,36 @@ namespace code_in.Presenters.Nodal.Nodes
                     typeDecl.Modifiers |= Modifiers.Internal;
                 (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
             }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var typeDecl = (_model as MethodDeclaration);
+                Modifiers tmp = typeDecl.Modifiers;
+                typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
+                if (AccessModifier == "public")
+                    typeDecl.Modifiers |= Modifiers.Public;
+                if (AccessModifier == "private")
+                    typeDecl.Modifiers |= Modifiers.Private;
+                if (AccessModifier == "protected")
+                    typeDecl.Modifiers |= Modifiers.Protected;
+                if (AccessModifier == "internal")
+                    typeDecl.Modifiers |= Modifiers.Internal;
+                (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
+            }
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var typeDecl = (_model as FieldDeclaration);
+                Modifiers tmp = typeDecl.Modifiers;
+                typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
+                if (AccessModifier == "public")
+                    typeDecl.Modifiers |= Modifiers.Public;
+                if (AccessModifier == "private")
+                    typeDecl.Modifiers |= Modifiers.Private;
+                if (AccessModifier == "protected")
+                    typeDecl.Modifiers |= Modifiers.Protected;
+                if (AccessModifier == "internal")
+                    typeDecl.Modifiers |= Modifiers.Internal;
+                (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
+            }
         }
 
         public void SetOtherModifiers(string OtherModifiers, bool AddOrRemove) // if true -> Add, else -> Remove
@@ -409,12 +565,136 @@ namespace code_in.Presenters.Nodal.Nodes
                         typeDecl.Modifiers |= Modifiers.Volatile;
                     (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers); // update more than a set-> semantic detail
                 }
+                if (_model.GetType() == typeof(MethodDeclaration))
+                {
+                    var typeDecl = (_model as MethodDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers |= Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers |= Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers |= Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers |= Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers |= Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers |= Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers |= Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers |= Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers |= Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers |= Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers |= Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers |= Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers |= Modifiers.Volatile;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers); // update more than a set-> semantic detail
+                }
+                if (_model.GetType() == typeof(FieldDeclaration))
+                {
+                    var typeDecl = (_model as FieldDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers |= Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers |= Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers |= Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers |= Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers |= Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers |= Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers |= Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers |= Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers |= Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers |= Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers |= Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers |= Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers |= Modifiers.Volatile;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers); // update more than a set-> semantic detail
+                }
             }
             else if (AddOrRemove == false)
             {
                 if (_model.GetType() == typeof(TypeDeclaration))
                 {
                     var typeDecl = (_model as TypeDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers &= ~Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers &= ~Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers &= ~Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers &= ~Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers &= ~Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers &= ~Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers &= ~Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers &= ~Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers &= ~Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers &= ~Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers &= ~Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers &= ~Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers &= ~Modifiers.Volatile;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers);
+                }
+                if (_model.GetType() == typeof(MethodDeclaration))
+                {
+                    var typeDecl = (_model as MethodDeclaration);
+                    if (OtherModifiers == "virtual")
+                        typeDecl.Modifiers &= ~Modifiers.Virtual;
+                    if (OtherModifiers == "abstract")
+                        typeDecl.Modifiers &= ~Modifiers.Abstract;
+                    if (OtherModifiers == "override")
+                        typeDecl.Modifiers &= ~Modifiers.Override;
+                    if (OtherModifiers == "new")
+                        typeDecl.Modifiers &= ~Modifiers.New;
+                    if (OtherModifiers == "partial")
+                        typeDecl.Modifiers &= ~Modifiers.Partial;
+                    if (OtherModifiers == "static")
+                        typeDecl.Modifiers &= ~Modifiers.Static;
+                    if (OtherModifiers == "const")
+                        typeDecl.Modifiers &= ~Modifiers.Const;
+                    if (OtherModifiers == "async")
+                        typeDecl.Modifiers &= ~Modifiers.Async;
+                    if (OtherModifiers == "extern")
+                        typeDecl.Modifiers &= ~Modifiers.Extern;
+                    if (OtherModifiers == "readonly")
+                        typeDecl.Modifiers &= ~Modifiers.Readonly;
+                    if (OtherModifiers == "sealed")
+                        typeDecl.Modifiers &= ~Modifiers.Sealed;
+                    if (OtherModifiers == "unsafe")
+                        typeDecl.Modifiers &= ~Modifiers.Unsafe;
+                    if (OtherModifiers == "volatile")
+                        typeDecl.Modifiers &= ~Modifiers.Volatile;
+                    (_view as IContainingModifiers).setModifiersList(typeDecl.Modifiers);
+                }
+                if (_model.GetType() == typeof(FieldDeclaration))
+                {
+                    var typeDecl = (_model as FieldDeclaration);
                     if (OtherModifiers == "virtual")
                         typeDecl.Modifiers &= ~Modifiers.Virtual;
                     if (OtherModifiers == "abstract")
@@ -546,15 +826,20 @@ namespace code_in.Presenters.Nodal.Nodes
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
-/*            else // basic behaviour to avoid crashes
+            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)) // for namespace
             {
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
-                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
-            } */
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+            }
+            /*            else // basic behaviour to avoid crashes
+                        {
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, CollapseNode));
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPAND, ExpandNode));
+                            optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
+                        } */
             return optionsList.ToArray();
         }
 
