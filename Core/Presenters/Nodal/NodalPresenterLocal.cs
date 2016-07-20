@@ -443,6 +443,22 @@ namespace code_in.Presenters.Nodal
                     this._generateVisualASTExpressions(returnStmt.Expression, returnStmtNode.ExprIn, (e) => { returnStmt.Expression = e; });
             }
             #endregion Return Statement
+            #region Break Statement
+            else if(stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BreakStatement))
+            {
+                var breakStmt = stmtArg as BreakStatement;
+                var breakStmtNode = this._view.CreateAndAddNode<BreakStmtNode>(nodePresenter);
+                visualNode = breakStmtNode;
+            }
+            #endregion Break Statement
+            #region Continue Statement
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
+            {
+                var continueStmt = stmtArg as ContinueStatement;
+                var continueStmtNode = this._view.CreateAndAddNode<ContinueStmtNode>(nodePresenter);
+                visualNode = continueStmtNode;
+            }
+            #endregion ContinueStatement
             #endregion Single Statement
             else // Default Node
             {
@@ -472,6 +488,17 @@ namespace code_in.Presenters.Nodal
                 unaryExprNode.SetName(unaryExprOp.OperatorToken.ToString());
                 this._generateVisualASTExpressions(unaryExprOp.Expression, unaryExprNode.OperandA, (e) => { unaryExprOp.Expression = e; });
             }
+            #region Parenthesis Expr
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ParenthesizedExpression))
+            {
+                var parenthesizedExpr = expr as ICSharpCode.NRefactory.CSharp.ParenthesizedExpression;
+                var parenthesizedExprNode = this._view.CreateAndAddNode<ParenthesizedExprNode>(nodePresenter);
+                visualNode = parenthesizedExprNode;
+                parenthesizedExprNode.SetName(parenthesizedExpr.ToString());
+                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });
+                                
+            }
+            #endregion Parenthesis Expr
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
             {
                 var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
