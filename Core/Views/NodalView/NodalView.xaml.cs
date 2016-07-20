@@ -584,8 +584,8 @@ namespace code_in.Views.NodalView
                     link.Output._links.Clear();
                     if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
                         (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
-                    //else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor)
-                    //    (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input);
+                    else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor)
+                        (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input as FlowNodeAnchor);
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
                     this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));

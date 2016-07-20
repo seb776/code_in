@@ -66,6 +66,8 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         {
             if (link.Input is DataFlowAnchor)
                 (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
+            else if (link.Input is FlowNodeAnchor && (link.Input as FlowNodeAnchor).MethodAttachASTStmt != null)
+                (link.Input as FlowNodeAnchor).MethodAttachASTStmt(null);
             _links.Remove(link);
         }
         public Point GetAnchorPosition(UIElement relative)
@@ -91,7 +93,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 
         public void SetParentLinksContainer(ILinkContainer linksContainer)
         {
-            System.Diagnostics.Debug.Assert(linksContainer != null);
+            //System.Diagnostics.Debug.Assert(linksContainer != null);
             _parentLinksContainer = linksContainer;
         }
 

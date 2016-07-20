@@ -16,7 +16,12 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         public void AttachASTStmt(FlowNodeAnchor rightNode)
         {
             var stmtToInsert = (rightNode.ParentNode as AStatementNode).GetNodePresenter().GetASTNode() as Statement;
-            this.MethodAttachASTStmt(stmtToInsert);
+            if (MethodAttachASTStmt != null)
+            {
+                this.MethodAttachASTStmt(stmtToInsert);
+                MessageBox.Show((MethodAttachASTStmt != null).ToString());
+
+            }
         }
         public Action<Statement> MethodAttachASTStmt = null;
 
