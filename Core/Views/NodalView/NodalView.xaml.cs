@@ -696,12 +696,20 @@ namespace code_in.Views.NodalView
             const double expressionLinksWidth = 100.0;
             const double expressionsHeightDiff = 25.0;
             Dictionary<AStatementNode, List<AValueNode>> _expressionsUnderStatement = new Dictionary<AStatementNode, List<AValueNode>>();
+            Dictionary<INodeElem, Point> _statementNodes = new Dictionary<INodeElem, Point>();
 
+            double posLeftStatementNode = 0.0;
+            int sizeXleftStatementNode = 0;
             foreach (var curNode in _visualNodes)
             {
+
                 if (curNode is AStatementNode)
+                {
                     _expressionsUnderStatement[curNode as AStatementNode] = GetExpressionsAttachedToStatement(curNode as AStatementNode);
+                }
             }
+
+            
 
             foreach (var couple in _expressionsUnderStatement)
             {
@@ -716,12 +724,12 @@ namespace code_in.Views.NodalView
                         if (curNode.ExprOut._links[0].Input.ParentNode is AValueNode)
                         {
                             AValueNode rightNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
+                            rightNode.SetName("JIO");
                             int sizeX = 0, sizeY = 0;
                             curNode.GetSize(out sizeX, out sizeY);
                             double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
                             deltaX = deltaX / (deltaTime * pixelsBySec);
                             deltaX *= 0.5;
-
 
                             double deltaY = 0.0;
                             if (rightNode._inputs.Children != null)
@@ -740,6 +748,7 @@ namespace code_in.Views.NodalView
                                             deltaY = deltaY / (deltaTime * pixelsBySec);
                                             deltaY *= 0.5;
                                             calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
+                                            calculatedPositions[curNode] = new Point(Math.Max(calculatedPositions[curNode].X, 0.0), Math.Max(calculatedPositions[curNode].Y, 0.0));
                                         }
                                         totalSizeYNode += sizeYLeftNode;
                                     }
@@ -752,6 +761,65 @@ namespace code_in.Views.NodalView
                 {
                     n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
                 }
+
+
+                foreach (var n in _expressionsUnderStatement)
+                {
+                    Point topLeftCorner = new Point();
+                    Point bottomRightCorner = new Point();
+                    bool first = true;
+
+                    foreach (var expr in _expressionsUnderStatement[n.Key])
+                    {
+                        Point exprPos = expr.GetPosition();
+                        int exprSizeX, exprSizeY = 0;
+                        expr.GetSize(out exprSizeX, out exprSizeY);
+                        if (first)
+                        {
+                            first = false;
+                            topLeftCorner = exprPos;
+                            
+                            bottomRightCorner = (Point) (exprPos - new Point(-exprSizeX, -exprSizeY));
+                            continue;
+                        }
+                        if (exprPos.X < topLeftCorner.X)
+                            topLeftCorner.X = exprPos.X;
+                        if (exprPos.Y < topLeftCorner.Y)
+                            topLeftCorner.Y = exprPos.Y;
+                        if ((exprPos.X + exprSizeX) > bottomRightCorner.X)
+                            bottomRightCorner.X = exprPos.X + exprSizeX;
+                        if ((exprPos.Y + exprSizeY) > bottomRightCorner.Y)
+                            bottomRightCorner.Y = exprPos.Y + exprSizeY;
+
+                    }
+
+
+                    _statementNodes[n.Key] = n.Key.GetPosition();
+                    double deltaX = 0.0;
+                    if ((n.Key._inputs.Children[0] as FlowNodeAnchor)._links.Count != 0)
+                    {
+                        int sizeY = 0;
+                       (n.Key._inputs.Children[0] as FlowNodeAnchor)._links[0].Output.ParentNode.GetSize(out sizeXleftStatementNode, out sizeY);
+
+                       posLeftStatementNode = (n.Key._inputs.Children[0] as FlowNodeAnchor)._links[0].Output.ParentNode.GetPosition().X;
+                       deltaX = posLeftStatementNode + sizeXleftStatementNode + expressionLinksWidth - n.Key.GetPosition().X + (bottomRightCorner.X - topLeftCorner.X);
+
+                    }
+
+                    
+                    deltaX = deltaX / (deltaTime * pixelsBySec);
+                    deltaX *= 0.5;
+                 
+
+
+                    _statementNodes[n.Key] = (Point)(_statementNodes[n.Key] - new Point(-deltaX, 0.0));
+                }
+
+                foreach (var n in _statementNodes)
+                {
+                    n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
+                }
+
             }
         }
     } // Class
