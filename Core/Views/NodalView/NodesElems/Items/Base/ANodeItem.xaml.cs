@@ -95,7 +95,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             _nodePresenter = nodePresenter;
         }
         public void AddGeneric(string name, EGenericVariance variance)
-        { }
+        {
+            GenericLabel.Content += variance.ToString().ToLower() + " " + name;
+        }
         #endregion INodeElem
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }

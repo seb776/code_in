@@ -48,6 +48,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 _editButton.SetValue(Image.OpacityProperty, 0.0);
                 _editButton.IsEnabled = false;
                 Generics = new GenericItem(themeResDict);
+                this.GenericsField.Children.Add(Generics);
             }
 
         }

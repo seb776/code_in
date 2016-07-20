@@ -71,6 +71,14 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
 
+      <Button guid="guidVSCode_inCmdSet" id="cmdidNewFile" type="Button">
+        <Parent guid="guidVSCode_inCmdSet" id="Code_inMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>New file</ButtonText>
+        </Strings>
+      </Button>
+        
       <Button guid="guidVSCode_inCmdSet" id="cmdidOpenFile" type="Button">
         <Parent guid="guidVSCode_inCmdSet" id="Code_inMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
@@ -117,6 +125,7 @@
       <IDSymbol name="Code_inMenuGroup" value="0x0101" />
       <IDSymbol name="cmdidOpenFile" value="0x0102" />
       <IDSymbol name="cmdidConfigMenu" value="0x0103" />
+      <IDSymbol name ="cmdidNewFile" value="0x0104" />
     </GuidSymbol>
 
 
