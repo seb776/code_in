@@ -11,13 +11,11 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class VarDeclStmtNode : AStatementNode
+    public class VarDeclStmtNode : ADefaultStatementNode
     {
-        public FlowNodeAnchor outAnchor = null;
 
         public VarDeclStmtNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
-            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             this.SetType("VarDecl");
             this.SetThemeResources("VarDeclStmtNode");
         }

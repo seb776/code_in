@@ -15,7 +15,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
     public class IfStmtNode : ABlockStmtNodes
     {
         public DataFlowAnchor Condition = null;
-        public FlowNodeAnchor outAnchor = null;
         public FlowNodeAnchor trueAnchor = null;
         public FlowNodeAnchor falseAnchor = null;
         
@@ -25,8 +24,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             this.SetType("if");
             Condition = this.CreateAndAddInput<DataFlowAnchor>();
             Condition.SetName("Condition");
-            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
-            outAnchor.SetName("FlowNode");
             trueAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             trueAnchor.SetName("True");
             falseAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();

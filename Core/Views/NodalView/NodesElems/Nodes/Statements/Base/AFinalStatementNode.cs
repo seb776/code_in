@@ -7,12 +7,14 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
 {
-    public abstract class ABlockStmtNodes : ADefaultStatementNode
+    /// <summary>
+    /// A Statement that only has an input flow.
+    /// </summary>
+    public class AFinalStatementNode : AStatementNode
     {
-        protected ABlockStmtNodes(ResourceDictionary themeResDict) :
+        public AFinalStatementNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetThemeResources("BlockStmtNode");
         }
     }
 }

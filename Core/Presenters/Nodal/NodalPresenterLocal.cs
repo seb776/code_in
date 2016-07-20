@@ -305,7 +305,7 @@ namespace code_in.Presenters.Nodal
                 int curNodeWidth = 0, curNodeHeight = 0;
                 ifNode.GetSize(out curNodeWidth, out curNodeHeight);
                 this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor);
-                defaultFlowOut = ifNode.outAnchor;
+                defaultFlowOut = ifNode.FlowOutAnchor;
             }
             # endregion IfStmts
             # region Loops
@@ -321,7 +321,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor);
-                defaultFlowOut = nodeLoop.outAnchor;
+                defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
             {
@@ -335,7 +335,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor);
-                defaultFlowOut = nodeLoop.outAnchor;
+                defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
@@ -352,7 +352,7 @@ namespace code_in.Presenters.Nodal
 
                 this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(forStmt.EmbeddedStatement, nodeLoop.trueAnchor);
-                defaultFlowOut = nodeLoop.outAnchor;
+                defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
@@ -362,7 +362,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString()); // is it the good condition? seems weird (hamham)
                 this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
                 this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor);
-                defaultFlowOut = nodeLoop.outAnchor;
+                defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             # endregion Loops
             #region Switch
@@ -401,7 +401,7 @@ namespace code_in.Presenters.Nodal
                 var variableNode = this._view.CreateAndAddNode<VarDeclStmtNode>(nodePresenter);
                 visualNode = variableNode;
                 variableNode.SetName(varStmt.Type.ToString());
-                defaultFlowOut = variableNode.outAnchor;
+                defaultFlowOut = variableNode.FlowOutAnchor;
                 foreach (var v in varStmt.Variables)
                 {
                     var item = variableNode.CreateAndAddOutput<DataFlowAnchor>();
@@ -420,7 +420,7 @@ namespace code_in.Presenters.Nodal
                 var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>(nodePresenter);
                 visualNode = exprStmtNode;
                 exprStmtNode.Expression.SetName(exprStmt.ToString());
-                defaultFlowOut = exprStmtNode.outAnchor;
+                defaultFlowOut = exprStmtNode.FlowOutAnchor;
                 this._generateVisualASTExpressions(exprStmt.Expression, exprStmtNode.Expression, (e) => { exprStmt.Expression = e; });
             }
             #endregion ExpressionStatement

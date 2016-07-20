@@ -19,6 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
             base(themeResDict)
         {
             FlowInAnchor = this.CreateAndAddInput<FlowNodeAnchor>();
+            FlowInAnchor.SetName("TMP: FlowIn");
         }
 
         #region ICodeInVisual

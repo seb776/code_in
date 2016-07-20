@@ -559,6 +559,8 @@ namespace code_in.Views.NodalView
                             throw new Exception("Cannot create a link between an IO and itself.");
                         if (_linkStart.ParentNode == to.ParentNode)
                             throw new Exception("Cannot create a link between two IO that belongs to the same node.");
+                        if (_linkStart.GetType() != to.GetType())
+                            throw new Exception("Cannot create a link between a DataFlowAnchor and a FlowNodeAnchor.");
                     }
                     catch (Exception except)
                     {
@@ -582,6 +584,8 @@ namespace code_in.Views.NodalView
                     link.Output._links.Clear();
                     if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
                         (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
+                    //else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor)
+                    //    (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input);
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
                     this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));
