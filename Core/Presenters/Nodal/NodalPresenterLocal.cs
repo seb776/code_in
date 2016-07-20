@@ -559,7 +559,10 @@ namespace code_in.Presenters.Nodal
                     paramMeth.SetName("param" + i);
                     this._generateVisualASTExpressions(param, paramMeth, (e) =>
                     {
-                        invokExpr.Arguments.InsertBefore(param, e);
+                        if (e == param)
+                            return;
+                        if (e != null)
+                            invokExpr.Arguments.InsertAfter(param, e);
                         invokExpr.Arguments.Remove(param);
                     });
                     i++;
