@@ -2,7 +2,7 @@ namespace TestClass
 {
 		class Test
 		{
-			public int A, B, C;
+			public static int A, B, C;
 			private Test _a;
 		}
 }
