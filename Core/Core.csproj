@@ -179,6 +179,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ContinueStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForeachStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForStmtNode.cs" />
