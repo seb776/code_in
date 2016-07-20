@@ -25,6 +25,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace code_in.Presenters.Nodal
@@ -625,7 +627,14 @@ namespace code_in.Presenters.Nodal
         }
         static void AddNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            ContextMenu cm = new ContextMenu();
+            UIElement view = (objects[0] as NodalPresenterLocal)._view as UIElement;
+            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
+            MenuItem mi = new MenuItem();
+            mi.Header = "Yeah";
+            cm.Items.Add(mi);
+            cm.IsOpen = true;
+            //MessageBox.Show("Add");
         }
         private static Action EmptyDelegate = delegate() { };
         static void AlignNode(object[] objects)
