@@ -724,19 +724,21 @@ namespace code_in.Views.NodalView
                             {
                                 double totalSizeYNode = 0.0;
                                 for (int i = 0; i < rightNode._inputs.Children.Count; ++i) {
-
-                                    AValueNode leftNode = (rightNode._inputs.Children[i] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
-                                    int sizeXLeftNode, sizeYLeftNode = 0;
-                                    leftNode.GetSize(out sizeXLeftNode, out sizeYLeftNode);
-
-                                    if (leftNode == curNode)
+                                    if ((rightNode._inputs.Children[i] as AIOAnchor)._links.Count != 0)
                                     {
-                                        deltaY = rightNode.GetPosition().Y - leftNode.GetPosition().Y + expressionsHeightDiff * i + totalSizeYNode;
-                                        deltaY = deltaY / (deltaTime * pixelsBySec);
-                                        deltaY *= 0.5;
-                                        calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
+                                        AValueNode leftNode = (rightNode._inputs.Children[i] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
+                                        int sizeXLeftNode, sizeYLeftNode = 0;
+                                        leftNode.GetSize(out sizeXLeftNode, out sizeYLeftNode);
+
+                                        if (leftNode == curNode)
+                                        {
+                                            deltaY = rightNode.GetPosition().Y - leftNode.GetPosition().Y + expressionsHeightDiff * i + totalSizeYNode;
+                                            deltaY = deltaY / (deltaTime * pixelsBySec);
+                                            deltaY *= 0.5;
+                                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
+                                        }
+                                        totalSizeYNode += sizeYLeftNode;
                                     }
-                                    totalSizeYNode += sizeYLeftNode;     
                                 }
                             }
                         }

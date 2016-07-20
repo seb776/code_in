@@ -273,15 +273,14 @@ namespace code_in.Presenters.Nodal
                 //data.SetItemType(i.Type.ToString());
             }
 
-            int accHoriz = 0, accVert = 0;
-            this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, ref accHoriz, ref accVert);
+            this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor);
         }
 
         /// <summary>
         /// This function displays the execution code from stmtArg to the NodalView attached.
         /// </summary>
         /// <param name="stmtArg"></param>
-        private FlowNodeAnchor _generateVisualASTStatements(Statement stmtArg, FlowNodeAnchor lastOutput, ref int currentX, ref int currentY)
+        private FlowNodeAnchor _generateVisualASTStatements(Statement stmtArg, FlowNodeAnchor lastOutput)
         {
             System.Diagnostics.Debug.Assert(lastOutput != null);
             AStatementNode visualNode = null;
@@ -291,9 +290,8 @@ namespace code_in.Presenters.Nodal
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
                 FlowNodeAnchor defaultFlowOutTmp = lastOutput;
-                int localCurX = currentX, localCurY = currentY;
                 foreach (var stmt in (stmtArg as BlockStatement))
-                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, ref localCurX, ref localCurY);
+                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp);
             }
             # region IfStmts
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
@@ -303,13 +301,10 @@ namespace code_in.Presenters.Nodal
                 visualNode = ifNode;
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
                 this._generateVisualASTExpressions(ifStmt.Condition, ifNode.Condition, (e) => { ifStmt.Condition = e; });
-                int localCurX = currentX, localCurY = currentY + 50 + nodeVerticalOffset;
-                this._generateVisualASTStatements(ifStmt.TrueStatement, ifNode.trueAnchor, ref localCurX, ref localCurY);
-                localCurX = currentX;
+                this._generateVisualASTStatements(ifStmt.TrueStatement, ifNode.trueAnchor);
                 int curNodeWidth = 0, curNodeHeight = 0;
                 ifNode.GetSize(out curNodeWidth, out curNodeHeight);
-                localCurY = currentY + (50 + nodeVerticalOffset) * 2;
-                this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor, ref localCurX, ref localCurY);
+                this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor);
                 defaultFlowOut = ifNode.outAnchor;
             }
             # endregion IfStmts
@@ -325,8 +320,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
-                int localCurX = currentX, localCurY = currentY + 50 + nodeVerticalOffset;
-                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, ref localCurX, ref localCurY);
+                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor);
                 defaultFlowOut = nodeLoop.outAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
@@ -340,8 +334,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
-                int localCurX = currentX, localCurY = currentY + 50 + nodeVerticalOffset;
-                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, ref localCurX, ref localCurY);
+                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor);
                 defaultFlowOut = nodeLoop.outAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
@@ -358,8 +351,7 @@ namespace code_in.Presenters.Nodal
                 //    this._generateVisualASTStatements(forStmts);
 
                 this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; }); // Expressions
-                int localCurX = currentX, localCurY = currentY + 50 + nodeVerticalOffset;
-                this._generateVisualASTStatements(forStmt.EmbeddedStatement, nodeLoop.trueAnchor, ref localCurX, ref localCurY);
+                this._generateVisualASTStatements(forStmt.EmbeddedStatement, nodeLoop.trueAnchor);
                 defaultFlowOut = nodeLoop.outAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
@@ -369,8 +361,7 @@ namespace code_in.Presenters.Nodal
                 visualNode = nodeLoop;
                 nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString()); // is it the good condition? seems weird (hamham)
                 this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
-                int localCurX = currentX, localCurY = currentY + 50 + nodeVerticalOffset;
-                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor, ref localCurX, ref localCurY);
+                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor);
                 defaultFlowOut = nodeLoop.outAnchor;
             }
             # endregion Loops
@@ -391,15 +382,11 @@ namespace code_in.Presenters.Nodal
                         caseInput.SetName(caseLabel.Expression.ToString());
                         _generateVisualASTExpressions(caseLabel.Expression, caseInput, (e) => { caseLabel.Expression = e; });
                     }
-                    int previousY = currentY + 50 + nodeVerticalOffset;
                     foreach (var switchSectionStmt in switchSection.Statements) // TODO @Seb @Mo something is wrong here
                     {
                         var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeAnchor>();
                         caseOutput.SetName("CaseOut");
-                        int localCurX = currentX;
-                        int localCurY = previousY;
-                        _generateVisualASTStatements(switchSectionStmt, caseOutput, ref localCurX, ref localCurY);
-                        previousY += 50 + nodeVerticalOffset;
+                        _generateVisualASTStatements(switchSectionStmt, caseOutput);
                     }
                 }
                 defaultFlowOut = switchStmtNode.outAnchor;
@@ -458,13 +445,7 @@ namespace code_in.Presenters.Nodal
             }
             
             if (visualNode != null)
-            {
                 _createVisualLink(lastOutput, visualNode.FlowInAnchor);
-                visualNode.SetPosition(currentX, currentY);
-                int nodeWidth = 0, nodeHeight = 0;
-                visualNode.GetSize(out nodeWidth, out nodeHeight);
-                currentX += nodeWidth + nodeHorizontalOffset;
-            }
             return defaultFlowOut;
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
@@ -496,7 +477,10 @@ namespace code_in.Presenters.Nodal
                     arg.SetName("param" + i);
                     i++;
                     this._generateVisualASTExpressions(param, arg, (e) => {
-                        objCreateExpr.Arguments.InsertBefore(param, e);
+                        if (e == param)
+                            return;
+                        if (e != null)
+                            objCreateExpr.Arguments.InsertAfter(param, e);
                         objCreateExpr.Arguments.Remove(param);
                     });
                 }
