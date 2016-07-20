@@ -7,6 +7,8 @@
 
         if (x < y) 
 	{
+		test;
+		42;
 	}
         else
 	{
@@ -37,9 +39,12 @@
 
     void multipleDeclParam()
     {
-	int a;
-	int b;
-	char c, d, e;
+		if (true)
+		{
+		int a;
+		int b;
+		char c, d, e;
+		}
     }
 
     void ifStmt(char c) {

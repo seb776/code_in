@@ -16,6 +16,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.Utils;
+using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -87,7 +88,7 @@ namespace code_in.Presenters.Nodal
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
             Tuple<string, EGenericVariance> tuple;
-            List<Tuple<string, EGenericVariance>> GenericList = new List<Tuple<string,EGenericVariance>>();
+            List<Tuple<string, EGenericVariance>> GenericList = new List<Tuple<string, EGenericVariance>>();
 
             foreach (var tmp in typeDecl.TypeParameters)
             {
@@ -273,14 +274,14 @@ namespace code_in.Presenters.Nodal
                 //data.SetItemType(i.Type.ToString());
             }
 
-            this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null);
+            this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null, null);
         }
 
         /// <summary>
         /// This function displays the execution code from stmtArg to the NodalView attached.
         /// </summary>
         /// <param name="stmtArg"></param>
-        private FlowNodeAnchor _generateVisualASTStatements(Statement stmtArg, FlowNodeAnchor lastOutput, Action<Statement> MethodAttachSTMT/*, Action MethodDetachStmt*/)
+        private FlowNodeAnchor _generateVisualASTStatements(Statement stmtArg, FlowNodeAnchor lastOutput, Func<Statement, Statement> MethodAttachSTMT, Action MethodDetachStmt)
         {
             System.Diagnostics.Debug.Assert(lastOutput != null);
             AStatementNode visualNode = null;
@@ -291,7 +292,12 @@ namespace code_in.Presenters.Nodal
             {
                 FlowNodeAnchor defaultFlowOutTmp = lastOutput;
                 foreach (var stmt in (stmtArg as BlockStatement))
-                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, MethodAttachSTMT/*, () => { (stmtArg as BlockStatement).Statements.Remove(stmt); }*/);
+                {
+                    Func<Statement, Statement> specificMethodAttachSTMT = MethodAttachSTMT;
+                    if (MethodAttachSTMT == null)
+                        specificMethodAttachSTMT = (s) => { (stmtArg as BlockStatement).Statements.InsertAfter(null, s); return null; };
+                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, specificMethodAttachSTMT, () => { (stmtArg as BlockStatement).Statements.Remove(stmt); });
+                }
             }
             # region IfStmts
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
@@ -301,10 +307,10 @@ namespace code_in.Presenters.Nodal
                 visualNode = ifNode;
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
                 this._generateVisualASTExpressions(ifStmt.Condition, ifNode.Condition, (e) => { ifStmt.Condition = e; });
-                this._generateVisualASTStatements(ifStmt.TrueStatement, ifNode.trueAnchor, (s) => { ifStmt.TrueStatement = s; });
+                this._generateVisualASTStatements(ifStmt.TrueStatement, ifNode.trueAnchor, (s) => { var old = ifStmt.TrueStatement; ifStmt.TrueStatement = s; return old; }, () => { ifStmt.TrueStatement = null; });
                 int curNodeWidth = 0, curNodeHeight = 0;
                 ifNode.GetSize(out curNodeWidth, out curNodeHeight);
-                this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor, (s) => { ifStmt.FalseStatement = s; });
+                this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor, (s) => { var old = ifStmt.FalseStatement; ifStmt.FalseStatement = s; return old; }, () => { ifStmt.FalseStatement = null; });
                 defaultFlowOut = ifNode.FlowOutAnchor;
             }
             # endregion IfStmts
@@ -320,7 +326,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
-                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { whileStmt.EmbeddedStatement = s; });
+                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = whileStmt.EmbeddedStatement; whileStmt.EmbeddedStatement = s; return old; }, () => { whileStmt.EmbeddedStatement = null; });
                 defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
@@ -334,7 +340,7 @@ namespace code_in.Presenters.Nodal
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
                 this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
-                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { whileStmt.EmbeddedStatement = s; });
+                this._generateVisualASTStatements(whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = whileStmt.EmbeddedStatement; whileStmt.EmbeddedStatement = s; return old; }, () => { whileStmt.EmbeddedStatement = null; });
                 defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
@@ -351,7 +357,7 @@ namespace code_in.Presenters.Nodal
                 //    this._generateVisualASTStatements(forStmts);
 
                 this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; }); // Expressions
-                this._generateVisualASTStatements(forStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { forStmt.EmbeddedStatement = s; });
+                this._generateVisualASTStatements(forStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = forStmt.EmbeddedStatement; forStmt.EmbeddedStatement = s; return old; }, () => { forStmt.EmbeddedStatement = null; });
                 defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
@@ -361,7 +367,7 @@ namespace code_in.Presenters.Nodal
                 visualNode = nodeLoop;
                 nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString()); // is it the good condition? seems weird (hamham)
                 this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
-                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { forEachStmt.EmbeddedStatement = s; });
+                this._generateVisualASTStatements(forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = forEachStmt.EmbeddedStatement; forEachStmt.EmbeddedStatement = s; return old; }, () => { forEachStmt.EmbeddedStatement = null; });
                 defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
             # endregion Loops
@@ -386,10 +392,10 @@ namespace code_in.Presenters.Nodal
                     {
                         var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeAnchor>();
                         caseOutput.SetName("CaseOut");
-                        _generateVisualASTStatements(switchSectionStmt, caseOutput, null); // TODO @z0rg
+                        _generateVisualASTStatements(switchSectionStmt, caseOutput, null, null); // TODO @z0rg
                     }
                 }
-                defaultFlowOut = switchStmtNode.outAnchor;
+                defaultFlowOut = switchStmtNode.FlowOutAnchor;
             }
             #endregion Switch
             #endregion Block Statement
@@ -447,6 +453,12 @@ namespace code_in.Presenters.Nodal
             if (visualNode != null)
                 _createVisualLink(lastOutput, visualNode.FlowInAnchor);
             lastOutput.MethodAttachASTStmt = MethodAttachSTMT;
+            lastOutput.MethodDetachASTStmt = MethodDetachStmt;
+            if (defaultFlowOut != null)
+            {
+                MessageBox.Show("_generateStmt" + stmtArg.GetType().ToString());
+
+            }
             return defaultFlowOut;
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
@@ -477,7 +489,8 @@ namespace code_in.Presenters.Nodal
                     var arg = objCreateExprNode.CreateAndAddInput<DataFlowAnchor>();
                     arg.SetName("param" + i);
                     i++;
-                    this._generateVisualASTExpressions(param, arg, (e) => {
+                    this._generateVisualASTExpressions(param, arg, (e) =>
+                    {
                         if (e == param)
                             return;
                         if (e != null)
@@ -593,8 +606,8 @@ namespace code_in.Presenters.Nodal
         {
             if (a == null || b == null)
                 return;
-            _view.DragLink(a);
-            _view.DropLink(b);
+            _view.DragLink(a, true);
+            _view.DropLink(b, true);
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()
@@ -628,7 +641,7 @@ namespace code_in.Presenters.Nodal
                 (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.1);
                 ((UIElement)(objects[0] as NodalPresenterLocal)._view).Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
             }
-                //MessageBox.Show(objects[0].GetType().ToString());
+            //MessageBox.Show(objects[0].GetType().ToString());
         }
         static void CloseNode(object[] objects)
         {
@@ -649,7 +662,7 @@ namespace code_in.Presenters.Nodal
             System.Diagnostics.Debug.Assert(objects[0] != null);
             NodalPresenterLocal self = objects[0] as NodalPresenterLocal;
             self.SaveFile(Environment.CurrentDirectory);
-//            MessageBox.Show(Environment.CurrentDirectory);
+            //            MessageBox.Show(Environment.CurrentDirectory);
         }
 
     }

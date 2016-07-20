@@ -13,14 +13,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class SwitchStmtNode : ABlockStmtNodes
     {
-        public FlowNodeAnchor outAnchor = null;
         public SwitchStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetName("Switch");
             this.SetType("Switch");
-            outAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
-            outAnchor.SetName("FlowNode");
         }
     }
 }

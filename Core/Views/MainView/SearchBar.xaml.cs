@@ -110,12 +110,12 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
 
-        public void DragLink(NodalView.NodesElems.Anchors.AIOAnchor from)
+        public void DragLink(NodalView.NodesElems.Anchors.AIOAnchor from, bool isGenerated)
         {
             throw new NotImplementedException();
         }
 
-        public void DropLink(NodalView.NodesElems.Anchors.AIOAnchor to)
+        public void DropLink(NodalView.NodesElems.Anchors.AIOAnchor to, bool isGenerated)
         {
             throw new NotImplementedException();
         }

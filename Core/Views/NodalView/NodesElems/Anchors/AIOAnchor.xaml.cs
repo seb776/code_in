@@ -66,8 +66,8 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         {
             if (link.Input is DataFlowAnchor)
                 (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
-            else if (link.Input is FlowNodeAnchor && (link.Input as FlowNodeAnchor).MethodAttachASTStmt != null)
-                (link.Input as FlowNodeAnchor).MethodAttachASTStmt(null);
+            else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null)
+                (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
             _links.Remove(link);
         }
         public Point GetAnchorPosition(UIElement relative)
@@ -131,7 +131,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         {
             try
             {
-                _parentLinksContainer.DropLink(this);
+                _parentLinksContainer.DropLink(this, false);
             }
             catch (Exception except)
             {
@@ -142,7 +142,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 
         void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _parentLinksContainer.DragLink(this);
+            _parentLinksContainer.DragLink(this, false);
         }
 
         #region This
