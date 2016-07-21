@@ -297,7 +297,32 @@ namespace code_in.Presenters.Nodal
                 {
                     Func<Statement, Statement> specificMethodAttachSTMT = MethodAttachSTMT;
                     if (MethodAttachSTMT == null)
-                        specificMethodAttachSTMT = (s) => { (stmtArg as BlockStatement).Statements.InsertAfter(null, s); return null; };
+                        specificMethodAttachSTMT = (s) => {
+                            MessageBox.Show(defaultFlowOutTmp.ParentNode.GetType().ToString());
+                            Statement stmtToSpreadUp = null;
+                            var curStmtNode = (defaultFlowOutTmp.ParentNode as AStatementNode);
+                            //var curASTStmt = curStmtNode.GetNodePresenter().GetASTNode();
+                            var curNodeDefaultFlowIn = curStmtNode.FlowInAnchor;
+                            if (curNodeDefaultFlowIn._links.Count != 0)
+                            {
+                                if (!(s is BlockStatement))
+                                {
+                                    BlockStatement blockStmt = new BlockStatement();
+                                    blockStmt.Statements.Add(s);
+                                    stmtToSpreadUp = blockStmt;
+                                }
+                                else
+                                {
+                                    BlockStatement blockStmt = s as BlockStatement;
+                                    var curASTStmt = curStmtNode.GetNodePresenter().GetASTNode() as Statement;
+                                    // TODO remove from AST
+                                    blockStmt.Statements.InsertBefore(null, curASTStmt);
+                                    stmtToSpreadUp = blockStmt;
+                                }
+                                (curNodeDefaultFlowIn._links[0].Output as FlowNodeAnchor).MethodAttachASTStmt(stmtToSpreadUp); // Go back to recreate the blockStatement
+                            }
+                            (stmtArg as BlockStatement).Statements.InsertAfter(null, s); return null; 
+                        };
                     defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, specificMethodAttachSTMT, () => { (stmtArg as BlockStatement).Statements.Remove(stmt); });
                 }
             }

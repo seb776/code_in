@@ -533,6 +533,8 @@ namespace code_in.Views.NodalView
             else
             {
                 _currentLink = new Code_inLink();
+                _currentLink.Stroke = new SolidColorBrush(Colors.GreenYellow);
+                _currentLink.StrokeThickness = 3;
                 this.MainGrid.Children.Add(_currentLink);
             }
             this.UpdateLinkDraw(Mouse.GetPosition(this.MainGrid));
@@ -615,7 +617,6 @@ namespace code_in.Views.NodalView
                     _currentLink._y2 = curPosUnattachedLinkSide.Y;
                 }
                 _currentLink.InvalidateVisual();
-                
             }
         }
 

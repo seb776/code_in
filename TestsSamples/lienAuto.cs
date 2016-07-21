@@ -1,6 +1,9 @@
 ﻿class LienAuto
 {
-
+	void EmptyFunc()
+	{
+		
+	}
     int returnBiggest(int x, int y)
     {
         int valRet;
