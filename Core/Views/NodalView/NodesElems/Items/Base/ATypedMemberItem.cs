@@ -31,5 +31,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             this.BeforeName.Children.Add(Modifiers);
             this.BeforeName.Children.Add(_typeInfo);
         }
+        public void setTypeFromString(string type){
+            _typeInfo.SetTypeFromString(type);
+        }
     }
 }
