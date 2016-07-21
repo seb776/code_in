@@ -8,6 +8,12 @@ using ICSharpCode.NRefactory.CSharp;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Items;
+using System.Windows.Controls;
+using System.Reflection;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
+using System.Windows.Input;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
@@ -54,6 +60,8 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         public void InsertStatementAfter(Statement stmt)
         {
+            if (_model == null)
+                return;
             if (this._model is Statement)
             {
                 Statement curStmt = this._model as Statement;
@@ -67,6 +75,8 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         private void GetExistingModifiersFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 Modifiers modifiers = (_model as TypeDeclaration).Modifiers;
@@ -157,10 +167,13 @@ namespace code_in.Presenters.Nodal.Nodes
                 if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
                     ModifiersList.Add("volatile");
             }
+            ModifiersList.Distinct();
         }
 
         private void GetExistingGenericsFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 Tuple<string, EGenericVariance> ExistingGeneric;
@@ -193,6 +206,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         private void GetExistingInheritanceFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration) && (_model as TypeDeclaration).BaseTypes != null)
             {
                 foreach (var inherit in (_model as TypeDeclaration).BaseTypes)
@@ -251,6 +266,8 @@ namespace code_in.Presenters.Nodal.Nodes
         // this method changes the name into ast and update the view
         public void SetName(String name)
         {
+            if (_model == null)
+                return;
             Dictionary<Type, bool> setNameRoutines = new Dictionary<Type, bool>();
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
@@ -269,6 +286,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
@@ -386,6 +405,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void UpdateGenericsInAst()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 var TypeDecl = (_model as TypeDeclaration);
@@ -442,6 +463,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddInheritance(string name)
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 InheritanceList.Add(name);
@@ -483,6 +506,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void SetAccesModifier(string AccessModifier)
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 var typeDecl = (_model as TypeDeclaration);
@@ -532,6 +557,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void SetOtherModifiers(string OtherModifiers, bool AddOrRemove) // if true -> Add, else -> Remove
         {
+            if (_model == null)
+                return;
             if (AddOrRemove == true)
             {
                 if (_model.GetType() == typeof(TypeDeclaration))
@@ -742,8 +769,48 @@ namespace code_in.Presenters.Nodal.Nodes
         // methods for the contextMenu
         static void AddNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            ContextMenu cm = new ContextMenu();
+            UIElement view = (objects[0] as NodePresenter)._view as UIElement;
+            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
+
+            //var listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+            //                from assemblyType in domainAssembly.GetTypes()
+            //                where typeof(BaseNode).IsAssignableFrom(assemblyType)
+            //                select assemblyType).ToArray();
+
+            var listOfBs = (objects[0] as NodePresenter).GetAvailableNodes();
+
+            foreach (var entry in listOfBs)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = entry.Name;
+                mi.Click += mi_Click;
+                mi.DataContext = entry;
+                cm.Items.Add(mi);
+            }
+            cm.IsOpen = true;
+            _viewStatic = ((objects[0] as NodePresenter)._view) as INodeElem;
+            _presStatic = ((objects[0] as NodePresenter)._nodalPresenter) as INodalPresenter;
         }
+        static void mi_Click(object sender, RoutedEventArgs e)
+        {
+            if (((MenuItem)sender).DataContext != null)
+            {
+                //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
+                MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
+                var tmp = new NodePresenter(_presStatic, null);
+//                var tmp = _presStatic;
+                var toto = new object[1];
+                toto[0] = tmp;
+                BaseNode node = gmi.Invoke(_viewStatic, toto) as BaseNode;
+                var pos = _viewStatic.GetPosition();
+                node.SetPosition((int)pos.X, (int)pos.Y);
+            }
+            //_viewStatic = null;
+        }
+        static INodeElem _viewStatic = null;
+        static INodalPresenter _presStatic = null;
         static void AlignNode(object[] objects)
         {
             MessageBox.Show(objects[0].GetType().ToString());
@@ -825,6 +892,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
             }
             else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)) // for namespace
             {
@@ -864,6 +932,26 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             System.Diagnostics.Debug.Assert(visualNode != null);
             this._view = visualNode;
+        }
+
+
+        public List<Type> GetAvailableNodes()
+        {
+            List<Type> tmp = new List<Type>();
+            if (_model == null)
+                return tmp;
+            if (_model.GetType() == typeof(NamespaceDeclaration))
+            {
+                tmp.Add(typeof(UsingDeclNode));
+                tmp.Add(typeof(ClassDeclNode));
+            }
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                tmp.Add(typeof(ClassDeclNode));
+                tmp.Add(typeof(FuncDeclItem));
+                tmp.Add(typeof(ClassItem));
+            }
+            return (tmp);
         }
     }
 }

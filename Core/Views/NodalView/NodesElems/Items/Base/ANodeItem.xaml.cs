@@ -30,7 +30,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         EditNodePanel EditMenu = null;
         protected IVisualNodeContainerDragNDrop _parentView = null;
         private IRootDragNDrop _rootView = null;
-        protected INodePresenter _nodePresenter = null;
+        public INodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
         {
