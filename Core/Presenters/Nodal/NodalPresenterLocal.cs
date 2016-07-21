@@ -59,7 +59,14 @@ namespace code_in.Presenters.Nodal
         }
         public void EditFunction(FuncDeclItem node)
         {
-            this._generateVisualASTFunctionBody(node.MethodNode);
+            if(node.MethodNode is ICSharpCode.NRefactory.CSharp.ConstructorDeclaration)
+            {
+                this._generateVisualASTConstructorBody(node.MethodNode);
+            }
+            else
+            {
+                this._generateVisualASTFunctionBody(node.MethodNode);
+            }
         }
 
         private void _generateVisualASTDeclaration(NodalModel model)
@@ -226,7 +233,7 @@ namespace code_in.Presenters.Nodal
             {
                 FuncDeclItem constructorDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
                 visualNode = constructorDecl;
-                constructorDecl.MethodNode= node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+                constructorDecl.MethodNode = node as MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.ConstructorDeclaration construct = node as ICSharpCode.NRefactory.CSharp.ConstructorDeclaration;
                 var parameters = construct.Parameters.ToList();
                 for(int i = 0; i < parameters.Count; i++)
@@ -291,6 +298,11 @@ namespace code_in.Presenters.Nodal
             }
 
             this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null, null);
+        }
+
+        private void _generateVisualASTConstructorBody(MethodDeclaration constructor)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
