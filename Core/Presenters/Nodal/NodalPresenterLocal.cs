@@ -205,9 +205,9 @@ namespace code_in.Presenters.Nodal
                 var fieldDecl = node as ICSharpCode.NRefactory.CSharp.FieldDeclaration;
                 var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
                 visualNode = item;
-                item.SetName(fieldDecl.ReturnType.ToString() + " ");
+                item.setTypeFromString(fieldDecl.ReturnType.ToString()); //Type setter for variable base -> TypeInfo.xaml.cs
                 foreach (var variable in fieldDecl.Variables)
-                    item.SetName(item.GetName() + ", " + variable.Name);
+                    item.SetName(variable.Name);
                 setAccessModifiers(item, fieldDecl.Modifiers); // here just call setAccessModifiers from the interface
                 setOtherModifiers(item, fieldDecl.Modifiers);
             }
