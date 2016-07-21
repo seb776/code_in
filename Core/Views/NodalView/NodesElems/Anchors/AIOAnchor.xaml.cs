@@ -53,6 +53,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                     link.Link._x1 = anchorPos.X;
                     link.Link._y1 = anchorPos.Y;
                 }
+                link.Link.InvalidateVisual();
             }
         }
         public List<IOLink> _links = null;
