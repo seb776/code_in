@@ -50,6 +50,7 @@
     void ifStmt(char c) {
 	if (c == 'c')	    
             Console.WriteLine("Test");
+return;
     }
 
     void ifStmtBlock(char c) {
