@@ -221,6 +221,22 @@ namespace code_in.Presenters.Nodal
                 item.SetName(propertyDecl.ToString()); // TODO Complete
             }
             #endregion Property (get, set)
+            #region Constructor
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ConstructorDeclaration))
+            {
+                FuncDeclItem constructorDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
+                visualNode = constructorDecl;
+                constructorDecl.MethodNode= node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+                ICSharpCode.NRefactory.CSharp.ConstructorDeclaration construct = node as ICSharpCode.NRefactory.CSharp.ConstructorDeclaration;
+                var parameters = construct.Parameters.ToList();
+                for(int i = 0; i < parameters.Count; i++)
+                {
+                    constructorDecl.AddParam(parameters[i].Type.ToString());
+                    constructorDecl.SetName(construct.Name);
+                    setAccessModifiers(constructorDecl, construct.Modifiers);
+                }
+            }
+            #endregion Constructor
             #region Method
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
@@ -228,8 +244,6 @@ namespace code_in.Presenters.Nodal
                 visualNode = funcDecl;
                 funcDecl.MethodNode = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
                 ICSharpCode.NRefactory.CSharp.MethodDeclaration method = node as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
-
-
                 var parameters = method.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; ++i)
                 {
