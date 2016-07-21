@@ -33,7 +33,7 @@ namespace code_in.Views.NodalView
     {
         List<INodeElem> _visualNodes; // TODO @z0rg Beaurk: beta quick implementation
         private ResourceDictionary _themeResourceDictionary = null;
-        private INodalPresenter _nodalPresenter = null;
+        public INodalPresenter _nodalPresenter = null;
         private List<INodeElem> _selectedNodes = null;
         private List<Thickness> _selectedNodesPositions = null; // Selected nodes are stored with their positions to revert in case of failure
         private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless) to revert them if the move is wrong

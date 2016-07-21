@@ -39,7 +39,7 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public class NodalPresenterLocal : INodalPresenter
     {
-        private INodalView _view = null;
+        public INodalView _view = null;
         private NodalModel _model = null;
         private CSharpParser _parser = null;
         const int nodeHorizontalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
@@ -656,17 +656,7 @@ namespace code_in.Presenters.Nodal
             //                where typeof(BaseNode).IsAssignableFrom(assemblyType)
             //                select assemblyType).ToArray();
 
-            var listOfBs = new List<Type>();
-            listOfBs.Add(typeof(ClassDeclNode));
-            listOfBs.Add(typeof(NamespaceNode));
-            listOfBs.Add(typeof(ReturnStmtNode));
-            listOfBs.Add(typeof(BreakStmtNode));
-            listOfBs.Add(typeof(IfStmtNode));
-            listOfBs.Add(typeof(ExpressionStmtNode));
-            listOfBs.Add(typeof(UnaryExprNode));
-            listOfBs.Add(typeof(BinaryExprNode));
-            listOfBs.Add(typeof(FuncCallExprNode));
-            listOfBs.Add(typeof(VarDeclStmtNode));
+            var listOfBs = (objects[0] as NodalPresenterLocal).GetAvailableNodes();
 
             foreach (var entry in listOfBs)
             {
@@ -682,16 +672,19 @@ namespace code_in.Presenters.Nodal
 
         static void mi_Click(object sender, RoutedEventArgs e)
         {
-            //if (((MenuItem)sender).DataContext != null)
-            //{
-            //    //(((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
-            //    MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
-            //    MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
-            //    BaseNode node = gmi.Invoke(_viewStatic, null) as BaseNode;
-            //    var pos = Mouse.GetPosition(_viewStatic.MainGrid);
-            //    node.SetPosition((int)pos.X, (int)pos.Y);
-            //}
-            _viewStatic = null;
+            if (((MenuItem)sender).DataContext != null)
+            {
+//                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
+                MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
+                var tmp = new NodePresenter(_viewStatic._nodalPresenter, null);
+                var toto = new object[1];
+                toto[0] = tmp;
+                BaseNode node = gmi.Invoke(_viewStatic, toto) as BaseNode;
+                var pos = Mouse.GetPosition(_viewStatic.MainGrid);
+                node.SetPosition((int)pos.X, (int)pos.Y);
+            }
+            //_viewStatic = null;
         }
         static NodalView _viewStatic = null;
 
@@ -728,5 +721,20 @@ namespace code_in.Presenters.Nodal
             //            MessageBox.Show(Environment.CurrentDirectory);
         }
 
+
+
+        public List<Type> GetAvailableNodes()
+        {
+            List<Type> tmp = new List<Type>();
+
+            tmp.Add(typeof(ClassDeclNode));
+            tmp.Add(typeof(NamespaceNode));
+            tmp.Add(typeof(UsingDeclNode));
+            if (false)
+            {
+                //TODO zorg
+            }
+            return (tmp);
+        }
     }
 }

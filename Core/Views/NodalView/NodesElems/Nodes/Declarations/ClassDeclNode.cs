@@ -116,6 +116,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
                 ModifiersList.Add("unsafe");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
                 ModifiersList.Add("volatile");
+            ModifiersList.Distinct();
             Modifiers.SetModifiers(ModifiersList.ToArray());
         }
         #endregion
