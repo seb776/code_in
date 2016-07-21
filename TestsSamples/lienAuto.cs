@@ -1,6 +1,9 @@
 ﻿class LienAuto
 {
-
+	void EmptyFunc()
+	{
+		
+	}
     int returnBiggest(int x, int y)
     {
         int valRet;
@@ -50,6 +53,7 @@
     void ifStmt(char c) {
 	if (c == 'c')	    
             Console.WriteLine("Test");
+return;
     }
 
     void ifStmtBlock(char c) {

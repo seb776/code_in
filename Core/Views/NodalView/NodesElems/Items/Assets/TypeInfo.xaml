@@ -10,7 +10,7 @@
         <StackPanel x:Name="Generic" Orientation="Horizontal" FlowDirection="LeftToRight">
             <Label Margin="-5,0,0,0" Foreground="#FF00EC56" FontWeight="ExtraBold">&lt;</Label>
             <StackPanel x:Name="SubTypes" Margin="-8,0,0,0">
-                <Label Foreground="#1CC2EC">Int</Label>
+                <Label x:Name="TypeLabel" Foreground="#1CC2EC" FontWeight="Bold" Content="Int"></Label>
             </StackPanel>
             <Label Foreground="#FF00EC56" FontWeight="ExtraBold" Margin="-8,0,0,0">&gt;</Label>
         </StackPanel>

@@ -16,6 +16,9 @@ namespace code_in.Views
         public Code_inLink()
         {
             this.IsHitTestVisible = false;
+            this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            this.Stretch = System.Windows.Media.Stretch.None;
         }
 
         public enum ELineMode {
@@ -36,17 +39,16 @@ namespace code_in.Views
         {
             _line.Figures.Clear();
             PathFigure pf = new PathFigure();
-            object line = null;
+            PathSegment line = null;
             if (_lineMode == ELineMode.LINE)
                 line = new LineSegment(new Point(_x2, _y2), true);
             else if (_lineMode == ELineMode.BEZIER)
             {
                 line = new BezierSegment(new Point(_x1 + 100, _y1), new Point(_x2 - 100, _y2), new Point(_x2, _y2), true);
             }
-            this.Stroke = new SolidColorBrush(Colors.Red);
-            this.StrokeThickness = 3;
+
             pf.StartPoint = new Point(_x1, _y1);
-            pf.Segments.Add((PathSegment)line);
+            pf.Segments.Add(line);
             _line.Figures.Add(pf);
             return _line;
         }
