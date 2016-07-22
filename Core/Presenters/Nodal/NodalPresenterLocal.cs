@@ -275,7 +275,6 @@ namespace code_in.Presenters.Nodal
                 data.SetName(i.Name);
                 //data.SetItemType(i.Type.ToString());
             }
-
             this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null, null);
         }
 
@@ -296,34 +295,53 @@ namespace code_in.Presenters.Nodal
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
                     Func<Statement, Statement> specificMethodAttachSTMT = MethodAttachSTMT;
-                    if (MethodAttachSTMT == null)
-                        specificMethodAttachSTMT = (s) => {
-                            MessageBox.Show(defaultFlowOutTmp.ParentNode.GetType().ToString());
+                    //if (true)//MethodAttachSTMT == null)
+                    {
+                        //defaultFlowOutTmp.DebugDisplay();
+                        specificMethodAttachSTMT = (s) =>
+                        {
+                            defaultFlowOutTmp.DebugDisplay();
+                            MessageBox.Show("Attach " + defaultFlowOutTmp.ParentNode.GetNodePresenter().GetASTNode().ToString() + "\n" +
+                                ((defaultFlowOutTmp.ParentNode as AStatementNode).FlowInAnchor._links[0].Output as FlowNodeAnchor).ParentNode.GetNodePresenter().GetASTNode().ToString()
+                                );
                             Statement stmtToSpreadUp = null;
                             var curStmtNode = (defaultFlowOutTmp.ParentNode as AStatementNode);
-                            //var curASTStmt = curStmtNode.GetNodePresenter().GetASTNode();
                             var curNodeDefaultFlowIn = curStmtNode.FlowInAnchor;
                             if (curNodeDefaultFlowIn._links.Count != 0)
                             {
+                                var curASTStmt = curStmtNode.GetNodePresenter().GetASTNode() as Statement;
+                                bool enter = false;
+                                (defaultFlowOutTmp.ParentNode as AStatementNode).SetSelected(true);
                                 if (!(s is BlockStatement))
                                 {
                                     BlockStatement blockStmt = new BlockStatement();
                                     blockStmt.Statements.Add(s);
                                     stmtToSpreadUp = blockStmt;
+                                    enter = true;
                                 }
-                                else
+                                else if (curASTStmt != (stmtArg as BlockStatement).First())
                                 {
                                     BlockStatement blockStmt = s as BlockStatement;
-                                    var curASTStmt = curStmtNode.GetNodePresenter().GetASTNode() as Statement;
-                                    // TODO remove from AST
+                                    curASTStmt.Remove();
                                     blockStmt.Statements.InsertBefore(null, curASTStmt);
                                     stmtToSpreadUp = blockStmt;
+                                    enter = true;
                                 }
-                                (curNodeDefaultFlowIn._links[0].Output as FlowNodeAnchor).MethodAttachASTStmt(stmtToSpreadUp); // Go back to recreate the blockStatement
+                                if (enter)
+                                {
+                                    //MessageBox.Show("Prev " + ((curNodeDefaultFlowIn._links[0].Output as FlowNodeAnchor).ParentNode as AStatementNode).GetNodePresenter().GetASTNode().ToString());
+                                    (curNodeDefaultFlowIn._links[0].Output as FlowNodeAnchor).MethodAttachASTStmt(stmtToSpreadUp); // Go back to recreate the blockStatement
+                                }
                             }
-                            (stmtArg as BlockStatement).Statements.InsertAfter(null, s); return null; 
+                            //(stmtArg as BlockStatement).Statements.InsertAfter(null, s);
+                            return null;
                         };
-                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, specificMethodAttachSTMT, () => { (stmtArg as BlockStatement).Statements.Remove(stmt); });
+                    }
+                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, specificMethodAttachSTMT, () => { 
+                        (stmtArg as BlockStatement).Statements.Remove(stmt);
+                    });
+                    if (stmt == (stmtArg as BlockStatement).Last() && defaultFlowOutTmp != null)
+                        defaultFlowOutTmp.MethodAttachASTStmt = specificMethodAttachSTMT;
                 }
             }
             # region IfStmts

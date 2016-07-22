@@ -140,6 +140,10 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             }
             e.Handled = true;
         }
+        public void DebugDisplay()
+        {
+            this.LinkAttach.Fill = new SolidColorBrush(Colors.Red);
+        }
 
         void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

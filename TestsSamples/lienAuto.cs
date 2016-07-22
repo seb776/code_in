@@ -11,6 +11,7 @@
         if (x < y) 
 	{
 		test;
+		titi;
 		42;
 	}
         else
