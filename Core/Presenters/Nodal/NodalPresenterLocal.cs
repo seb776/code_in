@@ -327,6 +327,7 @@ namespace code_in.Presenters.Nodal
                         //defaultFlowOutTmp.DebugDisplay();
                         specificMethodAttachSTMT = (s) =>
                         {
+                            return null;
                             defaultFlowOutTmp.DebugDisplay();
                             MessageBox.Show("Attach " + defaultFlowOutTmp.ParentNode.GetNodePresenter().GetASTNode().ToString() + "\n" +
                                 ((defaultFlowOutTmp.ParentNode as AStatementNode).FlowInAnchor._links[0].Output as FlowNodeAnchor).ParentNode.GetNodePresenter().GetASTNode().ToString()
