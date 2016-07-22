@@ -203,6 +203,10 @@
     <Compile Include="Views\Utils\HexagonalMenu.xaml.cs">
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
     </Compile>
+    <Page Include="Models\DarkThemeResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Models\EnglishResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,6 +218,10 @@
     <Page Include="Models\LanguageResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Models\LightThemeResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Models\ThemeResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
