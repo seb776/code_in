@@ -12,6 +12,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     class UnSupStmtDeclNode : ADefaultStatementNode
     {
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
         public TextBox NodeText = null;
 
         public UnSupStmtDeclNode() :

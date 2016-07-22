@@ -12,6 +12,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
 {
     class ContinueStmtNode : AContextStmtNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public ContinueStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {

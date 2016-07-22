@@ -20,5 +20,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             TargetIn = this.CreateAndAddInput<DataFlowAnchor>();
             TargetIn.SetName("MethodName");
         }
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.InvocationExpression());
+            throw new NotImplementedException();
+        }
     }
 }

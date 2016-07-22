@@ -41,7 +41,7 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         public NodePresenter(INodalPresenter nodalPres, AstNode model) {
             System.Diagnostics.Debug.Assert(nodalPres != null);
-            System.Diagnostics.Debug.Assert(model != null);
+            //System.Diagnostics.Debug.Assert(model != null);
             _nodalPresenter = nodalPres;
             _model = model;
             _virtualType = EVirtualNodeType.AST_NODE;
@@ -856,7 +856,11 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void RemoveNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            NodePresenter self = objects[0] as NodePresenter;
+
+            self._view.Remove();
+            if (self._model == null)
+                return;
         }
         static void SaveNode(object[] objects)
         {
@@ -952,6 +956,11 @@ namespace code_in.Presenters.Nodal.Nodes
                 tmp.Add(typeof(ClassItem));
             }
             return (tmp);
+        }
+
+        public void SetASTNode(AstNode node)
+        {
+            _model = node;
         }
     }
 }

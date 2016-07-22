@@ -25,6 +25,13 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
     {
+        public void Remove()
+        {
+
+        }
+        public void InstantiateASTNode()
+        {
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         EditNodePanel EditMenu = null;

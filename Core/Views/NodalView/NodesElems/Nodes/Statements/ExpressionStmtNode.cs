@@ -13,6 +13,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     public class ExpressionStmtNode : ADefaultStatementNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public DataFlowAnchor Expression = null;
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)

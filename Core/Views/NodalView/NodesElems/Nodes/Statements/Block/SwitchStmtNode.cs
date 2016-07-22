@@ -13,6 +13,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class SwitchStmtNode : ABlockStmtNodes
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public SwitchStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {

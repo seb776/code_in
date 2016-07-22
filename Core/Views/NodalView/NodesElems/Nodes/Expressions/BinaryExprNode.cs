@@ -22,5 +22,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandB.SetName("B");
             this.SetType("BinaryExpr");
         }
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

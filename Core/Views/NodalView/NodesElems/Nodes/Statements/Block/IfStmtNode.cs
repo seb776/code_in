@@ -14,6 +14,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class IfStmtNode : ABlockStmtNodes
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.IfElseStatement());
+        }
         public DataFlowAnchor Condition = null;
         public FlowNodeAnchor trueAnchor = null;
         public FlowNodeAnchor falseAnchor = null;

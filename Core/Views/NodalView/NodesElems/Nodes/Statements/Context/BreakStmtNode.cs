@@ -12,6 +12,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
 {
     public class BreakStmtNode : AContextStmtNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.BreakStatement());
+        }
         public BreakStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {

@@ -11,6 +11,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class NamespaceNode : AFlyingContentNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.NamespaceDeclaration("NewNamespace"));
+        }
         public NamespaceNode()
             : this(Code_inApplication.MainResourceDictionary)
         {

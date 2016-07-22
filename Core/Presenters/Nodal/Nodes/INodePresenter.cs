@@ -32,6 +32,7 @@ namespace code_in.Presenters.Nodal.Nodes
     }
     public interface INodePresenter : IContextMenu
     {
+        void SetASTNode(AstNode node);
         AstNode GetASTNode();
         ENodeActions GetActions(); // Gets the possible actions for this node
         String[] GetAvailableModifiers(); // TODO @z0rg: String ? :S

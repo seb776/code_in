@@ -13,6 +13,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     class ForeachStmtNode : ABlockStmtNodes
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public DataFlowAnchor Condition = null;
         public FlowNodeAnchor trueAnchor = null;
         public ForeachStmtNode(ResourceDictionary themeResDict) :

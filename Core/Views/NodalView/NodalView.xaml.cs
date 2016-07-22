@@ -31,6 +31,7 @@ namespace code_in.Views.NodalView
     /// </summary>
     public partial class NodalView : UserControl, INodalView, ICodeInVisual
     {
+        public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
         List<INodeElem> _visualNodes; // TODO @z0rg Beaurk: beta quick implementation
         private ResourceDictionary _themeResourceDictionary = null;
         public INodalPresenter _nodalPresenter = null;

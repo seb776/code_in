@@ -11,7 +11,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
     /// <summary>
     /// A Statement Node that has an input flow and an output flow
     /// </summary>
-    public class ADefaultStatementNode : AStatementNode
+    public abstract class ADefaultStatementNode : AStatementNode
     {
         public FlowNodeAnchor FlowOutAnchor = null;
 
@@ -21,5 +21,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
             FlowOutAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
             FlowOutAnchor.SetName("TMP: FlowOut");
         }
+        public abstract override void InstantiateASTNode();
     }
 }

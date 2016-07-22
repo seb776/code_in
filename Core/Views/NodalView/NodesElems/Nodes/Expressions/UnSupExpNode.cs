@@ -26,5 +26,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             this.NodeText = tb;
             this.ContentLayout.Children.Add(tb);
         }
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

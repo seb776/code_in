@@ -23,6 +23,20 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
+        public virtual void Remove()
+        {
+            if (this.Parent == null)
+                return;
+
+            var panel = this.Parent as Panel;
+            if (panel != null)
+            {
+                panel.Children.Remove(this);
+                if (this.GetNodePresenter().GetASTNode() != null)
+                    this.GetNodePresenter().GetASTNode().Remove();
+                return;
+            }
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private IRootDragNDrop _rootView = null;
         private IVisualNodeContainerDragNDrop _parentView = null;
@@ -148,5 +162,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
         public IRootDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem
+
+        public abstract void InstantiateASTNode();
     }
 }

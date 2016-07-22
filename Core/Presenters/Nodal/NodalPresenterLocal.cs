@@ -287,6 +287,7 @@ namespace code_in.Presenters.Nodal
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
+            (this._view as NodalView).IsDeclarative = false;
             var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
             var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
 
@@ -746,12 +747,29 @@ namespace code_in.Presenters.Nodal
 //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
-                var tmp = new NodePresenter(_viewStatic._nodalPresenter, null);
-                var toto = new object[1];
-                toto[0] = tmp;
-                BaseNode node = gmi.Invoke(_viewStatic, toto) as BaseNode;
+                var nodePresenter = new NodePresenter(_viewStatic._nodalPresenter, null);
+                var array = new object[1];
+                array[0] = nodePresenter;
+                BaseNode node = gmi.Invoke(_viewStatic, array) as BaseNode;
+                try
+                {
+                    node.InstantiateASTNode();
+                }
+                catch (Exception fail)
+                {
+                    MessageBox.Show("You will not be able to modify this node's content with the edit menu.");
+                }
                 var pos = Mouse.GetPosition(_viewStatic.MainGrid);
                 node.SetPosition((int)pos.X, (int)pos.Y);
+                if (_viewStatic.IsDeclarative)
+                {
+                    var astNode = node.GetNodePresenter().GetASTNode();
+                    if (astNode != null)
+                    {
+                        var thisAst = (_viewStatic._nodalPresenter as NodalPresenterLocal)._model;
+                        thisAst.AST.Members.Add(astNode);                            
+                    }
+                }
             }
             //_viewStatic = null;
         }

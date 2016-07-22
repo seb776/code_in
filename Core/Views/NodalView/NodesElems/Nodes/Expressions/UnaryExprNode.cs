@@ -20,5 +20,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             this.SetThemeResources("UnaryExprNode");
             this.SetType("UnaryExpr");
         }
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

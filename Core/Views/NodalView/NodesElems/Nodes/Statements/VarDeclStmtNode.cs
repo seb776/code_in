@@ -13,7 +13,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
     public class VarDeclStmtNode : ADefaultStatementNode
     {
-
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public VarDeclStmtNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
             this.SetType("VarDecl");

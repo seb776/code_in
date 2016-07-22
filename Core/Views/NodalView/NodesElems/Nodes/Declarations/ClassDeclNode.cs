@@ -17,6 +17,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     /// </summary>
     public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance, IContainingGenerics
     {
+        public override void InstantiateASTNode()
+        {
+            var typeDecl = new ICSharpCode.NRefactory.CSharp.TypeDeclaration();
+            typeDecl.ClassType = ClassType.Class;
+            this.GetNodePresenter().SetASTNode(typeDecl);
+        }
         public enum EType
         {
             STRUCT = 0,

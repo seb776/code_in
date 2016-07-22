@@ -14,6 +14,7 @@ namespace code_in.Presenters.Nodal
 {
     public interface INodeElem
     {
+        void InstantiateASTNode();
         // Actions to change/get visualAST displayed state
         void SetName(String name);
         String GetName();
@@ -29,6 +30,7 @@ namespace code_in.Presenters.Nodal
         Point GetPosition();
         void GetSize(out int x, out int y);
         void SetSelected(bool isSelected); // Highlight the nodeElem if isSelected = true
+        void Remove();
     }
     // enum globale
     public enum EAccessModifier

@@ -13,6 +13,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
 {
     public class ReturnStmtNode : AContextStmtNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public DataFlowAnchor ExprIn = null;
         public ReturnStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)

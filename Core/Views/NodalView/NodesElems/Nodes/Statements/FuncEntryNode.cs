@@ -20,6 +20,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     /// </summary>
     public class FuncEntryNode : ADefaultStatementNode
     {
+        public override void InstantiateASTNode()
+        {
+        }
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {

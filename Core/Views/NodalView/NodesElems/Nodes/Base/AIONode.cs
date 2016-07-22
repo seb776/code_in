@@ -22,6 +22,10 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     /// </summary>
     public abstract class AIONode : BaseNode, IIOAnchorContainer
     {
+        public override void Remove()
+        {
+            throw new NotImplementedException();
+        }
         private ILinkContainer _parentLinksContainer = null;
         private Grid _subGrid = null;
         public StackPanel _inputs = null;  // public tmp (ham ham)

@@ -17,5 +17,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
         }
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
