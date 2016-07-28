@@ -101,14 +101,12 @@
     <Compile Include="Presenters\Nodal\IContainingGenerics.cs" />
     <Compile Include="Presenters\Nodal\IContainingInheritance.cs" />
     <Compile Include="Presenters\Nodal\IContainingModifiers.cs" />
-    <Compile Include="Presenters\Nodal\IContainingStatement.cs" />
     <Compile Include="Presenters\Nodal\IContextMenu.cs" />
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
     <Compile Include="Models\NodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
-    <Compile Include="Models\Theme\ILinkDraw.cs" />
     <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
@@ -118,11 +116,17 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
+      <DependentUpon>AIOAnchor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\EditNodePanel.xaml.cs">
       <DependentUpon>EditNodePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\INodalView.cs" />
     <Compile Include="Views\Code_inLink .cs" />
+    <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IRootDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -150,9 +154,8 @@
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\ClassItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\DataFlowItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\FlowNodeItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Base\AOItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\DataFlowAnchor.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Anchors\FlowNodeAnchor.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ANodeItem.xaml.cs">
       <DependentUpon>ANodeItem.xaml</DependentUpon>
     </Compile>
@@ -173,11 +176,15 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\FuncCallExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ParenthesizedExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TernaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnSupExpNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ValueExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ADefaultStatementNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AFinalStatementNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ContinueStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
@@ -196,6 +203,10 @@
     <Compile Include="Views\Utils\HexagonalMenu.xaml.cs">
       <DependentUpon>HexagonalMenu.xaml</DependentUpon>
     </Compile>
+    <Page Include="Models\DarkThemeResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Models\EnglishResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -207,6 +218,10 @@
     <Page Include="Models\LanguageResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Models\LightThemeResourcesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Models\ThemeResourcesDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -236,6 +251,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NodalView\NodesElems\EditNodePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,10 +279,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
@@ -284,9 +299,6 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\FuncEntryNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\NamespaceNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Items\Assets\NodeAnchor.xaml.cs">
-      <DependentUpon>NodeAnchor.xaml</DependentUpon>
-    </Compile>
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -371,11 +383,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Graphics\inheritance.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Graphics\remove.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -394,6 +401,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\SpritesMainBtn\Top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Graphics\add.png" />
+    <Resource Include="Resources\Graphics\align.png" />
+    <Resource Include="Resources\Graphics\go_into.png" />
+    <Resource Include="Resources\Graphics\help.png" />
+    <Resource Include="Resources\Graphics\save.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

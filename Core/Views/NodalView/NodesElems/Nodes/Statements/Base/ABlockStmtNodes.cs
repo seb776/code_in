@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
 {
-    public abstract class ABlockStmtNodes : AStatementNode
+    public abstract class ABlockStmtNodes : ADefaultStatementNode
     {
         protected ABlockStmtNodes(ResourceDictionary themeResDict) :
             base(themeResDict)

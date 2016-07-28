@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="MainLayout" MouseLeftButtonDown="MainLayout_MouseLeftButtonDown" MouseRightButtonDown="MainLayout_MouseRightButtonDown">
+    <Grid x:Name="MainLayout" MouseLeftButtonDown="MainLayout_MouseLeftButtonDown" PreviewMouseRightButtonDown="MainLayout_MouseRightButtonDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
@@ -21,10 +21,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="EditMenuAndAttributesLayout">
             <StackPanel x:Name="AttributesLayout" Orientation="Vertical" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
                 <!--<Label>[zefzef]</Label>
                 <Label>[zefzef]</Label>
                 <Label>[zefzef]</Label>-->
+            </StackPanel>
             </StackPanel>
             <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">

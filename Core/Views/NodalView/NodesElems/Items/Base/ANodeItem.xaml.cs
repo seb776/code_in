@@ -16,6 +16,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -24,11 +25,19 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
     {
+        public void Remove()
+        {
+
+        }
+        public void InstantiateASTNode()
+        {
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        protected IVisualNodeContainer _parentView = null;
-        private IVisualNodeContainerDragNDrop _rootView = null;
-        protected NodePresenter _nodePresenter = null;
+        EditNodePanel EditMenu = null;
+        protected IVisualNodeContainerDragNDrop _parentView = null;
+        private IRootDragNDrop _rootView = null;
+        public INodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
         {
@@ -61,15 +70,24 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public virtual void OnMouseLeave()
         { }
 
-        #region INodeElem
-        public void SetParentView(IVisualNodeContainer parent) { _parentView = parent; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
-        public void SetRootView(IVisualNodeContainerDragNDrop root) { _rootView = root; }
-        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
-        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
+        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Handled = true;
+            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
+        public void ShowEditMenu()
+        {
+            this.EditItemPanelField.Children.Clear();
+            EditMenu = new EditNodePanel(_themeResourceDictionary);
+            EditMenu.SetFields(_nodePresenter);
+            this.EditItemPanelField.Children.Add(EditMenu);
+        }
+
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainerDragNDrop parent) { _parentView = parent; }
+        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
+        public void SetRootView(IRootDragNDrop root) { _rootView = root; }
+        public IRootDragNDrop GetRootView() { return _rootView; }
         public void SetName(String name)
         {
             this.ItemName.Content = name;
@@ -78,10 +96,14 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             return this.ItemName.Content as String;
         }
-        public void SetNodePresenter(NodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
+        }
+        public void AddGeneric(string name, EGenericVariance variance)
+        {
+            GenericLabel.Content += variance.ToString().ToLower() + " " + name;
         }
         #endregion INodeElem
         #region ICodeInVisual
@@ -95,5 +117,31 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
+
+        
+        public void SetPosition(int posX, int posY)
+        {
+            //throw new InvalidOperationException("As an item cannot be outside a node and cannot be flying, we cannot not set its position.");
+        }
+
+
+        public void GetSize(out int x, out int y)
+        {
+            x = 0;
+            y = 0;
+            //throw new NotImplementedException();
+        }
+
+
+        public void SetSelected(bool isSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Point GetPosition()
+        {
+            return new Point(this.Margin.Left, this.Margin.Top);
+        }
     } // Class
 } // Namespace

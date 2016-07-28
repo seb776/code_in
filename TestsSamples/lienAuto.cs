@@ -1,12 +1,18 @@
 ﻿class LienAuto
 {
-
+	void EmptyFunc()
+	{
+		
+	}
     int returnBiggest(int x, int y)
     {
         int valRet;
 
         if (x < y) 
 	{
+		test;
+		titi;
+		42;
 	}
         else
 	{
@@ -20,6 +26,12 @@
     {
         return a;
     }
+	
+	void DepthExpressions()
+	{
+		int variable;
+		variable = 5 + 3 + (2 - 9) + 10 + 9 + (8 * 9);
+	}
 
     int returnDeclParam()
     {
@@ -31,14 +43,18 @@
 
     void multipleDeclParam()
     {
-	int a;
-	int b;
-	char c, d, e;
+		if (true)
+		{
+		int a;
+		int b;
+		char c, d, e;
+		}
     }
 
     void ifStmt(char c) {
 	if (c == 'c')	    
             Console.WriteLine("Test");
+return;
     }
 
     void ifStmtBlock(char c) {

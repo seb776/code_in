@@ -110,10 +110,14 @@ namespace code_in.Views.MainView
             if (_movingView == true)
             {
                 Point actualDiff = (Point)(_lastMousePosFromWinGrid - e.GetPosition(this.WinGrid));
+                //MessageBox.Show((this.ZoomPanel.Child as UserControl).ActualWidth.ToString() + " " + (this.ZoomPanel.Child as UserControl).ActualHeight.ToString()); // Taille du nodalView ok
+                //MessageBox.Show(this.ScrollView.ActualWidth.ToString() + " " + this.ScrollView.ActualHeight.ToString()); // Taille du scrollview ok
+                //MessageBox.Show((this.ZoomPanel.ActualWidth.ToString() + " " + this.ZoomPanel.ActualHeight.ToString())); // Taille du zoomPanel ok
+                //MessageBox.Show((this.WinGrid.ActualWidth.ToString() + " " + this.WinGrid.ActualHeight.ToString())); // Taille de la wingrid ok
+                
                 this.ScrollView.ScrollToHorizontalOffset(this.ScrollView.HorizontalOffset + actualDiff.X);
                 this.ScrollView.ScrollToVerticalOffset(this.ScrollView.VerticalOffset + actualDiff.Y);
                 _lastMousePosFromWinGrid = e.GetPosition(this.WinGrid);
-                //_lastMousePosFromWinGrid = actualDiff;
             }
         }
         private void WinGrid_MouseWheel(object sender, MouseWheelEventArgs e)

@@ -38,6 +38,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         }
         public void SetTypeFromString(String type)
         {
+            this.TypeLabel.Content = type; ;
         }
 
         #region ICodeInVisual

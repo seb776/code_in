@@ -28,7 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
 
         #region IContainingModifiers
-        public void setModifiersList(Modifiers modifiers)
+        public void setAccessModifiers(Modifiers modifiers)
         {
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
                 Scope.Scope = ScopeItem.EScope.PUBLIC;
@@ -42,10 +42,11 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         #endregion
         #region IContainingAccessModifiers
-        public void setAccessModifiers(Modifiers modifiers)
+        public void setModifiersList(Modifiers modifiers)
         {
             List<string> ModifiersList = new List<string>();
 
+            ModifiersList.Clear();
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                 ModifiersList.Add("new");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
@@ -64,8 +65,6 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("virtual");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
                 ModifiersList.Add("extern");
-            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                ModifiersList.Add("override");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
                 ModifiersList.Add("readonly");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)
@@ -74,6 +73,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("unsafe");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
                 ModifiersList.Add("volatile");
+            ModifiersList.Distinct();
             Modifiers.SetModifiers(ModifiersList.ToArray());
         }
         #endregion

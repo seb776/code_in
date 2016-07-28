@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public abstract class AValueNode : AIONode
     {
-        public DataFlowItem ExprOut = null;
+        public DataFlowAnchor ExprOut = null;
         public AValueNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
-            ExprOut = this.CreateAndAddOutput<DataFlowItem>();
+            ExprOut = this.CreateAndAddOutput<DataFlowAnchor>();
             ExprOut.SetName("expression");
         }
     }

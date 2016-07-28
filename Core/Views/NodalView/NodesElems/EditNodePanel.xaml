@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" VerticalAlignment="Top">
-    <Grid Background="#6B000000" Height="auto" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+    <Grid x:Name="EditMenuMainGrid" Background="#6B000000" Height="auto" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+        <Button Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="QuitEditMenu">X</Button>
         <Grid Height="auto" VerticalAlignment="Top" Margin="15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -13,34 +14,126 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="_modifiersArea" Grid.Column="0" Orientation="Vertical" Height="auto">
+            
+            <StackPanel x:Name="_modifiersArea" Orientation="Vertical" Height="auto"  IsEnabled="False" Visibility="Hidden">
                 <Label x:Name="_modifiersAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Modifiers</Label>
-                <StackPanel x:Name="_accessModifiers" Orientation="Horizontal">
+                <StackPanel x:Name="_accessModifiers" Orientation="Horizontal" IsEnabled="False" Visibility="Hidden">
                     <Label x:Name="_accessModifiersLabel" Foreground="White">Access modifiers</Label>
-                    <ComboBox x:Name="_accessModifiersList" Margin="5,0,0,0" Width="150">
+                    <ComboBox x:Name="_accessModifiersList" Margin="5,0,0,0" Width="150" SelectionChanged="_accessModifiersList_SelectionChanged">
                         <ComboBoxItem>public</ComboBoxItem>
                         <ComboBoxItem>private</ComboBoxItem>
+                        <ComboBoxItem>protected</ComboBoxItem>
+                        <ComboBoxItem>internal</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <CheckBox Foreground="White">virtual</CheckBox>
-                    <CheckBox Foreground="White">abstract</CheckBox>
-                    <CheckBox Foreground="White">override</CheckBox>
+                <StackPanel x:Name="_modifiersList" Margin="5,15,0,0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden">
+                    <CheckBox x:Name="virtualBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">virtual</CheckBox>
+                    <CheckBox x:Name="AbstractBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">abstract</CheckBox>
+                    <CheckBox x:Name="OverrideBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">override</CheckBox>
+                    <CheckBox x:Name="NewBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">new</CheckBox>
+                    <CheckBox x:Name="PartialBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">partial</CheckBox>
+                    <CheckBox x:Name="StaticBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">static</CheckBox>
+                    <CheckBox x:Name="SealedBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">sealed</CheckBox>
+                    <CheckBox x:Name="ExternBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">extern</CheckBox>
+                    <CheckBox x:Name="ConstBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">const</CheckBox>
+                    <CheckBox x:Name="AsyncBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">async</CheckBox>
+                    <CheckBox x:Name="ReadonlyBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">readonly</CheckBox>
+                    <CheckBox x:Name="VolatileBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">volatile</CheckBox>
+                    <CheckBox x:Name="UnsafeBox" Foreground="White" Checked="CheckedModifier" Unchecked="UncheckedModifier">unsafe</CheckBox>
                 </StackPanel>
             </StackPanel>
-            <Border Grid.Column="1" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="_mainArea" Grid.Column="2" Orientation="Vertical">
+            
+            <Border x:Name="FirstBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="_mainArea" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label x:Name="_mainAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">General</Label>
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="_nameFieldTitle" Foreground="White">Name</Label>
-                    <TextBox Foreground="Gray">Type a name</TextBox>
+                    <TextBox x:Name="NodeName" Foreground="Gray" TextChanged="GeneralNameChanged" Width="80">Type a name</TextBox>
                 </StackPanel>
             </StackPanel>
-            <Border Grid.Column="3" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch"></Border>
-            <StackPanel x:Name="_commentArea" Grid.Column="4" Orientation="Vertical">
+            
+            <Border x:Name="SecondBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="_commentArea" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Comment</Label>
-                <TextBlock Foreground="Green" Background="#6B000000" TextWrapping="Wrap">here comments</TextBlock>
+                <TextBox Foreground="Green" Background="#6B000000" TextWrapping="Wrap" TextChanged="CommentsAreaTextChanged" Width="100">here comments</TextBox>
+            </StackPanel>
+
+            <Border x:Name="ThirdBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" Margin="0,0,0,5">Generics</Label>
+                <StackPanel x:Name="DeclGenericsPanel">
+                </StackPanel>
+                <Button Click="EventAddGenericIntoEditMenu" Width="40" Margin="0, 10, 0, 0">+</Button>
+            </StackPanel>
+            
+            <Border x:Name="FourthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="InheritanceField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" Margin="0,0,0,5">Inheritance</Label>
+                <StackPanel x:Name="InheritancePanel" Orientation="Vertical">
+                </StackPanel>
+                <Button x:Name="AddInheritance" Width="40" Margin="0, 10, 0, 0" Click="EventAddInheritance">+</Button>
+            </StackPanel>
+            
+            <Border x:Name="FifthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="AttributesField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" HorizontalAlignment="Center">Attributes</Label>
+            </StackPanel>
+
+            <Border x:Name="SixthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="ExecGenericsField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" HorizontalAlignment="Center">Execution Generics</Label>
+                <TextBox x:Name="ExecGenericName"></TextBox>
+            </StackPanel>
+
+            <Border x:Name="SeventhBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="ExecTypeField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" HorizontalAlignment="Center">Execution Types</Label>
+                <TextBox x:Name="ExecTypeName"></TextBox>
+            </StackPanel>
+
+            <Border x:Name="EighthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="ExecParametersField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" >Execution Parameters</Label>
+                <TextBox x:Name="ParametersNumber" TextChanged="ParametersNumber_TextChanged"></TextBox>
+            </StackPanel>
+
+            <Border x:Name="NinthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="TypeField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" HorizontalAlignment="Center">Type</Label>
+                <TextBox x:Name="TypeName"></TextBox>
+            </StackPanel>
+
+            <Border x:Name="TenthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
+
+            <StackPanel x:Name="TextField" IsEnabled="False" Visibility="Hidden">
+                <Label Foreground="White" HorizontalAlignment="Center">Text</Label>
+                <TextBox x:Name="TextForDefault"></TextBox>
             </StackPanel>
         </Grid>
     </Grid>

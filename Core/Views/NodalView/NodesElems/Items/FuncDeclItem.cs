@@ -48,6 +48,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 _editButton.SetValue(Image.OpacityProperty, 0.0);
                 _editButton.IsEnabled = false;
                 Generics = new GenericItem(themeResDict);
+                this.GenericsField.Children.Add(Generics);
             }
 
         }
@@ -111,6 +112,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
             List<string> ModifiersList = new List<string>();
 
+            ModifiersList.Clear();
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.New) == ICSharpCode.NRefactory.CSharp.Modifiers.New)
                 ModifiersList.Add("new");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Partial) == ICSharpCode.NRefactory.CSharp.Modifiers.Partial)
@@ -129,8 +131,6 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("virtual");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Extern) == ICSharpCode.NRefactory.CSharp.Modifiers.Extern)
                 ModifiersList.Add("extern");
-            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Override) == ICSharpCode.NRefactory.CSharp.Modifiers.Override)
-                ModifiersList.Add("override");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Readonly) == ICSharpCode.NRefactory.CSharp.Modifiers.Readonly)
                 ModifiersList.Add("readonly");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Sealed) == ICSharpCode.NRefactory.CSharp.Modifiers.Sealed)

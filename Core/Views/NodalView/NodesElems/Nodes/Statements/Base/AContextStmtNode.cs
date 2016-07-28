@@ -7,7 +7,10 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
 {
-    public abstract class AContextStmtNode : AStatementNode
+    /// <summary>
+    /// Node for "continue" "break" "return" + "yield"
+    /// </summary>
+    public abstract class AContextStmtNode : AFinalStatementNode
     {
         protected AContextStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)

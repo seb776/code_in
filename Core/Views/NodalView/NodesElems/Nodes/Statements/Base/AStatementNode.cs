@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using System;
@@ -13,11 +14,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Base
 {
     public abstract class AStatementNode : AIONode
     {
+        public FlowNodeAnchor FlowInAnchor = null;
         public AStatementNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            //this.SetNodeType("Statement");
-            //this.SetThemeResources("DefaultStmtNode");
+            FlowInAnchor = this.CreateAndAddInput<FlowNodeAnchor>();
+            FlowInAnchor.SetName("TMP: FlowIn");
         }
 
         #region ICodeInVisual

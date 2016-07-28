@@ -16,6 +16,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class FuncDeclNode : AOrderedContentNode
     {
+        public override void InstantiateASTNode()
+        {
+            MethodNode = new MethodDeclaration();
+            this.GetNodePresenter().SetASTNode(MethodNode);
+        }
         public MethodDeclaration MethodNode = null;
 
         public FuncDeclNode(System.Windows.ResourceDictionary themeResDict) :

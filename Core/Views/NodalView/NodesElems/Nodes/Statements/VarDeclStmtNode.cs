@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -10,17 +11,15 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class VarDeclStmtNode : AStatementNode
+    public class VarDeclStmtNode : ADefaultStatementNode
     {
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
-
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public VarDeclStmtNode(ResourceDictionary themeResDict) : base(themeResDict)
         {
-            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
-            this.SetType("Declaration");
-            this.SetName("Variables");
+            this.SetType("VarDecl");
             this.SetThemeResources("VarDeclStmtNode");
         }
     }

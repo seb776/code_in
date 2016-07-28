@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -10,19 +11,19 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    public class ExpressionStmtNode : AStatementNode
+    public class ExpressionStmtNode : ADefaultStatementNode
     {
-        public DataFlowItem Expression = null;
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
+        public DataFlowAnchor Expression = null;
         public ExpressionStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("ExpressionStmt");
-            inAnchor = this.CreateAndAddInput<FlowNodeItem>();
-            Expression = this.CreateAndAddInput<DataFlowItem>();
+            Expression = this.CreateAndAddInput<DataFlowAnchor>();
             Expression.SetName("Expression");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
             this.SetThemeResources("ExprStmtNode");
         }
     }

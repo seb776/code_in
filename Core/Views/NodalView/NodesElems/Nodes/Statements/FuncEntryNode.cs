@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
@@ -17,17 +18,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
     /// This is a special node that has no equivalent in the AST. Its only goal is to provide
     /// a clear and simple entry point for function editing.
     /// </summary>
-    public class FuncEntryNode : AStatementNode
+    public class FuncEntryNode : ADefaultStatementNode
     {
-        public AOItem outAnchor = null;
-        
+        public override void InstantiateASTNode()
+        {
+        }
         public FuncEntryNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetType("FuncEntry");
             this.SetName("Inputs");
             this.SetThemeResources("FuncEntryNode");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
         }
     }
 }

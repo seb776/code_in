@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -12,21 +13,19 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     class ForeachStmtNode : ABlockStmtNodes
     {
-        public DataFlowItem Condition = null;
-        public AOItem inAnchor = null;
-        public AOItem outAnchor = null;
-        public AOItem trueAnchor = null;
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
+        public DataFlowAnchor Condition = null;
+        public FlowNodeAnchor trueAnchor = null;
         public ForeachStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
              this.SetName("ForEach");
-             inAnchor = this.CreateAndAddInput<FlowNodeItem>();
-             inAnchor.SetName("In");
-             Condition = this.CreateAndAddInput<DataFlowItem>();
+             Condition = this.CreateAndAddInput<DataFlowAnchor>();
              Condition.SetName("Condition");
-             outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
-             outAnchor.SetName("FlowNode");
-             trueAnchor = this.CreateAndAddOutput<FlowNodeItem>();
+             trueAnchor = this.CreateAndAddOutput<FlowNodeAnchor>();
              trueAnchor.SetName("True");
         }
     }

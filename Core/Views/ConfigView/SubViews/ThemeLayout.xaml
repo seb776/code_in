@@ -17,8 +17,9 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Label x:Name="CurrentThemeLabel" Grid.Row="0" FontSize="20" Foreground="White">TMP: Theme actuel</Label>
-                    <ComboBox MinWidth="200" Margin="5,0,0,0">
-                        <ComboBoxItem x:Name="DefaultTheme">Theme par defaut</ComboBoxItem>
+                    <ComboBox MinWidth="200" Margin="5,0,0,0" SelectionChanged="ComboBox_Selected">
+                        <ComboBoxItem x:Name="DefaultTheme">DarkTheme</ComboBoxItem>
+                        <ComboBoxItem x:Name="LightTheme">LightTheme</ComboBoxItem>
                     </ComboBox>
                     <Button x:Name="SaveCurrentTheme" Margin="5,0,0,0" Padding="10,0,10,0">TMP: Sauvegarder</Button>
                     <Button x:Name="RemoveCurrentTheme" Margin="5,0,0,0" Padding="10,0,10,0">TMP: Supprimer</Button>

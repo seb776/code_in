@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,13 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
 {
-    class UnSupStmtDeclNode : AStatementNode
+    class UnSupStmtDeclNode : ADefaultStatementNode
     {
-        public TextBox NodeText;
+        public override void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
+        public TextBox NodeText = null;
 
         public UnSupStmtDeclNode() :
             this(Code_inApplication.MainResourceDictionary)
@@ -23,11 +28,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements
             base(themeResDict)
         {
             this.SetType("Unsupported Stmt");
-            this.CreateAndAddInput<FlowNodeItem>();
-            this.CreateAndAddOutput<FlowNodeItem>();
-            TextBox tb = new TextBox();
-            this.NodeText = tb;
-            this.ContentLayout.Children.Add(tb);
+            this.NodeText = new TextBox();
+            this.ContentLayout.Children.Add(this.NodeText);
         }
     }
 }

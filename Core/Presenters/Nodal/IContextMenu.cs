@@ -29,5 +29,6 @@ namespace code_in.Presenters.Nodal
     public interface IContextMenu
     {
         Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions();
+        List<Type> GetAvailableNodes();
     }
 }

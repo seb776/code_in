@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
@@ -12,14 +13,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     public class SwitchStmtNode : ABlockStmtNodes
     {
-        public AOItem outAnchor = null;
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.ContinueStatement());
+        }
         public SwitchStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             this.SetName("Switch");
             this.SetType("Switch");
-            outAnchor = this.CreateAndAddOutput<FlowNodeItem>();
-            outAnchor.SetName("FlowNode");
         }
     }
 }

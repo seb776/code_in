@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items;
+﻿using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Context
 {
     public class BreakStmtNode : AContextStmtNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.BreakStatement());
+        }
         public BreakStmtNode(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.CreateAndAddInput<FlowNodeItem>();
         }
     }
 }

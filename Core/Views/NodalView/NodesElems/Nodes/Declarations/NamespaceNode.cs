@@ -5,11 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class NamespaceNode : AFlyingContentNode
     {
+        public override void InstantiateASTNode()
+        {
+            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.NamespaceDeclaration("NewNamespace"));
+        }
         public NamespaceNode()
             : this(Code_inApplication.MainResourceDictionary)
         {
@@ -40,7 +45,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
 
         #endregion IVisualNodeContainer
-
-        public override void MoveNodeSpecial() { }
     } // Class
 } // Namespace

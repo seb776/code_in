@@ -1,5 +1,6 @@
 ﻿using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,25 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
     {
+        public virtual void Remove()
+        {
+            if (this.Parent == null)
+                return;
+
+            var panel = this.Parent as Panel;
+            if (panel != null)
+            {
+                panel.Children.Remove(this);
+                if (this.GetNodePresenter().GetASTNode() != null)
+                    this.GetNodePresenter().GetASTNode().Remove();
+                return;
+            }
+        }
         private ResourceDictionary _themeResourceDictionary = null;
-        private IVisualNodeContainerDragNDrop _rootView = null;
-        private IVisualNodeContainer _parentView = null;
-        private NodePresenter _nodePresenter = null;
+        private IRootDragNDrop _rootView = null;
+        private IVisualNodeContainerDragNDrop _parentView = null;
+        private INodePresenter _nodePresenter = null;
+        private EditNodePanel EditMenu = null;
         public BaseNode(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -48,7 +64,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
         }
         #endregion ICodeInVisual
-
         #region This
         public void SetName(string name)
         {
@@ -64,6 +79,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.NodeType.Content = type;
         }
 
+        public void AddGeneric(string name, EGenericVariance variance)
+        {
+            GenericLabel.Content += variance.ToString().ToLower() + " " + name;
+        }
         /// <summary>
         /// Sets the visual selected state of the node. It does not affect anything other than the visual.
         /// </summary>
@@ -77,45 +96,73 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.SelectionBorder.Visibility = (isSelected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
         }
 
-        public void SetNodePresenter(NodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
             _nodePresenter = nodePresenter;
         }
-        #endregion This
-
-        #region INodeElem
-        public void SetParentView(IVisualNodeContainer vc) { _parentView = vc; }
-        public IVisualNodeContainer GetParentView() { return _parentView; }
-        public virtual void SetRootView(IVisualNodeContainerDragNDrop dnd) { _rootView = dnd; }
-        public IVisualNodeContainerDragNDrop GetRootView() { return _rootView; }
-        #endregion INodeElem
-
-        #region IContextMenu
-        public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
+        public Point GetPosition()
         {
-            throw new NotImplementedException();
-            //return (_nodePresenter.GetMenuOptions());
+            return new Point(this.Margin.Left, this.Margin.Top);
         }
-        #endregion IContextMenu
-
-        public void MoveNode(Point pos)
+        public INodePresenter GetNodePresenter()
         {
-            this.Margin = new Thickness(pos.X, pos.Y, 0, 0);
-            this.MoveNodeSpecial();
+            return _nodePresenter;
         }
-        public abstract void MoveNodeSpecial();
 
+        public void ShowEditMenu()
+        {
+            this.EditMenuAndAttributesLayout.Children.Clear();
+            EditMenu = new EditNodePanel(_themeResourceDictionary);
+            EditMenu.SetFields(_nodePresenter);
+            this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
+        }
+
+
+        public virtual void SetPosition(int left, int top)
+        {
+            this.Margin = new Thickness(left, top, 0, 0);
+        }
+
+        public void GetSize(out int x, out int y)
+        {
+            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            this.Arrange(new Rect(0, 0, this.DesiredSize.Width, this.DesiredSize.Height));
+            x = (int)this.ActualWidth;
+            y = (int)this.ActualHeight;
+        }
+
+        #region Events
         private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.GetRootView().DragNodes(TransformationMode.MOVE, this, LineMode.NONE);
+            System.Diagnostics.Debug.Assert(_rootView != null);
+            if (!Keyboard.IsKeyDown(Key.LeftShift))
+                this._rootView.UnSelectAllNodes();
+            try
+            {
+                this._rootView.SelectNode(this);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
         }
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
+        #endregion Events
+        #endregion This
+        #region INodeElem
+        public void SetParentView(IVisualNodeContainerDragNDrop vc) { _parentView = vc; }
+        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
+        public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
+        public IRootDragNDrop GetRootView() { return _rootView; }
+        #endregion INodeElem
+
+        public abstract void InstantiateASTNode();
     }
 }

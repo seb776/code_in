@@ -1,6 +1,7 @@
 ﻿using code_in.Models.Theme;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -71,5 +73,27 @@ namespace code_in.Views.ConfigView.SubViews
             NodalThemePreview.SetResourceReference(Label.ContentProperty, "ThemePreview");
         }
         #endregion ICode_inVisual
+
+        private void ComboBox_Selected(object sender, SelectionChangedEventArgs e)
+        {
+            var item = sender as ComboBox;
+            string selectedName = (item.SelectedItem as ComboBoxItem).Name;
+            string path;
+            if (selectedName == "LightTheme")
+                path = "LightThemeResourcesDictionary.xaml";
+            else
+                path = "DarkThemeResourcesDictionary.xaml";
+            ResourceDictionary retResDict = null;
+            try
+            {
+                var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                retResDict = XamlReader.Load(reader) as ResourceDictionary;
+            }
+            catch (Exception except)
+            {
+                Console.Error.WriteLine(except.Message);
+            }
+            Code_inApplication.ThemePresenter.ApplyTheme(retResDict);
+        }
     }
 }
