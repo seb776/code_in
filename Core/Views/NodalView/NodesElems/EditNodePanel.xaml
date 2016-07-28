@@ -99,6 +99,8 @@
 
             <StackPanel x:Name="AttributesField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Attributes</Label>
+                <StackPanel x:Name="AttributeStack"></StackPanel>
+                <Button x:Name="AddAttributeButton" Click="AddAttributeButton_Click" Width="40">+</Button>
             </StackPanel>
 
             <Border x:Name="SixthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>

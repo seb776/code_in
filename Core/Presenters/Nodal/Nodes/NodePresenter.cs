@@ -35,6 +35,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<Tuple<string, EGenericVariance>> GenericList = null;
         private List<string> InheritanceList = null;
         private List<string> ModifiersList = null;
+        private List<string> AttributesList = null;
         public AstNode GetASTNode()
         {
             return _model;
@@ -51,7 +52,15 @@ namespace code_in.Presenters.Nodal.Nodes
             GetExistingInheritanceFromNode();
             ModifiersList = new List<string>();
             GetExistingModifiersFromNode();
+            AttributesList = new List<string>();
+            //GetExistingAttributesFromNode();
             //TODO getExistingmodifiers then 
+        }
+
+        private void GetExistingAttributesFromNode()
+        {
+            throw new NotImplementedException();
+            //TODO recup infos attributes dans l'ast et stocke dans la liste
         }
 
         public List<string> getModifiersList()
@@ -766,6 +775,23 @@ namespace code_in.Presenters.Nodal.Nodes
 
         }
 
+
+        public void AddAttribute(string attribute)
+        {
+            AttributesList.Add(attribute);
+            //TODO add in ast + add in visual node
+        }
+
+
+        public void RemoveAttribute(int index)
+        {
+            AttributesList.RemoveAt(index);
+            //TODO remove in ast and in visual node
+        }
+        public List<string> getAttributeList()
+        {
+            return (AttributesList);
+        }
         // methods for the contextMenu
         static void AddNode(object[] objects)
         {
