@@ -49,8 +49,8 @@
         </Border>-->
         <!-- Node Content -->
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <Border x:Name="HeaderLayout" Background="GreenYellow" CornerRadius="0,10,0,0">
+        <DockPanel Grid.Column="1" Grid.Row="1" Name="DockPanelNode" Height="auto">
+            <Border x:Name="HeaderLayout" DockPanel.Dock="Top" Background="GreenYellow" CornerRadius="0,10,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -59,12 +59,12 @@
                     </Grid.ColumnDefinitions>
                     <Label x:Name="NodeType" Grid.Column="0" FontWeight="ExtraBold" FontSize="13" VerticalAlignment="Center"></Label>
                     <Label x:Name="NodeName" Grid.Column="1"  VerticalAlignment="Center"></Label>
-                    <Grid Grid.Column="2" x:Name="GenericsField" Margin="0,0,5,0">
+                    <Grid Grid.Column="2" x:Name="GenericsField" Margin="0,0,5,0" >
                         <Label x:Name="GenericLabel" Width="auto"></Label>
                     </Grid>
                 </Grid>
             </Border>
-            <Border Background="#424242" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
+            <Border Background="#424242" DockPanel.Dock="Bottom" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
                 <StackPanel x:Name="ContentLayout" Orientation="Vertical">
                     <!--<Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>
@@ -73,9 +73,9 @@
                         <Label>machizefzefzefzef</Label>-->
                 </StackPanel>
             </Border>
-        </StackPanel>
+        </DockPanel>
 
-        <Grid x:Name="ConstraintLayout" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
+        <Grid x:Name="ConstraintLayout" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" >
 
         </Grid>
         <!--<Border Grid.Column="2" Grid.Row="1" Background="#212121" VerticalAlignment="Top" CornerRadius="0,5,5,0">
@@ -86,7 +86,7 @@
         </Border>-->
 
         <!-- The border under is for the selection -->
-        <Border x:Name="SelectionBorder" IsEnabled="False" Visibility="Hidden" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="White" BorderThickness="3">
+        <Border x:Name="SelectionBorder" IsEnabled="False" Visibility="Hidden" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="Orange" BorderThickness="3">
             <Border.Effect>
                 <BlurEffect Radius="5"/>
             </Border.Effect>
