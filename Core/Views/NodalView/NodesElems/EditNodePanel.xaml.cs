@@ -24,6 +24,7 @@ namespace code_in.Views.NodalView
     public partial class EditNodePanel : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
         INodePresenter _nodePresenter = null;
+        bool RedOrGreen = false;
         public EditNodePanel(ResourceDictionary themeResDict)
         {
             this.Resources.MergedDictionaries.Add(themeResDict);
@@ -561,6 +562,77 @@ namespace code_in.Views.NodalView
         private void ParametersNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void AttributeName_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tmp = sender as TextBox;
+            tmp.Foreground = Brushes.Red;
+            if (e.Key == Key.Enter)
+            {
+                tmp.Foreground = Brushes.Black;
+                _nodePresenter.AddAttribute(tmp.Text);
+                UpdateAttributeEditPanel();
+            }
+        }
+
+        private void UpdateAttributeEditPanel()
+        {
+            AttributeStack.Children.Clear();
+            foreach (string attribute in _nodePresenter.getAttributeList())
+            {
+                StackPanel NewAttributeLine = new StackPanel();
+                TextBox NewAttribute = new TextBox();
+                Button deleteAttribute = new Button();
+
+                NewAttributeLine.Orientation = Orientation.Horizontal;
+                NewAttributeLine.Name = "Attribute" + AttributeStack.Children.Count.ToString();
+                NewAttribute.Text = attribute;
+                NewAttribute.KeyDown += AttributeName_KeyDown;
+                NewAttribute.Width = 100;
+                deleteAttribute.Click += DeleteAttribute;
+                deleteAttribute.Margin = new Thickness(10, 0, 0, 0);
+                deleteAttribute.Width = 20;
+                deleteAttribute.Height = 20;
+                deleteAttribute.Content = "X";
+                NewAttributeLine.Children.Add(NewAttribute);
+                NewAttributeLine.Children.Add(deleteAttribute);
+                AttributeStack.Children.Add(NewAttributeLine);
+            }
+        }
+
+        private void AddAttributeButton_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanel NewAttributeLine = new StackPanel();
+            TextBox NewAttribute = new TextBox();
+            Button deleteAttribute = new Button();
+
+            NewAttributeLine.Orientation = Orientation.Horizontal;
+            NewAttributeLine.Name = "Attribute" + AttributeStack.Children.Count.ToString();
+            NewAttribute.KeyDown += AttributeName_KeyDown;
+            NewAttribute.Foreground = Brushes.Red;
+            NewAttribute.Width = 100;
+            deleteAttribute.Click += DeleteAttribute;
+            deleteAttribute.Margin = new Thickness(10, 0, 0, 0);
+            deleteAttribute.Width = 20;
+            deleteAttribute.Height = 20;
+            deleteAttribute.Content = "X";
+            NewAttributeLine.Children.Add(NewAttribute);
+            NewAttributeLine.Children.Add(deleteAttribute);
+            AttributeStack.Children.Add(NewAttributeLine);
+        }
+
+        private void DeleteAttribute(object sender, RoutedEventArgs e)
+        {
+            Button delButton = sender as Button;
+            StackPanel parent = delButton.Parent as StackPanel;
+            //            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            MessageBox.Show("nb: " + index.ToString());
+            _nodePresenter.RemoveAttribute(index);
+            UpdateAttributeEditPanel();
         }
     }
 }

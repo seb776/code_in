@@ -213,8 +213,15 @@ namespace code_in.Presenters.Nodal
                 var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
                 visualNode = item;
                 item.setTypeFromString(fieldDecl.ReturnType.ToString()); //Type setter for variable base -> TypeInfo.xaml.cs
+                string varName = null;
                 foreach (var variable in fieldDecl.Variables)
-                    item.SetName(variable.Name);
+                {
+                    if (variable != fieldDecl.Variables.Last<VariableInitializer>())
+                        varName += variable.Name + ", ";
+                    else
+                        varName += variable.Name;
+                }
+                item.SetName(varName);
                 setAccessModifiers(item, fieldDecl.Modifiers); // here just call setAccessModifiers from the interface
                 setOtherModifiers(item, fieldDecl.Modifiers);
             }
@@ -260,6 +267,7 @@ namespace code_in.Presenters.Nodal
                     //item.SetItemType(parameters[i].Type.ToString());
                 }
                 funcDecl.SetName(method.Name);
+                funcDecl.setTypeFromString(method.ReturnType.ToString());
                 setOtherModifiers(funcDecl, method.Modifiers);
                 setAccessModifiers(funcDecl, method.Modifiers);
             }

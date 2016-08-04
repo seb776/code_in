@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" x:Name="TypePanel" Background="#422557C3" VerticalAlignment="Center" Width="auto" HorizontalAlignment="Left">
-        <Label x:Name="TypeName" Foreground="#1CC2EC">Type</Label>
+        <!--<Label x:Name="TypeName" Foreground="#1CC2EC">Type</Label>-->
         <StackPanel x:Name="Generic" Orientation="Horizontal" FlowDirection="LeftToRight">
             <Label Margin="-5,0,0,0" Foreground="#FF00EC56" FontWeight="ExtraBold">&lt;</Label>
             <StackPanel x:Name="SubTypes" Margin="-8,0,0,0">
