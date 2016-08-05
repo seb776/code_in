@@ -496,7 +496,7 @@ namespace code_in.Presenters.Nodal
                     var item = variableNode.CreateAndAddOutput<DataFlowAnchor>();
                     var inputValue = variableNode.CreateAndAddInput<DataFlowAnchor>(); // @Seb: The value assigned to the variable
                     item.SetName(v.Name);
-                    inputValue.SetName("default()");
+                    inputValue.SetName(v.Name);
                     _generateVisualASTExpressions(v.Initializer, inputValue, (e) => { v.Initializer = e; });
                 }
             }
@@ -561,7 +561,20 @@ namespace code_in.Presenters.Nodal
                 return;
             AValueNode visualNode = null;
             var nodePresenter = new NodePresenter(this, expr);
-            if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
+            if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ArrayInitializerExpression))
+            {
+                var arrayInitExpr = expr as ArrayInitializerExpression;
+                var arrayInitNode = this._view.CreateAndAddNode<ArrayInitExprNode>(nodePresenter);
+                visualNode = arrayInitNode;
+                int idx = 0;
+                foreach (var elem in arrayInitExpr.Elements)
+                {
+                    var dataIn = arrayInitNode.CreateAndAddInput<DataFlowAnchor>();
+                    this._generateVisualASTExpressions(elem, dataIn, (e) => {  }); // TODO @z0rg callback to link expression
+                    idx++;
+                }
+            }
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
                 var unaryExprNode = this._view.CreateAndAddNode<UnaryExprNode>(nodePresenter);
@@ -580,6 +593,19 @@ namespace code_in.Presenters.Nodal
                                 
             }
             #endregion Parenthesis Expr
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ArrayCreateExpression))
+            {
+                var arrCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ArrayCreateExpression;
+                var arrCreateExprNode = this._view.CreateAndAddNode<ArrayCreateExprNode>(nodePresenter);
+                visualNode = arrCreateExprNode;
+                foreach (var i in arrCreateExpr.Arguments)
+                {
+                    var arrSize = arrCreateExprNode.CreateAndAddInput<DataFlowAnchor>();
+                    arrSize.SetName(i.ToString());
+                    _generateVisualASTExpressions(i, arrSize, (e) => { }); // TODO @z0rg callback
+                }
+                _generateVisualASTExpressions(arrCreateExpr.Initializer, arrCreateExprNode.ExprIn, (e) => { }); // TODO @z0rg callback
+            }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
             {
                 var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
@@ -608,9 +634,8 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
             {
                 var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
-                var identExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
+                var identExprNode = this._view.CreateAndAddNode<IdentifierExprNode>(nodePresenter);
                 visualNode = identExprNode;
-                identExprNode.SetType("IdentExpr");
                 identExprNode.ExprOut.SetName(identExpr.Identifier);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
@@ -644,9 +669,8 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
             {
                 var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
-                var primExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
+                var primExprNode = this._view.CreateAndAddNode<PrimaryExprNode>(nodePresenter); // TODO Create a node for that
                 visualNode = primExprNode;
-                primExprNode.SetType("PrimExpr");
                 primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))

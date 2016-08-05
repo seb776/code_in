@@ -107,12 +107,7 @@ namespace Code_in.VSCode_in
                     frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
                     frame.Show();
                     (wp as NodalWindowPane).PaneId = i;
-                    SaveFileDialog dialog = new SaveFileDialog();
-                    dialog.Filter = "C# File (*.cs)|*.cs";
-                    if (dialog.ShowDialog() == true && File.Exists(dialog.FileName) == false)
-                    {
-                        File.Create(dialog.FileName);
-                    }
+                    (wp as NodalWindowPane).NewFile();
                 }
             }
         }
@@ -203,6 +198,7 @@ namespace Code_in.VSCode_in
     {
         private code_in.Views.MainView.MainView _mainView = null;
         private int _paneId = 0;
+        static private List<OpenedFile> _fileList = new List<OpenedFile>();
         public int PaneId
         {
             get
@@ -229,11 +225,60 @@ namespace Code_in.VSCode_in
 
             bool? result = fileDialog.ShowDialog();
 
-            if (result == true)
+            if ((result == true) && (isFileAlreadyOpened(fileDialog.FileName) == false))
             {
                 this.Caption = fileDialog.SafeFileName;
                 this._mainView.OpenFile(fileDialog.FileName);
+                _fileList.Add(new OpenedFile(PaneId, fileDialog.FileName));
             }
+        }
+
+        public void NewFile()
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            
+            fileDialog.Filter = "C# File (*.cs)|*.cs";
+
+            bool? result = fileDialog.ShowDialog();
+
+            if ((result ==  true) && (File.Exists(fileDialog.FileName) == false))
+            {
+                File.Create(fileDialog.FileName).Close();
+                this.Caption = fileDialog.SafeFileName;
+                this._mainView.OpenFile(fileDialog.FileName);
+                _fileList.Add(new OpenedFile(PaneId, fileDialog.FileName));
+            }
+        }
+
+        private bool isFileAlreadyOpened(string filePath){
+            foreach (var file in _fileList){
+                if (filePath == file._filePath)
+                    return true;
+            }
+            return false;
+        }
+
+        protected override void OnClose()
+        {
+            System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");
+            foreach (var item in _fileList){
+                if (this._paneId == item._paneId)
+                    _fileList.Remove(item);
+            }
+            base.OnClose();
+        }
+    }
+
+    /// <summary>
+    /// Class used as in a list to prevent multiple instances of code_in tabs for one file
+    /// </summary>
+    public class OpenedFile{
+        public int _paneId;
+        public string _filePath;
+
+        public OpenedFile(int paneId, string filePath){
+            _paneId = paneId;
+            _filePath = filePath;
         }
     }
 }
