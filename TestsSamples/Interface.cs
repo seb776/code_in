@@ -1,7 +1,7 @@
 public interface ITest : IToto
 {
-	int x;
+	private int x;
 	
-	int tata();
+	protected int tata();
 	
 }

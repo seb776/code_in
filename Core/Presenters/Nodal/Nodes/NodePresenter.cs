@@ -785,7 +785,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void RemoveAttribute(int index)
         {
-            AttributesList.RemoveAt(index);
+            if (index < AttributesList.Count)
+                AttributesList.RemoveAt(index);
             //TODO remove in ast and in visual node
         }
         public List<string> getAttributeList()
