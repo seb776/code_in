@@ -232,7 +232,9 @@ namespace code_in.Presenters.Nodal
                 var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
                 var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
                 visualNode = item;
-                item.SetName(propertyDecl.ToString()); // TODO Complete
+                item.SetName(propertyDecl.Name.ToString()); // TODO Complete
+                item.setTypeFromString(propertyDecl.ReturnType.ToString());
+                setAccessModifiers(item, propertyDecl.Modifiers);
             }
             #endregion Property (get, set)
             #region Constructor
