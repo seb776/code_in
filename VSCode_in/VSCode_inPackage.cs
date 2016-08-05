@@ -179,7 +179,7 @@ namespace Code_in.VSCode_in
         }
         public void CloseView<T>(T view) where T : UserControl
         {
-
+            
         }
     }
 
@@ -217,6 +217,16 @@ namespace Code_in.VSCode_in
             _mainView = new code_in.Views.MainView.MainView();
             this.Content = _mainView;
             PaneId = 0;
+            this._mainView.Unloaded += _mainView_Unloaded;
+        }
+
+        void _mainView_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var _sender = sender as code_in.Views.MainView.MainView;
+            foreach (var item in _fileList){
+                if (item._filePath == _sender._filePath)
+                    _fileList.Remove(item);
+            }
         }
 
         public void OpenFile()
@@ -231,6 +241,12 @@ namespace Code_in.VSCode_in
                 this._mainView.OpenFile(fileDialog.FileName);
                 _fileList.Add(new OpenedFile(PaneId, fileDialog.FileName));
             }
+            //else //pas encore trouvé comment changer de focus
+            //    foreach (var item in _fileList)
+            //    {
+            //        if (item._filePath == fileDialog.FileName)
+            //            this.
+            //    }
         }
 
         public void NewFile()
@@ -258,15 +274,8 @@ namespace Code_in.VSCode_in
             return false;
         }
 
-        protected override void OnClose()
-        {
-            System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");
-            foreach (var item in _fileList){
-                if (this._paneId == item._paneId)
-                    _fileList.Remove(item);
-            }
-            base.OnClose();
-        }
+        public void ClosedFile() { }
+
     }
 
     /// <summary>
