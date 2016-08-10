@@ -337,11 +337,11 @@ namespace code_in.Presenters.Nodal
                         //defaultFlowOutTmp.DebugDisplay();
                         specificMethodAttachSTMT = (s) =>
                         {
-                            return null;
-                            defaultFlowOutTmp.DebugDisplay();
-                            MessageBox.Show("Attach " + defaultFlowOutTmp.ParentNode.GetNodePresenter().GetASTNode().ToString() + "\n" +
-                                ((defaultFlowOutTmp.ParentNode as AStatementNode).FlowInAnchor._links[0].Output as FlowNodeAnchor).ParentNode.GetNodePresenter().GetASTNode().ToString()
-                                );
+                            //return null;
+                            //defaultFlowOutTmp.DebugDisplay();
+                            //MessageBox.Show("Attach " + defaultFlowOutTmp.ParentNode.GetNodePresenter().GetASTNode().ToString() + "\n" +
+                            //    ((defaultFlowOutTmp.ParentNode as AStatementNode).FlowInAnchor._links[0].Output as FlowNodeAnchor).ParentNode.GetNodePresenter().GetASTNode().ToString()
+                            //    );
                             Statement stmtToSpreadUp = null;
                             var curStmtNode = (defaultFlowOutTmp.ParentNode as AStatementNode);
                             var curNodeDefaultFlowIn = curStmtNode.FlowInAnchor;
@@ -361,7 +361,7 @@ namespace code_in.Presenters.Nodal
                                 {
                                     BlockStatement blockStmt = s as BlockStatement;
                                     curASTStmt.Remove();
-                                    blockStmt.Statements.InsertBefore(null, curASTStmt);
+                                    blockStmt.Statements.InsertAfter(null, curASTStmt);
                                     stmtToSpreadUp = blockStmt;
                                     enter = true;
                                 }
