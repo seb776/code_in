@@ -630,7 +630,6 @@ namespace code_in.Views.NodalView
             string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
 
             int index = int.Parse(stringIndex, null);
-            MessageBox.Show("nb: " + index.ToString());
             _nodePresenter.RemoveAttribute(index);
             UpdateAttributeEditPanel();
         }
