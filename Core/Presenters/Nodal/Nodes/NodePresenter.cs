@@ -779,6 +779,7 @@ namespace code_in.Presenters.Nodal.Nodes
         public void AddAttribute(string attribute)
         {
             AttributesList.Add(attribute);
+
             //TODO add in ast + add in visual node
         }
 
