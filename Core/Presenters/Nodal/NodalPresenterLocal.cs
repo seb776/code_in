@@ -574,6 +574,7 @@ namespace code_in.Presenters.Nodal
                     idx++;
                 }
             }
+            #region UnaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
@@ -582,6 +583,7 @@ namespace code_in.Presenters.Nodal
                 unaryExprNode.SetName(unaryExprOp.OperatorToken.ToString());
                 this._generateVisualASTExpressions(unaryExprOp.Expression, unaryExprNode.OperandA, (e) => { unaryExprOp.Expression = e; });
             }
+            #endregion UnaryOperator
             #region Parenthesis Expr
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ParenthesizedExpression))
             {
@@ -593,6 +595,7 @@ namespace code_in.Presenters.Nodal
                                 
             }
             #endregion Parenthesis Expr
+            #region ArrayCreation
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ArrayCreateExpression))
             {
                 var arrCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ArrayCreateExpression;
@@ -606,6 +609,8 @@ namespace code_in.Presenters.Nodal
                 }
                 _generateVisualASTExpressions(arrCreateExpr.Initializer, arrCreateExprNode.ExprIn, (e) => { }); // TODO @z0rg callback
             }
+            #endregion ArrayCreation
+            #region ObjectCreation
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
             {
                 var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
@@ -631,6 +636,8 @@ namespace code_in.Presenters.Nodal
                 }
 
             }
+            #endregion ObjectCreation
+            #region Identifier
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
             {
                 var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
@@ -638,6 +645,8 @@ namespace code_in.Presenters.Nodal
                 visualNode = identExprNode;
                 identExprNode.ExprOut.SetName(identExpr.Identifier);
             }
+            #endregion Identifier
+            #region Assignement
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
             {
                 var assignExpr = expr as ICSharpCode.NRefactory.CSharp.AssignmentExpression;
@@ -648,16 +657,21 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(assignExpr.Left, assignExprNode.OperandA, (e) => { assignExpr.Left = e; });
                 this._generateVisualASTExpressions(assignExpr.Right, assignExprNode.OperandB, (e) => { assignExpr.Right = e; });
             }
+            #endregion Assignement
+            #region binaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
                 var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>(nodePresenter);
                 visualNode = binaryExprNode;
+                binaryExprNode.SetName(binaryExpr.Operator.ToString());
 
                 this._generateVisualASTExpressions(binaryExpr.Left, binaryExprNode.OperandA, (e) => { binaryExpr.Left = e; });
                 this._generateVisualASTExpressions(binaryExpr.Right, binaryExprNode.OperandB, (e) => { binaryExpr.Right = e; });
 
             }
+            #endregion binaryOperator
+            #region MemberReference
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
                 var memberRefExpr = expr as ICSharpCode.NRefactory.CSharp.MemberReferenceExpression;
@@ -666,6 +680,8 @@ namespace code_in.Presenters.Nodal
                 var inputTarget = memberRefExprNode.CreateAndAddInput<DataFlowAnchor>();
                 this._generateVisualASTExpressions(memberRefExpr.Target, null, null);
             }
+            #endregion MemberReference
+            #region Primitive
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
             {
                 var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
@@ -673,6 +689,8 @@ namespace code_in.Presenters.Nodal
                 visualNode = primExprNode;
                 primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
+            #endregion Primitive
+            #region Invocative
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
                 var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
@@ -697,6 +715,7 @@ namespace code_in.Presenters.Nodal
                     i++;
                 }
             }
+            #endregion Invocative
             else
             {
                 var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>(nodePresenter);
