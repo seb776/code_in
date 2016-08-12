@@ -260,12 +260,16 @@ namespace Code_in.VSCode_in
 
         protected override void OnClose()
         {
-            System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");
-            foreach (var item in _fileList){
-                if (this._paneId == item._paneId)
-                    _fileList.Remove(item);
-            }
-            base.OnClose();
+            /* System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");  TO PUSH WHEN IT WORKS
+           
+             foreach (var item in _fileList){
+                 if (this._paneId == item._paneId)
+                     _fileList.Remove(item);
+             }
+             base.OnClose();
+             * 
+                                                                                          /!\ TO PUSH WHEN IT WORKS /!\
+             */
         }
     }
 
