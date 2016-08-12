@@ -249,9 +249,9 @@ namespace code_in.Presenters.Nodal.Nodes
                 if (_model.GetType() == typeof(NamespaceDeclaration))
                     return (ENodeActions.NAME | ENodeActions.COMMENT);
                 if (_model.GetType() == typeof(MethodDeclaration))
-                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS);
+                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS | ENodeActions.TYPE);
                 if (_model.GetType() == typeof(FieldDeclaration))
-                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE);
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE | ENodeActions.TYPE);
                 if (_model.GetType() == typeof(PropertyDeclaration))
                     return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
                 if (_model.GetType() == typeof(UsingDeclaration))

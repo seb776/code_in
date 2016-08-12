@@ -633,5 +633,10 @@ namespace code_in.Views.NodalView
             _nodePresenter.RemoveAttribute(index);
             UpdateAttributeEditPanel();
         }
+
+        private void TypeName_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

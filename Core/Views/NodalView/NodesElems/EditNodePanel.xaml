@@ -128,7 +128,7 @@
 
             <StackPanel x:Name="TypeField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Type</Label>
-                <TextBox x:Name="TypeName"></TextBox>
+                <TextBox x:Name="TypeName" KeyDown="TypeName_KeyDown"></TextBox>
             </StackPanel>
 
             <Border x:Name="TenthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
