@@ -41,9 +41,9 @@ namespace code_in.Views.MainView
         private int _zoomLevel = 100;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        private const float  _maxZoomLevel = 10.0f;
-        private const float _minZoomLevel = 0.1f;
-        private float _currentZoomLevel = 1.0f;
+        private const float  _maxZoomLevel = 2.0f;
+        private const float _minZoomLevel = 0.5f;
+        private float _currentZoomLevel = 1.25f;
 
         public void OpenFile(String filePath)
         {
