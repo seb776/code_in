@@ -47,9 +47,10 @@
                 <Label Foreground="DodgerBlue">tatetiteta</Label>
             </StackPanel>
         </Border>-->
-        <!-- Node Content -->
+        <!-- dock panel that contains the node -->
 
         <DockPanel Grid.Column="1" Grid.Row="1" Name="DockPanelNode" Height="auto">
+            <!-- Header content-->
             <Border x:Name="HeaderLayout" DockPanel.Dock="Top" Background="GreenYellow" CornerRadius="0,10,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -64,6 +65,7 @@
                     </Grid>
                 </Grid>
             </Border>
+            <!-- Node content-->
             <Border Background="#424242" DockPanel.Dock="Bottom" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
                 <StackPanel x:Name="ContentLayout" Orientation="Vertical">
                     <!--<Label>machizefzefzefzef</Label>
