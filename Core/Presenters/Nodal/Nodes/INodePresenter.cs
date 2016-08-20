@@ -62,5 +62,7 @@ namespace code_in.Presenters.Nodal.Nodes
         /// </summary>
         /// <param name="visualNode"></param>
         void SetView(INodeElem visualNode);
+        void UpdateType(string type);
+        string getType();
     }
 }

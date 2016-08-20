@@ -36,6 +36,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<string> InheritanceList = null;
         private List<string> ModifiersList = null;
         private List<string> AttributesList = null;
+        private string _type = null;
         public AstNode GetASTNode()
         {
             return _model;
@@ -53,8 +54,28 @@ namespace code_in.Presenters.Nodal.Nodes
             ModifiersList = new List<string>();
             GetExistingModifiersFromNode();
             AttributesList = new List<string>();
+            GetTypeFromNode();
             //GetExistingAttributesFromNode();
             //TODO getExistingmodifiers then 
+        }
+
+        private void GetTypeFromNode()
+        {
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var ast = _model as FieldDeclaration;
+                _type = ast.ReturnType.ToString();
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+                _type = ast.ReturnType.ToString();
+            }
+        }
+
+        public string getType()
+        {
+            return (_type);
         }
 
         private void GetExistingAttributesFromNode()
@@ -249,9 +270,9 @@ namespace code_in.Presenters.Nodal.Nodes
                 if (_model.GetType() == typeof(NamespaceDeclaration))
                     return (ENodeActions.NAME | ENodeActions.COMMENT);
                 if (_model.GetType() == typeof(MethodDeclaration))
-                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS);
+                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS | ENodeActions.TYPE);
                 if (_model.GetType() == typeof(FieldDeclaration))
-                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE);
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE | ENodeActions.TYPE);
                 if (_model.GetType() == typeof(PropertyDeclaration))
                     return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
                 if (_model.GetType() == typeof(UsingDeclaration))
@@ -779,6 +800,28 @@ namespace code_in.Presenters.Nodal.Nodes
         public void AddAttribute(string attribute)
         {
             AttributesList.Add(attribute);
+            CSharpParser parser = new CSharpParser();
+
+            ICSharpCode.NRefactory.CSharp.Expression newExpr = parser.ParseExpression(attribute);
+            ICSharpCode.NRefactory.CSharp.Attribute newAttribute = new ICSharpCode.NRefactory.CSharp.Attribute();
+            newAttribute.Type = new SimpleType(newExpr.Children.ElementAt(0).ToString());
+            newExpr.FirstChild.Remove();
+            newExpr.FirstChild.Remove();
+            /*            newExpr.Children.ElementAt(0).Remove(); // TODO Try to remove brackets from expression but be carefull, i tried to remove more than one time, but didn't worked
+                                    newExpr.Children.ElementAt(newExpr.Children.Count() - 1).Remove();*/
+            newAttribute.Arguments.Add(newExpr);
+            ICSharpCode.NRefactory.CSharp.AttributeSection newSection = new AttributeSection();
+            newSection.Attributes.Add(newAttribute);
+            
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var toto = (_model as TypeDeclaration);
+                toto.Attributes.Add(newSection);
+            }
+/*            foreach(var tmp in newExpr.Children)
+            {
+                newAttribute.Arguments.Add(tmp);
+            }*/
             //TODO add in ast + add in visual node
         }
 
@@ -988,6 +1031,24 @@ namespace code_in.Presenters.Nodal.Nodes
         public void SetASTNode(AstNode node)
         {
             _model = node;
+        }
+
+        public void UpdateType(string type)
+        {
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var ast = _model as FieldDeclaration;
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
+            }
         }
     }
 }

@@ -42,6 +42,9 @@ namespace code_in.Views.MainView
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         public string _filePath{get; private set;}
+        private const float  _maxZoomLevel = 2.0f;
+        private const float _minZoomLevel = 0.5f;
+        private float _currentZoomLevel = 1.25f;
 
         public void OpenFile(String filePath)
         {
@@ -69,6 +72,7 @@ namespace code_in.Views.MainView
             this.WinGrid.Children.Add(this.SearchBar);
             this._nodalView = new NodalView.NodalView(this._themeResourceDictionary);
             this.ZoomPanel.Child = this._nodalView;
+            this.ZoomPanel.RenderTransform = new ScaleTransform();
         }
         public MainView() :
             this(Code_inApplication.MainResourceDictionary)
@@ -79,11 +83,14 @@ namespace code_in.Views.MainView
         {
             if (this.ZoomPanel != null && this._nodalView != null)
             {
-                if (((int)(e.NewValue * 10.0) % 2) == 0)
-                {
-                    this.ZoomPanel.Width = this._nodalView.MainGrid.Width * e.NewValue;
-                    this.ZoomPanel.Height = this._nodalView.MainGrid.Height * e.NewValue;
-                }
+                (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX = e.NewValue;
+                (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY = e.NewValue;
+
+              /* if (((int)(e.NewValue * 10.0) % 2) == 0)
+                {*/
+                    //this.ZoomPanel.Width = this._nodalView.MainGrid.Width * e.NewValue;
+                    //this.ZoomPanel.Height = this._nodalView.MainGrid.Height * e.NewValue;
+              //  }
             }
         }
 

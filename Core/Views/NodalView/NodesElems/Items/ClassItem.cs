@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class ClassItem : ATypedMemberItem, IContainingModifiers, IContainingAccessModifiers
+    public class ClassItem : ATypedMemberItem, IContainingModifiers, IContainingAccessModifiers, IContainingType
     {
         public override void SetThemeResources(String keyPrefix) { }
         static Random r = new Random();
@@ -75,6 +75,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("volatile");
             ModifiersList.Distinct();
             Modifiers.SetModifiers(ModifiersList.ToArray());
+        }
+        #endregion
+        #region IContainingType
+        public void SetTypeFromString(string type)
+        {
+            _typeInfo.SetTypeFromString(type);
         }
         #endregion
     }

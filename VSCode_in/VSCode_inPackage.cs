@@ -274,8 +274,24 @@ namespace Code_in.VSCode_in
             return false;
         }
 
+<<<<<<< HEAD
         public void ClosedFile() { }
 
+=======
+        protected override void OnClose()
+        {
+            /* System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");  TO PUSH WHEN IT WORKS
+           
+             foreach (var item in _fileList){
+                 if (this._paneId == item._paneId)
+                     _fileList.Remove(item);
+             }
+             base.OnClose();
+             * 
+                                                                                          /!\ TO PUSH WHEN IT WORKS /!\
+             */
+        }
+>>>>>>> 00f509fe42e42b0b1ef6ad922ef90ad9032e1188
     }
 
     /// <summary>
