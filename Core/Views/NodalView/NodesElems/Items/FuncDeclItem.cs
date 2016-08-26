@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers, IContainingGenerics
+    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers, IContainingGenerics, IContainingType
     {
         public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
         ParametersList _params;
@@ -149,6 +149,14 @@ namespace code_in.Views.NodalView.NodesElems.Items
             Generics.SetGenerics(tmp);
         }
         #endregion IContainingGenerics
+
+        #region IContainingType
+        public void SetTypeFromString(string type)
+        {
+            //            _typeInfo.SetTypeFromString(type);
+            _typeInfo.TypeLabel.Content = type;
+        }
+        #endregion
 
     }
 }

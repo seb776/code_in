@@ -209,6 +209,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(TypeField, i); // i = 18
                 ++i;
+                UpdateTypeInEditMenu();
             }
             if ((actions & ENodeActions.TEXT) == ENodeActions.TEXT)
             {
@@ -224,6 +225,11 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(TextField, i); // i = 20
             }
+        }
+
+        private void UpdateTypeInEditMenu()
+        {
+            TypeName.Text = _nodePresenter.getType();
         }
 
         private void UpdateModifiersListInEditMenu()
@@ -636,7 +642,14 @@ namespace code_in.Views.NodalView
 
         private void TypeName_KeyDown(object sender, KeyEventArgs e)
         {
+            var tmp = sender as TextBox;
 
+            tmp.Foreground = Brushes.Red;
+            if (e.Key == Key.Enter)
+            {
+                _nodePresenter.UpdateType(tmp.Text);
+                tmp.Foreground = Brushes.Black;
+            }
         }
     }
 }

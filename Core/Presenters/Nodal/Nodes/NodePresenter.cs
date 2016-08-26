@@ -36,6 +36,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<string> InheritanceList = null;
         private List<string> ModifiersList = null;
         private List<string> AttributesList = null;
+        private string _type = null;
         public AstNode GetASTNode()
         {
             return _model;
@@ -53,8 +54,28 @@ namespace code_in.Presenters.Nodal.Nodes
             ModifiersList = new List<string>();
             GetExistingModifiersFromNode();
             AttributesList = new List<string>();
+            GetTypeFromNode();
             //GetExistingAttributesFromNode();
             //TODO getExistingmodifiers then 
+        }
+
+        private void GetTypeFromNode()
+        {
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var ast = _model as FieldDeclaration;
+                _type = ast.ReturnType.ToString();
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+                _type = ast.ReturnType.ToString();
+            }
+        }
+
+        public string getType()
+        {
+            return (_type);
         }
 
         private void GetExistingAttributesFromNode()
@@ -1010,6 +1031,24 @@ namespace code_in.Presenters.Nodal.Nodes
         public void SetASTNode(AstNode node)
         {
             _model = node;
+        }
+
+        public void UpdateType(string type)
+        {
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var ast = _model as FieldDeclaration;
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
+            }
         }
     }
 }

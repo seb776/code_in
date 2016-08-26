@@ -41,6 +41,7 @@ namespace code_in.Views.MainView
         private int _zoomLevel = 100;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
+        public string _filePath{get; private set;}
         private const float  _maxZoomLevel = 2.0f;
         private const float _minZoomLevel = 0.5f;
         private float _currentZoomLevel = 1.25f;
@@ -48,6 +49,7 @@ namespace code_in.Views.MainView
         public void OpenFile(String filePath)
         {
             this._nodalView.OpenFile(filePath);
+            this._filePath = filePath;
         }
 
         public void EditFunction(FuncDeclItem node)
@@ -139,6 +141,7 @@ namespace code_in.Views.MainView
                 }
             }
         }
+
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
