@@ -274,10 +274,9 @@ namespace Code_in.VSCode_in
             return false;
         }
 
-<<<<<<< HEAD
+
         public void ClosedFile() { }
 
-=======
         protected override void OnClose()
         {
             /* System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");  TO PUSH WHEN IT WORKS
@@ -291,7 +290,7 @@ namespace Code_in.VSCode_in
                                                                                           /!\ TO PUSH WHEN IT WORKS /!\
              */
         }
->>>>>>> 00f509fe42e42b0b1ef6ad922ef90ad9032e1188
+
     }
 
     /// <summary>
