@@ -230,7 +230,7 @@ namespace code_in.Presenters.Nodal
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PropertyDeclaration))
             {
                 var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
-                var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
+                var item = parentContainer.CreateAndAddNode<PropertyItem>(nodePresenter);
                 visualNode = item;
                 item.SetName(propertyDecl.Name.ToString()); // TODO Complete
                 item.setTypeFromString(propertyDecl.ReturnType.ToString());
@@ -243,7 +243,7 @@ namespace code_in.Presenters.Nodal
                 FuncDeclItem constructorDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
                 visualNode = constructorDecl;
                 constructorDecl.MethodNode = node as MethodDeclaration;
-                ICSharpCode.NRefactory.CSharp.ConstructorDeclaration construct = node as ICSharpCode.NRefactory.CSharp.ConstructorDeclaration;
+                ConstructorDeclaration construct = node as ConstructorDeclaration;
                 var parameters = construct.Parameters.ToList();
                 for(int i = 0; i < parameters.Count; i++)
                 {
@@ -591,8 +591,7 @@ namespace code_in.Presenters.Nodal
                 var parenthesizedExprNode = this._view.CreateAndAddNode<ParenthesizedExprNode>(nodePresenter);
                 visualNode = parenthesizedExprNode;
                 parenthesizedExprNode.SetName(parenthesizedExpr.ToString());
-                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });
-                                
+                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });           
             }
             #endregion Parenthesis Expr
             #region ArrayCreation
@@ -658,7 +657,7 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(assignExpr.Right, assignExprNode.OperandB, (e) => { assignExpr.Right = e; });
             }
             #endregion Assignement
-            #region binaryOperator
+            #region BinaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
@@ -670,7 +669,7 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(binaryExpr.Right, binaryExprNode.OperandB, (e) => { binaryExpr.Right = e; });
 
             }
-            #endregion binaryOperator
+            #endregion BinaryOperator
             #region MemberReference
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
@@ -716,7 +715,7 @@ namespace code_in.Presenters.Nodal
                 }
             }
             #endregion Invocative
-            else
+                        else
             {
                 var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>(nodePresenter);
                 visualNode = defaultUnsupportedNode;
