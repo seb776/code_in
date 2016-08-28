@@ -526,8 +526,8 @@ namespace code_in.Views.NodalView
                 var ioLink = _linkStart._links[0];
                 var output = _linkStart._links[0].Output;
                 var input = _linkStart._links[0].Input;
-                output.RemoveLink(ioLink);
-                input.RemoveLink(ioLink);
+                output.RemoveLink(ioLink, true);
+                input.RemoveLink(ioLink, false);
                 this.MainGrid.Children.Remove(_currentLink);
                 this.MainGrid.Children.Add(_currentLink);
             }
@@ -580,7 +580,7 @@ namespace code_in.Views.NodalView
                     if (link.Output._links.Count != 0)
                     {
                         this.MainGrid.Children.Remove(link.Output._links[0].Link);
-                        link.Output.RemoveLink(link.Output._links[0]);
+                        link.Output.RemoveLink(link.Output._links[0], true);
                     }
                     link.Output._links.Clear();
                     if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
