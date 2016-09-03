@@ -63,11 +63,11 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             link.CheckAssert();
             _links.Add(link);
         }
-        public void RemoveLink(IOLink link)
+        public void RemoveLink(IOLink link, bool detachAST)
         {
             if (link.Input is DataFlowAnchor)
                 (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
-            else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null)
+            else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null && detachAST)
                 (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
             _links.Remove(link);
         }

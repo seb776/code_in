@@ -222,14 +222,10 @@ namespace Code_in.VSCode_in
 
         void _mainView_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            var _sender = sender as code_in.Views.MainView.MainView;
-            //if (_fileList.Count > 0)
-            //{
-            //    foreach (var item in _fileList)
-            //    {
-            //        if (item._filePath == _sender._filePath)
-            //            _fileList.Remove(item);
-            //    }
+            //var _sender = sender as code_in.Views.MainView.MainView;
+            //foreach (var item in _fileList){
+            //    if (item._filePath == _sender._filePath)
+            //        _fileList.Remove(item);
             //}
         }
 
