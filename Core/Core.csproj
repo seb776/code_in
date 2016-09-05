@@ -204,6 +204,18 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml.cs">
+      <DependentUpon>BaseTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\ITileItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\NewFlowTileItem.xaml.cs">
+      <DependentUpon>NewFlowTileItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\TileDisplay.xaml.cs">
+      <DependentUpon>TileDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>
     </Compile>
@@ -323,6 +335,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\NewFlowTileItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\TileDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

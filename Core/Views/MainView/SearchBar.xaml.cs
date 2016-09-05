@@ -29,7 +29,7 @@ namespace code_in.Views.MainView
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary); // TODO From Seb: This may crash if the constructor is not implemented
             node.SetParentView(null);
             node.SetRootView(this); // TODO
             node.SetNodePresenter(nodePresenter);
