@@ -130,16 +130,17 @@ namespace code_in.Views.MainView
         }
         private void WinGrid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.MiddleButton == MouseButtonState.Pressed) // TODO keybard ?
-            {
-                if (this.ZoomPanel != null && this._nodalView != null)
-                {
-                    _zoomLevel += e.Delta;
-                    _zoomLevel = Math.Max(_zoomLevel, 0);
-                    this.ZoomPanel.Width = this._nodalView.MainGrid.Width * _zoomLevel / 1000;
-                    this.ZoomPanel.Height = this._nodalView.MainGrid.Height * _zoomLevel / 1000;
-                }
-            }
+            // TODO @Sev: use the fixed version of code ;)
+            //if (e.MiddleButton == MouseButtonState.Pressed) // TODO keybard ?
+            //{
+            //    if (this.ZoomPanel != null && this._nodalView != null)
+            //    {
+            //        _zoomLevel += e.Delta;
+            //        _zoomLevel = Math.Max(_zoomLevel, 0);
+            //        this.ZoomPanel.Width = this._nodalView.MainGrid.Width * _zoomLevel / 1000;
+            //        this.ZoomPanel.Height = this._nodalView.MainGrid.Height * _zoomLevel / 1000;
+            //    }
+            //}
         }
 
 
