@@ -178,6 +178,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(ExecParametersField, i); // i = 14
                 ++i;
+                LoadExecParamsNbInMenu();
             }
             if ((actions & ENodeActions.EXEC_GENERICS) == ENodeActions.EXEC_GENERICS)
             {
@@ -565,11 +566,6 @@ namespace code_in.Views.NodalView
             UpdateInheritanceInEditMenu();
         }
 
-        private void ParametersNumber_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void AttributeName_KeyDown(object sender, KeyEventArgs e)
         {
             var tmp = sender as TextBox;
@@ -651,5 +647,24 @@ namespace code_in.Views.NodalView
                 tmp.Foreground = Brushes.Black;
             }
         }
+        private void ParametersNumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tmp = sender as TextBox;
+            tmp.Foreground = Brushes.Red;
+
+            if (e.Key == Key.Enter)
+            {
+                tmp.Foreground = Brushes.Black;
+                int count = int.Parse(tmp.Text, null);
+                _nodePresenter.ModifExecParams(count); // Care -> make some verif here on the nb
+                LoadExecParamsNbInMenu();
+            }
+        }
+
+        public void LoadExecParamsNbInMenu()
+        {
+            ParametersNumber.Text = _nodePresenter.getExecParamsNb().ToString();
+        }
+
     }
 }

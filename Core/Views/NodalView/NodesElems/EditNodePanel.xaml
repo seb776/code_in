@@ -32,6 +32,8 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             
+            <!--Modifiers Area -->
+            
             <StackPanel x:Name="_modifiersArea" Orientation="Vertical" Height="auto"  IsEnabled="False" Visibility="Hidden">
                 <Label x:Name="_modifiersAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Modifiers</Label>
                 <StackPanel x:Name="_accessModifiers" Orientation="Horizontal" IsEnabled="False" Visibility="Hidden">
@@ -61,7 +63,9 @@
             </StackPanel>
             
             <Border x:Name="FirstBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
-
+            
+            <!-- Name Area -->
+            
             <StackPanel x:Name="_mainArea" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label x:Name="_mainAreaTitle" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">General</Label>
                 <StackPanel Orientation="Horizontal">
@@ -72,6 +76,8 @@
             
             <Border x:Name="SecondBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Comment Area -->
+            
             <StackPanel x:Name="_commentArea" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5">Comment</Label>
                 <TextBox Foreground="Green" Background="#6B000000" TextWrapping="Wrap" TextChanged="CommentsAreaTextChanged" Width="100">here comments</TextBox>
@@ -79,6 +85,8 @@
 
             <Border x:Name="ThirdBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Declaration Generics Area -->
+            
             <StackPanel x:Name="DeclGenericsField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" Margin="0,0,0,5">Generics</Label>
                 <StackPanel x:Name="DeclGenericsPanel">
@@ -88,6 +96,8 @@
             
             <Border x:Name="FourthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Inheritance Area -->
+            
             <StackPanel x:Name="InheritanceField" Orientation="Vertical" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" Margin="0,0,0,5">Inheritance</Label>
                 <StackPanel x:Name="InheritancePanel" Orientation="Vertical">
@@ -97,6 +107,8 @@
             
             <Border x:Name="FifthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Attributes Area-->
+            
             <StackPanel x:Name="AttributesField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Attributes</Label>
                 <StackPanel x:Name="AttributeStack"></StackPanel>
@@ -105,6 +117,8 @@
 
             <Border x:Name="SixthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Execution Generics Area -->
+            
             <StackPanel x:Name="ExecGenericsField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Execution Generics</Label>
                 <TextBox x:Name="ExecGenericName"></TextBox>
@@ -112,6 +126,8 @@
 
             <Border x:Name="SeventhBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Execution Types Area-->
+            
             <StackPanel x:Name="ExecTypeField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Execution Types</Label>
                 <TextBox x:Name="ExecTypeName"></TextBox>
@@ -119,13 +135,17 @@
 
             <Border x:Name="EighthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Execution Parameters Area-->
+            
             <StackPanel x:Name="ExecParametersField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" >Execution Parameters</Label>
-                <TextBox x:Name="ParametersNumber" TextChanged="ParametersNumber_TextChanged"></TextBox>
+                <TextBox x:Name="ParametersNumber" KeyDown="ParametersNumber_KeyDown"></TextBox>
             </StackPanel>
 
             <Border x:Name="NinthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Types Areas -->
+            
             <StackPanel x:Name="TypeField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Type</Label>
                 <TextBox x:Name="TypeName" KeyDown="TypeName_KeyDown"></TextBox>
@@ -133,6 +153,8 @@
 
             <Border x:Name="TenthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>
 
+            <!-- Text Field Area-->
+            
             <StackPanel x:Name="TextField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Text</Label>
                 <TextBox x:Name="TextForDefault"></TextBox>
