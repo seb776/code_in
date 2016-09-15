@@ -118,7 +118,7 @@ namespace Code_in.VSCode_in
 
             while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
                 ++i;
-            
+
             ToolWindowPane wp = this.CreateToolWindow(typeof(NodalWindowPane), i) as ToolWindowPane;
 
             if (wp != null)
@@ -179,7 +179,7 @@ namespace Code_in.VSCode_in
         }
         public void CloseView<T>(T view) where T : UserControl
         {
-            
+
         }
     }
 
@@ -223,14 +223,17 @@ namespace Code_in.VSCode_in
         void _mainView_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             var _sender = sender as code_in.Views.MainView.MainView;
-            if (_fileList.Count > 0)
-            {
-                foreach (var item in _fileList)
+            OpenedFile tmp = null;
+            foreach (var item in _fileList){
+                if (item._filePath == _sender._filePath)
                 {
-                    if (item._filePath == _sender._filePath)
-                        _fileList.Remove(item);
+                    tmp = item;
+                    break;
                 }
             }
+            if (tmp != null)
+                _fileList.Remove(tmp);
+
         }
 
         public void OpenFile()
@@ -256,12 +259,12 @@ namespace Code_in.VSCode_in
         public void NewFile()
         {
             SaveFileDialog fileDialog = new SaveFileDialog();
-            
+
             fileDialog.Filter = "C# File (*.cs)|*.cs";
 
             bool? result = fileDialog.ShowDialog();
 
-            if ((result ==  true) && (File.Exists(fileDialog.FileName) == false))
+            if ((result == true) && (File.Exists(fileDialog.FileName) == false))
             {
                 File.Create(fileDialog.FileName).Close();
                 this.Caption = fileDialog.SafeFileName;
@@ -270,8 +273,10 @@ namespace Code_in.VSCode_in
             }
         }
 
-        private bool isFileAlreadyOpened(string filePath){
-            foreach (var file in _fileList){
+        private bool isFileAlreadyOpened(string filePath)
+        {
+            foreach (var file in _fileList)
+            {
                 if (filePath == file._filePath)
                     return true;
             }
@@ -280,7 +285,6 @@ namespace Code_in.VSCode_in
 
 
         public void ClosedFile() { }
-
 
         protected override void OnClose()
         {
@@ -301,11 +305,13 @@ namespace Code_in.VSCode_in
     /// <summary>
     /// Class used as in a list to prevent multiple instances of code_in tabs for one file
     /// </summary>
-    public class OpenedFile{
+    public class OpenedFile
+    {
         public int _paneId;
         public string _filePath;
 
-        public OpenedFile(int paneId, string filePath){
+        public OpenedFile(int paneId, string filePath)
+        {
             _paneId = paneId;
             _filePath = filePath;
         }

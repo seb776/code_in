@@ -4,7 +4,7 @@ class TimePeriod
 
     public double Hours
     {
-        get { return seconds / 3600; }
-        set { seconds = value * 3600; }
+        private get { return seconds / 3600; }
+        private set { seconds = value * 3600; }
     }
 }

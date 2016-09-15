@@ -230,7 +230,7 @@ namespace code_in.Presenters.Nodal
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PropertyDeclaration))
             {
                 var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
-                var item = parentContainer.CreateAndAddNode<ClassItem>(nodePresenter);
+                var item = parentContainer.CreateAndAddNode<PropertyItem>(nodePresenter);
                 visualNode = item;
                 item.SetName(propertyDecl.Name.ToString()); // TODO Complete
                 item.setTypeFromString(propertyDecl.ReturnType.ToString());
@@ -243,7 +243,7 @@ namespace code_in.Presenters.Nodal
                 FuncDeclItem constructorDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
                 visualNode = constructorDecl;
                 constructorDecl.MethodNode = node as MethodDeclaration;
-                ICSharpCode.NRefactory.CSharp.ConstructorDeclaration construct = node as ICSharpCode.NRefactory.CSharp.ConstructorDeclaration;
+                ConstructorDeclaration construct = node as ConstructorDeclaration;
                 var parameters = construct.Parameters.ToList();
                 for(int i = 0; i < parameters.Count; i++)
                 {
@@ -321,6 +321,11 @@ namespace code_in.Presenters.Nodal
         /// <param name="stmtArg"></param>
         private FlowNodeAnchor _generateVisualASTStatements(Statement stmtArg, FlowNodeAnchor lastOutput, Func<Statement, Statement> MethodAttachSTMT, Action MethodDetachStmt)
         {
+            if (MethodAttachSTMT != null && MethodDetachStmt != null)
+            {
+                lastOutput.MethodAttachASTStmt = MethodAttachSTMT;
+                lastOutput.MethodDetachASTStmt = MethodDetachStmt;
+            }
             System.Diagnostics.Debug.Assert(lastOutput != null);
             AStatementNode visualNode = null;
             FlowNodeAnchor defaultFlowOut = null;
@@ -328,14 +333,15 @@ namespace code_in.Presenters.Nodal
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
-                FlowNodeAnchor defaultFlowOutTmp = lastOutput;
+                FlowNodeAnchor defaultFlowOutTmpTest = lastOutput;
+                int iStmt = 0;
                 foreach (var stmt in (stmtArg as BlockStatement))
                 {
-                    Func<Statement, Statement> specificMethodAttachSTMT = MethodAttachSTMT;
-                    //if (true)//MethodAttachSTMT == null)
+                    FlowNodeAnchor defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmpTest, null, null);
+                    defaultFlowOutTmpTest = defaultFlowOutTmp;
+                    if (defaultFlowOutTmp != null)
                     {
-                        //defaultFlowOutTmp.DebugDisplay();
-                        specificMethodAttachSTMT = (s) =>
+                        defaultFlowOutTmp.MethodAttachASTStmt = (s) =>
                         {
                             //return null;
                             //defaultFlowOutTmp.DebugDisplay();
@@ -353,11 +359,13 @@ namespace code_in.Presenters.Nodal
                                 if (!(s is BlockStatement))
                                 {
                                     BlockStatement blockStmt = new BlockStatement();
+                                    curASTStmt.Remove();
+                                    blockStmt.Statements.Add(curASTStmt);
                                     blockStmt.Statements.Add(s);
                                     stmtToSpreadUp = blockStmt;
                                     enter = true;
                                 }
-                                else if (curASTStmt != (stmtArg as BlockStatement).First())
+                                else //if (curASTStmt != (stmtArg as BlockStatement).First())
                                 {
                                     BlockStatement blockStmt = s as BlockStatement;
                                     curASTStmt.Remove();
@@ -374,12 +382,16 @@ namespace code_in.Presenters.Nodal
                             //(stmtArg as BlockStatement).Statements.InsertAfter(null, s);
                             return null;
                         };
+                        Statement nextStmt = null;
+                        if ((iStmt + 1) < (stmtArg as BlockStatement).Count())
+                            nextStmt = (stmtArg as BlockStatement).ElementAt(iStmt + 1);
+                        defaultFlowOutTmp.MethodDetachASTStmt = () =>
+                        {
+                            if (nextStmt != null)
+                                (stmtArg as BlockStatement).Statements.Remove(nextStmt);
+                        };
+                        iStmt++;
                     }
-                    defaultFlowOutTmp = this._generateVisualASTStatements(stmt, defaultFlowOutTmp, specificMethodAttachSTMT, () => { 
-                        (stmtArg as BlockStatement).Statements.Remove(stmt);
-                    });
-                    if (stmt == (stmtArg as BlockStatement).Last() && defaultFlowOutTmp != null)
-                        defaultFlowOutTmp.MethodAttachASTStmt = specificMethodAttachSTMT;
                 }
             }
             # region IfStmts
@@ -551,8 +563,6 @@ namespace code_in.Presenters.Nodal
 
             if (visualNode != null)
                 _createVisualLink(lastOutput, visualNode.FlowInAnchor);
-            lastOutput.MethodAttachASTStmt = MethodAttachSTMT;
-            lastOutput.MethodDetachASTStmt = MethodDetachStmt;
             return defaultFlowOut;
         }
         private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
@@ -591,8 +601,7 @@ namespace code_in.Presenters.Nodal
                 var parenthesizedExprNode = this._view.CreateAndAddNode<ParenthesizedExprNode>(nodePresenter);
                 visualNode = parenthesizedExprNode;
                 parenthesizedExprNode.SetName(parenthesizedExpr.ToString());
-                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });
-                                
+                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });           
             }
             #endregion Parenthesis Expr
             #region ArrayCreation
@@ -658,7 +667,7 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(assignExpr.Right, assignExprNode.OperandB, (e) => { assignExpr.Right = e; });
             }
             #endregion Assignement
-            #region binaryOperator
+            #region BinaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
@@ -670,7 +679,7 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(binaryExpr.Right, binaryExprNode.OperandB, (e) => { binaryExpr.Right = e; });
 
             }
-            #endregion binaryOperator
+            #endregion BinaryOperator
             #region MemberReference
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
@@ -716,7 +725,7 @@ namespace code_in.Presenters.Nodal
                 }
             }
             #endregion Invocative
-            else
+                        else
             {
                 var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>(nodePresenter);
                 visualNode = defaultUnsupportedNode;

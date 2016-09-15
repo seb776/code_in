@@ -37,6 +37,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<string> ModifiersList = null;
         private List<string> AttributesList = null;
         private string _type = null;
+        private int ExecParamsNb;
         public AstNode GetASTNode()
         {
             return _model;
@@ -55,6 +56,7 @@ namespace code_in.Presenters.Nodal.Nodes
             GetExistingModifiersFromNode();
             AttributesList = new List<string>();
             GetTypeFromNode();
+            LoadExecParamsCount();
             //GetExistingAttributesFromNode();
             //TODO getExistingmodifiers then 
         }
@@ -862,6 +864,51 @@ namespace code_in.Presenters.Nodal.Nodes
             _viewStatic = ((objects[0] as NodePresenter)._view) as INodeElem;
             _presStatic = ((objects[0] as NodePresenter)._nodalPresenter) as INodalPresenter;
         }
+
+        public void LoadExecParamsCount()
+        {
+            ExecParamsNb = 1;
+            if (_model != null && _model.GetType() == typeof(InvocationExpression))
+            {
+                    var tmp = (_model as InvocationExpression);
+
+                foreach (var child in tmp.Arguments)
+                            ++ExecParamsNb;
+            }
+        }
+
+        public int getExecParamsNb()
+        {
+            LoadExecParamsCount();
+            return (ExecParamsNb);
+        }
+
+        public void ModifExecParams(int count)
+        {
+            ExecParamsNb = count;
+            if (count > ExecParamsNb) // TODO Add empty visual expr nodes
+                return;
+            if (count != ExecParamsNb)
+            {
+                if (_model != null && _model.GetType() == typeof(InvocationExpression))
+                {
+                    CSharpParser parser = new CSharpParser();
+                    var tmp = _model as InvocationExpression;
+                    int i = 0;
+                    foreach (var child in tmp.Arguments)
+                    {
+                        if (i > count)
+                        {
+                            tmp.Arguments.Remove(child);
+                        }
+                        else
+                            ++i;
+                    }
+                    // TODO changer visuellement le nombre d'args == soit ajouter soit suppr expr node
+                }
+            }
+        }
+
         static void mi_Click(object sender, RoutedEventArgs e)
         {
             if (((MenuItem)sender).DataContext != null)
