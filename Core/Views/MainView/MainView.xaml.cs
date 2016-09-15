@@ -20,6 +20,7 @@ using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.Utils;
 using code_in.Views.NodalView.NodesElems.Items;
 
+
 namespace code_in.Views.MainView
 {
 
@@ -79,6 +80,10 @@ namespace code_in.Views.MainView
         {
         }
 
+
+       
+
+       
         private void SliderZoom(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (this.ZoomPanel != null && this._nodalView != null)
@@ -156,5 +161,13 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
+
+        private void ZoomPanel_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.IsDown && e.Key == Key.LeftCtrl)
+                MessageBox.Show("Bloub a vaincu le monde des licornes");
+        
+        }
     }
 }

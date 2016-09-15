@@ -223,9 +223,13 @@ namespace Code_in.VSCode_in
         void _mainView_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             var _sender = sender as code_in.Views.MainView.MainView;
-            foreach (var item in _fileList){
-                if (item._filePath == _sender._filePath)
-                    _fileList.Remove(item);
+            if (_fileList.Count > 0)
+            {
+                foreach (var item in _fileList)
+                {
+                    if (item._filePath == _sender._filePath)
+                        _fileList.Remove(item);
+                }
             }
         }
 
@@ -274,10 +278,10 @@ namespace Code_in.VSCode_in
             return false;
         }
 
-<<<<<<< HEAD
+
         public void ClosedFile() { }
 
-=======
+
         protected override void OnClose()
         {
             /* System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");  TO PUSH WHEN IT WORKS
@@ -291,7 +295,7 @@ namespace Code_in.VSCode_in
                                                                                           /!\ TO PUSH WHEN IT WORKS /!\
              */
         }
->>>>>>> 00f509fe42e42b0b1ef6ad922ef90ad9032e1188
+
     }
 
     /// <summary>
