@@ -8,5 +8,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 {
     public interface ITile
     {
+        void SetParentView(IVisualNodeContainerDragNDrop vc);
+       // void SetRootView(IRootDragNDrop dnd);
+        //void SetNodePresenter(INodePresenter nodePresenter);
     }
 }

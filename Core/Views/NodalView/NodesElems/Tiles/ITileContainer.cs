@@ -10,5 +10,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     {
         T CreateAndAddTile<T>() where T : ITile;
         void AddTile<T>(T tile, int index = -1) where T : ITile;
+        void RemoveTile(ITile tile);
     }
 }
