@@ -41,11 +41,13 @@ namespace code_in.Presenters.Nodal
     public class NodalPresenterLocal : INodalPresenter
     {
         public INodalView _view = null;
-        public ITileContainer _parentTileContainer;
         private NodalModel _model = null;
         private CSharpParser _parser = null;
         const int nodeHorizontalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
         const int nodeVerticalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
+
+        public ITileContainer _parentTileContainer;
+        public BaseTile visualTile;
 
         public NodalPresenterLocal(INodalView view)
         {
@@ -399,7 +401,7 @@ namespace code_in.Presenters.Nodal
             # region IfStmts
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
-                /*var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
+             /*   var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifNode = this._view.CreateAndAddNode<IfStmtNode>(nodePresenter);
                 visualNode = ifNode;
                 ifNode.Condition.SetName(ifStmt.Condition.ToString());
@@ -411,7 +413,11 @@ namespace code_in.Presenters.Nodal
                 defaultFlowOut = ifNode.FlowOutAnchor; */
 
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                var ifNode = this._parentTileContainer.CreateAndAddTile<IfStmtTile>(); // @Hamham : need to create a new class IfStmtTile?
+                var ifTile = this._parentTileContainer.CreateAndAddTile<BaseTile>(); // @Hamham : need to create a new class IfStmtTile?
+                visualTile = ifTile;
+                ifTile.TileType.setName(ifStmt.Condition.ToString());
+                //this._generateVisualASTExpressions(ifStmt.Condition,)
+                
 
             }
             # endregion IfStmts

@@ -18,7 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour BaseTile.xaml
     /// </summary>
-    public partial class BaseTile : UserControl
+    public partial class BaseTile : UserControl, ITile
     {
         public BaseTile()
         {

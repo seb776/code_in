@@ -18,29 +18,27 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour TileContainer.xaml
     /// </summary>
-    public partial class TileContainer : ITileContainer
+    public partial class TileContainer : Page
     {
         private ResourceDictionary _themeResourceDictionary = null;
-
         public TileContainer()
         {
             InitializeComponent();
         }
-
 
         public T CreateAndAddTile<T>() where T : ITile
         {
             T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
 
             tile.SetParentView(null);
-           /* tile.SetRootView(this);
-            tile.SetNodePresenter(nodePresenter);
-            nodePresenter.SetView(node);
-            if (typeof(AIONode).IsAssignableFrom(typeof(T)))
-            {
-                (node as AIONode).SetParentLinksContainer(this);
-            }
-            _visualNodes.Add(node);*/
+            /* tile.SetRootView(this);
+             tile.SetNodePresenter(nodePresenter);
+             nodePresenter.SetView(node);
+             if (typeof(AIONode).IsAssignableFrom(typeof(T)))
+             {
+                 (node as AIONode).SetParentLinksContainer(this);
+             }
+             _visualNodes.Add(node);*/
             this.AddTile(tile);
             return tile;
         }
@@ -55,6 +53,5 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
-
     }
 }
