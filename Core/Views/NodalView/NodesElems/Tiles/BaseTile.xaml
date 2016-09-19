@@ -4,16 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="300" Padding="5"
-             xmlns:testItem="clr-namespace:code_in.Views.NodalView.NodesElems.Tiles">
+             d:DesignHeight="800" d:DesignWidth="300" Padding="5">
     <Grid Background="#42000000" MinWidth="150" MinHeight="150">
         <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Label x:Name="TileType" Foreground="White" VerticalAlignment="Center">Variable</Label>
                 <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
             </StackPanel>
-            <testItem:NewFlowTileItem></testItem:NewFlowTileItem>
-            <testItem:NewFlowTileItem></testItem:NewFlowTileItem>
         </StackPanel>
     </Grid>
 </UserControl>

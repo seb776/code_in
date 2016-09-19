@@ -415,7 +415,7 @@ namespace code_in.Presenters.Nodal
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
                 var ifTile = this._parentTileContainer.CreateAndAddTile<BaseTile>(); // @Hamham : need to create a new class IfStmtTile?
                 visualTile = ifTile;
-                ifTile.TileType.setName(ifStmt.Condition.ToString());
+                //ifTile.TileType.setName(ifStmt.Condition.ToString());
                 //this._generateVisualASTExpressions(ifStmt.Condition,)
                 
 

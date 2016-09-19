@@ -46,7 +46,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void AddTile<T>(T tile, int index = -1) where T : ITile
         {
-            this.TileStackPannel.Children.Add(tile as UIElement);
+            dynamic uiTile = tile;
+            if (index < 0)
+                this.TileStackPannel.Children.Add(uiTile);
+            else
+                this.TileStackPannel.Children.Insert(index + 1, uiTile);
         }
 
         public void RemoveTile(ITile tile)
