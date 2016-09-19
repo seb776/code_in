@@ -210,6 +210,9 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\FlowTileItem.xaml.cs">
+      <DependentUpon>FlowTileItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\TileContainer.xaml.cs">
       <DependentUpon>TileContainer.xaml</DependentUpon>
     </Compile>
@@ -338,6 +341,10 @@
     <Page Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\FlowTileItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Tiles\TileContainer.xaml">
       <Generator>MSBuild:Compile</Generator>

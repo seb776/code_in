@@ -9,6 +9,7 @@ using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
+using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.Utils;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,11 @@ namespace code_in.Views.NodalView
         private List<Thickness> _selectedNodesPositions = null; // Selected nodes are stored with their positions to revert in case of failure
         private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless) to revert them if the move is wrong
         private Point _lastPosition;
+        public ITileContainer RootTileContainer
+        {
+            get;
+            set; // TODO From seb set it to private
+        }
 
         public NodalView(ResourceDictionary themeResDict)
         {
@@ -51,6 +57,8 @@ namespace code_in.Views.NodalView
             _selectedNodesIndexes = new List<int>();
             _lastPosition = new Point();
             _visualNodes = new List<INodeElem>();
+            RootTileContainer = new TileContainer() as ITileContainer;
+            this.MainGrid.Children.Add(RootTileContainer as TileContainer);
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)

@@ -18,17 +18,28 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour TileContainer.xaml
     /// </summary>
-    public partial class TileContainer : Page
+    public partial class TileContainer : UserControl, ITileContainer
     {
+        public bool IsExpanded
+        {
+            get
+            {
+                return this.IsEnabled;
+            }
+            set
+            {
+                this.IsEnabled = value;
+            }
+        }
         private ResourceDictionary _themeResourceDictionary = null;
-        public TileContainer()
+        public TileContainer() // TODO From Seb resource dictionary constructor
         {
             InitializeComponent();
         }
 
         public T CreateAndAddTile<T>() where T : ITile
         {
-            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
+            T tile = (T)Activator.CreateInstance(typeof(T));//, _themeResourceDictionary); // TODO from seb make it work
 
             tile.SetParentView(null);
             /* tile.SetRootView(this);
