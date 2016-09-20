@@ -64,5 +64,7 @@ namespace code_in.Presenters.Nodal.Nodes
         void SetView(INodeElem visualNode);
         void UpdateType(string type);
         string getType();
+        int getExecParamsNb();
+        void ModifExecParams(int count);
     }
 }
