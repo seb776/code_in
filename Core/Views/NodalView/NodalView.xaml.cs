@@ -62,9 +62,17 @@ namespace code_in.Views.NodalView
             this._nodalPresenter.OpenFile(path);
         }
 
-        public void EditFunction(FuncDeclItem node)
+        public void EditFunction(ATypedMemberItem node)
         {
             this._nodalPresenter.EditFunction(node);
+        }
+
+        public void EditFunction(PropertyItem node, bool isGetter)
+        {
+            if (isGetter)
+                this._nodalPresenter.EditAccessor(node.PropertyNode.Getter);
+            else
+                this._nodalPresenter.EditAccessor(node.PropertyNode.Setter);
         }
 
         #region Events
