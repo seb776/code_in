@@ -8,9 +8,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class YieldReturnStmtTile : BaseTile
     {
+        public ExpressionItem Expression = null;
+
         public YieldReturnStmtTile()
         {
-
+            Expression = this.CreateAndAddItem<ExpressionItem>();
         }
     }
 }

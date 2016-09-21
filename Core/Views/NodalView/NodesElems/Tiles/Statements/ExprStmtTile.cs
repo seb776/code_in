@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Views.NodalView.NodesElems.Tiles.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class ExprStmtTile : BaseTile
     {
-        public FlowTileItem Expression;
+        public ExpressionItem Expression;
 
         public ExprStmtTile()
         {
-            Expression = new FlowTileItem();
-            this.TileContent.Children.Add(Expression);
+            Expression = this.CreateAndAddItem<ExpressionItem>();
         }
     }
 }
