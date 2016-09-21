@@ -23,6 +23,31 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
     /// </summary>
     public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainerDragNDrop, ICodeInVisual, ICodeInTextLanguage
     {
+        /// <summary>
+        /// Gets or set the expanded state of the item.
+        /// </summary>
+        public bool IsExpanded
+        {
+            get
+            {
+                return this.ExpressionsGrid.IsEnabled;
+            }
+            set
+            {
+                this.ExpressionsGrid.IsEnabled = value;
+                if (value)
+                {
+                    this.ExpressionsGrid.Visibility = System.Windows.Visibility.Visible;
+                    this.PreviewCode.Visibility = System.Windows.Visibility.Collapsed;
+                }
+                else
+                {
+                    this.ExpressionsGrid.Visibility = System.Windows.Visibility.Collapsed;
+                    this.PreviewCode.Visibility = System.Windows.Visibility.Visible;
+                }
+
+            }
+        }
         public DataFlowAnchor ExprOut = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public ExpressionItem(ResourceDictionary themeResourceDictionary)
@@ -33,6 +58,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             InitializeComponent();
             ExprOut = new DataFlowAnchor(themeResourceDictionary);
             this.ExpressionsGrid.Children.Add(ExprOut);
+            IsExpanded = false;
         }
         public ExpressionItem() :
             this(Code_inApplication.MainResourceDictionary)
@@ -108,5 +134,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsExpanded = !this.IsExpanded;
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                 if (value)
                     this.Visibility = System.Windows.Visibility.Visible;
                 else
-                    this.Visibility = System.Windows.Visibility.Hidden;
+                    this.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
         private ResourceDictionary _themeResourceDictionary = null;
