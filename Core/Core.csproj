@@ -211,6 +211,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml.cs">
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\IfStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileItem.cs" />

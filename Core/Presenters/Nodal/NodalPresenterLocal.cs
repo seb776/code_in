@@ -413,7 +413,7 @@ namespace code_in.Presenters.Nodal
                 defaultFlowOut = ifNode.FlowOutAnchor; */
 
                 var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                var ifTile = tileContainer.CreateAndAddTile<BaseTile>(); // @Hamham : need to create a new class IfStmtTile?
+                var ifTile = tileContainer.CreateAndAddTile<IfStmtTile>(); // @Hamham : need to create a new class IfStmtTile?
                 visualTile = ifTile;
                 //ifTile.TileType.setName(ifStmt.Condition.ToString());
                 //this._generateVisualASTExpressions(ifStmt.Condition,)

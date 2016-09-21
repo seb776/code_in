@@ -6,11 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300" Padding="5">
     <Grid Background="#42000000" MinWidth="150" MinHeight="150">
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Label x:Name="TileType" Foreground="White" VerticalAlignment="Center">Variable</Label>
+            <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
+        </StackPanel>
         <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical">
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Label x:Name="TileType" Foreground="White" VerticalAlignment="Center">Variable</Label>
-                <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
-            </StackPanel>
+           
         </StackPanel>
     </Grid>
 </UserControl>
