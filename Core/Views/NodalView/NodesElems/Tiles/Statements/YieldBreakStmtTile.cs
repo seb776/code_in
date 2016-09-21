@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class TryCatchStmtTile : BaseTile
+    class YieldBreakStmtTile : BaseTile
     {
-        public FlowTileItem Statements = null;
+        public ExpressionItem Expression = null;
 
-        public TryCatchStmtTile()
+        public YieldBreakStmtTile()
         {
-            Statements = this.CreateAndAddItem<FlowTileItem>();
+            Expression = this.CreateAndAddItem<ExpressionItem>();
         }
     }
 }
