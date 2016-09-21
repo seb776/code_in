@@ -92,6 +92,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DefaultCtorVisualException.cs" />
     <Compile Include="IEnvironmentWrapper.cs" />
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
@@ -206,6 +207,9 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml.cs">
       <DependentUpon>BaseTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml.cs">
+      <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
@@ -345,6 +349,10 @@
     <Page Include="Views\NodalView\NodesElems\Tiles\FlowTileItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Tiles\TileContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
