@@ -207,6 +207,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml.cs">
       <DependentUpon>BaseTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\IfStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\ITileItem.cs" />
