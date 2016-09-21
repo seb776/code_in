@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,11 +38,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             InitializeComponent();
         }
 
-        public T CreateAndAddTile<T>() where T : ITile
+        public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : ITile
         {
             T tile = (T)Activator.CreateInstance(typeof(T));//, _themeResourceDictionary); // TODO from seb make it work
 
             tile.SetParentView(null);
+            tile.SetPresenter(nodePresenter);
             /* tile.SetRootView(this);
              tile.SetNodePresenter(nodePresenter);
              nodePresenter.SetView(node);

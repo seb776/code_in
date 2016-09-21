@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class BaseTile : UserControl, ITile, ICodeInVisual
     {
+        private INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public BaseTile(ResourceDictionary themeResDict)
         {
@@ -46,10 +48,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             this.TileContent.Children.Add(item);
         }
 
-        public void SetParentView(IVisualNodeContainerDragNDrop vc)
-        {
-            //throw new NotImplementedException();
-        }
+
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
@@ -64,5 +63,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
         #endregion ICodeInVisual
 
+
+        #region ITile
+        public void SetPresenter(INodePresenter presenter)
+        {
+            _presenter = presenter;
+        }
+        public void SetParentView(IVisualNodeContainerDragNDrop vc)
+        {
+            //throw new NotImplementedException();
+        }
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion ITile
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     {
         void SetParentView(IVisualNodeContainerDragNDrop vc);
        // void SetRootView(IRootDragNDrop dnd);
-        //void SetNodePresenter(INodePresenter nodePresenter);
+        void SetPresenter(INodePresenter nodePresenter);
+        // From Seb: This function will be used to update the content of the visual node
+        // using infos obtained by the presenter
+        void UpdateDisplayedInfosFromPresenter();
     }
 }

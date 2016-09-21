@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 {
     public interface ITileContainer
     {
-        T CreateAndAddTile<T>() where T : ITile;
+        T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile; // TODO @Seb add NodePresenter
         void AddTile<T>(T tile, int index = -1) where T : ITile;
         void RemoveTile(ITile tile);
         bool IsExpanded

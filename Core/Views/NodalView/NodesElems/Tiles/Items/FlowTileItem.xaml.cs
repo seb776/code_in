@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Presenters.Nodal.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +50,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             ItemGrid.Children.Add(_tileContainer);
         }
 
-        public T CreateAndAddTile<T>() where T : ITile
+        public T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile
         {
             //T tile = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);  // TODO From Seb: This may crash if the constructor is not implemented
             ////node.SetParentView(null);
@@ -57,7 +58,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             ////node.SetNodePresenter(nodePresenter);
             ////nodePresenter.SetView(node);
             //this.AddTile(tile);
-            return _tileContainer.CreateAndAddTile<T>();
+            return _tileContainer.CreateAndAddTile<T>(presenter);
             //return tile;
         }
 
