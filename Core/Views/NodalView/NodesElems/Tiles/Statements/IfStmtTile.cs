@@ -9,7 +9,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
     class IfStmtTile : BaseTile
     {
-        public BaseTile IfTile = null;
         public FlowTileItem ItemTrue = null;
         public FlowTileItem ItemFalse = null;
 
