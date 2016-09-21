@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles
 {
-    public interface ITile
+    public interface ITile : ICodeInVisual
     {
         void SetParentView(IVisualNodeContainerDragNDrop vc);
        // void SetRootView(IRootDragNDrop dnd);
