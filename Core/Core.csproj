@@ -211,6 +211,11 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml.cs">
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\BreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Base\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
@@ -221,6 +226,13 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml.cs">
       <DependentUpon>TileContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ReturnStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\TryCatchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UnSupStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\VarStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldReturnStmtTile.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>
     </Compile>

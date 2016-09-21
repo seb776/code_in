@@ -18,6 +18,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
+using code_in.Views.NodalView.NodesElems.Tiles.Statements;
 using code_in.Views.Utils;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
@@ -350,9 +351,9 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(ifStmt.FalseStatement, ifNode.falseAnchor, (s) => { var old = ifStmt.FalseStatement; ifStmt.FalseStatement = s; return old; }, () => { ifStmt.FalseStatement = null; });
                 defaultFlowOut = ifNode.FlowOutAnchor; */
 
-                var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                var ifTile = tileContainer.CreateAndAddTile<IfStmtTile>(nodePresenter); // @Hamham : need to create a new class IfStmtTile?
-                visualTile = ifTile;
+                var ifStmt = stmtArg as IfElseStatement; // AST node
+                var ifTile = tileContainer.CreateAndAddTile<IfStmtTile>(nodePresenter); // Visual Node
+
                 //ifTile.TileType.setName(ifStmt.Condition.ToString());
                 //this._generateVisualASTExpressions(ifStmt.Condition,)
                 
@@ -363,7 +364,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(DoWhileStatement))
             {
                 var whileStmt = stmtArg as DoWhileStatement; // AST Node
-                //var doWhileStmtTile = tileContainer.CreateAndAddTile<DoWhileStmtTile>(nodePresenter); // Visual Node
+                var doWhileStmtTile = tileContainer.CreateAndAddTile<DoWhileStmtTile>(nodePresenter); // Visual Node
 
                 //this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; });
                 this._generateVisualASTStatements(tileContainer, whileStmt.EmbeddedStatement);
@@ -371,34 +372,35 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
             {
                 var whileStmt = stmtArg as WhileStatement; // AST Node
-                //var doWhileStmtTile = tileContainer.CreateAndAddTile<WhileStmtTile>(nodePresenter); // Visual Node
+                var whileStmtTile = tileContainer.CreateAndAddTile<WhileStmtTile>(nodePresenter); // Visual Node
 
                 //doWhileStmtTile.SetName("While");
-                //this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; });
-                this._generateVisualASTStatements(tileContainer, whileStmt.EmbeddedStatement);
+                //this._generateVisualASTExpressions(whileStmtTile.Condition, whileStmt.Condition, whileStmt.Condition, (e) => { whileStmt.Condition = e; });
+                this._generateVisualASTStatements(whileStmtTile.trueItem, whileStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForStatement))
             {
                 var forStmt = stmtArg as ForStatement; // AST Node
-                //var forStmtTile = tileContainer.CreateAndAddTile<ForStmtTile>(nodePresenter); // Visual Node
-                var nodeLoop = this._view.CreateAndAddNode<ForStmtNode>(nodePresenter);
+                var forStmtTile = tileContainer.CreateAndAddTile<ForStmtTile>(nodePresenter); // Visual Node
+
+                // TODO @Seb @Steph
 
                 //foreach (var forStmts in forStmt.Initializers) // TODO @Seb @Mo
-                //    this._generateVisualASTStatements(forStmts);
+                //    this._generateVisualASTStatements(forStmtTile.Condition, forStmts);
 
                 //foreach (var forStmts in forStmt.Iterators)
                 //    this._generateVisualASTStatements(forStmts);
 
-                //this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; });
-                this._generateVisualASTStatements(tileContainer, forStmt.EmbeddedStatement);
+                //this._generateVisualASTExpressions(forStmtTile.cond, nodeLoop.Condition, (e) => { forStmt.Condition = e; });
+                this._generateVisualASTStatements(forStmtTile.trueItem, forStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ForeachStatement;
-                //var forEachStmtTile = tileContainer.CreateAndAddTile<ForEachStmtTile>(nodePresenter);
+                var forEachStmtTile = tileContainer.CreateAndAddTile<ForEachStmtTile>(nodePresenter);
 
-                //this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
-                this._generateVisualASTStatements(tileContainer, forEachStmt.EmbeddedStatement);
+                //this._generateVisualASTExpressions(forEachStmtTile.Condition, forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
+                this._generateVisualASTStatements(forEachStmtTile.trueItem, forEachStmt.EmbeddedStatement);
             }
             # endregion Loops
             #region Switch
@@ -437,12 +439,12 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
             {
                 var varDeclStmt = stmtArg as VariableDeclarationStatement;
-                //var varDeclStmtTile = tileContainer.CreateAndAddTile<VarDeclStmtTile>(nodePresenter);
+                var varDeclStmtTile = tileContainer.CreateAndAddTile<VarStmtTile>(nodePresenter);
 
                 foreach (var v in varDeclStmt.Variables)
                 {
-                    //varDeclStmtTile.CreateAndAddItem<ExpressionItem>();
-                    //_generateVisualASTExpressions(v.Initializer, inputValue, (e) => { v.Initializer = e; });
+                    var exprItem = varDeclStmtTile.CreateAndAddItem<ExpressionItem>();
+                    _generateVisualASTExpressions(exprItem, v.Initializer, exprItem.ExprOut, (e) => { v.Initializer = e; });
                 }
             }
             #endregion Variable Declaration
@@ -450,7 +452,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
                 var exprStmt = stmtArg as ExpressionStatement;
-                //var exprStmtTile = tileContainer.CreateAndAddTile<ExpressionStmtTile>(nodePresenter);
+                var exprStmtTile = tileContainer.CreateAndAddTile<ExprStmtTile>(nodePresenter);
 
                 //this._generateVisualASTExpressions(exprStmtTile.Expression, exprStmt.Expression, exprItem.ExprOut, (e) => { exprStmt.Expression = e; });
             }
@@ -459,9 +461,9 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
             {
                 var returnStmt = stmtArg as ReturnStatement; // AST Node
-                //var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter); // Visual Node
+                var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter); // Visual Node
                 // TODO get anchor from tileItem for generateExpressions
-                //this._generateVisualASTExpressions(returnStmt.Expression, returnStmtNode.ExprIn, (e) => { returnStmt.Expression = e; });
+                //this._generateVisualASTExpressions(returnStmtTile, returnStmt.Expression, returnStmtNode.ExprIn, (e) => { returnStmt.Expression = e; });
             }
             #endregion Return Statement
             #region Break Statement
@@ -475,7 +477,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.YieldReturnStatement))
             {
                 var yieldReturnStmt = stmtArg as ReturnStatement; // AST Node
-                //var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter); // Visual Node
+                var returnStmtTile = tileContainer.CreateAndAddTile<YieldReturnStmtTile>(nodePresenter); // Visual Node
                 // TODO get anchor from tileItem for generateExpressions
                 //this._generateVisualASTExpressions(returnStmt.Expression, yieldReturnStmt.ExprIn, (e) => { yieldReturnStmt.Expression = e; });
             }
@@ -498,9 +500,8 @@ namespace code_in.Presenters.Nodal
             #endregion Single Statement
             else // Default Node
             {
-                var unSupStmt = this._view.CreateAndAddNode<UnSupStmtDeclNode>(nodePresenter);
-                visualNode = unSupStmt;
-                unSupStmt.NodeText.Text = stmtArg.ToString();
+                var unSupStmtTile = tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);
+                //unSupStmt.NodeText.Text = stmtArg.ToString();
             }
         }
         private void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
