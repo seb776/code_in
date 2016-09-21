@@ -15,13 +15,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 
         public IfStmtTile() 
         {
-            IfTile = new BaseTile();
             ItemTrue = new FlowTileItem();
             ItemTrue.ItemName.Content = "True Item";
             ItemFalse = new FlowTileItem();
             ItemFalse.ItemName.Content = "False Item";
-            IfTile.TileContent.Children.Add(ItemTrue);
-            IfTile.TileContent.Children.Add(ItemFalse);
+            this.TileContent.Children.Add(ItemTrue);
+            this.TileContent.Children.Add(ItemFalse);
         }
     }
 }
