@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour TileContainer.xaml
     /// </summary>
-    public partial class TileContainer : UserControl, ITileContainer
+    public partial class TileContainer : UserControl, ITileContainer, ICodeInVisual
     {
         public bool IsExpanded
         {
@@ -30,17 +30,28 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 this.IsEnabled = value;
+                if (value)
+                    this.Visibility = System.Windows.Visibility.Visible;
+                else
+                    this.Visibility = System.Windows.Visibility.Hidden;
             }
         }
         private ResourceDictionary _themeResourceDictionary = null;
-        public TileContainer() // TODO From Seb resource dictionary constructor
+        public TileContainer(ResourceDictionary themeResDict)
         {
+            _themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
+        }
+        public TileContainer() :
+            this(Code_inApplication.MainResourceDictionary)
+        {
+            throw new Exceptions.DefaultCtorVisualException();
         }
 
         public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : ITile
         {
-            T tile = (T)Activator.CreateInstance(typeof(T));//, _themeResourceDictionary); // TODO from seb make it work
+            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
 
             tile.SetParentView(null);
             tile.SetPresenter(nodePresenter);
@@ -70,5 +81,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
+
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary()
+        {
+            return _themeResourceDictionary;
+        }
+
+        public void SetThemeResources(string keyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion ICodeInVisual
+
     }
 }

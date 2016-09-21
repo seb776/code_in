@@ -232,6 +232,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UnSupStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\VarStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldBreakStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldReturnStmtTile.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>

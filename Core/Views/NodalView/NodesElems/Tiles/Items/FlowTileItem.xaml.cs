@@ -21,8 +21,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class FlowTileItem : UserControl, ITileContainer, ITileItem, ICodeInVisual
     {
+        private TileContainer _tileContainer = null;
+        private ResourceDictionary _themeResourceDictionary = null;
         /// <summary>
-        /// Gets or sets 
+        /// Gets or sets the expaded state of the tile.
         /// </summary>
         public bool IsExpanded
         {
@@ -33,21 +35,31 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 _tileContainer.IsExpanded = value;
+                if (value == false)
+                    this.ItemGrid.Children.Remove(_tileContainer as UIElement);
+                else
+                    this.ItemGrid.Children.Add(_tileContainer);
             }
         }
-        private TileContainer _tileContainer = null;
-        private ResourceDictionary _themeResourceDictionary = null;
+
+        public void SetName(string name)
+        {
+            this.ItemName.Content = name;
+        }
+
         public FlowTileItem() :
             this(Code_inApplication.MainResourceDictionary)
-        { /*throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); */}
+        { throw new Exceptions.DefaultCtorVisualException();  }
 
         public FlowTileItem(ResourceDictionary themeResDict)
         {
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
-            _tileContainer = new TileContainer();
+            _tileContainer = new TileContainer(_themeResourceDictionary);
+            _tileContainer.SetValue(Grid.ColumnProperty, 1);
             ItemGrid.Children.Add(_tileContainer);
+            this.IsExpanded = false;
         }
 
         public T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile
@@ -75,7 +87,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetThemeResources(string keyPrefix)
         {
-            throw new NotImplementedException();
+            if (keyPrefix == "false") // From Seb temporary
+                this.ItemGrid.Background = new SolidColorBrush(Color.FromArgb(0x42, 0xFF, 0x00, 0x00));
         }
 
 

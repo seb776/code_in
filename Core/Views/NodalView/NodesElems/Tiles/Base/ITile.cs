@@ -15,5 +15,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         // From Seb: This function will be used to update the content of the visual node
         // using infos obtained by the presenter
         void UpdateDisplayedInfosFromPresenter();
+        void SetName(string name);
     }
 }

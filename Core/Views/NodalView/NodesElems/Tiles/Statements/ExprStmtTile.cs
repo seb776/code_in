@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
@@ -11,9 +12,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public ExpressionItem Expression;
 
-        public ExprStmtTile()
+        public ExprStmtTile(ResourceDictionary themeResDict) :
+            base(themeResDict)
         {
+            this.SetName("Expression");
             Expression = this.CreateAndAddItem<ExpressionItem>();
         }
+        public ExprStmtTile() :
+            this(Code_inApplication.MainResourceDictionary)
+        {
+            throw new Exceptions.DefaultCtorVisualException();
+        }
+
     }
 }

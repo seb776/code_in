@@ -57,7 +57,7 @@ namespace code_in.Views.NodalView
             _selectedNodesIndexes = new List<int>();
             _lastPosition = new Point();
             _visualNodes = new List<INodeElem>();
-            RootTileContainer = new TileContainer() as ITileContainer;
+            RootTileContainer = new TileContainer(_themeResourceDictionary) as ITileContainer;
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
         }
         public NodalView() :

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
@@ -14,11 +15,21 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
         public FlowTileItem ItemTrue = null;
         public FlowTileItem ItemFalse = null;
 
-        public IfStmtTile() 
+        public IfStmtTile(ResourceDictionary themeResDict) :
+            base(themeResDict)
         {
+            this.SetName("If");
             Condition = this.CreateAndAddItem<ExpressionItem>();
             ItemTrue = this.CreateAndAddItem<FlowTileItem>();
+            ItemTrue.SetName("true");
             ItemFalse = this.CreateAndAddItem<FlowTileItem>();
+            ItemFalse.SetName("false");
+            ItemFalse.SetThemeResources("false");
+        }
+        public IfStmtTile()  :
+            this(Code_inApplication.MainResourceDictionary)
+        {
+            throw new Exceptions.DefaultCtorVisualException();
         }
     }
 }

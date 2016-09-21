@@ -33,7 +33,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public BaseTile() :
             this(Code_inApplication.MainResourceDictionary)
         {
-            //throw new Exceptions.DefaultCtorVisualException();
+            throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public void SetName(string name)
+        {
+            this.TileName.Content = name;
         }
 
         public T CreateAndAddItem<T>() where T : UIElement, ITileItem
