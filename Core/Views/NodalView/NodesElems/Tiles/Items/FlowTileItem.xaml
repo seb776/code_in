@@ -9,8 +9,10 @@
     <Grid HorizontalAlignment="Stretch" Background="#4200FF00" VerticalAlignment="Top" x:Name="ItemGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="ItemName" Foreground="GreenYellow" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0">true -&gt;</Label>
+        <Button Grid.Column="0" x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">Expande/Collapse</Button>
+        <Label x:Name="ItemName" Foreground="GreenYellow" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1">true -&gt;</Label>
     </Grid>
 </UserControl>
