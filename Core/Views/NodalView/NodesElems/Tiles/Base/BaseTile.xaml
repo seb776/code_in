@@ -5,12 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300" Padding="5">
-    <Grid Background="#42000000" MinWidth="150" MinHeight="150">
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid Background="#42000000" MinWidth="150" MinHeight="150" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
             <Label x:Name="TileType" Foreground="White" VerticalAlignment="Center">Variable</Label>
             <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
         </StackPanel>
-        <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical">
+        <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical" Grid.Row="1">
            
         </StackPanel>
     </Grid>

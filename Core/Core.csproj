@@ -205,20 +205,20 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Base\BaseTile.xaml.cs">
       <DependentUpon>BaseTile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml.cs">
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Tiles\IfStmtTile.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\ITile.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\ITileContainer.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\ITileItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\FlowTileItem.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Base\ITile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\Base\ITileItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\FlowTileItem.xaml.cs">
       <DependentUpon>FlowTileItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodesElems\Tiles\TileContainer.xaml.cs">
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml.cs">
       <DependentUpon>TileContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
@@ -343,11 +343,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Tiles\BaseTile.xaml">
+    <Page Include="Views\NodalView\NodesElems\Tiles\Base\BaseTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Tiles\FlowTileItem.xaml">
+    <Page Include="Views\NodalView\NodesElems\Tiles\Items\FlowTileItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -355,7 +355,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodesElems\Tiles\TileContainer.xaml">
+    <Page Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
