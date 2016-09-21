@@ -96,5 +96,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
+
+        private void buttonExpand_Click(object sender, RoutedEventArgs e)
+        {
+            IsExpanded = !IsExpanded;
+        } 
     }
 }
