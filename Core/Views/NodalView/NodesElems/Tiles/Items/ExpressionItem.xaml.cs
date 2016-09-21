@@ -23,7 +23,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
     /// </summary>
     public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainerDragNDrop, ICodeInVisual, ICodeInTextLanguage
     {
-        private DataFlowAnchor _exprOut = null;
+        public DataFlowAnchor ExprOut = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public ExpressionItem(ResourceDictionary themeResourceDictionary)
         {
@@ -31,8 +31,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             _themeResourceDictionary = themeResourceDictionary;
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
             InitializeComponent();
-            _exprOut = new DataFlowAnchor(themeResourceDictionary);
-            this.ExpressionsGrid.Children.Add(_exprOut);
+            ExprOut = new DataFlowAnchor(themeResourceDictionary);
+            this.ExpressionsGrid.Children.Add(ExprOut);
         }
         public ExpressionItem() :
             this(Code_inApplication.MainResourceDictionary)

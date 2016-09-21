@@ -17,6 +17,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.NodalView.NodesElems.Tiles;
+using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using code_in.Views.Utils;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
@@ -432,7 +433,7 @@ namespace code_in.Presenters.Nodal
                 visualNode = nodeLoop;
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
-                this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
+                //this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(tileContainer, whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = whileStmt.EmbeddedStatement; whileStmt.EmbeddedStatement = s; return old; }, () => { whileStmt.EmbeddedStatement = null; });
                 //defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
@@ -447,7 +448,7 @@ namespace code_in.Presenters.Nodal
                 visualNode = nodeLoop;
                 nodeLoop.SetName((isWhile ? "While" : "DoWhile")); // TODO Remove
                 nodeLoop.Condition.SetName(whileStmt.Condition.ToString());
-                this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
+                //this._generateVisualASTExpressions(whileStmt.Condition, nodeLoop.Condition, (e) => { whileStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(tileContainer, whileStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = whileStmt.EmbeddedStatement; whileStmt.EmbeddedStatement = s; return old; }, () => { whileStmt.EmbeddedStatement = null; });
                 //defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
@@ -465,7 +466,7 @@ namespace code_in.Presenters.Nodal
                 //foreach (var forStmts in forStmt.Iterators)
                 //    this._generateVisualASTStatements(forStmts);
 
-                this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; }); // Expressions
+                //this._generateVisualASTExpressions(forStmt.Condition, nodeLoop.Condition, (e) => { forStmt.Condition = e; }); // Expressions
                 this._generateVisualASTStatements(tileContainer, forStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = forStmt.EmbeddedStatement; forStmt.EmbeddedStatement = s; return old; }, () => { forStmt.EmbeddedStatement = null; });
                 //defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
@@ -476,7 +477,7 @@ namespace code_in.Presenters.Nodal
                 var nodeLoop = this._view.CreateAndAddNode<ForeachStmtNode>(nodePresenter);
                 visualNode = nodeLoop;
                 nodeLoop.Condition.SetName(forEachStmt.VariableType.ToString() + " " + forEachStmt.VariableName.ToString()); // is it the good condition? seems weird (hamham)
-                this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
+                //this._generateVisualASTExpressions(forEachStmt.InExpression, nodeLoop.Condition, (e) => { forEachStmt.InExpression = e; });
                 this._generateVisualASTStatements(tileContainer, forEachStmt.EmbeddedStatement, nodeLoop.trueAnchor, (s) => { var old = forEachStmt.EmbeddedStatement; forEachStmt.EmbeddedStatement = s; return old; }, () => { forEachStmt.EmbeddedStatement = null; });
                 //defaultFlowOut = nodeLoop.FlowOutAnchor;
             }
@@ -490,14 +491,14 @@ namespace code_in.Presenters.Nodal
                 var switchStmt = (stmtArg as SwitchStatement);
                 var exprInput = switchStmtNode.CreateAndAddInput<DataFlowAnchor>();
                 exprInput.SetName(switchStmt.Expression.ToString());
-                _generateVisualASTExpressions(switchStmt.Expression, exprInput, (e) => { switchStmt.Expression = e; });
+                //_generateVisualASTExpressions(switchStmt.Expression, exprInput, (e) => { switchStmt.Expression = e; });
                 foreach (var switchSection in switchStmt.SwitchSections)
                 {
                     foreach (var caseLabel in switchSection.CaseLabels)
                     {
                         var caseInput = switchStmtNode.CreateAndAddInput<DataFlowAnchor>();
                         caseInput.SetName(caseLabel.Expression.ToString());
-                        _generateVisualASTExpressions(caseLabel.Expression, caseInput, (e) => { caseLabel.Expression = e; });
+                        //_generateVisualASTExpressions(caseLabel.Expression, caseInput, (e) => { caseLabel.Expression = e; });
                     }
                     foreach (var switchSectionStmt in switchSection.Statements) // TODO @Seb @Mo something is wrong here
                     {
@@ -526,21 +527,22 @@ namespace code_in.Presenters.Nodal
                     var inputValue = variableNode.CreateAndAddInput<DataFlowAnchor>(); // @Seb: The value assigned to the variable
                     item.SetName(v.Name);
                     inputValue.SetName(v.Name);
-                    _generateVisualASTExpressions(v.Initializer, inputValue, (e) => { v.Initializer = e; });
+                    //_generateVisualASTExpressions(v.Initializer, inputValue, (e) => { v.Initializer = e; });
                 }
             }
             #endregion Variable Declaration
             #region ExpressionStatement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ExpressionStatement))
             {
-                var ifTile = tileContainer.CreateAndAddTile<BaseTile>();
+                var exprStmtTile = tileContainer.CreateAndAddTile<BaseTile>();
+                var exprItem = exprStmtTile.CreateAndAddItem<ExpressionItem>();
                 var exprStmt = stmtArg as ExpressionStatement;
 
-                var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>(nodePresenter);
-                visualNode = exprStmtNode;
-                exprStmtNode.Expression.SetName(exprStmt.ToString());
-                //defaultFlowOut = exprStmtNode.FlowOutAnchor;
-                this._generateVisualASTExpressions(exprStmt.Expression, exprStmtNode.Expression, (e) => { exprStmt.Expression = e; });
+                //var exprStmtNode = this._view.CreateAndAddNode<ExpressionStmtNode>(nodePresenter);
+                //visualNode = exprStmtNode;
+                //exprStmtNode.Expression.SetName(exprStmt.ToString());
+                ////defaultFlowOut = exprStmtNode.FlowOutAnchor;
+                this._generateVisualASTExpressions(exprItem, exprStmt.Expression, exprItem.ExprOut, (e) => { exprStmt.Expression = e; });
             }
             #endregion ExpressionStatement
             #region Return Statement
@@ -550,8 +552,8 @@ namespace code_in.Presenters.Nodal
                 var returnStmtNode = this._view.CreateAndAddNode<ReturnStmtNode>(nodePresenter);
                 visualNode = returnStmtNode;
 
-                if (returnStmt != null)
-                    this._generateVisualASTExpressions(returnStmt.Expression, returnStmtNode.ExprIn, (e) => { returnStmt.Expression = e; });
+                //if (returnStmt != null)
+                    //this._generateVisualASTExpressions(returnStmt.Expression, returnStmtNode.ExprIn, (e) => { returnStmt.Expression = e; });
             }
             #endregion Return Statement
             #region Break Statement
@@ -583,7 +585,7 @@ namespace code_in.Presenters.Nodal
             //    _createVisualLink(lastOutput, visualNode.FlowInAnchor);
             return null;
         }
-        private void _generateVisualASTExpressions(ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
+        private void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
         {
             if (expr.IsNull)
                 return;
@@ -592,13 +594,13 @@ namespace code_in.Presenters.Nodal
             if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ArrayInitializerExpression))
             {
                 var arrayInitExpr = expr as ArrayInitializerExpression;
-                var arrayInitNode = this._view.CreateAndAddNode<ArrayInitExprNode>(nodePresenter);
+                var arrayInitNode = container.CreateAndAddNode<ArrayInitExprNode>(nodePresenter);
                 visualNode = arrayInitNode;
                 int idx = 0;
                 foreach (var elem in arrayInitExpr.Elements)
                 {
                     var dataIn = arrayInitNode.CreateAndAddInput<DataFlowAnchor>();
-                    this._generateVisualASTExpressions(elem, dataIn, (e) => {  }); // TODO @z0rg callback to link expression
+                    this._generateVisualASTExpressions(container, elem, dataIn, (e) => { }); // TODO @z0rg callback to link expression
                     idx++;
                 }
             }
@@ -606,42 +608,42 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
                 var unaryExprOp = expr as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression;
-                var unaryExprNode = this._view.CreateAndAddNode<UnaryExprNode>(nodePresenter);
+                var unaryExprNode = container.CreateAndAddNode<UnaryExprNode>(nodePresenter);
                 visualNode = unaryExprNode;
                 unaryExprNode.SetName(unaryExprOp.OperatorToken.ToString());
-                this._generateVisualASTExpressions(unaryExprOp.Expression, unaryExprNode.OperandA, (e) => { unaryExprOp.Expression = e; });
+                this._generateVisualASTExpressions(container, unaryExprOp.Expression, unaryExprNode.OperandA, (e) => { unaryExprOp.Expression = e; });
             }
             #endregion UnaryOperator
             #region Parenthesis Expr
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ParenthesizedExpression))
             {
                 var parenthesizedExpr = expr as ICSharpCode.NRefactory.CSharp.ParenthesizedExpression;
-                var parenthesizedExprNode = this._view.CreateAndAddNode<ParenthesizedExprNode>(nodePresenter);
+                var parenthesizedExprNode = container.CreateAndAddNode<ParenthesizedExprNode>(nodePresenter);
                 visualNode = parenthesizedExprNode;
                 parenthesizedExprNode.SetName(parenthesizedExpr.ToString());
-                this._generateVisualASTExpressions(parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });           
+                this._generateVisualASTExpressions(container, parenthesizedExpr.Expression, parenthesizedExprNode.OperandA, (e) => { parenthesizedExpr.Expression = e; });           
             }
             #endregion Parenthesis Expr
             #region ArrayCreation
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ArrayCreateExpression))
             {
                 var arrCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ArrayCreateExpression;
-                var arrCreateExprNode = this._view.CreateAndAddNode<ArrayCreateExprNode>(nodePresenter);
+                var arrCreateExprNode = container.CreateAndAddNode<ArrayCreateExprNode>(nodePresenter);
                 visualNode = arrCreateExprNode;
                 foreach (var i in arrCreateExpr.Arguments)
                 {
                     var arrSize = arrCreateExprNode.CreateAndAddInput<DataFlowAnchor>();
                     arrSize.SetName(i.ToString());
-                    _generateVisualASTExpressions(i, arrSize, (e) => { }); // TODO @z0rg callback
+                    _generateVisualASTExpressions(container, i, arrSize, (e) => { }); // TODO @z0rg callback
                 }
-                _generateVisualASTExpressions(arrCreateExpr.Initializer, arrCreateExprNode.ExprIn, (e) => { }); // TODO @z0rg callback
+                _generateVisualASTExpressions(container, arrCreateExpr.Initializer, arrCreateExprNode.ExprIn, (e) => { }); // TODO @z0rg callback
             }
             #endregion ArrayCreation
             #region ObjectCreation
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ObjectCreateExpression))
             {
                 var objCreateExpr = expr as ICSharpCode.NRefactory.CSharp.ObjectCreateExpression;
-                var objCreateExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
+                var objCreateExprNode = container.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 visualNode = objCreateExprNode;
                 objCreateExprNode.SetType("ObjCreateExpr");
                 var newType = objCreateExprNode.CreateAndAddInput<DataFlowAnchor>(); // TODO @Seb text input ?
@@ -652,7 +654,7 @@ namespace code_in.Presenters.Nodal
                     var arg = objCreateExprNode.CreateAndAddInput<DataFlowAnchor>();
                     arg.SetName("param" + i);
                     i++;
-                    this._generateVisualASTExpressions(param, arg, (e) =>
+                    this._generateVisualASTExpressions(container, param, arg, (e) =>
                     {
                         if (e == param)
                             return;
@@ -668,7 +670,7 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IdentifierExpression))
             {
                 var identExpr = expr as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
-                var identExprNode = this._view.CreateAndAddNode<IdentifierExprNode>(nodePresenter);
+                var identExprNode = container.CreateAndAddNode<IdentifierExprNode>(nodePresenter);
                 visualNode = identExprNode;
                 identExprNode.ExprOut.SetName(identExpr.Identifier);
             }
@@ -677,24 +679,24 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AssignmentExpression))
             {
                 var assignExpr = expr as ICSharpCode.NRefactory.CSharp.AssignmentExpression;
-                var assignExprNode = this._view.CreateAndAddNode<BinaryExprNode>(nodePresenter);
+                var assignExprNode = container.CreateAndAddNode<BinaryExprNode>(nodePresenter);
                 visualNode = assignExprNode;
                 assignExprNode.SetType("AssignExpr");
 
-                this._generateVisualASTExpressions(assignExpr.Left, assignExprNode.OperandA, (e) => { assignExpr.Left = e; });
-                this._generateVisualASTExpressions(assignExpr.Right, assignExprNode.OperandB, (e) => { assignExpr.Right = e; });
+                this._generateVisualASTExpressions(container, assignExpr.Left, assignExprNode.OperandA, (e) => { assignExpr.Left = e; });
+                this._generateVisualASTExpressions(container, assignExpr.Right, assignExprNode.OperandB, (e) => { assignExpr.Right = e; });
             }
             #endregion Assignement
             #region BinaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression))
             {
                 var binaryExpr = expr as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
-                var binaryExprNode = this._view.CreateAndAddNode<BinaryExprNode>(nodePresenter);
+                var binaryExprNode = container.CreateAndAddNode<BinaryExprNode>(nodePresenter);
                 visualNode = binaryExprNode;
                 binaryExprNode.SetName(binaryExpr.Operator.ToString());
 
-                this._generateVisualASTExpressions(binaryExpr.Left, binaryExprNode.OperandA, (e) => { binaryExpr.Left = e; });
-                this._generateVisualASTExpressions(binaryExpr.Right, binaryExprNode.OperandB, (e) => { binaryExpr.Right = e; });
+                this._generateVisualASTExpressions(container, binaryExpr.Left, binaryExprNode.OperandA, (e) => { binaryExpr.Left = e; });
+                this._generateVisualASTExpressions(container, binaryExpr.Right, binaryExprNode.OperandB, (e) => { binaryExpr.Right = e; });
 
             }
             #endregion BinaryOperator
@@ -702,17 +704,17 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
                 var memberRefExpr = expr as ICSharpCode.NRefactory.CSharp.MemberReferenceExpression;
-                var memberRefExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
+                var memberRefExprNode = container.CreateAndAddNode<FuncCallExprNode>(nodePresenter); // TODO Create a node for that
                 visualNode = memberRefExprNode;
                 var inputTarget = memberRefExprNode.CreateAndAddInput<DataFlowAnchor>();
-                this._generateVisualASTExpressions(memberRefExpr.Target, null, null);
+                this._generateVisualASTExpressions(container, memberRefExpr.Target, null, null);
             }
             #endregion MemberReference
             #region Primitive
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
             {
                 var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
-                var primExprNode = this._view.CreateAndAddNode<PrimaryExprNode>(nodePresenter); // TODO Create a node for that
+                var primExprNode = container.CreateAndAddNode<PrimaryExprNode>(nodePresenter); // TODO Create a node for that
                 visualNode = primExprNode;
                 primExprNode.ExprOut.SetName(primExpr.LiteralValue);
             }
@@ -721,17 +723,17 @@ namespace code_in.Presenters.Nodal
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
                 var invokExpr = expr as ICSharpCode.NRefactory.CSharp.InvocationExpression;
-                var invokExprNode = this._view.CreateAndAddNode<FuncCallExprNode>(nodePresenter);
+                var invokExprNode = container.CreateAndAddNode<FuncCallExprNode>(nodePresenter);
                 visualNode = invokExprNode;
 
-                this._generateVisualASTExpressions(invokExpr.Target, invokExprNode.TargetIn, (e) => { invokExpr.Target = e; });
+                this._generateVisualASTExpressions(container, invokExpr.Target, invokExprNode.TargetIn, (e) => { invokExpr.Target = e; });
                 // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
                 int i = 0;
                 foreach (var param in invokExpr.Arguments)
                 {
                     var paramMeth = invokExprNode.CreateAndAddInput<DataFlowAnchor>();
                     paramMeth.SetName("param" + i);
-                    this._generateVisualASTExpressions(param, paramMeth, (e) =>
+                    this._generateVisualASTExpressions(container, param, paramMeth, (e) =>
                     {
                         if (e == param)
                             return;
@@ -745,7 +747,7 @@ namespace code_in.Presenters.Nodal
             #endregion Invocative
                         else
             {
-                var defaultUnsupportedNode = this._view.CreateAndAddNode<UnSupExpNode>(nodePresenter);
+                var defaultUnsupportedNode = container.CreateAndAddNode<UnSupExpNode>(nodePresenter);
                 visualNode = defaultUnsupportedNode;
                 defaultUnsupportedNode.NodeText.Text = expr.ToString();
             }
