@@ -303,15 +303,15 @@ namespace code_in.Presenters.Nodal
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
             (this._view as NodalView).IsDeclarative = false;
-            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
-            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
+            //var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
+            //var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
 
-            foreach (var i in method.Parameters)
-            {
-                var data = entry.CreateAndAddOutput<DataFlowAnchor>();
-                data.SetName(i.Name);
-                //data.SetItemType(i.Type.ToString());
-            }
+            //foreach (var i in method.Parameters)
+            //{
+            //    var data = entry.CreateAndAddOutput<DataFlowAnchor>();
+            //    data.SetName(i.Name);
+            //    //data.SetItemType(i.Type.ToString());
+            //}
 
             this._generateVisualASTStatements(this._view.RootTileContainer, method.Body);
         }
