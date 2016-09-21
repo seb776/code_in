@@ -7,7 +7,7 @@
       d:DesignHeight="300" d:DesignWidth="300"
       HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-        <StackPanel x:Name="TileStackPannel" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Horizontal">
+        <StackPanel x:Name="TileStackPannel" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Vertical">
         </StackPanel>
     </Grid>
 </UserControl>

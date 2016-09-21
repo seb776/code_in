@@ -13,6 +13,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">Expande/Collapse</Button>
-        <Label x:Name="ItemName" Foreground="GreenYellow" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1">true -&gt;</Label>
+        <Label x:Name="ItemName" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1">true -&gt;</Label>
     </Grid>
 </UserControl>

@@ -50,6 +50,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
         public DataFlowAnchor ExprOut = null;
         private ResourceDictionary _themeResourceDictionary = null;
+
         public ExpressionItem(ResourceDictionary themeResourceDictionary)
         {
             Debug.Assert(themeResourceDictionary != null);
@@ -65,6 +66,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
+        #region This
+        public void SetName(string name)
+        {
+            this.ItemName.Content = name;
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsExpanded = !this.IsExpanded;
+        }
+        #endregion This
 
         #region IVisualNodeContainerDragNDrop
         public bool IsDropNodeValid()
@@ -105,6 +116,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             this.ExpressionsGrid.Children.Add(node as UIElement);
         }
 
+
         public void RemoveNode(Presenters.Nodal.INodeElem node)
         {
             this.ExpressionsGrid.Children.Remove(node as UIElement);
@@ -134,10 +146,5 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.IsExpanded = !this.IsExpanded;
-        }
     }
 }

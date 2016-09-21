@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Column="0">
             <Button Click="Button_Click" VerticalAlignment="Top">Expand/Collapse</Button>
-            <Label Grid.Column="0" Foreground="White">Expressions</Label>
+            <Label Grid.Column="0" Foreground="White" x:Name="ItemName">Expressions</Label>
         </StackPanel>
         <Grid x:Name="ExpressionsGrid" Grid.Column="2">
         </Grid>

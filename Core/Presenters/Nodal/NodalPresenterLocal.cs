@@ -445,6 +445,7 @@ namespace code_in.Presenters.Nodal
                 foreach (var v in varDeclStmt.Variables)
                 {
                     var exprItem = varDeclStmtTile.CreateAndAddItem<ExpressionItem>();
+                    exprItem.SetName(v.Name);
                     _generateVisualASTExpressions(exprItem, v.Initializer, exprItem.ExprOut, (e) => { v.Initializer = e; });
                 }
             }
