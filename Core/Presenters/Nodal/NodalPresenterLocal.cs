@@ -455,7 +455,7 @@ namespace code_in.Presenters.Nodal
             {
                 var exprStmt = stmtArg as ExpressionStatement;
                 var exprStmtTile = tileContainer.CreateAndAddTile<ExprStmtTile>(nodePresenter);
-                exprStmtTile.Expression.SetName(exprStmt.ToString());
+                exprStmtTile.Expression.SetName(exprStmt.ToString()); // TODO @Seb Make this be done automatically by creating CreateAnddAddTile (see presenters...)
                 this._generateVisualASTExpressions(exprStmtTile.Expression, exprStmt.Expression, exprStmtTile.Expression.ExprOut, (e) => { exprStmt.Expression = e; });
             }
             #endregion ExpressionStatement
