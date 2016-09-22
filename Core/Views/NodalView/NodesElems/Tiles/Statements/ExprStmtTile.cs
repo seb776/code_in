@@ -15,7 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public ExprStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("Expression");
+            this.SetName("");
             Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public ExprStmtTile() :
