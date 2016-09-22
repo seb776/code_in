@@ -900,7 +900,8 @@ namespace code_in.Presenters.Nodal
 
         public void EditFunction(ATypedMemberItem node)
         {
-            throw new NotImplementedException();
+            this.EditFunction(node as FuncDeclItem);
+            //throw new NotImplementedException();
         }
 
 
