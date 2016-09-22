@@ -57,7 +57,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
             _tileContainer = new TileContainer(_themeResourceDictionary);
-            _tileContainer.SetValue(Grid.ColumnProperty, 2);
+            _tileContainer.SetValue(Grid.ColumnProperty, 1);
             ItemGrid.Children.Add(_tileContainer);
             this.IsExpanded = false;
         }

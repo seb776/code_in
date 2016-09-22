@@ -15,7 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public SwitchStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            Condition = this.CreateAndAddItem<ExpressionItem>();
+            Condition = this.CreateAndAddItem<ExpressionItem>(true);
 
         }
         public SwitchStmtTile() :

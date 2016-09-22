@@ -16,7 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public DoWhileStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            Condition = this.CreateAndAddItem<ExpressionItem>();
+            Condition = this.CreateAndAddItem<ExpressionItem>(true);
             trueItem = this.CreateAndAddItem<FlowTileItem>();
         }
         public DoWhileStmtTile() :

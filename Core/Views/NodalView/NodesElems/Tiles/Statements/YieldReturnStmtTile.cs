@@ -16,7 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             base(themeResDict)
         {
             this.SetName("Yield Return");
-            Expression = this.CreateAndAddItem<ExpressionItem>();
+            Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public YieldReturnStmtTile() :
             base(Code_inApplication.MainResourceDictionary)

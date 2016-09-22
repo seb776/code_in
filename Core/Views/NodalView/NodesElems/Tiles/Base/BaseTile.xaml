@@ -10,8 +10,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
-            <Label x:Name="TileType" Foreground="White" VerticalAlignment="Center">Variable</Label>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Orientation="Horizontal" x:Name="FieldAfterKeyWord">
             <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
         </StackPanel>
         <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical" Grid.Row="1">

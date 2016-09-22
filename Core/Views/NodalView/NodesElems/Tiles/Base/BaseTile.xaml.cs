@@ -41,10 +41,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             this.TileName.Content = name;
         }
 
-        public T CreateAndAddItem<T>() where T : UIElement, ITileItem
+        public T CreateAndAddItem<T>(bool addAfterKeyword = false) where T : UIElement, ITileItem
         {
             T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
-            this.AddItem(item);
+            if (addAfterKeyword)
+                this.FieldAfterKeyWord.Children.Add(item);
+            else
+                this.AddItem(item);
             return item;
         }
 

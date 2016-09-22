@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             base(themeResDict)
         {
             this.SetName("If");
-            Condition = this.CreateAndAddItem<ExpressionItem>();
+            Condition = this.CreateAndAddItem<ExpressionItem>(true);
             ItemTrue = this.CreateAndAddItem<FlowTileItem>();
             ItemTrue.SetName("true");
             ItemFalse = this.CreateAndAddItem<FlowTileItem>();
