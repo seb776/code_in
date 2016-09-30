@@ -30,8 +30,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 this.IsEnabled = value;
-                if (value)
+                if (value) {
                     this.Visibility = System.Windows.Visibility.Visible;
+
+                    
+                }
                 else
                     this.Visibility = System.Windows.Visibility.Collapsed;
             }
