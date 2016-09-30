@@ -1,35 +1,26 @@
-﻿using code_in.Models;
-using code_in.Models.NodalModel;
+﻿using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
-using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
-using code_in.Views.NodalView.NodesElems.Items.Assets;
-using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using code_in.Views.NodalView.NodesElems.Tiles.Statements;
-using code_in.Views.Utils;
-using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -303,15 +294,7 @@ namespace code_in.Presenters.Nodal
         private void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
             (this._view as NodalView).IsDeclarative = false;
-            //var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
-            //var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
-
-            //foreach (var i in method.Parameters)
-            //{
-            //    var data = entry.CreateAndAddOutput<DataFlowAnchor>();
-            //    data.SetName(i.Name);
-            //    //data.SetItemType(i.Type.ToString());
-            //}
+            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
 
             this._generateVisualASTStatements(this._view.RootTileContainer, method.Body);
         }
@@ -357,7 +340,7 @@ namespace code_in.Presenters.Nodal
 
                 this._generateVisualASTStatements(ifTile.ItemTrue, ifStmt.TrueStatement);
                 this._generateVisualASTStatements(ifTile.ItemFalse,  ifStmt.FalseStatement);
-                
+                ifTile.UpdateDisplayedInfosFromPresenter();
 
             }
             # endregion IfStmts
@@ -441,13 +424,15 @@ namespace code_in.Presenters.Nodal
             {
                 var varDeclStmt = stmtArg as VariableDeclarationStatement;
                 var varDeclStmtTile = tileContainer.CreateAndAddTile<VarStmtTile>(nodePresenter);
-
+                bool first = true;
                 foreach (var v in varDeclStmt.Variables)
                 {
-                    var exprItem = varDeclStmtTile.CreateAndAddItem<ExpressionItem>();
-                    exprItem.SetName(v.Name);
+                    var exprItem = varDeclStmtTile.CreateAndAddItem<ExpressionItem>(first);
+                    first = false;
+                    exprItem.SetName(v.ToString());
                     _generateVisualASTExpressions(exprItem, v.Initializer, exprItem.ExprOut, (e) => { v.Initializer = e; });
                 }
+                //varDeclStmtTile.UpdateDisplayedInfosFromPresenter();
             }
             #endregion Variable Declaration
             #region ExpressionStatement
@@ -455,8 +440,10 @@ namespace code_in.Presenters.Nodal
             {
                 var exprStmt = stmtArg as ExpressionStatement;
                 var exprStmtTile = tileContainer.CreateAndAddTile<ExprStmtTile>(nodePresenter);
-                exprStmtTile.Expression.SetName(exprStmt.ToString().Replace(System.Environment.NewLine, "")); // TODO @Seb Make this be done automatically by creating CreateAnddAddTile (see presenters...)
+                //exprStmtTile.Expression.SetName(exprStmt.ToString().Replace(System.Environment.NewLine, "")); // TODO @Seb Make this be done automatically by creating CreateAnddAddTile (see presenters...)
                 this._generateVisualASTExpressions(exprStmtTile.Expression, exprStmt.Expression, exprStmtTile.Expression.ExprOut, (e) => { exprStmt.Expression = e; });
+                //exprStmtTile.UpdateDisplayedInfosFromPresenter();
+
             }
             #endregion ExpressionStatement
             #region Return Statement
@@ -502,8 +489,9 @@ namespace code_in.Presenters.Nodal
             else // Default Node
             {
                 var unSupStmtTile = tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);
-                //unSupStmt.NodeText.Text = stmtArg.ToString();
             }
+
+            tileContainer.UpdateDisplayedInfosFromPresenter();
         }
         private void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
         {

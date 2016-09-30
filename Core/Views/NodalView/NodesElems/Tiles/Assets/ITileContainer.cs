@@ -17,5 +17,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             get;
             set;
         }
+        void UpdateDisplayedInfosFromPresenter(); // cal the same function for each underlying statement
     }
 }

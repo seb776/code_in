@@ -59,7 +59,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             _tileContainer = new TileContainer(_themeResourceDictionary);
             _tileContainer.SetValue(Grid.ColumnProperty, 1);
             ItemGrid.Children.Add(_tileContainer);
-            this.IsExpanded = false;
+            this.IsExpanded = true;
         }
 
         public T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile
@@ -100,6 +100,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         private void buttonExpand_Click(object sender, RoutedEventArgs e)
         {
             IsExpanded = !IsExpanded;
-        } 
+        }
+
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            this._tileContainer.UpdateDisplayedInfosFromPresenter();
+        }
+
+        private void ItemName_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IsExpanded = !IsExpanded;
+        }
     }
 }

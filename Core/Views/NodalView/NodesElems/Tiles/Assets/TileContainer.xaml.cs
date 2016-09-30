@@ -94,5 +94,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
         #endregion ICodeInVisual
 
+
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            foreach (var v in TileStackPannel.Children)
+            {
+                (v as ITile).UpdateDisplayedInfosFromPresenter();
+            }
+        }
     }
 }

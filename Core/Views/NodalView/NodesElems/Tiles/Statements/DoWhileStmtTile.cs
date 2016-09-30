@@ -1,6 +1,7 @@
 ﻿using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public DoWhileStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
+            this.SetName("do while");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
             trueItem = this.CreateAndAddItem<FlowTileItem>();
         }
@@ -23,6 +25,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             base(Code_inApplication.MainResourceDictionary)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            Debug.Assert(this._presenter != null);
+            var doWhileNode = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.DoWhileStatement);
+            Condition.SetName(doWhileNode.Condition.ToString());
+            trueItem.SetName(doWhileNode.EmbeddedStatement.ToString());
         }
     }
 }

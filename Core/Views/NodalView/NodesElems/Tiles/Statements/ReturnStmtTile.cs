@@ -15,7 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public ReturnStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("Return");
+            this.SetName("return;");
             Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public ReturnStmtTile() :

@@ -146,5 +146,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
+
+        private void ItemName_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.IsExpanded = !this.IsExpanded;
+        }
     }
 }

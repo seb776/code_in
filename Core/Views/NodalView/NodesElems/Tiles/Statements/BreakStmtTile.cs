@@ -12,12 +12,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public BreakStmtTile(ResourceDictionary themeResDict) :
              base(themeResDict)
         {
-            this.SetName("Break");
+            //this.SetName("Break");
         }
         public BreakStmtTile() :
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            this.SetName("break;");
         }
     }
 }

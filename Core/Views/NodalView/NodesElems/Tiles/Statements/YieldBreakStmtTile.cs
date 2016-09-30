@@ -13,7 +13,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public YieldBreakStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("Yield Break");
+            this.SetName("yield break;");
         }
         public YieldBreakStmtTile() :
             this(Code_inApplication.MainResourceDictionary)

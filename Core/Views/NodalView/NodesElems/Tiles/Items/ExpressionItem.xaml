@@ -11,9 +11,9 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top">
-            <Label Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top"></Label>
-            <Button Click="Button_Click" VerticalAlignment="Top">Expand/Collapse</Button>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Top">
+            <!--<Button Click="Button_Click" VerticalAlignment="Center">E/C</Button>-->
+            <Label MouseDown="ItemName_MouseDown" Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top"></Label>
         </StackPanel>
         <Grid x:Name="ExpressionsGrid" Grid.Column="2">
         </Grid>

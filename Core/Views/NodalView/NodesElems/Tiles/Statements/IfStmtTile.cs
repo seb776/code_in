@@ -2,6 +2,7 @@
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            Debug.Assert(this._presenter != null);
+            var ifElse = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IfElseStatement);
+            Condition.SetName(ifElse.Condition.ToString());
+            //ItemTrue.SetName(ifElse.TrueStatement.ToString());
+            //ItemFalse.SetName(ifElse.FalseStatement.ToString());
         }
     }
 }

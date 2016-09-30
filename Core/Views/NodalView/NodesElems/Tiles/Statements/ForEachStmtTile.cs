@@ -1,6 +1,7 @@
 ﻿using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             base(Code_inApplication.MainResourceDictionary)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            Debug.Assert(this._presenter != null);
+            var foreachStmt = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement);
+            this.Condition.SetName(foreachStmt.InExpression.ToString());
+            
         }
     }
 }

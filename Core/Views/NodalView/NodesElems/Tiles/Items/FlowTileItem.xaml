@@ -11,9 +11,9 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Column="0">
-            <Label x:Name="ItemName" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top">true</Label>
-            <Button x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">Expand/Collapse</Button>
+        <StackPanel Orientation="Horizontal" Grid.Column="0">
+            <!--<Button x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">E/C</Button>-->
+            <Label x:Name="ItemName" MouseDown="ItemName_MouseDown" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top">true</Label>
         </StackPanel>
     </Grid>
 </UserControl>

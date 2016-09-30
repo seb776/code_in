@@ -21,7 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class BaseTile : UserControl, ITile, ICodeInVisual
     {
-        private INodePresenter _presenter = null;
+        protected INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public BaseTile(ResourceDictionary themeResDict)
         {
@@ -38,6 +38,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetName(string name)
         {
+            if (name == "")
+                this.TileName.Visibility = System.Windows.Visibility.Collapsed;
+            else
+                this.TileName.Visibility = System.Windows.Visibility.Visible;
             this.TileName.Content = name;
         }
 
@@ -51,7 +55,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             return item;
         }
 
-        public void AddItem<T>(T item) where T : UIElement, ITileItem
+        public virtual void AddItem<T>(T item) where T : UIElement, ITileItem
         {
             this.TileContent.Children.Add(item);
         }
@@ -81,9 +85,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             //throw new NotImplementedException();
         }
-        public void UpdateDisplayedInfosFromPresenter()
+        public virtual void UpdateDisplayedInfosFromPresenter()
         {
-            throw new NotImplementedException();
+            // TODO @Seb uncomment this
+            //throw new NotImplementedException("A method implementation has been forgotten.");
         }
         #endregion ITile
     }
