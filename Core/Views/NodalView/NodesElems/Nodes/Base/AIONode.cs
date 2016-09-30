@@ -27,7 +27,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             throw new NotImplementedException();
         }
         private ILinkContainer _parentLinksContainer = null;
-        private Grid _subGrid = null;
+        public Grid _subGrid = null; // public tmp
         public StackPanel _inputs = null;  // public tmp (ham ham)
         public StackPanel _outputs = null; // public tmp (ham ham)
 

@@ -44,11 +44,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 {
                     this.ExpressionsGrid.Visibility = System.Windows.Visibility.Visible;
                     this.PreviewCode.Visibility = System.Windows.Visibility.Collapsed;
-               /*     for (int i = 0; i < 100; ++i)
-                    {
-                        this.AlignNode(0.1);
-                    }*/
-                    test();
+                    //testAlign();
+               //     test();
                 }
                 else
                 {
@@ -57,6 +54,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 }
 
             }
+        }
+
+        private void testAlign() {
+             for (int i = 0; i < 100; ++i)
+                    {
+                        this.AlignNode(0.1);
+                    }
         }
 
         
@@ -70,29 +74,43 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             int y = 0;
             bool f = true;
             AValueNode first = null;
-
-            //ExprOut._links[0].Output._links[0].Input.ParentNode.SetName("HAHA");
-
-            foreach (var t in _visualNodes)
+            AValueNode rightNode = null;
+            foreach (var t in _expression)
             {
                 //if (f)
                 //    first = t as AValueNode;
                 //f = false;
                 x += 100;
                 y += 100;
-                t.SetPosition(x, y);
-                try
-                {
-                    t.SetName("test 1");
-                    (t._inputs.Children[0] as DataFlowAnchor)._links[0].Output.ParentNode.SetName("test 2");
+                if (t != null)
+                 t.SetPosition(x, y);
+                if (f)
+                 rightNode = t as AValueNode;
+                f = false;
+                //if (t as AExpressionNode != null)
+                //    (t as AExpressionNode)._subGrid.Background = Brushes.Blue;
+                
+                //try
+                //{
+                //    if (!f)
+                //        continue;
+                //    t.SetName("test 1");
+                //    (t._inputs.Children[0] as DataFlowAnchor)._links[0].Output.ParentNode.SetName("test 2");
                 //    //MessageBox.Show(t.GetName() + "\n" + (t._inputs.Children[0] as DataFlowAnchor)._links[0].Output.ParentNode.GetName());
-
                 //}
                 //catch { }
+                //f = false;
+            }
+            
+            rightNode.SetName("first");
+            try
+            {
+               // rightNode._inputs
+                rightNode.ExprOut._links[0].Output._links[0].Input.ParentNode.SetName("sedonc");
 
             }
-         //   first.SetName("...");
-           // first.ExprOut._links[0].Output._links[0].Output.ParentNode.SetName("test");            
+            catch { }
+           // rightNode.ExprOut._links[0].Output._links[0].Output._links[0].Output.ParentNode.SetName("second");
             
         }
 
@@ -156,6 +174,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             _visualNodes.Add(node); // TODO @Seb @Steph For automatic placement
             this.AddNode(node);
             _expression.Add(node as AExpressionNode);
+            //if ((node as AExpressionNode) != null) {
+            //    MessageBox.Show(node.GetName());
+            //  //  node.SetName("pas null");
+            //}
+            //else
+            //{
+            //    MessageBox.Show(node.GetName());
+            //   //MessageBox.Show("gros nase");
+            //   // node.SetName("gros nase");
+            //}
             return node;
         }
 
@@ -191,15 +219,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             }*/
 
             Dictionary<INodeElem, Point> calculatedPositions = new Dictionary<INodeElem, Point>();
-            foreach (var curNode in _visualNodes)
+            foreach (var curNode in _expression)
             {
                 calculatedPositions[curNode] = curNode.GetPosition();
             }
-            foreach (var curNode in _visualNodes)
+            foreach (var curNode in _expression)
             {
-                if (ExprOut != null && ExprOut._links.Count != 0)
+                if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0)
                 {
-                        AValueNode rightNode = ExprOut._links[0].Output.ParentNode as AValueNode;
+                    AValueNode rightNode = curNode.ExprOut._links[0].Output.ParentNode as AValueNode;
+                    rightNode.SetName("PESTE");
+                    MessageBox.Show("");
                         
                         int sizeX = 0, sizeY = 0;
                         curNode.GetSize(out sizeX, out sizeY);
@@ -236,6 +266,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
             foreach (var n in calculatedPositions)
             {
+            //    MessageBox.Show(n.Value.X.ToString() + "      " + n.Value.Y.ToString());
                 n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
             }
 

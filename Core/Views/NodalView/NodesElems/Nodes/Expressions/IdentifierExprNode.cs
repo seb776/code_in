@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
-    public class IdentifierExprNode : AValueNode
+    public class IdentifierExprNode : AExpressionNode
     {
         public IdentifierExprNode(ResourceDictionary themeResDict) :
             base(themeResDict)
