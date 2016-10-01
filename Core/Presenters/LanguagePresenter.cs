@@ -11,10 +11,12 @@ namespace code_in.Presenters
     {
         public void ApplyLanguage(ResourceDictionary resDict)
         {
-            foreach (var t in resDict.Keys)
-            {
-                Code_inApplication.LanguageResourcesDictionary[t as String] = resDict[t as String];
-            }
+
+            // @z0rg & yAyA TODO exception launchtime
+            //foreach (var t in resDict.Keys)
+            //{
+            //    Code_inApplication.LanguageResourcesDictionary[t as String] = resDict[t as String];
+            //}
         }
     }
 
