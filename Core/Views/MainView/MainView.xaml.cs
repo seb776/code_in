@@ -90,12 +90,6 @@ namespace code_in.Views.MainView
             {
                 (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX = e.NewValue;
                 (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY = e.NewValue;
-
-                /* if (((int)(e.NewValue * 10.0) % 2) == 0)
-                  {*/
-                //this.ZoomPanel.Width = this._nodalView.MainGrid.Width * e.NewValue;
-                //this.ZoomPanel.Height = this._nodalView.MainGrid.Height * e.NewValue;
-                //  }
             }
         }
 
