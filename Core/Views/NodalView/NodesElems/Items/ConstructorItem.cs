@@ -1,8 +1,4 @@
-﻿using code_in.Presenters.Nodal;
-using code_in.Views.NodalView.NodesElems.Items.Assets;
-using code_in.Views.NodalView.NodesElems.Items.Base;
-using code_in.Views.NodalView.NodesElems.Nodes;
-using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -17,22 +13,20 @@ using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class FuncDeclItem : ATypedMemberItem, IContainingAccessModifiers, IContainingModifiers, IContainingGenerics, IContainingType
+    public class ConstructorItem : ClassItem
     {
-        public MethodDeclaration MethodNode = null; // TODO move to ANodePresenter
+        public ConstructorDeclaration ConstructorNode = null;
         ParametersList _params;
         private Image _editButton;
-        public GenericItem Generics = null;
 
-        public FuncDeclItem(ResourceDictionary themeResDict) :
+        public ConstructorItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            _params = new ParametersList(themeResDict);
-            //this.AfterName.Margin = new Thickness(2, 4, 2, 4);
-            this.AfterName.Children.Add(_params);
             { // TODO This is temporary
                 _editButton = new Image();
                 var imageSrc = new BitmapImage();
+                _params = new ParametersList(themeResDict);
+                this.AfterName.Children.Add(_params);
                 imageSrc.BeginInit();
                 imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
                 imageSrc.EndInit();
@@ -47,15 +41,14 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 //_editButton.Visibility = System.Windows.Visibility.Visible;
                 _editButton.SetValue(Image.OpacityProperty, 0.0);
                 _editButton.IsEnabled = false;
-                Generics = new GenericItem(themeResDict);
-                this.GenericsField.Children.Add(Generics);
             }
         }
-        void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
-            view.EditFunction(this);
+            view.EditConstructor(this);
         }
+        public override void SetThemeResources(String keyPrefix) { }
         public override void OnMouseLeave()
         {
             DoubleAnimation da = new DoubleAnimation();
@@ -63,7 +56,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
             da.To = 0.0;
             da.Duration = new Duration(TimeSpan.FromSeconds(0.1));
             _editButton.BeginAnimation(Image.OpacityProperty, da);
-            da.Completed += _animEditDisapearCompleted;   
+            da.Completed += _animEditDisapearCompleted;
         }
         void _animEditDisapearCompleted(object sender, EventArgs e)
         {
@@ -79,11 +72,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
             _params.AddParameter(type);
         }
-        public override void SetThemeResources(String keyPrefix)
+        public ConstructorItem() :
+            this(Code_inApplication.MainResourceDictionary)
         {
-
+            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");        
         }
-        #region IContainingAccessModifiers
+        #region IContainingModifiers
         public void setAccessModifiers(Modifiers modifiers)
         {
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
@@ -94,9 +88,10 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 Scope.Scope = ScopeItem.EScope.PROTECTED;
             else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
                 Scope.Scope = ScopeItem.EScope.INTERNAL;
+
         }
         #endregion
-        #region IContainingModifiers
+        #region IContainingAccessModifiers
         public void setModifiersList(Modifiers modifiers)
         {
             List<string> ModifiersList = new List<string>();
@@ -128,20 +123,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 ModifiersList.Add("unsafe");
             if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Volatile) == ICSharpCode.NRefactory.CSharp.Modifiers.Volatile)
                 ModifiersList.Add("volatile");
+            ModifiersList.Distinct();
             Modifiers.SetModifiers(ModifiersList.ToArray());
-        }
-        #endregion
-        #region IContainingGenerics
-        public void setGenerics(List<Tuple<string, EGenericVariance>> tmp)
-        {
-            Generics.SetGenerics(tmp);
-        }
-        #endregion IContainingGenerics
-        #region IContainingType
-        public void SetTypeFromString(string type)
-        {
-            //            _typeInfo.SetTypeFromString(type);
-            _typeInfo.TypeLabel.Content = type;
         }
         #endregion
     }

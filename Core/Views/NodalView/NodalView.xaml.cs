@@ -61,20 +61,21 @@ namespace code_in.Views.NodalView
         {
             this._nodalPresenter.OpenFile(path);
         }
-
-        public void EditFunction(ATypedMemberItem node)
+        public void EditFunction(FuncDeclItem node)
         {
             this._nodalPresenter.EditFunction(node);
         }
-
-        public void EditFunction(PropertyItem node, bool isGetter)
+        public void EditProperty(PropertyItem node, bool isGetter)
         {
             if (isGetter)
                 this._nodalPresenter.EditAccessor(node.PropertyNode.Getter);
             else
                 this._nodalPresenter.EditAccessor(node.PropertyNode.Setter);
         }
-
+        public void EditConstructor(ConstructorItem node)
+        {
+            this._nodalPresenter.EditConstructor(node);
+        }
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -303,7 +304,6 @@ namespace code_in.Views.NodalView
         }
         #endregion Events
         #endregion This
-
         #region IVisualNodeContainerDragNDrop
         public void SelectNode(INodeElem node)
         {
@@ -454,7 +454,6 @@ namespace code_in.Views.NodalView
             //node.RemoveLink();
         }
         #endregion create
-
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
         {
@@ -498,7 +497,6 @@ namespace code_in.Views.NodalView
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
-
         public void DropNodes(IVisualNodeContainerDragNDrop container)
         {
             if (container == null)
@@ -506,25 +504,20 @@ namespace code_in.Views.NodalView
                 _lastPosition = new Point(0, 0);
             }
         }
-
         public bool IsDropNodeValid()
         {
             throw new NotImplementedException();
         }
-
         public int GetDropNodeIndex(Point pos)
         {
             throw new NotImplementedException();
         }
-
         public void HighLightDropNodePlace(Point pos)
         {
             throw new NotImplementedException();
         }
-
         private AIOAnchor _linkStart = null;
         private Code_inLink _currentLink = null;
-
         public void DragLink(AIOAnchor from, bool isGenerated)
         {
             _linkStart = from;
@@ -548,7 +541,6 @@ namespace code_in.Views.NodalView
             }
             this.UpdateLinkDraw(Mouse.GetPosition(this.MainGrid));
         }
-
         public void DropLink(AIOAnchor to, bool isGenerated)
         {
             if (to == null)
@@ -604,7 +596,6 @@ namespace code_in.Views.NodalView
                 }
             }
         }
-
         public void UpdateLinkDraw(Point curPosUnattachedLinkSide)
         {
             System.Diagnostics.Debug.Assert(_currentLink != null);
@@ -628,13 +619,11 @@ namespace code_in.Views.NodalView
                 _currentLink.InvalidateVisual();
             }
         }
-
         public void DragNodes()
         {
             //for (int i = 0; i < _selectedNodes.Count; ++i)
             //{
         }
-
         public void UpdateDragState(Point mousePosition)
         {
             Vector diff;
@@ -657,18 +646,13 @@ namespace code_in.Views.NodalView
                 newMargin.Top = margin.Top;
                 newMargin.Right = margin.Right;
                 newMargin.Bottom = margin.Bottom;
-
                 newMargin.Left -= diff.X;
                 newMargin.Top -= diff.Y;
-
                 newMargin.Left = Math.Max(newMargin.Left, 0);
                 newMargin.Top = Math.Max(newMargin.Top, 0);
-
                 draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
             }
         }
-
-
         public void RevertChange()
         {
             for (int i = 0; i < _selectedNodes.Count; ++i)
@@ -678,7 +662,6 @@ namespace code_in.Views.NodalView
                 _selectedNodes[i].GetParentView().AddNode(curNode, _selectedNodesIndexes[i]);
             }
         }
-
         List<AValueNode> GetExpressionsAttachedToStatement(AStatementNode stmtNode)
         {
             List<AValueNode> attachedNodes = new List<AValueNode>();
@@ -698,7 +681,6 @@ namespace code_in.Views.NodalView
             }
             return attachedNodes;
         }
-
         public void AlignNodes(double deltaTime)
         {
             const double pixelsBySec = 25.0;
@@ -789,7 +771,6 @@ namespace code_in.Views.NodalView
                 foreach (var n in _expressionsUnderStatement)
                 {
                     _statementNodes[n.Key] = n.Key.GetPosition();
-
                     Point topLeftCorner = new Point();
                     Point bottomRightCorner = new Point();
                     first = true;
@@ -815,7 +796,6 @@ namespace code_in.Views.NodalView
                             bottomRightCorner.X = exprPos.X + exprSizeX;
                         if ((exprPos.Y + exprSizeY) > bottomRightCorner.Y)
                             bottomRightCorner.Y = exprPos.Y + exprSizeY;
-
                     }
 
                     double deltaX = 0.0;

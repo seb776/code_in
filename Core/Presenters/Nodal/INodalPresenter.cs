@@ -20,8 +20,9 @@ namespace code_in.Presenters.Nodal
     {
         void OpenFile(String path);
         void SaveFile(String path);
-        void EditFunction(ATypedMemberItem node);
+        void EditFunction(FuncDeclItem node);
         void EditAccessor(Accessor node);
+        void EditConstructor(ConstructorItem node);
         //void EditProperty(object obj); // TODO @z0rg type is not created yet
     }
 

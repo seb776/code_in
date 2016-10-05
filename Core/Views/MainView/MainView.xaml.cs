@@ -19,11 +19,8 @@ using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.Utils;
 using code_in.Views.NodalView.NodesElems.Items;
-
-
 namespace code_in.Views.MainView
 {
-
     /// <summary>
     /// Interaction logic for MainView.xaml
     /// </summary>
@@ -46,25 +43,25 @@ namespace code_in.Views.MainView
         private const float _maxZoomLevel = 2.0f;
         private const float _minZoomLevel = 0.5f;
         private float _currentZoomLevel = 1.25f;
+        public SearchBar SearchBar = null;
 
         public void OpenFile(String filePath)
         {
             this._nodalView.OpenFile(filePath);
             this._filePath = filePath;
         }
-
-        public void EditFunction(ATypedMemberItem node)
+        public void EditFunction(FuncDeclItem node)
         {
             this._nodalView.EditFunction(node);
         }
-
-        public void EditFunction(PropertyItem node, bool isGetter)
+        public void EditProperty(PropertyItem node, bool isGetter)
         {
-            this._nodalView.EditFunction(node, isGetter);
+            this._nodalView.EditProperty(node, isGetter);
         }
-
-        public SearchBar SearchBar = null;
-
+        public void EditConstructor(ConstructorItem node)
+        {
+            this._nodalView.EditConstructor(node);
+        }
         public MainView(ResourceDictionary resourceDict)
         {
             this._themeResourceDictionary = resourceDict;
@@ -84,18 +81,12 @@ namespace code_in.Views.MainView
             this(Code_inApplication.MainResourceDictionary)
         {
         }
-
-
-
-
-
         private void SliderZoom(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (this.ZoomPanel != null && this._nodalView != null)
             {
                 (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX = e.NewValue;
                 (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY = e.NewValue;
-
                 /* if (((int)(e.NewValue * 10.0) % 2) == 0)
                   {*/
                 //this.ZoomPanel.Width = this._nodalView.MainGrid.Width * e.NewValue;
@@ -103,7 +94,6 @@ namespace code_in.Views.MainView
                 //  }
             }
         }
-
         private void ZoomPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed)
@@ -122,7 +112,6 @@ namespace code_in.Views.MainView
         {
             _movingView = false;
         }
-
         private void ZoomPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (_movingView == true)
@@ -140,7 +129,6 @@ namespace code_in.Views.MainView
         }
         private void WinGrid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 if (this.ZoomPanel != null && this._nodalView != null)
@@ -165,8 +153,6 @@ namespace code_in.Views.MainView
 
             }
         }
-
-
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }
@@ -180,7 +166,5 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-        
     }
 }
