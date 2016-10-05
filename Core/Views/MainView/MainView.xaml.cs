@@ -53,9 +53,14 @@ namespace code_in.Views.MainView
             this._filePath = filePath;
         }
 
-        public void EditFunction(FuncDeclItem node)
+        public void EditFunction(ATypedMemberItem node)
         {
             this._nodalView.EditFunction(node);
+        }
+
+        public void EditFunction(PropertyItem node, bool isGetter)
+        {
+            this._nodalView.EditFunction(node, isGetter);
         }
 
         public SearchBar SearchBar = null;

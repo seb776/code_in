@@ -70,7 +70,7 @@
 
     <Grid x:Name="WinGrid" PreviewMouseWheel="WinGrid_MouseWheel" VerticalAlignment="Top" HorizontalAlignment="Left">
         <ScrollViewer x:Name="ScrollView" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-            <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000" Stretch="None" MouseDown="ZoomPanel_MouseDown" MouseUp="ZoomPanel_MouseUp" MouseLeave="ZoomPanel_MouseLeave" MouseMove="ZoomPanel_MouseMove"  >
+            <Viewbox x:Name="ZoomPanel" Width="5000" Height="5000" Stretch="None" MouseDown="ZoomPanel_MouseDown" MouseUp="ZoomPanel_MouseUp" MouseLeave="ZoomPanel_MouseLeave" MouseMove="ZoomPanel_MouseMove" >
                 <!-- Do not put the nodal View directly here as we need to pass the right ResourceDictionnary -->
             </Viewbox>
         </ScrollViewer>

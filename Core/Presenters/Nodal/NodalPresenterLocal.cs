@@ -69,6 +69,7 @@ namespace code_in.Presenters.Nodal
             }
         }
 
+
         private void _generateVisualASTDeclaration(NodalModel model)
         {
             int accHorizontal = 0;
@@ -232,6 +233,7 @@ namespace code_in.Presenters.Nodal
                 var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
                 var item = parentContainer.CreateAndAddNode<PropertyItem>(nodePresenter);
                 visualNode = item;
+                item.PropertyNode = propertyDecl;
                 item.SetName(propertyDecl.Name.ToString()); // TODO Complete
                 item.setTypeFromString(propertyDecl.ReturnType.ToString());
                 setAccessModifiers(item, propertyDecl.Modifiers);
@@ -309,10 +311,18 @@ namespace code_in.Presenters.Nodal
             }
             this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null, null);
         }
-
+        //TODO @YAYA
         private void _generateVisualASTConstructorBody(MethodDeclaration constructor)
         {
             throw new NotImplementedException();
+        }
+
+        private void _generateVisualASTPropertyBody(Accessor access)
+        {
+            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
+            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
+            _generateVisualASTStatements(access.Body, entry.FlowOutAnchor, null, null);
+
         }
 
         /// <summary>
@@ -885,6 +895,19 @@ namespace code_in.Presenters.Nodal
                 //TODO zorg
             }
             return (tmp);
+        }
+
+
+        public void EditFunction(ATypedMemberItem node)
+        {
+            this.EditFunction(node as FuncDeclItem);
+            //throw new NotImplementedException();
+        }
+
+
+        public void EditAccessor(Accessor node)
+        {
+            _generateVisualASTPropertyBody(node);
         }
     }
 }
