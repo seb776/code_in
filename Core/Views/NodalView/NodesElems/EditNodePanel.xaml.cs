@@ -69,11 +69,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(_modifiersArea, i); // i = 2
             }
-/*            else
-            {
-                _accessModifiers.IsEnabled = false;
-                _accessModifiers.Visibility = System.Windows.Visibility.Hidden;
-            }*/
+
             if ((actions & ENodeActions.MODIFIERS) == ENodeActions.MODIFIERS)
             {
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
