@@ -59,16 +59,16 @@ namespace code_in.Presenters.Nodal
         }
         public void EditFunction(FuncDeclItem node)
         {
-            if(node.MethodNode is ICSharpCode.NRefactory.CSharp.ConstructorDeclaration)
-            {
-                this._generateVisualASTConstructorBody(node.MethodNode);
-            }
-            else
-            {
-                this._generateVisualASTFunctionBody(node.MethodNode);
-            }
+            this._generateVisualASTFunctionBody(node.MethodNode);
         }
-
+        public void EditAccessor(Accessor node)
+        {
+            _generateVisualASTPropertyBody(node);
+        }
+        public void EditConstructor(ConstructorItem node)
+        {
+            this._generateVisualASTConstructorBody(node.ConstructorNode);
+        }
         private void _generateVisualASTDeclaration(NodalModel model)
         {
             int accHorizontal = 0;
@@ -232,6 +232,7 @@ namespace code_in.Presenters.Nodal
                 var propertyDecl = node as ICSharpCode.NRefactory.CSharp.PropertyDeclaration;
                 var item = parentContainer.CreateAndAddNode<PropertyItem>(nodePresenter);
                 visualNode = item;
+                item.PropertyNode = propertyDecl;
                 item.SetName(propertyDecl.Name.ToString()); // TODO Complete
                 item.setTypeFromString(propertyDecl.ReturnType.ToString());
                 setAccessModifiers(item, propertyDecl.Modifiers);
@@ -240,9 +241,9 @@ namespace code_in.Presenters.Nodal
             #region Constructor
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ConstructorDeclaration))
             {
-                FuncDeclItem constructorDecl = parentContainer.CreateAndAddNode<FuncDeclItem>(nodePresenter);
+                ConstructorItem constructorDecl = parentContainer.CreateAndAddNode<ConstructorItem>(nodePresenter);
                 visualNode = constructorDecl;
-                constructorDecl.MethodNode = node as MethodDeclaration;
+                constructorDecl.ConstructorNode = node as ConstructorDeclaration;
                 ConstructorDeclaration construct = node as ConstructorDeclaration;
                 var parameters = construct.Parameters.ToList();
                 for(int i = 0; i < parameters.Count; i++)
@@ -300,7 +301,6 @@ namespace code_in.Presenters.Nodal
             (this._view as NodalView).IsDeclarative = false;
             var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
             var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
-
             foreach (var i in method.Parameters)
             {
                 var data = entry.CreateAndAddOutput<DataFlowAnchor>();
@@ -309,10 +309,26 @@ namespace code_in.Presenters.Nodal
             }
             this._generateVisualASTStatements(method.Body, entry.FlowOutAnchor, null, null);
         }
-
-        private void _generateVisualASTConstructorBody(MethodDeclaration constructor)
+        //TODO @YAYA
+        private void _generateVisualASTConstructorBody(ConstructorDeclaration constructor)
         {
-            throw new NotImplementedException();
+            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
+            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
+            foreach (var i in constructor.Parameters)
+            {
+                var data = entry.CreateAndAddOutput<DataFlowAnchor>();
+                data.SetName(i.Name);
+                //data.SetItemType(i.Type.ToString());
+            }
+            _generateVisualASTStatements(constructor.Body, entry.FlowOutAnchor, null, null);
+        }
+
+        private void _generateVisualASTPropertyBody(Accessor access)
+        {
+            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
+            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
+            _generateVisualASTStatements(access.Body, entry.FlowOutAnchor, null, null);
+
         }
 
         /// <summary>
@@ -870,9 +886,6 @@ namespace code_in.Presenters.Nodal
             self.SaveFile(Environment.CurrentDirectory);
             //            MessageBox.Show(Environment.CurrentDirectory);
         }
-
-
-
         public List<Type> GetAvailableNodes()
         {
             List<Type> tmp = new List<Type>();

@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ATypedMemberItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\UsingMemberItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\ConstructorItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\PropertyItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
