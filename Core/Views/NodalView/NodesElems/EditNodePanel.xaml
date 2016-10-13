@@ -157,7 +157,7 @@
             
             <StackPanel x:Name="TextField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" HorizontalAlignment="Center">Text</Label>
-                <TextBox x:Name="TextForDefault"></TextBox>
+                <TextBox x:Name="TextForDefault" TextChanged="TextForDefault_TextChanged" ></TextBox>
             </StackPanel>
         </Grid>
     </Grid>
