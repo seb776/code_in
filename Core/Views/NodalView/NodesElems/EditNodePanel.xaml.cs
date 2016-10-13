@@ -664,8 +664,36 @@ namespace code_in.Views.NodalView
 
         private void TextForDefault_TextChanged(object sender, TextChangedEventArgs e)
         {
+
+        }
+
+        // event caught by the validate buton with the textBox
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             var parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
-            this._nodePresenter.SetASTNode(parser.ParseExpression(TextForDefault.Text) as ICSharpCode.NRefactory.CSharp.AstNode);
+            ICSharpCode.NRefactory.CSharp.AstNode node = null;
+            if (_nodePresenter.GetASTNode().GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Expression)))
+                node = parser.ParseExpression(TextForDefault.Text) as ICSharpCode.NRefactory.CSharp.AstNode;
+            else if (_nodePresenter.GetASTNode().GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Statement)))
+            {
+                var stmts = parser.ParseStatements(TextForDefault.Text);
+                if (stmts.Count() != 1)
+                {
+                    MessageBox.Show("You must type only one root statement for unsupported statement.");
+                }
+                node = stmts.First();
+            }
+            else
+                return;
+            if (parser.Errors.Count() != 0)
+            {
+                String totalErr = "";
+                foreach (var err in parser.Errors)
+                    totalErr += err + "\n";
+                MessageBox.Show(totalErr);
+            }
+            this._nodePresenter.GetASTNode().ReplaceWith(node);
+            // TODO update what is shown in the node
         }
 
     }

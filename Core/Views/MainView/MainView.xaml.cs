@@ -36,13 +36,9 @@ namespace code_in.Views.MainView
             }
         }
         private NodalView.NodalView _nodalView = null;
-        private int _zoomLevel = 100;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         public string _filePath { get; private set; }
-        private const float _maxZoomLevel = 2.0f;
-        private const float _minZoomLevel = 0.5f;
-        private float _currentZoomLevel = 1.25f;
         public SearchBar SearchBar = null;
 
         public void OpenFile(String filePath)
@@ -132,17 +128,11 @@ namespace code_in.Views.MainView
             if (_movingView == true)
             {
                 Point actualDiff = (Point)(_lastMousePosFromWinGrid - e.GetPosition(this.WinGrid));
-                //MessageBox.Show((this.ZoomPanel.Child as UserControl).ActualWidth.ToString() + " " + (this.ZoomPanel.Child as UserControl).ActualHeight.ToString()); // Taille du nodalView ok
-                //MessageBox.Show(this.ScrollView.ActualWidth.ToString() + " " + this.ScrollView.ActualHeight.ToString()); // Taille du scrollview ok
-                //MessageBox.Show((this.ZoomPanel.ActualWidth.ToString() + " " + this.ZoomPanel.ActualHeight.ToString())); // Taille du zoomPanel ok
-                //MessageBox.Show((this.WinGrid.ActualWidth.ToString() + " " + this.WinGrid.ActualHeight.ToString())); // Taille de la wingrid ok
-
                 this.ScrollView.ScrollToHorizontalOffset(this.ScrollView.HorizontalOffset + actualDiff.X);
                 this.ScrollView.ScrollToVerticalOffset(this.ScrollView.VerticalOffset + actualDiff.Y);
                 _lastMousePosFromWinGrid = e.GetPosition(this.WinGrid);
             }
         }
-        float _currentZoomScale = 1.0f;
         private void WinGrid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))

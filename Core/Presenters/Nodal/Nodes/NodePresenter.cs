@@ -291,7 +291,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 else if (_model.GetType() == typeof(PrimitiveExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
                 else
-                    return (ENodeActions.TEXT);
+                    return (ENodeActions.TEXT); // Any not supported node allows text modification
             }
 
             return (0);
@@ -793,8 +793,34 @@ namespace code_in.Presenters.Nodal.Nodes
             }
         }
 
+        public void AddExecParam()
+        {
+            System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            System.Diagnostics.Debug.Assert(this._model is InvocationExpression);
+
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            var invocExpr = this._model as InvocationExpression;
+            var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
+            invocExpr.Arguments.Add(new IdentifierExpression()); // This node is only used to fill the gap
+            inAnchor.SetASTNodeReference((e) => { invocExpr.Arguments.ElementAt(invocExpr.Arguments.Count - 1).ReplaceWith(e); });
+        }
+
+        // TODO @Seb
+        public void RemoveExecParam(int index)
+        {
+
+        }
+
+        // It keeps existing links and updates offsets
         public void SetExecParams(int paramsNumber)
         {
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            var invocExpr = this._model as InvocationExpression;
+            int paramsToAdd = invocExpr.Arguments.Count;
+            for (int i = 0; i < paramsNumber; ++i)
+            {
+                funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
+            }
             /*            while (paramsNumber >= 0)
                         {
             //                _view.
