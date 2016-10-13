@@ -662,5 +662,11 @@ namespace code_in.Views.NodalView
             ParametersNumber.Text = _nodePresenter.getExecParamsNb().ToString();
         }
 
+        private void TextForDefault_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
+            this._nodePresenter.SetASTNode(parser.ParseExpression(TextForDefault.Text) as ICSharpCode.NRefactory.CSharp.AstNode);
+        }
+
     }
 }
