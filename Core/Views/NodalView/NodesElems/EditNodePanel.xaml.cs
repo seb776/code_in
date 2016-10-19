@@ -174,7 +174,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(ExecParametersField, i); // i = 14
                 ++i;
-                LoadExecParamsNbInMenu();
+                UpdateExecParamsNbInMenu();
             }
             if ((actions & ENodeActions.EXEC_GENERICS) == ENodeActions.EXEC_GENERICS)
             {
@@ -643,23 +643,30 @@ namespace code_in.Views.NodalView
                 tmp.Foreground = Brushes.Black;
             }
         }
-        private void ParametersNumber_KeyDown(object sender, KeyEventArgs e)
-        {
-            var tmp = sender as TextBox;
-            tmp.Foreground = Brushes.Red;
 
-            if (e.Key == Key.Enter)
+        public void UpdateExecParamsNbInMenu()
+        {
+            ExecParamsStack.Children.Clear();
+            for (int i = 0; i != _nodePresenter.getExecParamsNb(); ++i)
             {
-                tmp.Foreground = Brushes.Black;
-                int count = int.Parse(tmp.Text, null);
-                _nodePresenter.ModifExecParams(count); // Care -> make some verif here on the nb
-                LoadExecParamsNbInMenu();
-            }
-        }
+                StackPanel NewExecParamLine = new StackPanel();
+                Label NewExecParam = new Label();
+                Button deleteExecParam = new Button();
 
-        public void LoadExecParamsNbInMenu()
-        {
-            ParametersNumber.Text = _nodePresenter.getExecParamsNb().ToString();
+                NewExecParamLine.Orientation = Orientation.Horizontal;
+                NewExecParamLine.Name = "ExecParam" + i;
+                NewExecParam.Width = 100;
+                NewExecParam.Background = Brushes.White;
+                NewExecParam.Content = "ExecParam n°" + (i + 1);
+                deleteExecParam.Click += DeleteExecParam;
+                deleteExecParam.Margin = new Thickness(10, 0, 0, 0);
+                deleteExecParam.Width = 20;
+                deleteExecParam.Height = 20;
+                deleteExecParam.Content = "X";
+                NewExecParamLine.Children.Add(NewExecParam);
+                NewExecParamLine.Children.Add(deleteExecParam);
+                ExecParamsStack.Children.Add(NewExecParamLine);
+            }
         }
 
         private void TextForDefault_TextChanged(object sender, TextChangedEventArgs e)
@@ -694,6 +701,39 @@ namespace code_in.Views.NodalView
             }
             this._nodePresenter.GetASTNode().ReplaceWith(node);
             // TODO update what is shown in the node
+        }
+
+        private void AddExecParamButton_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanel NewExecParamLine = new StackPanel();
+            Label NewExecParam = new Label();
+            Button deleteExecParam = new Button();
+
+            NewExecParamLine.Orientation = Orientation.Horizontal;
+            NewExecParamLine.Name = "ExecParam" + ExecParamsStack.Children.Count.ToString();
+            NewExecParam.Width = 100;
+            NewExecParam.Background = Brushes.White;
+            NewExecParam.Content = "ExecParam n°" + (ExecParamsStack.Children.Count + 1).ToString();
+            deleteExecParam.Click += DeleteExecParam;
+            deleteExecParam.Margin = new Thickness(10, 0, 0, 0);
+            deleteExecParam.Width = 20;
+            deleteExecParam.Height = 20;
+            deleteExecParam.Content = "X";
+            NewExecParamLine.Children.Add(NewExecParam);
+            NewExecParamLine.Children.Add(deleteExecParam);
+            ExecParamsStack.Children.Add(NewExecParamLine);
+        }
+
+        private void DeleteExecParam(object sender, RoutedEventArgs e)
+        {
+            Button delButton = sender as Button;
+            StackPanel parent = delButton.Parent as StackPanel;
+            //            TextBox name = parent.Children[3] as TextBox;
+            string stringIndex = parent.Name.Substring(parent.Name.Count() - 1, 1);
+
+            int index = int.Parse(stringIndex, null);
+            //todo remove in ast via nodepresenter
+            UpdateExecParamsNbInMenu();
         }
 
     }
