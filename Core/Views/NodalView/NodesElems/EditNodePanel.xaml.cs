@@ -722,7 +722,7 @@ namespace code_in.Views.NodalView
             NewExecParamLine.Children.Add(NewExecParam);
             NewExecParamLine.Children.Add(deleteExecParam);
             ExecParamsStack.Children.Add(NewExecParamLine);
-            //todo add in ast
+            _nodePresenter.AddExecParam();
         }
 
         private void DeleteExecParam(object sender, RoutedEventArgs e)
@@ -731,8 +731,11 @@ namespace code_in.Views.NodalView
             StackPanel parent = delButton.Parent as StackPanel;
             StackPanel parentofparent = parent.Parent as StackPanel;
             int index = parentofparent.Children.IndexOf(parent);
-            _nodePresenter.RemoveExecParam(index);
-            UpdateExecParamsNbInMenu();
+            if (index != 0)
+            {
+                _nodePresenter.RemoveExecParam(index);
+                UpdateExecParamsNbInMenu();
+            }
         }
 
     }

@@ -515,7 +515,6 @@ namespace code_in.Views.NodalView
                 output.RemoveLink(ioLink, true);
                 input.RemoveLink(ioLink, true);
                 this.MainGrid.Children.Remove(currentVisualLink);
-                this.MainGrid.Children.Add(currentVisualLink);
             }
         }
         public void DragLink(AIOAnchor from, bool isGenerated)
