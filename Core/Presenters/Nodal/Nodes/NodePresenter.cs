@@ -816,9 +816,10 @@ namespace code_in.Presenters.Nodal.Nodes
             var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
 
             System.Diagnostics.Debug.Assert(index < invocExpr.Arguments.Count);
-            var dataFlowAnchor = funcExprView._inputs.Children[index] as DataFlowAnchor;
+            var dataFlowAnchor = funcExprView._inputs.Children[index + 1] as DataFlowAnchor;
+            invocExpr.Arguments.Remove(invocExpr.Arguments.ElementAt(index)); // TODO assert, it may crash
             _nodalPresenter.RemoveLink(dataFlowAnchor);
-            funcExprView._inputs.Children.RemoveAt(index);
+            funcExprView._inputs.Children.RemoveAt(index + 1);
 
         }
 
@@ -915,7 +916,7 @@ namespace code_in.Presenters.Nodal.Nodes
             if (_model != null && _model.GetType() == typeof(InvocationExpression))
             {
                 var tmp = (_model as InvocationExpression);
-                ExecParamsNb = tmp.Arguments.Count + 1;
+                ExecParamsNb = tmp.Arguments.Count;
             }
         }
 

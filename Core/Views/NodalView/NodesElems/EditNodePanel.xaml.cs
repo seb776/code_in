@@ -731,11 +731,8 @@ namespace code_in.Views.NodalView
             StackPanel parent = delButton.Parent as StackPanel;
             StackPanel parentofparent = parent.Parent as StackPanel;
             int index = parentofparent.Children.IndexOf(parent);
-            if (index != 0)
-            {
-                _nodePresenter.RemoveExecParam(index);
-                UpdateExecParamsNbInMenu();
-            }
+            _nodePresenter.RemoveExecParam(index);
+            UpdateExecParamsNbInMenu();
         }
 
     }

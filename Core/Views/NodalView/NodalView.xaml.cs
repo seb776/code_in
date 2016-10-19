@@ -512,8 +512,8 @@ namespace code_in.Views.NodalView
                 var currentVisualLink = ioLink.Link;
                 var output = anchor._links[0].Output;
                 var input = anchor._links[0].Input;
-                output.RemoveLink(ioLink, true);
-                input.RemoveLink(ioLink, true);
+                output.RemoveLink(ioLink, false);
+                input.RemoveLink(ioLink, false);
                 this.MainGrid.Children.Remove(currentVisualLink);
             }
         }

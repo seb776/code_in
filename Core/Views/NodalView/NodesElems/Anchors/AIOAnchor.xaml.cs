@@ -65,7 +65,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
         public void RemoveLink(IOLink link, bool detachAST)
         {
-            if (link.Input is DataFlowAnchor)
+            if (link.Input is DataFlowAnchor && detachAST)
                 (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
             else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null && detachAST)
                 (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
