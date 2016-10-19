@@ -36,13 +36,9 @@ namespace code_in.Views.MainView
             }
         }
         private NodalView.NodalView _nodalView = null;
-        private int _zoomLevel = 100;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         public string _filePath { get; private set; }
-        private const float _maxZoomLevel = 2.0f;
-        private const float _minZoomLevel = 0.5f;
-        private float _currentZoomLevel = 1.25f;
         public SearchBar SearchBar = null;
 
         public void OpenFile(String filePath)
@@ -85,13 +81,28 @@ namespace code_in.Views.MainView
         {
             if (this.ZoomPanel != null && this._nodalView != null)
             {
-                (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX = e.NewValue;
-                (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY = e.NewValue;
-                /* if (((int)(e.NewValue * 10.0) % 2) == 0)
-                  {*/
-                //this.ZoomPanel.Width = this._nodalView.MainGrid.Width * e.NewValue;
-                //this.ZoomPanel.Height = this._nodalView.MainGrid.Height * e.NewValue;
-                //  }
+                // http://stackoverflow.com/questions/14729853/wpf-zooming-in-on-an-image-inside-a-scroll-viewer-and-having-the-scrollbars-a
+                var middleOfScrollViewer = new Point(this.ScrollView.ActualWidth / 2.0f, this.ScrollView.ActualHeight / 2.0f);
+                Point mouseAtImage = this.ScrollView.TranslatePoint(middleOfScrollViewer, this._nodalView); // ScrollViewer_CanvasMain.TranslatePoint(middleOfScrollViewer, Canvas_Main);
+                Point mouseAtScrollViewer = new Point(this.ScrollView.ActualWidth / 2.0f, this.ScrollView.ActualHeight / 2.0f);// e.GetPosition(this.ScrollView);
+
+                ScaleTransform st = this.ZoomPanel.LayoutTransform as ScaleTransform;
+                if (st == null)
+                {
+                    st = new ScaleTransform();
+                    ZoomPanel.LayoutTransform = st;
+                }
+                st.ScaleX = st.ScaleY = e.NewValue;
+                #region [this step is critical for offset]
+                ScrollView.ScrollToHorizontalOffset(0);
+                ScrollView.ScrollToVerticalOffset(0);
+                this.UpdateLayout();
+                #endregion
+
+                Vector offset = this._nodalView.TranslatePoint(mouseAtImage, ScrollView) - mouseAtScrollViewer; // (Vector)middleOfScrollViewer;
+                ScrollView.ScrollToHorizontalOffset(offset.X);
+                ScrollView.ScrollToVerticalOffset(offset.Y);
+                this.UpdateLayout();
             }
         }
         private void ZoomPanel_MouseDown(object sender, MouseButtonEventArgs e)
@@ -117,11 +128,6 @@ namespace code_in.Views.MainView
             if (_movingView == true)
             {
                 Point actualDiff = (Point)(_lastMousePosFromWinGrid - e.GetPosition(this.WinGrid));
-                //MessageBox.Show((this.ZoomPanel.Child as UserControl).ActualWidth.ToString() + " " + (this.ZoomPanel.Child as UserControl).ActualHeight.ToString()); // Taille du nodalView ok
-                //MessageBox.Show(this.ScrollView.ActualWidth.ToString() + " " + this.ScrollView.ActualHeight.ToString()); // Taille du scrollview ok
-                //MessageBox.Show((this.ZoomPanel.ActualWidth.ToString() + " " + this.ZoomPanel.ActualHeight.ToString())); // Taille du zoomPanel ok
-                //MessageBox.Show((this.WinGrid.ActualWidth.ToString() + " " + this.WinGrid.ActualHeight.ToString())); // Taille de la wingrid ok
-
                 this.ScrollView.ScrollToHorizontalOffset(this.ScrollView.HorizontalOffset + actualDiff.X);
                 this.ScrollView.ScrollToVerticalOffset(this.ScrollView.VerticalOffset + actualDiff.Y);
                 _lastMousePosFromWinGrid = e.GetPosition(this.WinGrid);
@@ -131,24 +137,42 @@ namespace code_in.Views.MainView
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
+
+                e.Handled = true;
                 if (this.ZoomPanel != null && this._nodalView != null)
                 {
+                    // http://stackoverflow.com/questions/14729853/wpf-zooming-in-on-an-image-inside-a-scroll-viewer-and-having-the-scrollbars-a
+                    Point mouseAtImage = e.GetPosition(this._nodalView); // ScrollViewer_CanvasMain.TranslatePoint(middleOfScrollViewer, Canvas_Main);
+                    Point mouseAtScrollViewer = e.GetPosition(this.ScrollView);
+
+                    ScaleTransform st = this.ZoomPanel.LayoutTransform as ScaleTransform;
+                    if (st == null)
+                    {
+                        st = new ScaleTransform();
+                        ZoomPanel.LayoutTransform = st;
+                    }
+
                     if (e.Delta > 0)
                     {
-                        if ((this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX < 2)
-                        {
-                            (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX *= 1.05;
-                            (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY *= 1.05;
-                        }
+                        st.ScaleX = st.ScaleY = st.ScaleX * 1.25;
+                        if (st.ScaleX > this.ZoomSlider.Maximum) st.ScaleX = st.ScaleY = this.ZoomSlider.Maximum;
                     }
-                    if (e.Delta < 0)
+                    else
                     {
-                        if ((this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX > 0.5)
-                        {
-                            (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleX *= 0.95;
-                            (this.ZoomPanel.RenderTransform as ScaleTransform).ScaleY *= 0.95;
-                        }
+                        st.ScaleX = st.ScaleY = st.ScaleX / 1.25;
+                        if (st.ScaleX < this.ZoomSlider.Minimum) st.ScaleX = st.ScaleY = this.ZoomSlider.Minimum;
                     }
+                    this.ZoomSlider.Value = st.ScaleX;
+                    #region [this step is critical for offset]
+                    ScrollView.ScrollToHorizontalOffset(0);
+                    ScrollView.ScrollToVerticalOffset(0);
+                    this.UpdateLayout();
+                    #endregion
+
+                    Vector offset = this._nodalView.TranslatePoint(mouseAtImage, ScrollView) - mouseAtScrollViewer; // (Vector)middleOfScrollViewer;
+                    ScrollView.ScrollToHorizontalOffset(offset.X);
+                    ScrollView.ScrollToVerticalOffset(offset.Y);
+                    this.UpdateLayout();
                 }
 
             }
