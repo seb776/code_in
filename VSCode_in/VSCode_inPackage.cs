@@ -118,7 +118,7 @@ namespace Code_in.VSCode_in
 
             while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
                 ++i;
-            
+
             ToolWindowPane wp = this.CreateToolWindow(typeof(NodalWindowPane), i) as ToolWindowPane;
 
             if (wp != null)
@@ -127,9 +127,9 @@ namespace Code_in.VSCode_in
                 if (frame != null)
                 {
                     frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
-                    frame.Show();
                     (wp as NodalWindowPane).PaneId = i;
-                    (wp as NodalWindowPane).OpenFile();
+                    if ((wp as NodalWindowPane).OpenFile())
+                        frame.Show();
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Code_in.VSCode_in
         }
         public void CloseView<T>(T view) where T : UserControl
         {
-            
+
         }
     }
 
@@ -196,17 +196,15 @@ namespace Code_in.VSCode_in
 
     public class NodalWindowPane : ToolWindowPane
     {
-        private code_in.Views.MainView.MainView _mainView = null;
+        public code_in.Views.MainView.MainView _mainView = null;
         private int _paneId = 0;
         static private List<OpenedFile> _fileList = new List<OpenedFile>();
         public int PaneId
         {
-            get
-            {
+            get {
                 return _paneId;
             }
-            set
-            {
+            set {
                 _paneId = value;
                 this.Caption = "Blank" + _paneId;
             }
@@ -217,19 +215,9 @@ namespace Code_in.VSCode_in
             _mainView = new code_in.Views.MainView.MainView();
             this.Content = _mainView;
             PaneId = 0;
-            this._mainView.Unloaded += _mainView_Unloaded;
         }
 
-        void _mainView_Unloaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            //var _sender = sender as code_in.Views.MainView.MainView;
-            //foreach (var item in _fileList){
-            //    if (item._filePath == _sender._filePath)
-            //        _fileList.Remove(item);
-            //}
-        }
-
-        public void OpenFile()
+        public bool OpenFile()
         {
             Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -239,56 +227,45 @@ namespace Code_in.VSCode_in
             {
                 this.Caption = fileDialog.SafeFileName;
                 this._mainView.OpenFile(fileDialog.FileName);
-                _fileList.Add(new OpenedFile(PaneId, fileDialog.FileName));
+                _fileList.Add(new OpenedFile(fileDialog.FileName, this));
             }
-            //else //pas encore trouvé comment changer de focus
-            //    foreach (var item in _fileList)
-            //    {
-            //        if (item._filePath == fileDialog.FileName)
-            //            this.
-            //    }
+            else 
+                foreach (var item in _fileList)
+                {
+                    if (item._filePath == fileDialog.FileName && item._windowPane._mainView != null){
+                        ((item._windowPane.Frame) as IVsWindowFrame).Show();
+                        return false;
+                    }
+                }
+            return true;
         }
 
         public void NewFile()
         {
             SaveFileDialog fileDialog = new SaveFileDialog();
-            
+
             fileDialog.Filter = "C# File (*.cs)|*.cs";
 
             bool? result = fileDialog.ShowDialog();
 
-            if ((result ==  true) && (File.Exists(fileDialog.FileName) == false))
+            if ((result == true) && (File.Exists(fileDialog.FileName) == false))
             {
+                ((this) as IVsWindowFrame).Show();
                 File.Create(fileDialog.FileName).Close();
                 this.Caption = fileDialog.SafeFileName;
                 this._mainView.OpenFile(fileDialog.FileName);
-                _fileList.Add(new OpenedFile(PaneId, fileDialog.FileName));
+                _fileList.Add(new OpenedFile(fileDialog.FileName, this));
             }
         }
 
-        private bool isFileAlreadyOpened(string filePath){
-            foreach (var file in _fileList){
+        private bool isFileAlreadyOpened(string filePath)
+        {
+            foreach (var file in _fileList)
+            {
                 if (filePath == file._filePath)
                     return true;
             }
             return false;
-        }
-
-
-        public void ClosedFile() { }
-
-        protected override void OnClose()
-        {
-            /* System.Windows.Forms.MessageBox.Show("Fermeture de fenetre");  TO PUSH WHEN IT WORKS
-           
-             foreach (var item in _fileList){
-                 if (this._paneId == item._paneId)
-                     _fileList.Remove(item);
-             }
-             base.OnClose();
-             * 
-                                                                                          /!\ TO PUSH WHEN IT WORKS /!\
-             */
         }
 
     }
@@ -296,12 +273,14 @@ namespace Code_in.VSCode_in
     /// <summary>
     /// Class used as in a list to prevent multiple instances of code_in tabs for one file
     /// </summary>
-    public class OpenedFile{
-        public int _paneId;
+    public class OpenedFile
+    {
+        public NodalWindowPane _windowPane;
         public string _filePath;
 
-        public OpenedFile(int paneId, string filePath){
-            _paneId = paneId;
+        public OpenedFile(string filePath, NodalWindowPane pane)
+        {
+            _windowPane = pane;
             _filePath = filePath;
         }
     }

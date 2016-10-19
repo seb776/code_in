@@ -69,11 +69,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(_modifiersArea, i); // i = 2
             }
-/*            else
-            {
-                _accessModifiers.IsEnabled = false;
-                _accessModifiers.Visibility = System.Windows.Visibility.Hidden;
-            }*/
+
             if ((actions & ENodeActions.MODIFIERS) == ENodeActions.MODIFIERS)
             {
                 _modifiersArea.Visibility = System.Windows.Visibility.Visible;
@@ -178,6 +174,7 @@ namespace code_in.Views.NodalView
                 }
                 Grid.SetColumn(ExecParametersField, i); // i = 14
                 ++i;
+                LoadExecParamsNbInMenu();
             }
             if ((actions & ENodeActions.EXEC_GENERICS) == ENodeActions.EXEC_GENERICS)
             {
@@ -565,11 +562,6 @@ namespace code_in.Views.NodalView
             UpdateInheritanceInEditMenu();
         }
 
-        private void ParametersNumber_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void AttributeName_KeyDown(object sender, KeyEventArgs e)
         {
             var tmp = sender as TextBox;
@@ -651,5 +643,58 @@ namespace code_in.Views.NodalView
                 tmp.Foreground = Brushes.Black;
             }
         }
+        private void ParametersNumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tmp = sender as TextBox;
+            tmp.Foreground = Brushes.Red;
+
+            if (e.Key == Key.Enter)
+            {
+                tmp.Foreground = Brushes.Black;
+                int count = int.Parse(tmp.Text, null);
+                _nodePresenter.ModifExecParams(count); // Care -> make some verif here on the nb
+                LoadExecParamsNbInMenu();
+            }
+        }
+
+        public void LoadExecParamsNbInMenu()
+        {
+            ParametersNumber.Text = _nodePresenter.getExecParamsNb().ToString();
+        }
+
+        private void TextForDefault_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        // event caught by the validate buton with the textBox
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
+            ICSharpCode.NRefactory.CSharp.AstNode node = null;
+            if (_nodePresenter.GetASTNode().GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Expression)))
+                node = parser.ParseExpression(TextForDefault.Text) as ICSharpCode.NRefactory.CSharp.AstNode;
+            else if (_nodePresenter.GetASTNode().GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Statement)))
+            {
+                var stmts = parser.ParseStatements(TextForDefault.Text);
+                if (stmts.Count() != 1)
+                {
+                    MessageBox.Show("You must type only one root statement for unsupported statement.");
+                }
+                node = stmts.First();
+            }
+            else
+                return;
+            if (parser.Errors.Count() != 0)
+            {
+                String totalErr = "";
+                foreach (var err in parser.Errors)
+                    totalErr += err + "\n";
+                MessageBox.Show(totalErr);
+            }
+            this._nodePresenter.GetASTNode().ReplaceWith(node);
+            // TODO update what is shown in the node
+        }
+
     }
 }

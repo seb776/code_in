@@ -1,5 +1,6 @@
 ﻿using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Nodes;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.Utils;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace code_in.Presenters.Nodal
 {
@@ -19,6 +21,8 @@ namespace code_in.Presenters.Nodal
         void OpenFile(String path);
         void SaveFile(String path);
         void EditFunction(FuncDeclItem node);
+        void EditAccessor(Accessor node);
+        void EditConstructor(ConstructorItem node);
         //void EditProperty(object obj); // TODO @z0rg type is not created yet
     }
 

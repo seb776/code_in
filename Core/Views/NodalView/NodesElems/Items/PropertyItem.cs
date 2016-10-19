@@ -12,34 +12,46 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class PropertyItem : ClassItem
     {
-        
+        public PropertyDeclaration PropertyNode = null;
         public override void SetThemeResources(String keyPrefix) { }
         static Random r = new Random();
         private Button _getEditButton;
         private Button _setEditButton;
+
         public PropertyItem(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
             _getEditButton = new Button();
             _setEditButton = new Button();
-
+            _getEditButton.Content = "Get";
+            _setEditButton.Content = "Set";
             _getEditButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             _setEditButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             _getEditButton.Width = 35;
-            _getEditButton.Height = 35;
+            _getEditButton.Height = 25;
             _setEditButton.Width = 35;
-            _setEditButton.Height = 35;
+            _setEditButton.Height = 25;
             this.AfterName.Children.Add(_getEditButton);
             this.AfterName.Children.Add(_setEditButton);
-
+            _getEditButton.PreviewMouseDown += getEditButton_PreviewMouseDown;
+            _setEditButton.PreviewMouseDown += setEditButton_PreviewMouseDown;
             //Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
+        }
+        void getEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            view.EditProperty(this, true);
+        }
+        void setEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            view.EditProperty(this, false);
         }
         public PropertyItem() :
             this(Code_inApplication.MainResourceDictionary)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
-
         #region IContainingModifiers
         public void setAccessModifiers(Modifiers modifiers)
         {

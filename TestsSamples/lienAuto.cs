@@ -9,16 +9,13 @@
         int valRet;
 
         if (x < y) 
-	{
-		test;
-		titi;
-		42;
-	}
+        {
+            valRet = y;
+        }
         else
-	{
-            
-	}
-	valret = valret + 42;
+        {
+            valrRet = x;
+        }
         return valRet;
     }
 

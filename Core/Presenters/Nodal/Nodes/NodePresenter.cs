@@ -37,11 +37,13 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<string> ModifiersList = null;
         private List<string> AttributesList = null;
         private string _type = null;
+        private int ExecParamsNb;
         public AstNode GetASTNode()
         {
             return _model;
         }
-        public NodePresenter(INodalPresenter nodalPres, AstNode model) {
+        public NodePresenter(INodalPresenter nodalPres, AstNode model)
+        {
             System.Diagnostics.Debug.Assert(nodalPres != null);
             //System.Diagnostics.Debug.Assert(model != null);
             _nodalPresenter = nodalPres;
@@ -55,6 +57,7 @@ namespace code_in.Presenters.Nodal.Nodes
             GetExistingModifiersFromNode();
             AttributesList = new List<string>();
             GetTypeFromNode();
+            LoadExecParamsCount();
             //GetExistingAttributesFromNode();
             //TODO getExistingmodifiers then 
         }
@@ -267,30 +270,37 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 if (_model.GetType() == typeof(TypeDeclaration))
                     return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.INHERITANCE | ENodeActions.MODIFIERS | ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.GENERICS);
-                if (_model.GetType() == typeof(NamespaceDeclaration))
+                else if (_model.GetType() == typeof(NamespaceDeclaration))
                     return (ENodeActions.NAME | ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(MethodDeclaration))
+                else if (_model.GetType() == typeof(MethodDeclaration))
                     return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS | ENodeActions.TYPE);
-                if (_model.GetType() == typeof(FieldDeclaration))
+                else if (_model.GetType() == typeof(FieldDeclaration))
                     return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE | ENodeActions.TYPE);
-                if (_model.GetType() == typeof(PropertyDeclaration))
+                else if (_model.GetType() == typeof(PropertyDeclaration))
                     return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(UsingDeclaration))
+                else if (_model.GetType() == typeof(UsingDeclaration))
                     return (ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(ObjectCreateExpression))
+                else if (_model.GetType() == typeof(ObjectCreateExpression))
                     return (ENodeActions.COMMENT | ENodeActions.EXEC_TYPE);
-                if (_model.GetType() == typeof(IdentifierExpression))
+                else if (_model.GetType() == typeof(IdentifierExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(MemberReferenceExpression))
+                else if (_model.GetType() == typeof(MemberReferenceExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(InvocationExpression))
+                else if (_model.GetType() == typeof(InvocationExpression))
                     return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
-                if (_model.GetType() == typeof(PrimitiveExpression))
+                else if (_model.GetType() == typeof(PrimitiveExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else
+                    return (ENodeActions.TEXT); // Any not supported node allows text modification
             }
+
             return (0);
         }
 
+        public void SetASTNode(AstNode node)
+        {
+            _model = node;
+        }
         // methods for the Nodes modification
 
         // this method changes the name into ast and update the view
@@ -377,7 +387,7 @@ namespace code_in.Presenters.Nodal.Nodes
             if (GenericList != null)
                 return (GenericList);
             else
-                return (new List<Tuple<string,EGenericVariance>>());
+                return (new List<Tuple<string, EGenericVariance>>());
         }
 
         // this method is an event called when the Generic name is modified
@@ -783,12 +793,38 @@ namespace code_in.Presenters.Nodal.Nodes
             }
         }
 
+        public void AddExecParam()
+        {
+            System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            System.Diagnostics.Debug.Assert(this._model is InvocationExpression);
+
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            var invocExpr = this._model as InvocationExpression;
+            var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
+            invocExpr.Arguments.Add(new IdentifierExpression()); // This node is only used to fill the gap
+            inAnchor.SetASTNodeReference((e) => { invocExpr.Arguments.ElementAt(invocExpr.Arguments.Count - 1).ReplaceWith(e); });
+        }
+
+        // TODO @Seb
+        public void RemoveExecParam(int index)
+        {
+
+        }
+
+        // It keeps existing links and updates offsets
         public void SetExecParams(int paramsNumber)
         {
-/*            while (paramsNumber >= 0)
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            var invocExpr = this._model as InvocationExpression;
+            int paramsToAdd = invocExpr.Arguments.Count;
+            for (int i = 0; i < paramsNumber; ++i)
             {
-//                _view.
-            }*/
+                funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
+            }
+            /*            while (paramsNumber >= 0)
+                        {
+            //                _view.
+                        }*/
         }
 
         public void AddExecGeneric()
@@ -812,16 +848,16 @@ namespace code_in.Presenters.Nodal.Nodes
             newAttribute.Arguments.Add(newExpr);
             ICSharpCode.NRefactory.CSharp.AttributeSection newSection = new AttributeSection();
             newSection.Attributes.Add(newAttribute);
-            
+
             if (_model.GetType() == typeof(TypeDeclaration))
             {
                 var toto = (_model as TypeDeclaration);
                 toto.Attributes.Add(newSection);
             }
-/*            foreach(var tmp in newExpr.Children)
-            {
-                newAttribute.Arguments.Add(tmp);
-            }*/
+            /*            foreach(var tmp in newExpr.Children)
+                        {
+                            newAttribute.Arguments.Add(tmp);
+                        }*/
             //TODO add in ast + add in visual node
         }
 
@@ -862,6 +898,51 @@ namespace code_in.Presenters.Nodal.Nodes
             _viewStatic = ((objects[0] as NodePresenter)._view) as INodeElem;
             _presStatic = ((objects[0] as NodePresenter)._nodalPresenter) as INodalPresenter;
         }
+
+        public void LoadExecParamsCount()
+        {
+            ExecParamsNb = 1;
+            if (_model != null && _model.GetType() == typeof(InvocationExpression))
+            {
+                var tmp = (_model as InvocationExpression);
+
+                foreach (var child in tmp.Arguments)
+                    ++ExecParamsNb;
+            }
+        }
+
+        public int getExecParamsNb()
+        {
+            LoadExecParamsCount();
+            return (ExecParamsNb);
+        }
+
+        public void ModifExecParams(int count)
+        {
+            ExecParamsNb = count;
+            if (count > ExecParamsNb) // TODO Add empty visual expr nodes
+                return;
+            if (count != ExecParamsNb)
+            {
+                if (_model != null && _model.GetType() == typeof(InvocationExpression))
+                {
+                    CSharpParser parser = new CSharpParser();
+                    var tmp = _model as InvocationExpression;
+                    int i = 0;
+                    foreach (var child in tmp.Arguments)
+                    {
+                        if (i > count)
+                        {
+                            tmp.Arguments.Remove(child);
+                        }
+                        else
+                            ++i;
+                    }
+                    // TODO changer visuellement le nombre d'args == soit ajouter soit suppr expr node
+                }
+            }
+        }
+
         static void mi_Click(object sender, RoutedEventArgs e)
         {
             if (((MenuItem)sender).DataContext != null)
@@ -870,7 +951,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
                 var tmp = new NodePresenter(_presStatic, null);
-//                var tmp = _presStatic;
+                //                var tmp = _presStatic;
                 var toto = new object[1];
                 toto[0] = tmp;
                 BaseNode node = gmi.Invoke(_viewStatic, toto) as BaseNode;
@@ -940,7 +1021,7 @@ namespace code_in.Presenters.Nodal.Nodes
         //This part bind methods to the options of the contextMenu
         public Tuple<EContextMenuOptions, Action<object[]>>[] GetMenuOptions()
         {
-            List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions,Action<object[]>>>();
+            List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions, Action<object[]>>>();
             if (_model == null)
                 return optionsList.ToArray();
             if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // for classes, enums, interfaces
@@ -977,6 +1058,10 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+            }
+            else
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
             }
             /*            else // basic behaviour to avoid crashes
                         {
@@ -1028,10 +1113,7 @@ namespace code_in.Presenters.Nodal.Nodes
             return (tmp);
         }
 
-        public void SetASTNode(AstNode node)
-        {
-            _model = node;
-        }
+       
 
         public void UpdateType(string type)
         {
