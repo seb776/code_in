@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Reflection;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System.Windows.Input;
+using code_in.Views.NodalView.NodesElems.Anchors;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
@@ -801,13 +802,24 @@ namespace code_in.Presenters.Nodal.Nodes
             var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
             var invocExpr = this._model as InvocationExpression;
             var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
-            invocExpr.Arguments.Add(new IdentifierExpression()); // This node is only used to fill the gap
-            inAnchor.SetASTNodeReference((e) => { invocExpr.Arguments.ElementAt(invocExpr.Arguments.Count - 1).ReplaceWith(e); });
+            var idExpr = new IdentifierExpression();
+            invocExpr.Arguments.Add(idExpr); // This node is only used to fill the gap
+            inAnchor.SetASTNodeReference((e) => { idExpr.ReplaceWith(e); });
         }
 
         // TODO @Seb
         public void RemoveExecParam(int index)
         {
+            System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            System.Diagnostics.Debug.Assert(this._model is InvocationExpression);
+
+            var invocExpr = this._model as InvocationExpression;
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+
+            System.Diagnostics.Debug.Assert(index < invocExpr.Arguments.Count);
+            var dataFlowAnchor = funcExprView._inputs.Children[index] as DataFlowAnchor;
+            //dataFlowAnchor.RemoveLink(dataFlowAnchor._links[0], dataFlowAnchor.Meth)
+            funcExprView._inputs.Children.RemoveAt(index);
 
         }
 
