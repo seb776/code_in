@@ -301,22 +301,16 @@ namespace code_in.Presenters.Nodal
         //TODO @YAYA
         private void _generateVisualASTConstructorBody(ConstructorDeclaration constructor)
         {
-            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
-            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
-            foreach (var i in constructor.Parameters)
-            {
-                var data = entry.CreateAndAddOutput<DataFlowAnchor>();
-                data.SetName(i.Name);
-                //data.SetItemType(i.Type.ToString());
-            }
-            _generateVisualASTStatements(constructor.Body, entry.FlowOutAnchor, null, null);
+            (this._view as NodalView).IsDeclarative = false;
+            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
+            _generateVisualASTStatements(this._view.RootTileContainer, constructor.Body);
         }
 
         private void _generateVisualASTPropertyBody(Accessor access)
         {
-            var nodePresenter = new NodePresenter(this, NodePresenter.EVirtualNodeType.FUNC_ENTRY);
-            var entry = this._view.CreateAndAddNode<FuncEntryNode>(nodePresenter);
-            _generateVisualASTStatements(access.Body, entry.FlowOutAnchor, null, null);
+            (this._view as NodalView).IsDeclarative = false;
+            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
+            _generateVisualASTStatements(this._view.RootTileContainer, access.Body);
 
         }
 
