@@ -51,7 +51,10 @@ namespace code_in.Presenters.Nodal
             _view = view;
             _parser = new CSharpParser();
         }
-
+        public void RemoveLink(AIOAnchor anchor)
+        {
+            this._view.RemoveLink(anchor);
+        }
         public void OpenFile(String path)
         {
             _model = this.ParseFile(path);

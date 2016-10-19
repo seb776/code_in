@@ -438,21 +438,7 @@ namespace code_in.Views.NodalView
         //_draggingNode = null;
         //_nodeTransform = TransformationMode.NONE;
         //}
-        public void RemoveLink(AIOAnchor node)
-        {
-            ///* if (((node.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-            // {
-            //   //  ((node.GetParentView() as BaseNode).GetParentView() as BaseNode).ContentGrid.Children.Remove(node._nodeAnchor.IOLine);
-            // }
-            // else
-            // {*/
-            //for (int i = 0; i < node._nodeAnchor.IOLine.Count(); ++i)
-            //{
-            //    this.MainGrid.Children.Remove(node._nodeAnchor.IOLine[i]);
-            //}
-            //// }
-            //node.RemoveLink();
-        }
+
         #endregion create
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
@@ -518,6 +504,20 @@ namespace code_in.Views.NodalView
         }
         private AIOAnchor _linkStart = null;
         private Code_inLink _currentLink = null;
+        public void RemoveLink(AIOAnchor anchor)
+        {
+            if (anchor._links.Count > 0)
+            {
+                var ioLink = anchor._links[0];
+                var currentVisualLink = ioLink.Link;
+                var output = anchor._links[0].Output;
+                var input = anchor._links[0].Input;
+                output.RemoveLink(ioLink, true);
+                input.RemoveLink(ioLink, true);
+                this.MainGrid.Children.Remove(currentVisualLink);
+                this.MainGrid.Children.Add(currentVisualLink);
+            }
+        }
         public void DragLink(AIOAnchor from, bool isGenerated)
         {
             _linkStart = from;
