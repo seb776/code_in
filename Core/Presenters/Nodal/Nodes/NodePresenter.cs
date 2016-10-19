@@ -793,23 +793,6 @@ namespace code_in.Presenters.Nodal.Nodes
             }
         }
 
-        public void AddExecParam()
-        {
-            System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
-            System.Diagnostics.Debug.Assert(this._model is InvocationExpression);
-
-            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
-            var invocExpr = this._model as InvocationExpression;
-            var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
-            invocExpr.Arguments.Add(new IdentifierExpression()); // This node is only used to fill the gap
-            inAnchor.SetASTNodeReference((e) => { invocExpr.Arguments.ElementAt(invocExpr.Arguments.Count - 1).ReplaceWith(e); });
-        }
-
-        // TODO @Seb
-        public void RemoveExecParam(int index)
-        {
-
-        }
 
         // It keeps existing links and updates offsets
         public void SetExecParams(int paramsNumber)
@@ -901,13 +884,10 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void LoadExecParamsCount()
         {
-            ExecParamsNb = 1;
             if (_model != null && _model.GetType() == typeof(InvocationExpression))
             {
                 var tmp = (_model as InvocationExpression);
-
-                foreach (var child in tmp.Arguments)
-                    ++ExecParamsNb;
+                ExecParamsNb = tmp.Arguments.Count + 1;
             }
         }
 
@@ -917,33 +897,25 @@ namespace code_in.Presenters.Nodal.Nodes
             return (ExecParamsNb);
         }
 
-        public void ModifExecParams(int count)
+        public void DeleteExecParam(int index)
         {
-            ExecParamsNb = count;
-            if (count > ExecParamsNb) // TODO Add empty visual expr nodes
-            {
-                return;
-                //TODO Zorg ici pour relier add execparams
-            }
-            if (count != ExecParamsNb)
-            {
-                if (_model != null && _model.GetType() == typeof(InvocationExpression))
-                {
-                    CSharpParser parser = new CSharpParser();
-                    var tmp = _model as InvocationExpression;
-                    int i = 0;
-                    foreach (var child in tmp.Arguments)
-                    {
-                        if (i > count)
-                        {
-                            tmp.Arguments.Remove(child);
-                        }
-                        else
-                            ++i;
-                    }
-                    // TODO changer visuellement le nombre d'args == soit ajouter soit suppr expr node
-                }
-            }
+            var tmp = _model as InvocationExpression;
+
+            tmp.Arguments.ElementAt(index).Remove();
+            LoadExecParamsCount();
+            //TODO remove visual node?
+        }
+
+        public void AddExecParam() // TODO zorg finish ?
+        {
+            System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            System.Diagnostics.Debug.Assert(this._model is InvocationExpression);
+
+            var funcExprView = (_view as code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
+            var invocExpr = this._model as InvocationExpression;
+            var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
+            invocExpr.Arguments.Add(new IdentifierExpression()); // This node is only used to fill the gap
+            inAnchor.SetASTNodeReference((e) => { invocExpr.Arguments.ElementAt(invocExpr.Arguments.Count - 1).ReplaceWith(e); });
         }
 
         static void mi_Click(object sender, RoutedEventArgs e)
