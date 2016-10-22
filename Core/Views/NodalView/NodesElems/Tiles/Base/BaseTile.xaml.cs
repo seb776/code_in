@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     {
         protected INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
+        bool IsBreakOrNot = false;
         public BaseTile(ResourceDictionary themeResDict)
         {
             _themeResourceDictionary = themeResDict;
@@ -91,5 +93,23 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             //throw new NotImplementedException("A method implementation has been forgotten.");
         }
         #endregion ITile
+
+        private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsBreakOrNot)
+            {
+                BlockStatement blockstmt = new BlockStatement();
+                ICSharpCode.NRefactory.CSharp.CSharpParser parse = new ICSharpCode.NRefactory.CSharp.CSharpParser();
+
+                var stmts = parse.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
+                blockstmt.Add(stmts.ElementAt(0)); // TODO check Z0rg
+                blockstmt.Add((Statement)_presenter.GetASTNode()); // TODO check Z0rg
+                _presenter.GetASTNode().ReplaceWith(blockstmt);
+            }
+            else
+            {
+                //TODO z0rg
+            }
+        }
     }
 }
