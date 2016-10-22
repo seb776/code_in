@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
+using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     {
         protected INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
-        bool IsBreakOrNot = false;
+        private bool _isBreakpointActive = false;
+        private Statement _breakpoint = null;
         public BaseTile(ResourceDictionary themeResDict)
         {
             _themeResourceDictionary = themeResDict;
@@ -96,20 +98,34 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!IsBreakOrNot)
+            if (_isBreakpointActive)
             {
-                BlockStatement blockstmt = new BlockStatement();
-                ICSharpCode.NRefactory.CSharp.CSharpParser parse = new ICSharpCode.NRefactory.CSharp.CSharpParser();
-
-                var stmts = parse.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
-                blockstmt.Add(stmts.ElementAt(0)); // TODO check Z0rg
-                blockstmt.Add((Statement)_presenter.GetASTNode()); // TODO check Z0rg
-                _presenter.GetASTNode().ReplaceWith(blockstmt);
+                var thisASTNode = _presenter.GetASTNode();
+                if (thisASTNode is Statement)
+                {
+                    var thisStmt = thisASTNode as Statement;
+                    _breakpoint.Remove();
+                    _breakpoint = null;
+                    this.TileEllipse.Fill = new SolidColorBrush(Color.FromRgb(0x00, 0x88, 0xD6));
+                }
             }
             else
             {
-                //TODO z0rg
+                BlockStatement blockstmt = new BlockStatement();
+                ICSharpCode.NRefactory.CSharp.CSharpParser parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
+
+                var breakpointStmts = parser.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
+                _breakpoint = breakpointStmts.ElementAt(0);
+                var thisASTNode = _presenter.GetASTNode();
+                if (thisASTNode is Statement)
+                {
+                    var thisStmt = thisASTNode as Statement;
+                    thisStmt.Parent.InsertChildBefore(thisASTNode, _breakpoint, BlockStatement.StatementRole); // From Seb Not sure
+                }
+                this.TileEllipse.Fill = new SolidColorBrush(Colors.Red);
             }
+            e.Handled = true;
+            _isBreakpointActive = !_isBreakpointActive;
         }
     }
 }
