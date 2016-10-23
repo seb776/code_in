@@ -65,6 +65,7 @@ namespace code_in.Presenters.Nodal.Nodes
         void UpdateType(string type);
         string getType();
         int getExecParamsNb();
-        void ModifExecParams(int count);
+        void AddExecParam();
+        void RemoveExecParam(int index);
     }
 }

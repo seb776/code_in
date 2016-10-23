@@ -9,10 +9,6 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 ***************************************************************************/
 
-using System;
-using System.Collections;
-using System.Text;
-using System.Reflection;
 using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +19,7 @@ namespace VSCode_in_UnitTests
     [TestClass()]
     public class PackageTest
     {
+
         [TestMethod()]
         public void CreateInstance()
         {

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using ICSharpCode.NRefactory.CSharp;
+using code_in.Views.NodalView.NodesElems.Anchors;
 
 namespace code_in.Presenters.Nodal
 {
@@ -23,7 +24,7 @@ namespace code_in.Presenters.Nodal
         void EditFunction(FuncDeclItem node);
         void EditAccessor(Accessor node);
         void EditConstructor(ConstructorItem node);
-        //void EditProperty(object obj); // TODO @z0rg type is not created yet
+        void RemoveLink(AIOAnchor anchor);
     }
 
 
