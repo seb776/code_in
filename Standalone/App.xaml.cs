@@ -38,7 +38,7 @@ namespace code_in
 
         public T CreateAndAddView<T>() where T : UserControl
         {
-            T win = (T)Activator.CreateInstance(typeof(T), code_in.Resources.SharedDictionaryManager.MainResourceDictionary);
+            T win = (T)Activator.CreateInstance(typeof(T), code_in.Code_inApplication.MainResourceDictionary);
 
             TabItem nItem = new TabItem();
             nItem.Header = "NewTab";
