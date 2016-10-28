@@ -78,7 +78,7 @@ namespace code_in.Presenters.Nodal
         {
             int accHorizontal = 0;
             int accVertical = 0;
-            this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical);
+            this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical, null);
         }
 
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
@@ -116,7 +116,7 @@ namespace code_in.Presenters.Nodal
             }
             view.setGenerics(GenericList);
         }
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY)
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY, UsingDeclNode usingDeclNode)
         {
             int currentPosX = posX;
             int currentPosY = posY;
@@ -131,9 +131,15 @@ namespace code_in.Presenters.Nodal
             {
                 int localPosX = nodeHorizontalOffset, localPosY = nodeVerticalOffset;
                 var syntaxTree = node as ICSharpCode.NRefactory.CSharp.SyntaxTree;
+                UsingDeclNode usingDeclNodeInstantiate = null;
                 foreach (var decl in syntaxTree.Members)
                 {
-                    this._generateVisualASTDeclarationRecur(decl, parentContainer, ref localPosX, ref localPosY);
+                    if (decl.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
+                    {
+                        var usingPresenter = new NodePresenter(this, decl as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
+                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
+                    }
+                    this._generateVisualASTDeclarationRecur(decl, parentContainer, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
                 }
             }
             #endregion Global scope
@@ -145,8 +151,16 @@ namespace code_in.Presenters.Nodal
                 visualNode = namespaceNode;
                 var namespaceDecl = node as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
                 namespaceNode.SetName(namespaceDecl.Name);
+                UsingDeclNode usingDeclNodeInstantiate = null;
                 foreach (var member in namespaceDecl.Members)
-                    this._generateVisualASTDeclarationRecur(member, namespaceNode, ref localPosX, ref localPosY);
+                {
+                    if (member.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
+                    {
+                        var usingPresenter = new NodePresenter(this, member as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
+                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
+                    }
+                    this._generateVisualASTDeclarationRecur(member, namespaceNode, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
+                }
             }
             #endregion
             #region Classes (interface, struct, class, enum)
@@ -188,7 +202,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(classDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY);
+                        _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY, null);
                 }
                 #endregion Class
                 #region Interface
@@ -206,7 +220,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, ref posX, ref posY);
+                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, ref posX, ref posY, null);
                 }
                 #endregion Interface
             }
@@ -284,7 +298,7 @@ namespace code_in.Presenters.Nodal
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
             {
                 var usingDecl = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
-                var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
+                //var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
                 visualNode = usingDeclNode;
                 UsingDeclItem UsingItem = usingDeclNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
                 UsingItem.SetName(usingDecl.Namespace);
