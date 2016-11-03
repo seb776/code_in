@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
@@ -17,9 +18,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public DoWhileStmtTile(ResourceDictionary themeResDict) :
             base(themeResDict)
         {
-            this.SetName("do while");
+            this.SetName("DoWhile");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
             trueItem = this.CreateAndAddItem<FlowTileItem>();
+            this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(51, 0x20, 0x77, 0xE3));
         }
         public DoWhileStmtTile() :
             base(Code_inApplication.MainResourceDictionary)

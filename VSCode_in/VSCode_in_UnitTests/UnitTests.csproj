@@ -67,10 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\UI\Nodes.cs" />
-    <Compile Include="VCode_in\PackageTest.cs" />
+    <Compile Include="VSCode_in\PackageTest.cs" />
     <!---->
-    <Compile Include="VCode_in\MenuItemTests\MenuItemCallback.cs" />
-    <Compile Include="VCode_in\MenuItemTests\UIShellServiceMock.cs" />
+    <Compile Include="VSCode_in\MenuItemTests\MenuItemCallback.cs" />
+    <Compile Include="VSCode_in\MenuItemTests\UIShellServiceMock.cs" />
     <!---->
     <!---->
     <!---->

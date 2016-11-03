@@ -6,14 +6,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Padding="5"
              xmlns:testItem="clr-namespace:code_in.Views.NodalView.NodesElems.Tiles">
-    <Grid HorizontalAlignment="Stretch" Background="#4200FF00" VerticalAlignment="Top" x:Name="ItemGrid">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" x:Name="ItemGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Column="0">
+        <StackPanel x:Name="DescriptionPanel" Orientation="Horizontal" Grid.Column="0" Background="#4200FF00" Width="5">
             <!--<Button x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">E/C</Button>-->
-            <Label x:Name="ItemName" MouseDown="ItemName_MouseDown" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top">true</Label>
+            <!--<Label x:Name="ItemName" MouseDown="ItemName_MouseDown" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top">true</Label>-->
         </StackPanel>
     </Grid>
 </UserControl>

@@ -44,7 +44,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetName(string name)
         {
-            this.ItemName.Content = name;
+            //this.ItemName.Content = name;
         }
 
         public FlowTileItem() :
@@ -88,7 +88,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public void SetThemeResources(string keyPrefix)
         {
             if (keyPrefix == "false") // From Seb temporary
-                this.ItemGrid.Background = new SolidColorBrush(Color.FromArgb(0x42, 0xFF, 0x00, 0x00));
+                this.DescriptionPanel.Background = new SolidColorBrush(Color.FromArgb(166, 0xFF, 0x00, 0x00));
         }
 
 
