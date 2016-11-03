@@ -17,7 +17,7 @@
               Viewport="0,0 30,30" ViewportUnits="Absolute">
             <!-- ^^^^^^^^^^^ set the size of the tile-->
             <DrawingBrush.Drawing>
-                <GeometryDrawing Brush="#2a2a2a">
+                <GeometryDrawing Brush="#212330">
                     <GeometryDrawing.Geometry>
                         <!-- draw a single X -->
                         <GeometryGroup>
