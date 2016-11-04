@@ -80,17 +80,14 @@ namespace code_in.Presenters.Nodal
             int accVertical = 0;
             this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical);
         }
-
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
             view.setModifiersList(tmpModifiers);
         }
-
         private void setAccessModifiers(IContainingAccessModifiers view, Modifiers tmpModifiers)
         {
             view.setAccessModifiers(tmpModifiers);
         }
-
         private void InitInheritance(IContainingInheritance view, TypeDeclaration typeDecl)
         {
             List<string> InheritanceList = new List<string>();
@@ -98,7 +95,6 @@ namespace code_in.Presenters.Nodal
                 InheritanceList.Add(inherit.ToString());
             view.ManageInheritance(InheritanceList);
         }
-
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
             Tuple<string, EGenericVariance> tuple;
@@ -186,7 +182,11 @@ namespace code_in.Presenters.Nodal
                     InitInheritance(classDeclNode, tmpNode);
                     //Generic
                     SetAllGenerics(classDeclNode, tmpNode);
-
+                    //Constraint
+                    foreach(var constraint in tmpNode.Constraints)
+                    {
+                        classDeclNode.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);
+                    }
                     foreach (var member in tmpNode.Members)
                         _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY);
                 }
@@ -278,6 +278,10 @@ namespace code_in.Presenters.Nodal
                 funcDecl.setTypeFromString(method.ReturnType.ToString());
                 setOtherModifiers(funcDecl, method.Modifiers);
                 setAccessModifiers(funcDecl, method.Modifiers);
+                //foreach (var constraint in method.Constraints)
+                //{
+                //    funcDecl.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);
+                //}
             }
             #endregion Method
             #region Using

@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
@@ -15,7 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     /// <summary>
     /// This defines the visual nodes for "classes", class here as a large meaning, it stand for enum, struct, class, interface
     /// </summary>
-    public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance, IContainingGenerics
+    public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance, IContainingGenerics, IContainingConstraints
     {
         public override void InstantiateASTNode()
         {
@@ -32,6 +33,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
         public Assets.ClassNodeModifiers Modifiers = null;
         public Assets.GenericItem Generics = null;
+        public Assets.GenericConstraints Constraints = null;
         private EType _type;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
             base(themeResDict)
@@ -41,9 +43,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             //this.SetThemeResources("ClassDeclNode");
             Generics = new GenericItem(themeResDict);
             Modifiers = new ClassNodeModifiers(themeResDict);
+            Constraints = new GenericConstraints(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
             this.ModifiersLayout.Children.Add(Modifiers);
             this.GenericsField.Children.Add(Generics);
+            this.ConstraintLayout.Children.Add(Constraints);
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
@@ -142,5 +146,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             Generics.SetGenerics(tmp);
         }
         #endregion
+
+        public void setConstraint(string type, AstNodeCollection<AstType> types)
+        {
+            Constraints.setConstraint(type, types);
+        }
     }
 }

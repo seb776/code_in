@@ -78,14 +78,14 @@
         </DockPanel>
 
         <Grid x:Name="ConstraintLayout" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" >
-
+            
         </Grid>
         <!--<Border Grid.Column="2" Grid.Row="1" Background="#212121" VerticalAlignment="Top" CornerRadius="0,5,5,0">
-            <StackPanel Orientation="Vertical">
-                <Label Foreground="DodgerBlue">where T :</Label>
-                <Label Foreground="White">Test</Label>
-            </StackPanel>
-        </Border>-->
+                <StackPanel Orientation="Vertical">
+                    <Label Foreground="DodgerBlue">where T :</Label>
+                    <Label Foreground="White">Test</Label>
+                </StackPanel>
+            </Border>-->
 
         <!-- The border under is for the selection -->
         <Border x:Name="SelectionBorder" IsEnabled="False" Visibility="Hidden" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="Orange" BorderThickness="3">

@@ -1,4 +1,6 @@
-﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+﻿using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using ICSharpCode.NRefactory.CSharp;
 using System;
