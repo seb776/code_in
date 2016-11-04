@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
     /// <summary>
     /// A TileItem to contain expressions (nodes).
     /// </summary>
-    public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainerDragNDrop, ICodeInVisual, ICodeInTextLanguage
+    public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainerDragNDrop, ICodeInTextLanguage
     {
         List<AExpressionNode> _expression = null;
         List<INodeElem> _visualNodes = null;
@@ -158,7 +158,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
 
-        public T CreateAndAddNode<T>(Presenters.Nodal.Nodes.INodePresenter nodePresenter) where T : UIElement, Presenters.Nodal.INodeElem
+        public T CreateAndAddNode<T>(Presenters.Nodal.Nodes.INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
@@ -187,7 +187,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             return node;
         }
 
-        public void AddNode<T>(T node, int idx = -1) where T : UIElement, Presenters.Nodal.INodeElem
+        public void AddNode<T>(T node, int idx = -1) where T : UIElement, code_in.Views.NodalView.INode
         {
             this.ExpressionsGrid.Children.Add(node as UIElement);
         }
@@ -443,6 +443,31 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.IsExpanded = !this.IsExpanded;
+        }
+
+        public void AddSelectNode(IDragNDropItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSelectNodes(List<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Drag(EDragMode dragMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragInfos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Drop(List<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
         }
     }
 }

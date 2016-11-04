@@ -21,7 +21,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// <summary>
     /// Interaction logic for BaseNode.xaml
     /// </summary>
-    public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
+    public abstract partial class BaseNode : UserControl, code_in.Views.NodalView.INode
     {
         public virtual void Remove()
         {
@@ -38,7 +38,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             }
         }
         private ResourceDictionary _themeResourceDictionary = null;
-        private IRootDragNDrop _rootView = null;
         private IVisualNodeContainerDragNDrop _parentView = null;
         private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
@@ -135,17 +134,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region Events
         private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Debug.Assert(_rootView != null);
-            if (!Keyboard.IsKeyDown(Key.LeftShift))
-                this._rootView.UnSelectAllNodes();
-            try
-            {
-                this._rootView.SelectNode(this);
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message);
-            }
+            // TODO @Seb
+            //if (!Keyboard.IsKeyDown(Key.LeftShift))
+            //    this.UnSelectAllNodes();
+            //try
+            //{
+            //    this.SelectNode(this);
+            //}
+            //catch (Exception except)
+            //{
+            //    MessageBox.Show(except.Message);
+            //}
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
         }
@@ -159,10 +158,19 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         #region INodeElem
         public void SetParentView(IVisualNodeContainerDragNDrop vc) { _parentView = vc; }
         public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
-        public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
-        public IRootDragNDrop GetRootView() { return _rootView; }
         #endregion INodeElem
 
         public abstract void InstantiateASTNode();
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

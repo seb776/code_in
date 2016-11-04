@@ -23,11 +23,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
+        public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
             T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
             node.SetParentView(this);
-            node.SetRootView(this.GetRootView());
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             try
@@ -41,7 +40,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             }
             return node;
         }
-        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
+        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode;
         public abstract void RemoveNode(INodeElem node);
 
         public abstract int GetDropIndex(Point pos);
@@ -66,6 +65,31 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
         public void HighLightDropNodePlace(Point pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSelectNode(IDragNDropItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSelectNodes(List<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Drag(EDragMode dragMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragInfos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Drop(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }

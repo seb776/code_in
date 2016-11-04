@@ -731,7 +731,6 @@ namespace code_in.Presenters.Nodal
         {
             return new Tuple<EContextMenuOptions, Action<object[]>>[] { 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode), 
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, AlignNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, CollapseAllNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, SaveNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, CloseNode),
@@ -799,16 +798,7 @@ namespace code_in.Presenters.Nodal
         static NodalView _viewStatic = null;
 
         private static Action EmptyDelegate = delegate() { };
-        static void AlignNode(object[] objects)
-        {
-            for (int i = 0; i < 100; ++i)
-            {
-                Thread.Sleep(10);
-                (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.1);
-                ((UIElement)(objects[0] as NodalPresenterLocal)._view).Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            }
-            //MessageBox.Show(objects[0].GetType().ToString());
-        }
+
         static void CloseNode(object[] objects)
         {
             MessageBox.Show(objects[0].GetType().ToString());

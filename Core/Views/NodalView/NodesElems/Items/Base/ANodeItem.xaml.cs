@@ -23,7 +23,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// <summary>
     /// Interaction logic for ANodeItem.xaml
     /// </summary>
-    public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
+    public abstract partial class ANodeItem : UserControl, code_in.Views.NodalView.INode
     {
         public void Remove()
         {
@@ -36,7 +36,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private ResourceDictionary _languageResourceDictionary = null;
         EditNodePanel EditMenu = null;
         protected IVisualNodeContainerDragNDrop _parentView = null;
-        private IRootDragNDrop _rootView = null;
         public INodePresenter _nodePresenter = null;
 
         protected ANodeItem(ResourceDictionary themeResDict)
@@ -86,8 +85,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         #region INodeElem
         public void SetParentView(IVisualNodeContainerDragNDrop parent) { _parentView = parent; }
         public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
-        public void SetRootView(IRootDragNDrop root) { _rootView = root; }
-        public IRootDragNDrop GetRootView() { return _rootView; }
         public void SetName(String name)
         {
             this.ItemName.Content = name;
@@ -142,6 +139,17 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public Point GetPosition()
         {
             return new Point(this.Margin.Left, this.Margin.Top);
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
         }
     } // Class
 } // Namespace

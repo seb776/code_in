@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView
 {
-    public interface INodalView : IRootDragNDrop, ILinkContainer
+    public interface INodalView : IVisualNodeContainerDragNDrop, ILinkContainer
     {
-        void AlignNodes(double deltaTime);
         void RemoveLink(AIOAnchor anchor);
 
         ITileContainer RootTileContainer

@@ -62,7 +62,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             this.IsExpanded = true;
         }
 
-        public T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile
+        public T CreateAndAddTile<T>(INodePresenter presenter) where T : BaseTile
         {
             //T tile = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);  // TODO From Seb: This may crash if the constructor is not implemented
             ////node.SetParentView(null);
@@ -74,7 +74,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             //return tile;
         }
 
-        public void AddTile<T>(T tile, int index = -1) where T : ITile
+        public void AddTile<T>(T tile, int index = -1) where T : BaseTile
         {
             throw new Exception("This is useless as all is managed by CreateAndAddTile.");
             //_tileContainer.AddTile(tile, index);
@@ -92,7 +92,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
 
 
-        public void RemoveTile(ITile tile)
+        public void RemoveTile(BaseTile tile)
         {
             throw new NotImplementedException();
         }

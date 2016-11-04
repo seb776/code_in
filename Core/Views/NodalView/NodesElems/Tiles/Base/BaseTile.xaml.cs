@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal.Nodes;
+﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
@@ -21,7 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour BaseTile.xaml
     /// </summary>
-    public partial class BaseTile : UserControl, ITile, ICodeInVisual
+    public partial class BaseTile : UserControl, INodeElem
     {
         protected INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
@@ -126,6 +127,66 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             }
             e.Handled = true;
             _isBreakpointActive = !_isBreakpointActive;
+        }
+
+        public void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IVisualNodeContainerDragNDrop GetParentView()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetNodePresenter(INodePresenter nodePresenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowEditMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPosition(int posX, int posY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Point GetPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetSize(out int x, out int y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSelected(bool isSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
         }
     }
 }

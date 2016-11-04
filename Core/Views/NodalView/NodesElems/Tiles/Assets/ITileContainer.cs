@@ -9,9 +9,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 {
     public interface ITileContainer
     {
-        T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile; // TODO @Seb add NodePresenter
-        void AddTile<T>(T tile, int index = -1) where T : ITile;
-        void RemoveTile(ITile tile);
+        T CreateAndAddTile<T>(INodePresenter presenter) where T : BaseTile; // TODO @Seb add NodePresenter
+        void AddTile<T>(T tile, int index = -1) where T : BaseTile;
+        void RemoveTile(BaseTile tile);
         bool IsExpanded
         {
             get;

@@ -97,6 +97,7 @@
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
+    <Compile Include="Managers\RootDragNDropManager.cs" />
     <Compile Include="Presenters\LanguagePresenter.cs" />
     <Compile Include="Presenters\Nodal\IContainingAccessModifiers.cs" />
     <Compile Include="Presenters\Nodal\IContainingAttribute.cs" />
@@ -119,6 +120,8 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\IDragNDropItem.cs" />
+    <Compile Include="Views\NodalView\INode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
       <DependentUpon>AIOAnchor.xaml</DependentUpon>
     </Compile>
@@ -129,7 +132,6 @@
     <Compile Include="Views\Code_inLink .cs" />
     <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
-    <Compile Include="Views\NodalView\NodesElems\IRootDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -217,7 +219,6 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Tiles\Base\ITile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\Base\ITileItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\FlowTileItem.xaml.cs">

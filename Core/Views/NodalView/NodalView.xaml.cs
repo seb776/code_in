@@ -1,45 +1,37 @@
-﻿using code_in.Managers;
+﻿using code_in.Exceptions;
+using code_in.Managers;
 using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
-using code_in.Views.NodalView.NodesElems.Items.Base;
-using code_in.Views.NodalView.NodesElems.Nodes.Base;
-using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView
 {
-
-
     /// <summary>
     /// The Nodal view is the layout that is able to display Nodes From the NodalPresenter;
     /// </summary>
-    public partial class NodalView : UserControl, INodalView, ICodeInVisual
+    public partial class NodalView : UserControl, INodalView
     {
-        public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
-        List<INodeElem> _visualNodes; // TODO @z0rg Beaurk: beta quick implementation
-        private ResourceDictionary _themeResourceDictionary = null;
-        public INodalPresenter _nodalPresenter = null;
         private List<INodeElem> _selectedNodes = null;
-        private List<Thickness> _selectedNodesPositions = null; // Selected nodes are stored with their positions to revert in case of failure
-        private List<int> _selectedNodesIndexes = null; // The relative position of an item (-1 if useless) to revert them if the move is wrong
+        public INodalPresenter _nodalPresenter = null;
+        public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
+        private ResourceDictionary _themeResourceDictionary = null;
+        
         private Point _lastPosition;
+        private AIOAnchor _linkStart = null;
+        private Code_inLink _currentLink = null;
         public ITileContainer RootTileContainer
         {
             get;
@@ -53,16 +45,13 @@ namespace code_in.Views.NodalView
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             _selectedNodes = new List<INodeElem>();
-            _selectedNodesPositions = new List<Thickness>();
-            _selectedNodesIndexes = new List<int>();
             _lastPosition = new Point();
-            _visualNodes = new List<INodeElem>();
             RootTileContainer = new TileContainer(_themeResourceDictionary) as ITileContainer;
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+        { throw new DefaultCtorVisualException(); }
 
         #region This
         public void OpenFile(String path)
@@ -130,42 +119,6 @@ namespace code_in.Views.NodalView
                 else
                     this.UpdateLinkDraw(e.GetPosition(this.MainGrid));
             }
-
-
-            //if (_nodeTransform != TransformationMode.NONE /*&& _transformingNodes.Count() > 0*/)
-            //{
-            //    if (_nodeTransform == TransformationMode.MOVE)
-            //    {
-            //        Thickness margin = (Thickness)_draggingNode.GetType().GetProperty("Margin").GetValue(_draggingNode);
-            //        double marginLeft = margin.Left;
-            //        double marginTop = margin.Top;
-            //        Thickness newMargin = margin;
-            //        if (_draggingNode.GetParentView() == null)
-            //        {
-            //            newMargin.Left -= diff.X;
-            //            newMargin.Top -= diff.Y;
-            //        }
-            //        else
-            //        {
-            //            if (!_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-            //                newMargin.Left -= diff.X;
-            //            newMargin.Top -= diff.Y;
-            //        }
-
-            //        newMargin.Left = Math.Max(newMargin.Left, 0);
-            //        newMargin.Top = Math.Max(newMargin.Top, 0);
-
-            //        (_draggingNode as BaseNode).MoveNode(new Point(newMargin.Left, newMargin.Top));
-
-
-            //    }
-            //    else if (_nodeTransform == TransformationMode.LINE)
-            //    {
-            //        _link._x2 = e.GetPosition(this.MainGrid).X;
-            //        _link._y2 = e.GetPosition(this.MainGrid).Y;
-            //    }
-
-            //}
         }
 
         void _currentLineDrawing_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -280,20 +233,9 @@ namespace code_in.Views.NodalView
                 Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
         }
 
-        // To add new nodes
-        void m1_Click(object sender, RoutedEventArgs e)
-        {
-            //MethodInfo mi = this.GetType().GetMethod("CreateAndAddNode");
-            //MethodInfo gmi = mi.MakeGenericMethod(((sender as MenuItem).DataContext as Type));
-            //BaseNode node = gmi.Invoke(this, null) as BaseNode;
-
-            //node.Margin = new Thickness(_newNodePos.X, _newNodePos.Y, 0, 0);
-            //var node = this._rootNode.CreateAndAddNode<((sender as MenuItem).DataContext as Type)>();
-        }
-
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            this.UnSelectAllNodes();
+            //this.UnSelectAllNodes();
             this.DropLink(null, false);
             //this.DropNodes(null);
         }
@@ -312,6 +254,10 @@ namespace code_in.Views.NodalView
         }
         #endregion Events
         #endregion This
+        #region ICodeInVisual
+        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
+        #endregion ICodeInVisual
         #region IVisualNodeContainerDragNDrop
         public void SelectNode(INodeElem node)
         {
@@ -320,10 +266,8 @@ namespace code_in.Views.NodalView
                 if (_selectedNodes[0].GetParentView() != node.GetParentView())
                     throw new Exception("Cannot select multiple elements that have not the same parent.");
             _selectedNodes.Add(node);
-            _selectedNodesPositions.Add(new Thickness());
-            _selectedNodesIndexes.Add(0);
             node.SetSelected(true);
-            _selectedNodes = _selectedNodes.Distinct().ToList(); // Quick fix @z0rg
+            //_selectedNodes = _selectedNodes.Distinct().ToList(); // Quick fix @z0rg
         }
         public void UnSelectNode(INodeElem node)
         {
@@ -332,8 +276,6 @@ namespace code_in.Views.NodalView
             if (idx != -1)
             {
                 _selectedNodes.RemoveAt(idx);
-                _selectedNodesPositions.RemoveAt(idx);
-                _selectedNodesIndexes.RemoveAt(idx);
             }
 
         }
@@ -342,10 +284,36 @@ namespace code_in.Views.NodalView
             foreach (var n in _selectedNodes)
                 n.SetSelected(false);
             _selectedNodes.Clear();
-            _selectedNodesPositions.Clear();
-            _selectedNodesIndexes.Clear();
         }
+        public void UpdateDragState(Point mousePosition)
+        {
+            Vector diff;
+            if ((_lastPosition.X + _lastPosition.Y) < 0.01)
+                diff = new Vector(0, 0);
+            else
+                diff = _lastPosition - mousePosition;
+            _lastPosition = mousePosition;
 
+            //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
+            for (int i = 0; i < _selectedNodes.Count; ++i)
+            {
+                dynamic draggingNode = _selectedNodes[i];
+                Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
+                double marginLeft = margin.Left;
+                double marginTop = margin.Top;
+                Thickness newMargin = new Thickness();
+
+                newMargin.Left = margin.Left;
+                newMargin.Top = margin.Top;
+                newMargin.Right = margin.Right;
+                newMargin.Bottom = margin.Bottom;
+                newMargin.Left -= diff.X;
+                newMargin.Top -= diff.Y;
+                newMargin.Left = Math.Max(newMargin.Left, 0);
+                newMargin.Top = Math.Max(newMargin.Top, 0);
+                draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
+            }
+        }
         //public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
         //{
         //_nodeTransform = transform;
@@ -446,51 +414,8 @@ namespace code_in.Views.NodalView
         //_draggingNode = null;
         //_nodeTransform = TransformationMode.NONE;
         //}
-
-        #endregion create
-        #region IVisualNodeContainer
-        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
-        {
-            System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
-
-            node.SetParentView(null);
-            node.SetRootView(this);
-            node.SetNodePresenter(nodePresenter);
-            nodePresenter.SetView(node);
-            if (typeof(AIONode).IsAssignableFrom(typeof(T)))
-            {
-                (node as AIONode).SetParentLinksContainer(this);
-            }
-            _visualNodes.Add(node);
-            this.AddNode(node);
-            return node;
-        }
-        public void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem
-        {
-            this.MainGrid.Children.Add(node as UIElement);
-        }
-
-        public void RemoveNode(INodeElem node)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void drawLink(AIOAnchor outputAnchor, AIOAnchor inputAnchor)
-        {
-            //Code_inLink line = new Code_inLink();
-            //outputAnchor._nodeAnchor.IOLine.Add(line);
-            //this.MainGrid.Children.Add(line); // add the line on maingrid
-            //inputAnchor._nodeAnchor.IOLine.Add(line);
-        }
-
         public void HighLightDropPlace(Point pos) { }
         public int GetDropIndex(Point pos) { return 0; }
-        #endregion IVisualNodeContainer
-        #region ICodeInVisual
-        public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
-        #endregion ICodeInVisual
         public void DropNodes(IVisualNodeContainerDragNDrop container)
         {
             if (container == null)
@@ -510,8 +435,34 @@ namespace code_in.Views.NodalView
         {
             throw new NotImplementedException();
         }
-        private AIOAnchor _linkStart = null;
-        private Code_inLink _currentLink = null;
+        #endregion IVisualNodeContainerDragNDrop
+        #region IVisualNodeContainer
+        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
+        {
+            System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+
+            node.SetParentView(null);
+            node.SetNodePresenter(nodePresenter);
+            nodePresenter.SetView(node);
+            if (typeof(AIONode).IsAssignableFrom(typeof(T)))
+            {
+                (node as AIONode).SetParentLinksContainer(this);
+            }
+            this.AddNode(node);
+            return node;
+        }
+        public void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode
+        {
+            this.MainGrid.Children.Add(node as UIElement);
+        }
+
+        public void RemoveNode(INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion IVisualNodeContainer
+        #region INodalView
         public void RemoveLink(AIOAnchor anchor)
         {
             if (anchor._links.Count > 0)
@@ -626,226 +577,31 @@ namespace code_in.Views.NodalView
                 _currentLink.InvalidateVisual();
             }
         }
-        public void DragNodes()
+        #endregion INodalView
+
+        public void AddSelectNode(IDragNDropItem item)
         {
-            //for (int i = 0; i < _selectedNodes.Count; ++i)
-            //{
+            throw new NotImplementedException();
         }
-        public void UpdateDragState(Point mousePosition)
+
+        public void AddSelectNodes(List<IDragNDropItem> items)
         {
-            Vector diff;
-            if ((_lastPosition.X + _lastPosition.Y) < 0.01)
-                diff = new Vector(0, 0);
-            else
-                diff = _lastPosition - mousePosition;
-            _lastPosition = mousePosition;
-
-            //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
-            for (int i = 0; i < _selectedNodes.Count; ++i)
-            {
-                dynamic draggingNode = _selectedNodes[i];
-                Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
-                double marginLeft = margin.Left;
-                double marginTop = margin.Top;
-                Thickness newMargin = new Thickness();
-
-                newMargin.Left = margin.Left;
-                newMargin.Top = margin.Top;
-                newMargin.Right = margin.Right;
-                newMargin.Bottom = margin.Bottom;
-                newMargin.Left -= diff.X;
-                newMargin.Top -= diff.Y;
-                newMargin.Left = Math.Max(newMargin.Left, 0);
-                newMargin.Top = Math.Max(newMargin.Top, 0);
-                draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
-            }
+            throw new NotImplementedException();
         }
-        public void RevertChange()
+
+        public void Drag(EDragMode dragMode)
         {
-            for (int i = 0; i < _selectedNodes.Count; ++i)
-            {
-                _selectedNodes[i].SetPosition((int)_selectedNodesPositions[i].Left, (int)_selectedNodesPositions[i].Top);
-                dynamic curNode = _selectedNodes[i];
-                _selectedNodes[i].GetParentView().AddNode(curNode, _selectedNodesIndexes[i]);
-            }
+            throw new NotImplementedException();
         }
-        List<AValueNode> GetExpressionsAttachedToStatement(AStatementNode stmtNode)
-        {
-            List<AValueNode> attachedNodes = new List<AValueNode>();
 
-            foreach (var n in _visualNodes)
-            {
-                if (n is AValueNode)
-                {
-                    AValueNode curNode = n as AValueNode;
-                    while (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0 && !(curNode.ExprOut._links[0].Input.ParentNode is AStatementNode) && (curNode.ExprOut._links[0].Input.ParentNode is AValueNode))
-                    {
-                        curNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
-                    }
-                    if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0 && curNode.ExprOut._links[0].Input.ParentNode is AStatementNode && curNode.ExprOut._links[0].Input.ParentNode == stmtNode)
-                        attachedNodes.Add(n as AValueNode);
-                }
-            }
-            return attachedNodes;
+        public void UpdateDragInfos()
+        {
+            throw new NotImplementedException();
         }
-        public void AlignNodes(double deltaTime)
+
+        public new void Drop(List<IDragNDropItem> items)
         {
-            const double pixelsBySec = 25.0;
-            const double expressionLinksWidth = 100.0;
-            const double expressionsHeightDiff = 25.0;
-            const double statementHeightDiff = 250.0;
-            Dictionary<AStatementNode, List<AValueNode>> _expressionsUnderStatement = new Dictionary<AStatementNode, List<AValueNode>>();
-            Dictionary<INodeElem, Point> _statementNodes = new Dictionary<INodeElem, Point>();
-
-            double posLeftStatementNode = 0.0;
-            int sizeXleftStatementNode = 0;
-            foreach (var curNode in _visualNodes)
-            {
-                if (curNode is AStatementNode)
-                {
-                    _expressionsUnderStatement[curNode as AStatementNode] = GetExpressionsAttachedToStatement(curNode as AStatementNode);
-                }
-            }
-
-            foreach (var couple in _expressionsUnderStatement)
-            {
-                Dictionary<INodeElem, Point> calculatedPositions = new Dictionary<INodeElem, Point>();
-                // TODO calculate size of Expression block
-                foreach (var curNode in couple.Value)
-                    calculatedPositions[curNode] = curNode.GetPosition();
-                bool first = true;
-                foreach (var curNode in couple.Value)
-                {
-                    if (curNode.ExprOut != null && curNode.ExprOut._links.Count != 0)
-                    {
-                        if (curNode.ExprOut._links[0].Input.ParentNode is AValueNode)
-                        {
-                            AValueNode rightNode = curNode.ExprOut._links[0].Input.ParentNode as AValueNode;
-                            if (first)
-                            {
-                                first = false;
-                                var parentStatementNode = (rightNode._outputs.Children[0] as AIOAnchor)._links[0].Input.ParentNode;
-                                Point parentStatementPos = parentStatementNode.GetPosition();
-                                int parentStatementSizeX, parentStatementSizeY = 0;
-                                parentStatementNode.GetSize(out parentStatementSizeX, out parentStatementSizeY);
-                                int tmpSizeX, tmpSizeY = 0;
-                                rightNode.GetSize(out tmpSizeX, out tmpSizeY);
-                                double deltaXParentStatement = parentStatementPos.X - (tmpSizeX + rightNode.GetPosition().X + expressionLinksWidth);
-                                deltaXParentStatement = deltaXParentStatement / (deltaTime * pixelsBySec);
-                                deltaXParentStatement *= 0.5;
-                                double deltaYParentStatement = parentStatementPos.Y - rightNode.GetPosition().Y + parentStatementSizeY;
-                                calculatedPositions[rightNode] = (Point)(calculatedPositions[rightNode] - new Point(-deltaXParentStatement, -deltaYParentStatement));
-                            }
-                            int sizeX = 0, sizeY = 0;
-                            curNode.GetSize(out sizeX, out sizeY);
-                            double deltaX = rightNode.GetPosition().X - (sizeX + curNode.GetPosition().X + expressionLinksWidth);
-                            deltaX = deltaX / (deltaTime * pixelsBySec);
-                            deltaX *= 0.5;
-
-                            double deltaY = 0.0;
-                            if (rightNode._inputs.Children != null)
-                            {
-                                double totalSizeYNode = 0.0;
-                                for (int i = 0; i < rightNode._inputs.Children.Count; ++i)
-                                {
-                                    if ((rightNode._inputs.Children[i] as AIOAnchor)._links.Count != 0)
-                                    {
-                                        AValueNode leftNode = (rightNode._inputs.Children[i] as AIOAnchor)._links[0].Output.ParentNode as AValueNode;
-                                        int sizeXLeftNode, sizeYLeftNode = 0;
-                                        leftNode.GetSize(out sizeXLeftNode, out sizeYLeftNode);
-
-                                        if (leftNode == curNode)
-                                        {
-                                            deltaY = rightNode.GetPosition().Y - leftNode.GetPosition().Y + expressionsHeightDiff * i + totalSizeYNode;
-                                            deltaY = deltaY / (deltaTime * pixelsBySec);
-                                            deltaY *= 0.5;
-                                            calculatedPositions[curNode] = (Point)(calculatedPositions[curNode] - new Point(-deltaX, -deltaY));
-                                            calculatedPositions[curNode] = new Point(Math.Max(calculatedPositions[curNode].X, 0.0), Math.Max(calculatedPositions[curNode].Y, 0.0));
-                                        }
-                                        totalSizeYNode += sizeYLeftNode;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                foreach (var n in calculatedPositions)
-                {
-                    n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
-                }
-                
-                foreach (var n in _expressionsUnderStatement)
-                {
-                    _statementNodes[n.Key] = n.Key.GetPosition();
-                    Point topLeftCorner = new Point();
-                    Point bottomRightCorner = new Point();
-                    first = true;
-
-                    foreach (var expr in _expressionsUnderStatement[n.Key])
-                    {
-                        Point exprPos = expr.GetPosition();
-                        int exprSizeX, exprSizeY = 0;
-                        expr.GetSize(out exprSizeX, out exprSizeY);
-                        if (first)
-                        {
-                            first = false;
-                            topLeftCorner = exprPos;
-
-                            bottomRightCorner = (Point)(exprPos - new Point(-exprSizeX, -exprSizeY));
-                            continue;
-                        }
-                        if (exprPos.X < topLeftCorner.X)
-                            topLeftCorner.X = exprPos.X;
-                        if (exprPos.Y < topLeftCorner.Y)
-                            topLeftCorner.Y = exprPos.Y;
-                        if ((exprPos.X + exprSizeX) > bottomRightCorner.X)
-                            bottomRightCorner.X = exprPos.X + exprSizeX;
-                        if ((exprPos.Y + exprSizeY) > bottomRightCorner.Y)
-                            bottomRightCorner.Y = exprPos.Y + exprSizeY;
-                    }
-
-                    double deltaX = 0.0;
-                    if ((n.Key._inputs.Children[0] as FlowNodeAnchor)._links.Count != 0)
-                    {
-                        int sizeY = 0;
-                        (n.Key._inputs.Children[0] as FlowNodeAnchor)._links[0].Output.ParentNode.GetSize(out sizeXleftStatementNode, out sizeY);
-
-                        posLeftStatementNode = (n.Key._inputs.Children[0] as FlowNodeAnchor)._links[0].Output.ParentNode.GetPosition().X;
-                        deltaX = posLeftStatementNode + sizeXleftStatementNode + expressionLinksWidth - n.Key.GetPosition().X + (bottomRightCorner.X - topLeftCorner.X);
-
-                    }
-
-                    deltaX = deltaX / (deltaTime * pixelsBySec);
-                    deltaX *= 0.5;
-
-                    _statementNodes[n.Key] = (Point)(_statementNodes[n.Key] - new Point(-deltaX, 0.0));
-                }
-
-                double deltaStatementY = 0.0;
-
-                foreach (var n in _expressionsUnderStatement)
-                {
-                    for (int i = 0; i < n.Key._outputs.Children.Count; ++i)
-                    {
-                        if ((n.Key._outputs.Children[i] as AIOAnchor)._links.Count != 0)
-                        {
-                            AIONode rightNode = (n.Key._outputs.Children[i] as AIOAnchor)._links[0].Input.ParentNode;
-                            int sizeX, sizeY = 0;
-                            rightNode.GetSize(out sizeX, out sizeY);
-                            deltaStatementY = n.Key.GetPosition().Y - rightNode.GetPosition().Y + statementHeightDiff * i;
-                            deltaStatementY = deltaStatementY / (deltaTime * pixelsBySec);
-                            deltaStatementY *= 0.5;
-                            _statementNodes[rightNode] = (Point)(_statementNodes[rightNode] - new Point(0.0, -deltaStatementY));
-                        }
-                    }
-                }
-                
-                foreach (var n in _statementNodes)
-                {
-                    n.Key.SetPosition((int)n.Value.X, (int)n.Value.Y);
-                }
-            }
+            throw new NotImplementedException();
         }
     } // Class
 } // Namespace

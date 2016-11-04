@@ -52,7 +52,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new Exceptions.DefaultCtorVisualException();
         }
 
-        public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : ITile
+        public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : BaseTile
         {
             T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
 
@@ -71,7 +71,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
 
 
-        public void AddTile<T>(T tile, int index = -1) where T : ITile
+        public void AddTile<T>(T tile, int index = -1) where T : BaseTile
         {
             dynamic uiTile = tile;
             if (index < 0)
@@ -80,7 +80,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                 this.TileStackPannel.Children.Insert(index + 1, uiTile);
         }
 
-        public void RemoveTile(ITile tile)
+        public void RemoveTile(BaseTile tile)
         {
             throw new NotImplementedException();
         }
@@ -103,7 +103,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             foreach (var v in TileStackPannel.Children)
             {
-                (v as ITile).UpdateDisplayedInfosFromPresenter();
+                (v as BaseTile).UpdateDisplayedInfosFromPresenter();
             }
         }
     }
