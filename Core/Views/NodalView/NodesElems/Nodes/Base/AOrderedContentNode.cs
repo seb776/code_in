@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
@@ -22,6 +23,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             _orderedLayout.SetValue(StackPanel.HeightProperty, double.NaN);
            // _orderedLayout.SetValue(StackPanel.fi)
             this.ContentLayout.Children.Add(_orderedLayout);
+
+        }
+        public override void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
+            {
+                // TODO @Seb
+            }
         }
 
         public AOrderedContentNode()

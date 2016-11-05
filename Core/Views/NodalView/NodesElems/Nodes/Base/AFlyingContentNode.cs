@@ -29,6 +29,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.ContentLayout.Children.Add(resizeBtn);
         }
 
+        public override void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
+            {
+                // TODO @Seb
+            }
+        }
         private void EvtDragResize(object sender, MouseButtonEventArgs e)
         {
             //throw new NotImplementedException();

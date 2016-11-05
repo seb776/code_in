@@ -180,10 +180,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
-        public void SetSelected(bool isSelected)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Remove()
         {
@@ -193,9 +189,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public void SelectHighLight(bool highlighetd)
         {
             if (highlighetd)
-                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xFF, 0x98, 0x3D));
-            else
                 this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xE2, 0x4E, 0x42));
+            else
+                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xFF, 0x98, 0x3D));
         }
 
 
@@ -217,9 +213,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            MessageBox.Show("toto");
             if (!Keyboard.IsKeyDown(Key.LeftShift))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
         }
     }
 }

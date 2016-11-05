@@ -17,15 +17,25 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             base(themeResDict, nodalView)
         {
 //            this.SetDynamicResources("AcontentNode");
-            this.ContentGridLayout.MouseMove += ContentGridLayout_MouseMove;
+            this.ContentLayout.MouseLeftButtonUp += ContentLayout_MouseLeftButtonUp;
+            this.ContentLayout.MouseMove += ContentLayout_MouseMove;
         }
-
-        void ContentGridLayout_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        void ContentLayout_MouseMove(object sender, MouseEventArgs e)
         {
-            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
-            Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+                Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+            }
+            e.Handled = true;
         }
 
+        void ContentLayout_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
+            e.Handled = true;
+        }
         #region IVisualNodeContainer
         /// <summary>
         /// Creates a INodeElem of type T and add it to this control by passing all required parameters (theme, language...)
@@ -78,7 +88,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public void Drag(EDragMode dragMode)
         {
-
+            _lastPosition = new Point(0.0, 0.0);
         }
 
         public new void Drop(List<IDragNDropItem> items)
@@ -98,14 +108,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion IContainerDragNDrop
 
-        public new void Drop(IEnumerable<IDragNDropItem> items)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Drop(IEnumerable<IDragNDropItem> items);
+
 
         public bool IsDropValid(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+            return false; // TODO @Seb
         }
 
 

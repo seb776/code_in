@@ -151,27 +151,6 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
 
-        public void UpdateDragInfos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public new void Drop(System.Collections.Generic.List<NodalView.IDragNDropItem> items)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void UnselectNode(NodalView.IDragNDropItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnselectAllNodes()
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateDragInfos(Point mousePosToMainGrid)
         {
             throw new NotImplementedException();

@@ -343,7 +343,6 @@ namespace code_in.Presenters.Nodal
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
-                int iStmt = 0;
                 foreach (var stmt in (stmtArg as BlockStatement))
                     this._generateVisualASTStatements(tileContainer, stmt);
             }
@@ -774,7 +773,7 @@ namespace code_in.Presenters.Nodal
                 {
                     node.InstantiateASTNode();
                 }
-                catch (Exception fail)
+                catch (Exception/* fail*/)
                 {
                     MessageBox.Show("You will not be able to modify this node's content with the edit menu.");
                 }

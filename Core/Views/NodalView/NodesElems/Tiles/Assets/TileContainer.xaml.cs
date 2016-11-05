@@ -31,9 +31,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
         public TileContainer() :
             this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exceptions.DefaultCtorVisualException();
-        }
+        { throw new Exceptions.DefaultCtorVisualException(); }
 
         #region This
         public bool IsExpanded
@@ -108,9 +106,21 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
         #endregion INodalViewElement
         #region IContainerDragNDrop
+        StackPanel CurrentMovingNodes;
         public void Drag(EDragMode dragMode)
         {
-            throw new NotImplementedException();
+            var selItems = Code_inApplication.RootDragNDrop.SelectedItems;
+
+            if (CurrentMovingNodes == null)
+            {
+                CurrentMovingNodes = new StackPanel();
+                this.TileGridDragNDrop.Children.Add(CurrentMovingNodes);
+            }
+            foreach (var item in selItems)
+            {
+                //item.RemoveFromContext(); // TODO @Seb
+                CurrentMovingNodes.Children.Add(item as UIElement); // TODO @Seb Beuark
+            }
         }
 
         public void UpdateDragInfos(Point mousePosToMainGrid)
@@ -120,6 +130,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
+            if (CurrentMovingNodes != null)
+            {
+                foreach (var uiElem in CurrentMovingNodes.Children)
+                {
+                    // TODO @Seb
+                    //this.AddTile(uiElem);
+                }
+                this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
+
+            }
+            
             throw new NotImplementedException();
         }
 

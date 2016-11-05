@@ -34,7 +34,7 @@ namespace code_in.Managers
         public RootDragNDropManager()
         {
             SelectedItems = new HashSet<IDragNDropItem>();
-            DragMode = EDragMode.STAYINCONTEXT;
+            DragMode = EDragMode.NONE;
             StartedMove = false;
         }
         public void AddSelectItem(IDragNDropItem item)
@@ -61,13 +61,14 @@ namespace code_in.Managers
         }
         public void UpdateDragInfos(EDragMode dragMode, System.Windows.Point mousePosToMainGrid)
         {
-            if (!StartedMove)
-            {
-                _drag(dragMode);
-                StartedMove = true;
-            }
             if (SelectedItems.Count > 0)
             {
+                if (!StartedMove)
+                {
+                    _drag(dragMode);
+                    StartedMove = true;
+                }
+
                 SelectedItems.ElementAt(0).GetParentView().UpdateDragInfos(mousePosToMainGrid);
             }
         }
@@ -83,6 +84,7 @@ namespace code_in.Managers
         {
             if (parentContainer.IsDropValid(SelectedItems))
                 parentContainer.Drop(SelectedItems);
+            DragMode = EDragMode.NONE;
             System.Windows.Input.Mouse.OverrideCursor = null;
             StartedMove = false;
         }

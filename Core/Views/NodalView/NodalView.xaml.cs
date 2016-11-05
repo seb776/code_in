@@ -48,6 +48,7 @@ namespace code_in.Views.NodalView
             _lastPosition = new Point();
             RootTileContainer = new TileContainer(_themeResourceDictionary, this) as ITileContainer;
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
+            this.DraggingLink = false;
         }
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
@@ -76,9 +77,10 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            //this.DropNodes(null);
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
             this.DropLink(null, false);
-            //this.DropNodes(null);
+            e.Handled = true;
         }
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
@@ -263,7 +265,6 @@ namespace code_in.Views.NodalView
 
         public void UpdateDragInfos(Point mousePosition) // @Seb mousePosition must be mouse position from NodalView.MainGrid
         {
-
             var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
             if (selectedNodes.Count == 0)
                 return;
@@ -307,13 +308,10 @@ namespace code_in.Views.NodalView
 
         public void Drag(EDragMode dragMode)
         {
+            _lastPosition = new Point(0.0, 0.0);
             //throw new NotImplementedException();
         }
 
-        public new void Drop(List<IDragNDropItem> items)
-        {
-            throw new NotImplementedException();
-        }
         #endregion IContainerDragNDrop
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
@@ -324,10 +322,6 @@ namespace code_in.Views.NodalView
             node.SetParentView(this);
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
-            if (typeof(AIONode).IsAssignableFrom(typeof(T)))
-            {
-                (node as AIONode).SetParentLinksContainer(this);
-            }
             this.AddNode(node);
             return node;
         }
@@ -358,6 +352,7 @@ namespace code_in.Views.NodalView
         }
         public void DragLink(AIOAnchor from, bool isGenerated)
         {
+            DraggingLink = true;
             _linkStart = from;
             if (_linkStart._links.Count != 0)
             {
@@ -381,6 +376,7 @@ namespace code_in.Views.NodalView
         }
         public void DropLink(AIOAnchor to, bool isGenerated)
         {
+            this.DraggingLink = false;
             if (to == null)
             {
                 _linkStart = null;
@@ -459,25 +455,34 @@ namespace code_in.Views.NodalView
         }
         #endregion INodalView
 
-
-        public void UnselectNode(IDragNDropItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnselectAllNodes()
-        {
-            throw new NotImplementedException();
-        }
-
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            this.UpdateDragInfos(_lastPosition);
         }
 
         public bool IsDropValid(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+
+            foreach (var i in items)
+            {
+                if (this.IsDeclarative)
+                    return ((i is code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.UsingDeclNode));
+            }
+            return false;
+
+        }
+
+        private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Code_inApplication.RootDragNDrop.UnselectAllNodes();
+        }
+
+        public bool DraggingLink
+        {
+            get;
+            set;
         }
     } // Class
 } // Namespace
