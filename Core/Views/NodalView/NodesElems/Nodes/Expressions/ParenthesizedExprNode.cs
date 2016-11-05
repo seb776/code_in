@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
-    class ParenthesizedExprNode : AExpressionNode
+    public class ParenthesizedExprNode : AExpressionNode
     {
         public DataFlowAnchor OperandA = null;
 

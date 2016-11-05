@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
-    class UnSupExpNode : AExpressionNode
+    public class UnSupExpNode : AExpressionNode
     {
         public TextBox NodeText;
 

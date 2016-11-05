@@ -259,6 +259,7 @@ namespace code_in.Views.NodalView
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
         #region IVisualNodeContainerDragNDrop
+        /*
         public void SelectNode(INodeElem node)
         {
             // TODO if correct to select these nodes together
@@ -285,6 +286,7 @@ namespace code_in.Views.NodalView
                 n.SetSelected(false);
             _selectedNodes.Clear();
         }
+         */
         public void UpdateDragState(Point mousePosition)
         {
             Vector diff;
