@@ -21,6 +21,19 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class TileContainer : UserControl, ITileContainer, ICodeInVisual
     {
+        private ResourceDictionary _themeResourceDictionary = null;
+        public TileContainer(ResourceDictionary themeResDict, INodalView nodalView)
+        {
+            this.NodalView = nodalView;
+            _themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(themeResDict);
+            InitializeComponent();
+        }
+        public TileContainer() :
+            this(Code_inApplication.MainResourceDictionary, null)
+        { throw new Exceptions.DefaultCtorVisualException(); }
+
+        #region This
         public bool IsExpanded
         {
             get
@@ -30,42 +43,31 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 this.IsEnabled = value;
-                if (value) {
+                if (value)
+                {
                     this.Visibility = System.Windows.Visibility.Visible;
 
-                    
+
                 }
                 else
                     this.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
-        private ResourceDictionary _themeResourceDictionary = null;
-        public TileContainer(ResourceDictionary themeResDict)
+        #endregion This
+        #region ITileContainer
+        public void UpdateDisplayedInfosFromPresenter()
         {
-            _themeResourceDictionary = themeResDict;
-            this.Resources.MergedDictionaries.Add(themeResDict);
-            InitializeComponent();
+            foreach (var v in TileStackPannel.Children)
+            {
+                (v as BaseTile).UpdateDisplayedInfosFromPresenter();
+            }
         }
-        public TileContainer() :
-            this(Code_inApplication.MainResourceDictionary)
-        {
-            throw new Exceptions.DefaultCtorVisualException();
-        }
-
         public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : BaseTile
         {
-            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
+            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary, this.NodalView);
 
-            tile.SetParentView(null);
+            tile.SetParentView(this);
             tile.SetPresenter(nodePresenter);
-            /* tile.SetRootView(this);
-             tile.SetNodePresenter(nodePresenter);
-             nodePresenter.SetView(node);
-             if (typeof(AIONode).IsAssignableFrom(typeof(T)))
-             {
-                 (node as AIONode).SetParentLinksContainer(this);
-             }
-             _visualNodes.Add(node);*/
             this.AddTile(tile);
             return tile;
         }
@@ -84,7 +86,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
-
+        #endregion ITileContainer
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
         {
@@ -96,15 +98,103 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-
-
-        public void UpdateDisplayedInfosFromPresenter()
+        #region INodalViewElement
+        public INodalView NodalView
         {
-            foreach (var v in TileStackPannel.Children)
+            get;
+            set;
+        }
+        #endregion INodalViewElement
+        #region IContainerDragNDrop
+        StackPanel CurrentMovingNodes;
+        public void Drag(EDragMode dragMode)
+        {
+            var selItems = Code_inApplication.RootDragNDrop.SelectedItems;
+
+            if (CurrentMovingNodes == null)
             {
-                (v as BaseTile).UpdateDisplayedInfosFromPresenter();
+                CurrentMovingNodes = new StackPanel();
+                this.TileGridDragNDrop.Children.Add(CurrentMovingNodes);
             }
+            foreach (var item in selItems)
+            {
+                this.TileStackPannel.Children.Remove(item as UIElement); // Temporary
+                //item.RemoveFromContext(); // TODO @Seb
+                CurrentMovingNodes.Children.Add(item as UIElement); // TODO @Seb Beuark
+            }
+        }
+
+        public void UpdateDragInfos(Point mousePosToMainGrid)
+        {
+            var relPos = (this.NodalView as NodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this);
+            this.CurrentMovingNodes.Margin = new Thickness(0.0, relPos.Y, 0.0, 0.0);
+        }
+
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            // TODO @Seb AST
+            if (CurrentMovingNodes != null)
+            {
+                List<UIElement> saveItems = new List<UIElement>();
+                foreach (var uiElem in CurrentMovingNodes.Children)
+                    saveItems.Add(uiElem as UIElement);
+                CurrentMovingNodes.Children.Clear();
+                foreach (var uiElem in saveItems)
+                {
+                    dynamic item = uiElem;
+                    this.AddTile(item);
+                }
+                this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
+                CurrentMovingNodes = null;
+            }
+        }
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+            foreach (var i in items)
+            {
+                if (i is BaseTile)
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion IContainerDragNDrop
+
+        #region IDragNDropItem
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParentView(IContainerDragNDrop vc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerDragNDrop GetParentView()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion IDragNDropItem
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
+            e.Handled = true;
         }
     }
 }

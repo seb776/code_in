@@ -17,8 +17,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
         public FlowTileItem ItemTrue = null;
         public FlowTileItem ItemFalse = null;
 
-        public IfStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public IfStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("If");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
@@ -30,7 +30,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(51, 0x20, 0x77, 0xE3));
         }
         public IfStmtTile()  :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

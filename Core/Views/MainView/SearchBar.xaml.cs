@@ -11,7 +11,7 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Logique d'interaction pour SearchBar.xaml
     /// </summary>
-    public partial class SearchBar : UserControl, IVisualNodeContainerDragNDrop
+    public partial class SearchBar : UserControl, IVisualNodeContainer, IContainerDragNDrop
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
@@ -49,11 +49,11 @@ namespace code_in.Views.MainView
         }
 
         #endregion IVisualNodeContainer
-        #region IVisualNodeContainerDragNDrop
+        #region IContainerDragNDrop
         public void SelectNode(INodeElem node) { } // Do nothing
         public void UnSelectNode(INodeElem node) { } // Do nothing
 
-        #endregion IVisualNodeContainerDragNDrop
+        #endregion IContainerDragNDrop
         #region ICodeInVisual
 
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
@@ -94,7 +94,7 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
 
-        public void DropNodes(IVisualNodeContainerDragNDrop container)
+        public void DropNodes(IContainerDragNDrop container)
         {
             throw new NotImplementedException();
         }
@@ -151,12 +151,17 @@ namespace code_in.Views.MainView
             throw new NotImplementedException();
         }
 
-        public void UpdateDragInfos()
+        public void UpdateDragInfos(Point mousePosToMainGrid)
         {
             throw new NotImplementedException();
         }
 
-        public new void Drop(System.Collections.Generic.List<NodalView.IDragNDropItem> items)
+        public new void Drop(System.Collections.Generic.IEnumerable<NodalView.IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropValid(System.Collections.Generic.IEnumerable<NodalView.IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }

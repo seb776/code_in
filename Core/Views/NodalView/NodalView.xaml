@@ -39,7 +39,7 @@
       Resource="{DynamicResource linkType}" 
       ResourceChanged="changeResourceLink"/>
     </i:Interaction.Behaviors>
-    <Grid Background="{DynamicResource LocalGridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseUp="MainView_MouseUp" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown">
+    <Grid Background="{DynamicResource LocalGridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown">
         <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
     </Grid>
 </UserControl>

@@ -11,14 +11,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public FlowTileItem Statements = null;
 
-        public TryCatchStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public TryCatchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             Statements = this.CreateAndAddItem<FlowTileItem>();
 
         }
         public TryCatchStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

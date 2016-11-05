@@ -4,6 +4,7 @@ using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,15 +29,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         private ResourceDictionary _themeResourceDictionary = null;
         private bool _isBreakpointActive = false;
         private Statement _breakpoint = null;
-        public BaseTile(ResourceDictionary themeResDict)
+        IContainerDragNDrop _parentView = null;
+
+        public BaseTile(ResourceDictionary themeResDict, INodalView nodalView)
         {
+            this.NodalView = nodalView;
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
         }
 
         public BaseTile() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
@@ -52,7 +56,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public T CreateAndAddItem<T>(bool addAfterKeyword = false) where T : UIElement, ITileItem
         {
-            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView);
+            item.NodalView = this.NodalView;
             if (addAfterKeyword)
                 this.FieldAfterKeyWord.Children.Add(item);
             else
@@ -86,10 +91,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             _presenter = presenter;
         }
-        public void SetParentView(IVisualNodeContainerDragNDrop vc)
-        {
-            //throw new NotImplementedException();
-        }
+
         public virtual void UpdateDisplayedInfosFromPresenter()
         {
             // TODO @Seb uncomment this
@@ -143,10 +145,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
-
-        public IVisualNodeContainerDragNDrop GetParentView()
+        public void SetParentView(IContainerDragNDrop vc)
         {
-            throw new NotImplementedException();
+            Debug.Assert(vc != null);
+            _parentView = vc;
+        }
+        public IContainerDragNDrop GetParentView()
+        {
+            return _parentView;
         }
 
         public void SetNodePresenter(INodePresenter nodePresenter)
@@ -161,7 +167,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetPosition(int posX, int posY)
         {
-            throw new NotImplementedException();
+            this.Margin = new Thickness(posX, posY, 0.0, 0.0);
         }
 
         public Point GetPosition()
@@ -174,10 +180,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
-        public void SetSelected(bool isSelected)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Remove()
         {
@@ -186,7 +188,35 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SelectHighLight(bool highlighetd)
         {
+            if (highlighetd)
+                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xE2, 0x4E, 0x42));
+            else
+                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xFF, 0x98, 0x3D));
+        }
+
+
+        public void MustBeRemovedFromContext()
+        {
             throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+        private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.LeftShift))
+                Code_inApplication.RootDragNDrop.UnselectAllNodes();
+            Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
         }
     }
 }

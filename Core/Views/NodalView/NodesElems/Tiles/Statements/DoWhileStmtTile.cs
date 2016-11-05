@@ -15,8 +15,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public ExpressionItem Condition = null;
         public FlowTileItem trueItem = null;
 
-        public DoWhileStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public DoWhileStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("DoWhile");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
@@ -24,7 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(51, 0x20, 0x77, 0xE3));
         }
         public DoWhileStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

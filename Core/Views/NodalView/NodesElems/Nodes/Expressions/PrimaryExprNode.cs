@@ -9,8 +9,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class PrimaryExprNode : AExpressionNode
     {
-        public PrimaryExprNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public PrimaryExprNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("PrimaryExpr");
         }

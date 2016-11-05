@@ -12,14 +12,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public ExpressionItem Expression = null;
 
-        public ReturnStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ReturnStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("return;");
             Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public ReturnStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

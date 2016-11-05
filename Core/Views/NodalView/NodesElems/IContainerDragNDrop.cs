@@ -11,16 +11,20 @@ namespace code_in.Views.NodalView.NodesElems
 {
     public enum EDragMode
     {
+        NONE,
         MOVEOUT,
         STAYINCONTEXT
     }
-    public interface IVisualNodeContainerDragNDrop : IVisualNodeContainer
+    public interface IContainerDragNDrop
     {
-        void AddSelectNode(IDragNDropItem item);
-        void AddSelectNodes(List<IDragNDropItem> items);
+        //void AddSelectNode(IDragNDropItem item);
+        //void AddSelectNodes(List<IDragNDropItem> items);
+        //void UnselectNode(IDragNDropItem item);
+        //void UnselectAllNodes();
         void Drag(EDragMode dragMode);
-        void UpdateDragInfos();
-        void Drop(List<IDragNDropItem> items);
+        void UpdateDragInfos(Point mousePosToMainGrid);
+        void Drop(IEnumerable<IDragNDropItem> items);
+        bool IsDropValid(IEnumerable<IDragNDropItem> items);
 
         //bool IsDropValid();
         //int GetDropNodeIndex(Point pos); // Gets the index where the element will be pushed

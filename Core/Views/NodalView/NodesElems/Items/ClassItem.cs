@@ -5,6 +5,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +15,16 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class ClassItem : ATypedMemberItem, IContainingModifiers, IContainingAccessModifiers, IContainingType
     {
+
         public override void SetThemeResources(String keyPrefix) { }
         static Random r = new Random();
-        public ClassItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ClassItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             //Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
         }
         public ClassItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
@@ -83,5 +85,13 @@ namespace code_in.Views.NodalView.NodesElems.Items
             _typeInfo.SetTypeFromString(type);
         }
         #endregion
+
+
+        ResourceDictionary GetThemeResourceDictionary()
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

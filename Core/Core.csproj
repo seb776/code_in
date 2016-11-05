@@ -132,6 +132,7 @@
     <Compile Include="Views\Code_inLink .cs" />
     <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\INodalViewElement.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -144,7 +145,7 @@
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\PropertyItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml.cs">
       <DependentUpon>GenericItem.xaml</DependentUpon>
     </Compile>
@@ -191,22 +192,6 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TernaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnSupExpNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ADefaultStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AFinalStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ContinueStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForeachStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\IfStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ReturnStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\SwitchStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Base\BaseTile.xaml.cs">
       <DependentUpon>BaseTile.xaml</DependentUpon>
     </Compile>
@@ -334,8 +319,6 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\ClassDeclNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\FuncEntryNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\NamespaceNode.cs" />
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>

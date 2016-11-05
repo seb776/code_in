@@ -21,8 +21,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             get;
             private set;
         }
-        protected ATypedMemberItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        protected ATypedMemberItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             Scope = new ScopeItem(this.GetThemeResourceDictionary());
             _typeInfo = new TypeInfo(this.GetThemeResourceDictionary());

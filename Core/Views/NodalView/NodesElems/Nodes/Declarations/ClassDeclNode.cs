@@ -33,8 +33,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public Assets.ClassNodeModifiers Modifiers = null;
         public Assets.GenericItem Generics = null;
         private EType _type;
-        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("class");
             this.SetName("TMP.Class");
@@ -47,7 +47,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }

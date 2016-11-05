@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles
 {
-    public interface ITileContainer
+    public interface ITileContainer : INodalViewElement, IContainerDragNDrop, IDragNDropItem
     {
         T CreateAndAddTile<T>(INodePresenter presenter) where T : BaseTile; // TODO @Seb add NodePresenter
         void AddTile<T>(T tile, int index = -1) where T : BaseTile;
