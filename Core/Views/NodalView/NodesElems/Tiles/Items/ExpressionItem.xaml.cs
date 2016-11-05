@@ -114,7 +114,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             nodePresenter.SetView(node);
             if (typeof(T).IsSubclassOf(typeof(AIONode)))
             {
-                MessageBox.Show("WINWINWIN");
                 (node as AIONode).SetParentLinksContainer(this);
             }
             _visualNodes.Add(node); // TODO @Seb @Steph For automatic placement
@@ -189,7 +188,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
         public bool IsDropValid(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+            // TODO @Seb
+            return false;
         }
 
         public INodalView NodalView

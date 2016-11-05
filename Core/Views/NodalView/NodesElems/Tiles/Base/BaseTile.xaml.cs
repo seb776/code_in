@@ -167,7 +167,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetPosition(int posX, int posY)
         {
-            throw new NotImplementedException();
+            this.Margin = new Thickness(posX, posY, 0.0, 0.0);
         }
 
         public Point GetPosition()
@@ -213,7 +213,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("toto");
             if (!Keyboard.IsKeyDown(Key.LeftShift))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);

@@ -13,6 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     public abstract class AOrderedContentNode : AContentNode
     {
         public System.Windows.Controls.StackPanel _orderedLayout;
+        private StackPanel CurrentMovingNodes = null;
+        private Point _lastPosition;
 
         public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView)
             : base(themeResDict, nodalView)
@@ -25,6 +27,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.ContentLayout.Children.Add(_orderedLayout);
 
         }
+
+        public AOrderedContentNode()
+            : this(Code_inApplication.MainResourceDictionary, null)
+        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+
+
         public override void Drop(IEnumerable<IDragNDropItem> items)
         {
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
@@ -32,10 +40,27 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                 // TODO @Seb
             }
         }
+        public override void Drag(EDragMode dragMode)
+        {
+            var selItems = Code_inApplication.RootDragNDrop.SelectedItems;
 
-        public AOrderedContentNode()
-            : this(Code_inApplication.MainResourceDictionary, null)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+            if (CurrentMovingNodes == null)
+            {
+                CurrentMovingNodes = new StackPanel();
+                this.ContentGridLayout.Children.Add(CurrentMovingNodes);
+            }
+            foreach (var item in selItems)
+            {
+                this._orderedLayout.Children.Remove(item as UIElement); // Temporary
+                //item.RemoveFromContext(); // TODO @Seb
+                CurrentMovingNodes.Children.Add(item as UIElement); // TODO @Seb Beuark
+            }
+        }
+        public override void UpdateDragInfos(Point mousePosToMainGrid)
+        {
+            var relPos = (this.NodalView as NodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this);
+            this.CurrentMovingNodes.Margin = new Thickness(0.0, relPos.Y, 0.0, 0.0);
+        }
 
         #region IVisualNodeContainer
         

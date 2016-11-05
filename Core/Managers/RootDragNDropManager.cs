@@ -82,6 +82,8 @@ namespace code_in.Managers
         }
         public void Drop(IContainerDragNDrop parentContainer)
         {
+            if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
+                parentContainer = SelectedItems.ElementAt(0).GetParentView();
             if (parentContainer.IsDropValid(SelectedItems))
                 parentContainer.Drop(SelectedItems);
             DragMode = EDragMode.NONE;

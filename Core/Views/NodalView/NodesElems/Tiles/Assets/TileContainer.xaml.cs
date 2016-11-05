@@ -118,6 +118,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             }
             foreach (var item in selItems)
             {
+                this.TileStackPannel.Children.Remove(item as UIElement); // Temporary
                 //item.RemoveFromContext(); // TODO @Seb
                 CurrentMovingNodes.Children.Add(item as UIElement); // TODO @Seb Beuark
             }
@@ -125,28 +126,39 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void UpdateDragInfos(Point mousePosToMainGrid)
         {
-            throw new NotImplementedException();
+            var relPos = (this.NodalView as NodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this);
+            this.CurrentMovingNodes.Margin = new Thickness(0.0, relPos.Y, 0.0, 0.0);
         }
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
+            // TODO @Seb AST
             if (CurrentMovingNodes != null)
             {
+                List<UIElement> saveItems = new List<UIElement>();
                 foreach (var uiElem in CurrentMovingNodes.Children)
+                    saveItems.Add(uiElem as UIElement);
+                CurrentMovingNodes.Children.Clear();
+                foreach (var uiElem in saveItems)
                 {
-                    // TODO @Seb
-                    //this.AddTile(uiElem);
+                    dynamic item = uiElem;
+                    this.AddTile(item);
                 }
                 this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
-
+                CurrentMovingNodes = null;
             }
-            
-            throw new NotImplementedException();
         }
 
         public bool IsDropValid(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+            foreach (var i in items)
+            {
+                if (i is BaseTile)
+                    return true;
+            }
+            return false;
         }
 
         #endregion IContainerDragNDrop
@@ -177,5 +189,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
         #endregion IDragNDropItem
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
+            e.Handled = true;
+        }
     }
 }
