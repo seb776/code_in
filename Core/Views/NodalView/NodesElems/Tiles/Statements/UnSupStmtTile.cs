@@ -9,13 +9,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class UnSupStmtTile : BaseTile
     {
-        public UnSupStmtTile(ResourceDictionary themeResDict) :
-             base(themeResDict)
+        public UnSupStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("Unsupported");
         }
         public UnSupStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

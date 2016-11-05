@@ -18,8 +18,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         private Button _getEditButton;
         private Button _setEditButton;
 
-        public PropertyItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public PropertyItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             _getEditButton = new Button();
             _setEditButton = new Button();
@@ -48,7 +48,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
             view.EditProperty(this, false);
         }
         public PropertyItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }

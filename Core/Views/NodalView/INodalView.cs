@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView
 {
-    public interface INodalView : IVisualNodeContainerDragNDrop, ILinkContainer
+    public interface INodalView : IVisualNodeContainer, IContainerDragNDrop, ILinkContainer
     {
         void RemoveLink(AIOAnchor anchor);
 

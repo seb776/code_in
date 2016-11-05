@@ -21,6 +21,21 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class TileContainer : UserControl, ITileContainer, ICodeInVisual
     {
+        private ResourceDictionary _themeResourceDictionary = null;
+        public TileContainer(ResourceDictionary themeResDict, INodalView nodalView)
+        {
+            this.NodalView = nodalView;
+            _themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(themeResDict);
+            InitializeComponent();
+        }
+        public TileContainer() :
+            this(Code_inApplication.MainResourceDictionary, null)
+        {
+            throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        #region This
         public bool IsExpanded
         {
             get
@@ -30,42 +45,31 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 this.IsEnabled = value;
-                if (value) {
+                if (value)
+                {
                     this.Visibility = System.Windows.Visibility.Visible;
 
-                    
+
                 }
                 else
                     this.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
-        private ResourceDictionary _themeResourceDictionary = null;
-        public TileContainer(ResourceDictionary themeResDict)
+        #endregion This
+        #region ITileContainer
+        public void UpdateDisplayedInfosFromPresenter()
         {
-            _themeResourceDictionary = themeResDict;
-            this.Resources.MergedDictionaries.Add(themeResDict);
-            InitializeComponent();
+            foreach (var v in TileStackPannel.Children)
+            {
+                (v as BaseTile).UpdateDisplayedInfosFromPresenter();
+            }
         }
-        public TileContainer() :
-            this(Code_inApplication.MainResourceDictionary)
-        {
-            throw new Exceptions.DefaultCtorVisualException();
-        }
-
         public T CreateAndAddTile<T>(INodePresenter nodePresenter) where T : BaseTile
         {
-            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary);
+            T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary, this.NodalView);
 
-            tile.SetParentView(null);
+            tile.SetParentView(this);
             tile.SetPresenter(nodePresenter);
-            /* tile.SetRootView(this);
-             tile.SetNodePresenter(nodePresenter);
-             nodePresenter.SetView(node);
-             if (typeof(AIONode).IsAssignableFrom(typeof(T)))
-             {
-                 (node as AIONode).SetParentLinksContainer(this);
-             }
-             _visualNodes.Add(node);*/
             this.AddTile(tile);
             return tile;
         }
@@ -84,7 +88,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
-
+        #endregion ITileContainer
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
         {
@@ -96,15 +100,61 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
         #endregion ICodeInVisual
-
-
-
-        public void UpdateDisplayedInfosFromPresenter()
+        #region INodalViewElement
+        public INodalView NodalView
         {
-            foreach (var v in TileStackPannel.Children)
-            {
-                (v as BaseTile).UpdateDisplayedInfosFromPresenter();
-            }
+            get;
+            set;
         }
+        #endregion INodalViewElement
+        #region IContainerDragNDrop
+        public void Drag(EDragMode dragMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragInfos(Point mousePosToMainGrid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion IContainerDragNDrop
+
+        #region IDragNDropItem
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParentView(IContainerDragNDrop vc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerDragNDrop GetParentView()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion IDragNDropItem
     }
 }

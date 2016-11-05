@@ -2,7 +2,6 @@
 using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +23,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
     /// <summary>
     /// A TileItem to contain expressions (nodes).
     /// </summary>
-    public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainerDragNDrop, ICodeInTextLanguage
+    public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainer, IContainerDragNDrop, ICodeInTextLanguage
     {
         List<AExpressionNode> _expression = null;
         List<INodeElem> _visualNodes = null;
@@ -44,8 +43,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 {
                     this.ExpressionsGrid.Visibility = System.Windows.Visibility.Visible;
                     this.PreviewCode.Visibility = System.Windows.Visibility.Collapsed;
-                    //testAlign();
-               //     test();
                 }
                 else
                 {
@@ -56,66 +53,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             }
         }
 
-        private void testAlign() {
-             for (int i = 0; i < 100; ++i)
-                    {
-                        this.AlignNode(0.1);
-                    }
-        }
-
-        
 
         public DataFlowAnchor ExprOut = null;
         private ResourceDictionary _themeResourceDictionary = null;
 
-        private void test()
-        {
-            int x = 0;
-            int y = 0;
-            bool f = true;
-            AValueNode first = null;
-            AValueNode rightNode = null;
-            foreach (var t in _expression)
-            {
-                //if (f)
-                //    first = t as AValueNode;
-                //f = false;
-                x += 100;
-                y += 100;
-                if (t != null)
-                 t.SetPosition(x, y);
-                if (f)
-                 rightNode = t as AValueNode;
-                f = false;
-                //if (t as AExpressionNode != null)
-                //    (t as AExpressionNode)._subGrid.Background = Brushes.Blue;
-                
-                //try
-                //{
-                //    if (!f)
-                //        continue;
-                //    t.SetName("test 1");
-                //    (t._inputs.Children[0] as DataFlowAnchor)._links[0].Output.ParentNode.SetName("test 2");
-                //    //MessageBox.Show(t.GetName() + "\n" + (t._inputs.Children[0] as DataFlowAnchor)._links[0].Output.ParentNode.GetName());
-                //}
-                //catch { }
-                //f = false;
-            }
-            
-            rightNode.SetName("first");
-            try
-            {
-               // rightNode._inputs
-                rightNode.ExprOut._links[0].Output._links[0].Input.ParentNode.SetName("sedonc");
 
-            }
-            catch { }
-           // rightNode.ExprOut._links[0].Output._links[0].Output._links[0].Output.ParentNode.SetName("second");
-            
-        }
-
-        public ExpressionItem(ResourceDictionary themeResourceDictionary)
+        public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView)
         {
+            this.NodalView = nodalView;
             Debug.Assert(themeResourceDictionary != null);
             _themeResourceDictionary = themeResourceDictionary;
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
@@ -127,7 +72,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             _visualNodes = new List<INodeElem>();
         }
         public ExpressionItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
@@ -142,7 +87,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
         #endregion This
 
-        #region IVisualNodeContainerDragNDrop
+        #region IContainerDragNDrop
         public bool IsDropNodeValid()
         {
             throw new NotImplementedException();
@@ -161,10 +106,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         public T CreateAndAddNode<T>(Presenters.Nodal.Nodes.INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView);
 
-            node.SetParentView(null);
-            //node.SetRootView(this); // TODO @Seb to see
+            node.SetParentView(this);
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             if (typeof(AIONode).IsAssignableFrom(typeof(T)))
@@ -413,7 +357,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             }*/
         }
 
-        #endregion IVisualNodeContainerDragNDrop
+        #endregion IContainerDragNDrop
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
@@ -460,12 +404,47 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
 
-        public void UpdateDragInfos()
+
+        public new void Drop(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }
 
-        public new void Drop(List<IDragNDropItem> items)
+
+        public void UnselectNode(IDragNDropItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnselectAllNodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+        private void ExpressionsGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+            Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+        }
+
+
+        public void UpdateDragInfos(Point mousePosToMainGrid)
         {
             throw new NotImplementedException();
         }

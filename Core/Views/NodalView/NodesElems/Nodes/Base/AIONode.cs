@@ -31,8 +31,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         public StackPanel _inputs = null;  // public tmp (ham ham)
         public StackPanel _outputs = null; // public tmp (ham ham)
 
-        public AIONode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public AIONode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this._initLayout();
 

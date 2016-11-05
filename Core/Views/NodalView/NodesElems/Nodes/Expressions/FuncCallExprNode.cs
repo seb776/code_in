@@ -13,8 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class FuncCallExprNode : AExpressionNode
     {
         public DataFlowAnchor TargetIn = null; // The method name
-        public FuncCallExprNode(ResourceDictionary themeResDict)
-            : base(themeResDict)
+        public FuncCallExprNode(ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             this.SetType("FuncCallExpr");
             TargetIn = this.CreateAndAddInput<DataFlowAnchor>();

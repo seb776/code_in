@@ -13,8 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
     public abstract class AFlyingContentNode : AContentNode
     {
-        protected AFlyingContentNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        protected AFlyingContentNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             var resizeBtn = new Polygon();
             resizeBtn.Points = new System.Windows.Media.PointCollection();

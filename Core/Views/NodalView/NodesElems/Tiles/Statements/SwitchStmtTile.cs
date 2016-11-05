@@ -12,14 +12,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public ExpressionItem Condition;
 
-        public SwitchStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public SwitchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
 
         }
         public SwitchStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

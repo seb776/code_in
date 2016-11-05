@@ -8,9 +8,7 @@ using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using code_in.Views.NodalView.NodesElems.Tiles.Statements;
@@ -339,7 +337,7 @@ namespace code_in.Presenters.Nodal
         /// <param name="stmtArg"></param>
         private void _generateVisualASTStatements(ITileContainer tileContainer, Statement stmtArg)
         {
-            AStatementNode visualNode = null;
+            //AStatementNode visualNode = null;
             //FlowNodeAnchor defaultFlowOut = null;
             var nodePresenter = new NodePresenter(this, stmtArg);
             #region Block Statement
@@ -510,8 +508,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
             {
                 var continueStmt = stmtArg as ContinueStatement;
-                var continueStmtNode = this._view.CreateAndAddNode<ContinueStmtNode>(nodePresenter);
-                visualNode = continueStmtNode;
+                var continueStmtNode = tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
             }
             #endregion ContinueStatement
             #endregion Single Statement

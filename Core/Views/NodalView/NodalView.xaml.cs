@@ -46,7 +46,7 @@ namespace code_in.Views.NodalView
             InitializeComponent();
             _selectedNodes = new List<INodeElem>();
             _lastPosition = new Point();
-            RootTileContainer = new TileContainer(_themeResourceDictionary) as ITileContainer;
+            RootTileContainer = new TileContainer(_themeResourceDictionary, this) as ITileContainer;
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
         }
         public NodalView() :
@@ -76,7 +76,7 @@ namespace code_in.Views.NodalView
         #region Events
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.DropNodes(null);
+            //this.DropNodes(null);
             this.DropLink(null, false);
             //this.DropNodes(null);
         }
@@ -112,10 +112,11 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
+            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 if (_currentLink == null)
-                    this.UpdateDragState(e.GetPosition(this.MainGrid));
+                    Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
                 else
                     this.UpdateLinkDraw(e.GetPosition(this.MainGrid));
             }
@@ -258,35 +259,14 @@ namespace code_in.Views.NodalView
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
-        #region IVisualNodeContainerDragNDrop
-        public void SelectNode(INodeElem node)
-        {
-            // TODO if correct to select these nodes together
-            if (_selectedNodes.Count > 0)
-                if (_selectedNodes[0].GetParentView() != node.GetParentView())
-                    throw new Exception("Cannot select multiple elements that have not the same parent.");
-            _selectedNodes.Add(node);
-            node.SetSelected(true);
-            //_selectedNodes = _selectedNodes.Distinct().ToList(); // Quick fix @z0rg
-        }
-        public void UnSelectNode(INodeElem node)
-        {
-            node.SetSelected(false);
-            int idx = _selectedNodes.FindIndex(n => n == node);
-            if (idx != -1)
-            {
-                _selectedNodes.RemoveAt(idx);
-            }
+        #region IContainerDragNDrop
 
-        }
-        public void UnSelectAllNodes()
+        public void UpdateDragInfos(Point mousePosition) // @Seb mousePosition must be mouse position from NodalView.MainGrid
         {
-            foreach (var n in _selectedNodes)
-                n.SetSelected(false);
-            _selectedNodes.Clear();
-        }
-        public void UpdateDragState(Point mousePosition)
-        {
+
+            var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
+            if (selectedNodes.Count == 0)
+                return;
             Vector diff;
             if ((_lastPosition.X + _lastPosition.Y) < 0.01)
                 diff = new Vector(0, 0);
@@ -295,9 +275,9 @@ namespace code_in.Views.NodalView
             _lastPosition = mousePosition;
 
             //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
-            for (int i = 0; i < _selectedNodes.Count; ++i)
+            foreach (var selNode in selectedNodes)
             {
-                dynamic draggingNode = _selectedNodes[i];
+                dynamic draggingNode = selNode;
                 Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
                 double marginLeft = margin.Left;
                 double marginTop = margin.Top;
@@ -314,135 +294,34 @@ namespace code_in.Views.NodalView
                 draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
             }
         }
-        //public void DragNodes(TransformationMode transform, INodeElem node, LineMode lm)
-        //{
-        //_nodeTransform = transform;
-        //_draggingNode = node;
-        //if (_draggingNode != null && _draggingNode.GetParentView() != null)
-        //{
-        //    if (_nodeTransform == TransformationMode.MOVE)
-        //    {
-        //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-        //        {
-        //            Point relativeCoord = ((UIElement)_draggingNode).TransformToAncestor((_draggingNode.GetParentView() as BaseNode).ContentLayout).Transform(new Point(0, 0));
-        //            _draggingNode.GetParentView().RemoveNode(_draggingNode);
-        //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Add(_draggingNode as UIElement);
-        //            (_draggingNode as UserControl).Margin = new Thickness(0, relativeCoord.Y, 0, 0);
-        //        }
-        //    }
 
-        //    else if (_nodeTransform == TransformationMode.LINE)
-        //    {
-        //        Point nodeAnchorRelativeCoord;
-        //        if (((_draggingNode.GetParentView() as BaseNode).GetParentView() as BaseNode) != null)
-        //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor((_draggingNode.GetParentView() as BaseNode)).Transform(new Point(0, 0));
-        //        else
-        //            nodeAnchorRelativeCoord = (_draggingNode as AOItem)._nodeAnchor.TransformToAncestor(this.MainGrid).Transform(new Point(0, 0));
-
-        //        this._link = new Code_inLink();
-
-        //        Canvas.SetZIndex(_link, -9999999); // TODO Beuark
-        //        _link._x1 = nodeAnchorRelativeCoord.X;
-        //        _link._y1 = nodeAnchorRelativeCoord.Y + (_draggingNode as AOItem)._nodeAnchor.ActualHeight / 2;
-        //        _link._x2 = _link._x1;
-        //        _link._y2 = _link._y1;
-
-        //        if (_lineMode == LineMode.LINE)
-        //            _link.changeLineMode(Code_inLink.ELineMode.LINE);
-        //        else if (_lineMode == LineMode.BEZIER)
-        //            _link.changeLineMode(Code_inLink.ELineMode.BEZIER);
-
-        //        this._link.MouseRightButtonDown += _currentLineDrawing_MouseRightButtonDown;
-
-        //        this.MainGrid.Children.Add(_link);
-        //    }
-        //}
-        //}
-
-        //public void DropNodes(INodeElem node)
-        //{
-        //// Moving inside orderedContentNode
-        //if (_draggingNode != null && _draggingNode.GetParentView() != null)
-        //{
-
-        //    if (_nodeTransform == TransformationMode.MOVE)
-        //    {
-        //        if (_draggingNode.GetParentView().GetType().IsSubclassOf(typeof(AOrderedContentNode)))
-        //        {
-        //            ((AOrderedContentNode)_draggingNode.GetParentView()).ContentLayout.Children.Remove(_draggingNode as UIElement);
-        //            MethodInfo mi = ((AOrderedContentNode)_draggingNode.GetParentView()).GetType().GetMethod("AddNode");
-        //            MethodInfo gmi = mi.MakeGenericMethod(_draggingNode.GetType());
-        //            Object[] prm = { _draggingNode, ((AOrderedContentNode)_draggingNode.GetParentView()).GetDropIndex(new Point(0, (_draggingNode as UserControl).Margin.Top)) };
-        //            gmi.Invoke(_draggingNode.GetParentView(), prm);
-        //            ((UserControl)_draggingNode).Margin = new Thickness();
-        //        }
-        //    }
-
-        //    else if (_nodeTransform == TransformationMode.LINE)
-        //    {
-        //        if (node == null ||
-        //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.LEFT) && (node as AOItem).Orientation == AOItem.EOrientation.LEFT || // line from input to input
-        //                ((_draggingNode as AOItem).Orientation == AOItem.EOrientation.RIGHT) && (node as AOItem).Orientation == AOItem.EOrientation.RIGHT || // line from output to output
-        //                _draggingNode.GetParentView() == node.GetParentView())
-        //        {
-
-        //            this.MainGrid.Children.Remove(_link);
-        //        }
-        //        else
-        //        {
-        //            if ((_draggingNode as AOItem)._nodeAnchor._parentItem.Orientation == AOItem.EOrientation.LEFT)
-        //            {
-        //                Point tmpPoint = new Point();
-        //                tmpPoint.X = _link._x1;
-        //                tmpPoint.Y = _link._y1;
-        //                _link._x1 = _link._x2;
-        //                _link._y1 = _link._y2;
-        //                _link._x2 = tmpPoint.X;
-        //                _link._y2 = tmpPoint.Y;
-        //            }
-
-        //            // storing line in nodeanchor
-        //            (_draggingNode as AOItem)._nodeAnchor.IOLine.Add(_link);
-        //            (node as AOItem)._nodeAnchor.IOLine.Add(_link);
-        //            (_draggingNode as AOItem).IOAttached = node as AOItem;
-        //            (node as AOItem).IOAttached = (_draggingNode as AOItem);
-        //        }
-        //    }
-        //}
-
-        //// Reset transformation
-        //_draggingNode = null;
-        //_nodeTransform = TransformationMode.NONE;
-        //}
-        public void HighLightDropPlace(Point pos) { }
-        public int GetDropIndex(Point pos) { return 0; }
-        public void DropNodes(IVisualNodeContainerDragNDrop container)
-        {
-            if (container == null)
-            {
-                _lastPosition = new Point(0, 0);
-            }
-        }
-        public bool IsDropNodeValid()
+        public void AddSelectNode(IDragNDropItem item)
         {
             throw new NotImplementedException();
         }
-        public int GetDropNodeIndex(Point pos)
+
+        public void AddSelectNodes(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }
-        public void HighLightDropNodePlace(Point pos)
+
+        public void Drag(EDragMode dragMode)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public new void Drop(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }
-        #endregion IVisualNodeContainerDragNDrop
+        #endregion IContainerDragNDrop
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this);
 
-            node.SetParentView(null);
+            node.SetParentView(this);
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             if (typeof(AIONode).IsAssignableFrom(typeof(T)))
@@ -459,6 +338,7 @@ namespace code_in.Views.NodalView
 
         public void RemoveNode(INodeElem node)
         {
+            this.MainGrid.Children.Remove(node as UIElement);
             throw new NotImplementedException();
         }
         #endregion IVisualNodeContainer
@@ -579,27 +459,23 @@ namespace code_in.Views.NodalView
         }
         #endregion INodalView
 
-        public void AddSelectNode(IDragNDropItem item)
+
+        public void UnselectNode(IDragNDropItem item)
         {
             throw new NotImplementedException();
         }
 
-        public void AddSelectNodes(List<IDragNDropItem> items)
+        public void UnselectAllNodes()
         {
             throw new NotImplementedException();
         }
 
-        public void Drag(EDragMode dragMode)
+        public new void Drop(IEnumerable<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateDragInfos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public new void Drop(List<IDragNDropItem> items)
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }

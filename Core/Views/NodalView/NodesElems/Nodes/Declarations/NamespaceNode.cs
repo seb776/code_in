@@ -16,13 +16,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.NamespaceDeclaration("NewNamespace"));
         }
         public NamespaceNode()
-            : this(Code_inApplication.MainResourceDictionary)
+            : this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public NamespaceNode(System.Windows.ResourceDictionary themeResDict) : 
-            base(themeResDict)
+        public NamespaceNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("namespace");
             this.SetName("TMP.DefaultNamespaceName");

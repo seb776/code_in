@@ -67,13 +67,17 @@
             </Border>
             <!-- Node content-->
             <Border Background="#424242" DockPanel.Dock="Bottom" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
-                <StackPanel x:Name="ContentLayout" Orientation="Vertical">
-                    <!--<Label>machizefzefzefzef</Label>
+                <Grid>
+                    <!--@Seb: The following grid is here to be able to move items in front of stack panel for drag N Drop inside the node itself-->
+                    <Grid x:Name="ContentGridLayout"></Grid> 
+                    <StackPanel x:Name="ContentLayout" Orientation="Vertical">
+                        <!--<Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>-->
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
             </Border>
         </DockPanel>
 

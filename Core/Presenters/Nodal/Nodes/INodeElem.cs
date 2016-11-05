@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace code_in.Presenters.Nodal
 {
-    public interface INodeElem : IDragNDropItem
+    public interface INodeElem : IDragNDropItem, INodalViewElement
     {
         void InstantiateASTNode();
         // Actions to change/get visualAST displayed state
@@ -23,16 +23,15 @@ namespace code_in.Presenters.Nodal
         void UpdateDisplayedInfosFromPresenter();
         // END
 
-        void SetParentView(IVisualNodeContainerDragNDrop vc); // Each node elem is inside a masterView
-        IVisualNodeContainerDragNDrop GetParentView();
         void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)
         void ShowEditMenu();
         void SetPosition(int posX, int posY);
         Point GetPosition();
         void GetSize(out int x, out int y);
         void Remove();
+
     }
-    // enum globale
+
     public enum EAccessModifier
     {
         PUBLIC = 0,

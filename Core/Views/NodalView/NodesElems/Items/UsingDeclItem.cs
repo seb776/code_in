@@ -20,8 +20,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
     {
         public UsingDeclaration UsingNode = null; // TODO move to ANodePresenter
 
-        public UsingDeclItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public UsingDeclItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             { // TODO This is temporary
 

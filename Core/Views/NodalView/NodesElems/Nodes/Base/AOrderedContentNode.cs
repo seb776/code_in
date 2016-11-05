@@ -13,8 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     {
         public System.Windows.Controls.StackPanel _orderedLayout;
 
-        public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict)
-            : base(themeResDict)
+        public AOrderedContentNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             this.SetType("Namespace");
             this.SetName("System.Collections.Generic.TestDeLaMuerte");
@@ -22,15 +22,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             _orderedLayout.SetValue(StackPanel.HeightProperty, double.NaN);
            // _orderedLayout.SetValue(StackPanel.fi)
             this.ContentLayout.Children.Add(_orderedLayout);
-            this.MouseMove += EvtOrderedContentNode_MouseMove;
-        }
-
-        void EvtOrderedContentNode_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
         }
 
         public AOrderedContentNode()
-            : this(Code_inApplication.MainResourceDictionary)
+            : this(Code_inApplication.MainResourceDictionary, null)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         #region IVisualNodeContainer

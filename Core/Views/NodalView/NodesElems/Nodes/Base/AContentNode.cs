@@ -6,15 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
-    public abstract class AContentNode : BaseNode, IVisualNodeContainerDragNDrop
+    public abstract class AContentNode : BaseNode, IContainerDragNDrop, IVisualNodeContainer
     {
-        protected AContentNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        private Point _lastPosition;
+        protected AContentNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
 //            this.SetDynamicResources("AcontentNode");
+            this.ContentGridLayout.MouseMove += ContentGridLayout_MouseMove;
+        }
+
+        void ContentGridLayout_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+            Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
         }
 
         #region IVisualNodeContainer
@@ -25,9 +34,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         /// <returns></returns>
         public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
-            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
+            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), this.NodalView);
             node.SetParentView(this);
             node.SetNodePresenter(nodePresenter);
+            node.NodalView = this.NodalView;
             nodePresenter.SetView(node);
             try
             {
@@ -53,45 +63,83 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
         }
         #endregion ICodeInVisual
-
-        public bool IsDropNodeValid()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetDropNodeIndex(Point pos)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HighLightDropNodePlace(Point pos)
-        {
-            throw new NotImplementedException();
-        }
+        #region IContainerDragNDrop
 
         public void AddSelectNode(IDragNDropItem item)
         {
-            throw new NotImplementedException();
+            Code_inApplication.RootDragNDrop.AddSelectItem(item);
         }
 
         public void AddSelectNodes(List<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+            foreach (var i in items)
+                this.AddSelectNode(i);
         }
 
         public void Drag(EDragMode dragMode)
         {
-            throw new NotImplementedException();
-        }
 
-        public void UpdateDragInfos()
-        {
-            throw new NotImplementedException();
         }
 
         public new void Drop(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
+        }
+
+
+        public void UnselectNode(IDragNDropItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnselectAllNodes()
+        {
+            Code_inApplication.RootDragNDrop.UnselectAllNodes();
+        }
+        #endregion IContainerDragNDrop
+
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void UpdateDragInfos(Point mousePosToMainGrid)
+        {
+            var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
+            if (selectedNodes.Count == 0)
+                return;
+            Vector diff;
+            if ((_lastPosition.X + _lastPosition.Y) < 0.01)
+                diff = new Vector(0, 0);
+            else
+                diff = _lastPosition - mousePosToMainGrid;
+            _lastPosition = mousePosToMainGrid;
+
+            //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
+            foreach (var selNode in selectedNodes)
+            {
+                dynamic draggingNode = selNode;
+                Thickness margin = (Thickness)draggingNode.GetType().GetProperty("Margin").GetValue(draggingNode);
+                double marginLeft = margin.Left;
+                double marginTop = margin.Top;
+                Thickness newMargin = new Thickness();
+
+                newMargin.Left = margin.Left;
+                newMargin.Top = margin.Top;
+                newMargin.Right = margin.Right;
+                newMargin.Bottom = margin.Bottom;
+                newMargin.Left -= diff.X;
+                newMargin.Top -= diff.Y;
+                newMargin.Left = Math.Max(newMargin.Left, 0);
+                newMargin.Top = Math.Max(newMargin.Top, 0);
+                draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
+            }
         }
     }
 }
