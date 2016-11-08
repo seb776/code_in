@@ -537,6 +537,32 @@ namespace code_in.Presenters.Nodal
                     idx++;
                 }
             }
+            #region Indexer
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IndexerExpression))
+            {
+                var invokExpr = expr as ICSharpCode.NRefactory.CSharp.IndexerExpression;
+                var invokExprNode = container.CreateAndAddNode<IndexerExprNode>(nodePresenter);
+                visualNode = invokExprNode;
+
+                this._generateVisualASTExpressions(container, invokExpr.Target, invokExprNode.Target, (e) => { invokExpr.Target = e; });
+                // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
+                int i = 0;
+                foreach (var param in invokExpr.Arguments)
+                {
+                    var paramMeth = invokExprNode.CreateAndAddInput<DataFlowAnchor>();
+                    //paramMeth.SetName("param" + i);
+                    //this._generateVisualASTExpressions(container, param, paramMeth, (e) =>
+                    //{
+                    //    if (e == param)
+                    //        return;
+                    //    if (e != null)
+                    //        invokExpr.Arguments.InsertAfter(param, e);
+                    //    invokExpr.Arguments.Remove(param);
+                    //});
+                    //i++;
+                }
+            } 
+            #endregion Indexer
             #region UnaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
