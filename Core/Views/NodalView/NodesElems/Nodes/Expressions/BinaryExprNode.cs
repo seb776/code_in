@@ -13,8 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     {
         public DataFlowAnchor OperandA = null;
         public DataFlowAnchor OperandB = null;
-        public BinaryExprNode(ResourceDictionary themeResDict)
-            : base(themeResDict)
+        public BinaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();

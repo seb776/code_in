@@ -1,8 +1,10 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,38 +23,32 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// <summary>
     /// Interaction logic for BaseNode.xaml
     /// </summary>
-    public abstract partial class BaseNode : UserControl, INodeElem, ICodeInVisual
+    public abstract partial class BaseNode : UserControl, code_in.Views.NodalView.INode
     {
-        public virtual void Remove()
-        {
-            if (this.Parent == null)
-                return;
 
-            var panel = this.Parent as Panel;
-            if (panel != null)
-            {
-                panel.Children.Remove(this);
-                if (this.GetNodePresenter().GetASTNode() != null)
-                    this.GetNodePresenter().GetASTNode().Remove();
-                return;
-            }
-        }
         private ResourceDictionary _themeResourceDictionary = null;
-        private IRootDragNDrop _rootView = null;
-        private IVisualNodeContainerDragNDrop _parentView = null;
+        private IContainerDragNDrop _parentView = null;
         private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
-        public BaseNode(ResourceDictionary themeResDict)
+        public BaseNode(ResourceDictionary themeResDict, INodalView nodalView)
         {
+            this.NodalView = nodalView;
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
         }
         public BaseNode() :
-            this(Code_inApplication.MainResourceDictionary)
-        {
-        }
+            this(Code_inApplication.MainResourceDictionary, null)
+        { throw new DefaultCtorVisualException(); }
 
+
+        public virtual void Remove()
+        {
+            Debug.Assert(this.GetNodePresenter().GetASTNode() != null);
+            Debug.Assert(_parentView != null);
+            (_parentView as IVisualNodeContainer).RemoveNode(this); // TODO @Seb beurak
+            this.GetNodePresenter().GetASTNode().Remove();
+        }
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public virtual void SetThemeResources(string keyPrefix)
@@ -65,14 +61,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion ICodeInVisual
         #region This
-        public void SetName(string name)
-        {
-            this.NodeName.Content = name;
-        }
-        public string GetName()
-        {
-            return this.NodeName.Content as string;
-        }
+
 
         public void SetType(string type)
         {
@@ -83,19 +72,27 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             GenericLabel.Content += variance.ToString().ToLower() + " " + name;
         }
-        /// <summary>
-        /// Sets the visual selected state of the node. It does not affect anything other than the visual.
-        /// </summary>
-        /// <param name="isSelected">
-        /// - True the node is highlighted
-        /// - False the node is not highlighted
-        /// </param>
-        public void SetSelected(bool isSelected)
+
+        #region Events
+        private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.SelectionBorder.IsEnabled = isSelected;
-            this.SelectionBorder.Visibility = (isSelected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
+                Code_inApplication.RootDragNDrop.UnselectAllNodes();
+            Code_inApplication.RootDragNDrop.AddSelectItem(this);
+
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+
         }
 
+        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+        }
+        #endregion Events
+        #endregion This
+        #region INodeElem
+        public void SetParentView(IContainerDragNDrop vc) { _parentView = vc; }
+        public IContainerDragNDrop GetParentView() { return _parentView; }
         public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
@@ -118,7 +115,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
         }
 
-
         public virtual void SetPosition(int left, int top)
         {
             this.Margin = new Thickness(left, top, 0, 0);
@@ -131,38 +127,46 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             x = (int)this.ActualWidth;
             y = (int)this.ActualHeight;
         }
-
-        #region Events
-        private void MainLayout_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void SelectHighLight(bool highlighetd)
         {
-            System.Diagnostics.Debug.Assert(_rootView != null);
-            if (!Keyboard.IsKeyDown(Key.LeftShift))
-                this._rootView.UnSelectAllNodes();
-            try
-            {
-                this._rootView.SelectNode(this);
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message);
-            }
-            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+            this.SelectionBorder.IsEnabled = highlighetd;
+            this.SelectionBorder.Visibility = (highlighetd ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden);
 
         }
 
-        private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+
+        public void UpdateDisplayedInfosFromPresenter()
         {
-            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+            throw new NotImplementedException();
         }
-        #endregion Events
-        #endregion This
-        #region INodeElem
-        public void SetParentView(IVisualNodeContainerDragNDrop vc) { _parentView = vc; }
-        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
-        public virtual void SetRootView(IRootDragNDrop dnd) { _rootView = dnd; }
-        public IRootDragNDrop GetRootView() { return _rootView; }
+        public abstract void InstantiateASTNode();
+        public void SetName(string name)
+        {
+            this.NodeName.Content = name;
+        }
+        public string GetName()
+        {
+            return this.NodeName.Content as string;
+        }
         #endregion INodeElem
 
-        public abstract void InstantiateASTNode();
+
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

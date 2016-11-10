@@ -23,8 +23,14 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// <summary>
     /// Interaction logic for ANodeItem.xaml
     /// </summary>
-    public abstract partial class ANodeItem : UserControl, INodeElem, ICodeInVisual
+    public abstract partial class ANodeItem : UserControl, code_in.Views.NodalView.INode
     {
+        private IContainerDragNDrop _parentView = null;
+        private ResourceDictionary _themeResourceDictionary = null;
+        private ResourceDictionary _languageResourceDictionary = null;
+        EditNodePanel EditMenu = null;
+        public INodePresenter _nodePresenter = null;
+
         public void Remove()
         {
 
@@ -32,15 +38,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public void InstantiateASTNode()
         {
         }
-        private ResourceDictionary _themeResourceDictionary = null;
-        private ResourceDictionary _languageResourceDictionary = null;
-        EditNodePanel EditMenu = null;
-        protected IVisualNodeContainerDragNDrop _parentView = null;
-        private IRootDragNDrop _rootView = null;
-        public INodePresenter _nodePresenter = null;
 
-        protected ANodeItem(ResourceDictionary themeResDict)
+
+        protected ANodeItem(ResourceDictionary themeResDict, INodalView nodalView)
         {
+            this.NodalView = nodalView;
             this._themeResourceDictionary = themeResDict;
             this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
@@ -50,12 +52,14 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             this.MouseLeave += Item_MouseLeave;
         }
         protected ANodeItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
 
         void Item_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             this.Background = new SolidColorBrush(Colors.Transparent);
+            if (Code_inApplication.RootDragNDrop.IsSelectedItem(this))
+                this.SelectHighLight(true);
             this.OnMouseLeave();
         }
 
@@ -73,7 +77,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
         }
         public void ShowEditMenu()
         {
@@ -84,10 +88,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
 
         #region INodeElem
-        public void SetParentView(IVisualNodeContainerDragNDrop parent) { _parentView = parent; }
-        public IVisualNodeContainerDragNDrop GetParentView() { return _parentView; }
-        public void SetRootView(IRootDragNDrop root) { _rootView = root; }
-        public IRootDragNDrop GetRootView() { return _rootView; }
+        public void SetParentView(IContainerDragNDrop parent) { _parentView = parent; }
+        public IContainerDragNDrop GetParentView() { return _parentView; }
         public void SetName(String name)
         {
             this.ItemName.Content = name;
@@ -142,6 +144,47 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         public Point GetPosition()
         {
             return new Point(this.Margin.Left, this.Margin.Top);
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            if (highlighetd)
+                this.Background = new SolidColorBrush(Color.FromArgb(0x42, 0xE2, 0x4E, 0x42));
+            else
+                this.Background = new SolidColorBrush(Color.FromArgb(0x0, 0,0,0));
+        }
+
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
+                Code_inApplication.RootDragNDrop.UnselectAllNodes();
+            Code_inApplication.RootDragNDrop.AddSelectItem(this);
+
+            e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
+
         }
     } // Class
 } // Namespace

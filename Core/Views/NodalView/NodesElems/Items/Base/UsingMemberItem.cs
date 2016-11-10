@@ -12,8 +12,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     public class UsingMemberItem : ANodeItem
     {
         protected ItemModifiers _modifiers;
-        protected UsingMemberItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        protected UsingMemberItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             _modifiers = new ItemModifiers(this.GetThemeResourceDictionary());
             this.BeforeName.Children.Add(_modifiers);

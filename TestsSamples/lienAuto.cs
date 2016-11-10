@@ -139,7 +139,10 @@ return;
 	Console.writeLine("fin du foreach");
     }
 
-
-
+    void biggerIf() {
+	if (1 == 1 && 2 == 2 || 3 == 3)
+	{
+	}
+    }	
     
 }

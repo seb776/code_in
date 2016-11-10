@@ -92,10 +92,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DefaultCtorVisualException.cs" />
     <Compile Include="IEnvironmentWrapper.cs" />
     <Compile Include="Managers\Code_inApplication.cs" />
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
+    <Compile Include="Managers\RootDragNDropManager.cs" />
     <Compile Include="Presenters\LanguagePresenter.cs" />
     <Compile Include="Presenters\Nodal\IContainingAccessModifiers.cs" />
     <Compile Include="Presenters\Nodal\IContainingAttribute.cs" />
@@ -119,6 +121,8 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\IDragNDropItem.cs" />
+    <Compile Include="Views\NodalView\INode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
       <DependentUpon>AIOAnchor.xaml</DependentUpon>
     </Compile>
@@ -129,7 +133,7 @@
     <Compile Include="Views\Code_inLink .cs" />
     <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
-    <Compile Include="Views\NodalView\NodesElems\IRootDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\INodalViewElement.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -142,7 +146,7 @@
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\PropertyItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\UsingDeclItem.cs" />
-    <Compile Include="Views\NodalView\NodesElems\IVisualNodeContainerDragNDrop.cs" />
+    <Compile Include="Views\NodalView\NodesElems\IContainerDragNDrop.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericConstraintItem.xaml.cs">
       <DependentUpon>GenericConstraintItem.xaml</DependentUpon>
     </Compile>
@@ -189,29 +193,41 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\FuncCallExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\IndexerExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ParenthesizedExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\IdentifierExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\PrimaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TernaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\UnSupExpNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ValueExprNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ABlockStmtNodes.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AContextStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\ADefaultStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AFinalStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\BreakStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ContinueStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\ExpressionStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForeachStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\ForStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\IfStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Base\AStatementNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Context\ReturnStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\SwitchStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\UnSupStmtDecl.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\VarDeclStmtNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\Block\WhileStmtNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Base\BaseTile.xaml.cs">
+      <DependentUpon>BaseTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml.cs">
+      <DependentUpon>ExpressionItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\BreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\Base\ITileItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Items\FlowTileItem.xaml.cs">
+      <DependentUpon>FlowTileItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml.cs">
+      <DependentUpon>TileContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ReturnStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\TryCatchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UnSupStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\VarStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldBreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldReturnStmtTile.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>
     </Compile>
@@ -319,8 +335,6 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\ClassDeclNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\FuncDeclNode.cs" />
-    <Compile Include="Views\NodalView\NodesElems\Nodes\Statements\FuncEntryNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\NamespaceNode.cs" />
     <Page Include="Views\NodalView\NodesElems\Items\Assets\ScopeItem.xaml">
       <SubType>Designer</SubType>
@@ -341,6 +355,22 @@
     <Page Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\Base\BaseTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\Items\FlowTileItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\Items\ExpressionItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Utils\HexagonalButton.xaml">
       <SubType>Designer</SubType>

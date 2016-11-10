@@ -11,8 +11,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class ArrayCreateExprNode : AExpressionNode
     {
         public DataFlowAnchor ExprIn = null;
-        public ArrayCreateExprNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ArrayCreateExprNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("ArrayCreateExpr");
             ExprIn = this.CreateAndAddInput<DataFlowAnchor>();

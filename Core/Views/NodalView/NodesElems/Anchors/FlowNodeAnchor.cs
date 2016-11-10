@@ -1,6 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -15,10 +14,11 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
     {
         public void AttachASTStmt(FlowNodeAnchor rightNode)
         {
-            var stmtToInsert = (rightNode.ParentNode as AStatementNode).GetNodePresenter().GetASTNode() as Statement;
-            //MessageBox.Show("AttachASTStmt " + (MethodAttachASTStmt != null).ToString() + " " + this.ParentNode.GetType().ToString());
-            if (MethodAttachASTStmt != null)
-                this.MethodAttachASTStmt(stmtToInsert);
+            // TODO @Seb To remove
+            //var stmtToInsert = (rightNode.ParentNode as AStatementNode).GetNodePresenter().GetASTNode() as Statement;
+            ////MessageBox.Show("AttachASTStmt " + (MethodAttachASTStmt != null).ToString() + " " + this.ParentNode.GetType().ToString());
+            //if (MethodAttachASTStmt != null)
+            //    this.MethodAttachASTStmt(stmtToInsert);
         }
         public Func<Statement, Statement> MethodAttachASTStmt = null;
         public Action MethodDetachASTStmt = null;

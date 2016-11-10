@@ -15,8 +15,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     public class UsingDeclNode : AOrderedContentNode
     {
 
-        public UsingDeclNode(System.Windows.ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public UsingDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("using");
             this.SetThemeResources("UsingDeclNode");

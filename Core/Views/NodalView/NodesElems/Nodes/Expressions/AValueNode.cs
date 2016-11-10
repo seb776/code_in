@@ -13,7 +13,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public abstract class AValueNode : AIONode
     {
         public DataFlowAnchor ExprOut = null;
-        public AValueNode(ResourceDictionary themeResDict) : base(themeResDict)
+        public AValueNode(ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             ExprOut = this.CreateAndAddOutput<DataFlowAnchor>();
             ExprOut.SetName("expression");
