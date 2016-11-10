@@ -58,6 +58,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         void Item_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             this.Background = new SolidColorBrush(Colors.Transparent);
+            if (Code_inApplication.RootDragNDrop.IsSelectedItem(this))
+                this.SelectHighLight(true);
             this.OnMouseLeave();
         }
 
@@ -177,7 +179,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftShift))
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
 

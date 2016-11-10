@@ -77,6 +77,7 @@
                         <Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>-->
                     </StackPanel>
+                    <Grid x:Name="MoveNodeGrid"></Grid>
                 </Grid>
             </Border>
         </DockPanel>
