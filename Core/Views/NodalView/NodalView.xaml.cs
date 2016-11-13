@@ -120,7 +120,7 @@ namespace code_in.Views.NodalView
                 if (_currentLink == null)
                     Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
                 else
-                    this.UpdateLinkDraw(e.GetPosition(this.MainGrid));
+                    this.UpdateLinkDraw(e.GetPosition(this.MainGrid)); // TODO fix getpos relative
             }
         }
 
@@ -372,7 +372,7 @@ namespace code_in.Views.NodalView
                 _currentLink.StrokeThickness = 3;
                 this.MainGrid.Children.Add(_currentLink);
             }
-            this.UpdateLinkDraw(Mouse.GetPosition(this.MainGrid));
+            this.UpdateLinkDraw(Mouse.GetPosition(from.ParentNode));
         }
         public void DropLink(AIOAnchor to, bool isGenerated)
         {
@@ -424,7 +424,7 @@ namespace code_in.Views.NodalView
 
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
-                    this.UpdateLinkDraw(to.GetAnchorPosition(this.MainGrid));
+                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
                     _linkStart = null;
                     _currentLink = null;
                 }

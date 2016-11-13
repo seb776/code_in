@@ -186,6 +186,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AValueNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BinaryExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\FuncCallExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\IndexerExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ParenthesizedExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\IdentifierExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\PrimaryExprNode.cs" />
