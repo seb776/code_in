@@ -50,6 +50,8 @@ namespace code_in.Views.NodalView
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
             this.DraggingLink = false;
         }
+
+
         public NodalView() :
             this(Code_inApplication.MainResourceDictionary)
         { throw new DefaultCtorVisualException(); }
