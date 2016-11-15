@@ -47,6 +47,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+
         }
         public BaseNode() :
             this(Code_inApplication.MainResourceDictionary)
