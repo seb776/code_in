@@ -577,7 +577,7 @@ namespace code_in.Views.NodalView
         private void UpdateAttributeEditPanel()
         {
             AttributeStack.Children.Clear();
-            foreach (string attribute in _nodePresenter.getAttributeList())
+            foreach (KeyValuePair<string, string> attribute in _nodePresenter.getAttributeList())
             {
                 StackPanel NewAttributeLine = new StackPanel();
                 TextBox NewAttribute = new TextBox();
@@ -585,7 +585,9 @@ namespace code_in.Views.NodalView
 
                 NewAttributeLine.Orientation = Orientation.Horizontal;
                 NewAttributeLine.Name = "Attribute" + AttributeStack.Children.Count.ToString();
-                NewAttribute.Text = attribute;
+                if (attribute.Key != null)
+                    NewAttribute.Text = attribute.Key + " ";
+                NewAttribute.Text = attribute.Value;
                 NewAttribute.KeyDown += AttributeName_KeyDown;
                 NewAttribute.Width = 100;
                 deleteAttribute.Click += DeleteAttribute;

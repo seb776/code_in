@@ -23,12 +23,9 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel x:Name="EditMenuAndAttributesLayout">
-            <StackPanel x:Name="AttributesLayout" Orientation="Vertical" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                <!--<Label>[zefzef]</Label>
-                <Label>[zefzef]</Label>
-                <Label>[zefzef]</Label>-->
             </StackPanel>
-            </StackPanel>
+            <Grid x:Name="AttributesLayout" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            </Grid>
             <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">
                     <!--<Label>typeA</Label>
