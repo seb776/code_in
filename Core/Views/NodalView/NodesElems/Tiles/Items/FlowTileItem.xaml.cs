@@ -1,6 +1,7 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,25 +45,27 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetName(string name)
         {
-            this.ItemName.Content = name;
+            //this.ItemName.Content = name;
         }
 
         public FlowTileItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         { throw new Exceptions.DefaultCtorVisualException();  }
 
-        public FlowTileItem(ResourceDictionary themeResDict)
+        public FlowTileItem(ResourceDictionary themeResDict, INodalView nodalView)
         {
+            Debug.Assert(nodalView != null);
+            this.NodalView = nodalView;
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
-            _tileContainer = new TileContainer(_themeResourceDictionary);
+            _tileContainer = new TileContainer(_themeResourceDictionary, this.NodalView);
             _tileContainer.SetValue(Grid.ColumnProperty, 1);
             ItemGrid.Children.Add(_tileContainer);
             this.IsExpanded = true;
         }
 
-        public T CreateAndAddTile<T>(INodePresenter presenter) where T : ITile
+        public T CreateAndAddTile<T>(INodePresenter presenter) where T : BaseTile
         {
             //T tile = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);  // TODO From Seb: This may crash if the constructor is not implemented
             ////node.SetParentView(null);
@@ -74,7 +77,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             //return tile;
         }
 
-        public void AddTile<T>(T tile, int index = -1) where T : ITile
+        public void AddTile<T>(T tile, int index = -1) where T : BaseTile
         {
             throw new Exception("This is useless as all is managed by CreateAndAddTile.");
             //_tileContainer.AddTile(tile, index);
@@ -88,11 +91,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public void SetThemeResources(string keyPrefix)
         {
             if (keyPrefix == "false") // From Seb temporary
-                this.ItemGrid.Background = new SolidColorBrush(Color.FromArgb(0x42, 0xFF, 0x00, 0x00));
+                this.DescriptionPanel.Background = new SolidColorBrush(Color.FromArgb(166, 0xFF, 0x00, 0x00));
         }
 
 
-        public void RemoveTile(ITile tile)
+        public void RemoveTile(BaseTile tile)
         {
             throw new NotImplementedException();
         }
@@ -111,6 +114,72 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         private void ItemName_MouseDown(object sender, MouseButtonEventArgs e)
         {
             IsExpanded = !IsExpanded;
+        }
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INode
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNode<T>(T noden, int idx = -1) where T : UIElement, INode
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNode(Presenters.Nodal.INodeElem node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Drag(EDragMode dragMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDragInfos(Point mousePosToMainGrid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParentView(IContainerDragNDrop vc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerDragNDrop GetParentView()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using code_in.Presenters.Nodal.Nodes;
+﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
+using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,20 +23,24 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour BaseTile.xaml
     /// </summary>
-    public partial class BaseTile : UserControl, ITile, ICodeInVisual
+    public partial class BaseTile : UserControl, INodeElem
     {
         protected INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
-        bool IsBreakOrNot = false;
-        public BaseTile(ResourceDictionary themeResDict)
+        private bool _isBreakpointActive = false;
+        private Statement _breakpoint = null;
+        IContainerDragNDrop _parentView = null;
+
+        public BaseTile(ResourceDictionary themeResDict, INodalView nodalView)
         {
+            this.NodalView = nodalView;
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
         }
 
         public BaseTile() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
@@ -49,7 +56,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public T CreateAndAddItem<T>(bool addAfterKeyword = false) where T : UIElement, ITileItem
         {
-            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary);
+            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView);
+            item.NodalView = this.NodalView;
             if (addAfterKeyword)
                 this.FieldAfterKeyWord.Children.Add(item);
             else
@@ -83,10 +91,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             _presenter = presenter;
         }
-        public void SetParentView(IVisualNodeContainerDragNDrop vc)
-        {
-            //throw new NotImplementedException();
-        }
+
         public virtual void UpdateDisplayedInfosFromPresenter()
         {
             // TODO @Seb uncomment this
@@ -96,20 +101,122 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!IsBreakOrNot)
+            if (_isBreakpointActive)
             {
-                BlockStatement blockstmt = new BlockStatement();
-                ICSharpCode.NRefactory.CSharp.CSharpParser parse = new ICSharpCode.NRefactory.CSharp.CSharpParser();
-
-                var stmts = parse.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
-                blockstmt.Add(stmts.ElementAt(0)); // TODO check Z0rg
-                blockstmt.Add((Statement)_presenter.GetASTNode()); // TODO check Z0rg
-                _presenter.GetASTNode().ReplaceWith(blockstmt);
+                var thisASTNode = _presenter.GetASTNode();
+                if (thisASTNode is Statement)
+                {
+                    var thisStmt = thisASTNode as Statement;
+                    _breakpoint.Remove();
+                    _breakpoint = null;
+                    this.TileEllipse.Fill = new SolidColorBrush(Color.FromRgb(0x00, 0x88, 0xD6));
+                }
             }
             else
             {
-                //TODO z0rg
+                BlockStatement blockstmt = new BlockStatement();
+                ICSharpCode.NRefactory.CSharp.CSharpParser parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
+
+                var breakpointStmts = parser.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
+                _breakpoint = breakpointStmts.ElementAt(0);
+                var thisASTNode = _presenter.GetASTNode();
+                if (thisASTNode is Statement)
+                {
+                    var thisStmt = thisASTNode as Statement;
+                    thisStmt.Parent.InsertChildBefore(thisASTNode, _breakpoint, BlockStatement.StatementRole); // From Seb Not sure
+                }
+                this.TileEllipse.Fill = new SolidColorBrush(Colors.Red);
             }
+            e.Handled = true;
+            _isBreakpointActive = !_isBreakpointActive;
+        }
+
+        public void InstantiateASTNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance)
+        {
+            throw new NotImplementedException();
+        }
+        public void SetParentView(IContainerDragNDrop vc)
+        {
+            Debug.Assert(vc != null);
+            _parentView = vc;
+        }
+        public IContainerDragNDrop GetParentView()
+        {
+            return _parentView;
+        }
+
+        public void SetNodePresenter(INodePresenter nodePresenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowEditMenu()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPosition(int posX, int posY)
+        {
+            this.Margin = new Thickness(posX, posY, 0.0, 0.0);
+        }
+
+        public Point GetPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetSize(out int x, out int y)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void Remove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            if (highlighetd)
+                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xE2, 0x4E, 0x42));
+            else
+                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xFF, 0x98, 0x3D));
+        }
+
+
+        public void MustBeRemovedFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFromContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+
+        private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.LeftShift))
+                Code_inApplication.RootDragNDrop.UnselectAllNodes();
+            Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
         }
     }
 }

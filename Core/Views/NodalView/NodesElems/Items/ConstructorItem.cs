@@ -19,8 +19,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         ParametersList _params;
         private Image _editButton;
 
-        public ConstructorItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ConstructorItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             { // TODO This is temporary
                 _editButton = new Image();
@@ -73,7 +73,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
             _params.AddParameter(type);
         }
         public ConstructorItem() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");        
         }

@@ -9,8 +9,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class ArrayInitExprNode : AExpressionNode
     {
-        public ArrayInitExprNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public ArrayInitExprNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("ArrayInitExpr");
         }

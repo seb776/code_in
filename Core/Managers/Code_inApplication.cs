@@ -1,4 +1,5 @@
-﻿using code_in.Presenters;
+﻿using code_in.Managers;
+using code_in.Presenters;
 using System;
 using System.IO;
 using System.Windows;
@@ -12,11 +13,13 @@ namespace code_in
         private static readonly String _themeResourceDictionaryPath = "/code_inCore;component/Models/ThemeResourcesDictionary.xaml";
         private static readonly String _languageResourceDictionaryPath = "/code_inCore;component/Models/LanguageResourcesDictionary.xaml";
         private static IEnvironmentWrapper _environmentWrapper = null;
+        private static RootDragNDropManager _dragNDropMgr = null;
         private static ThemePresenter _themePresenter = null;
         private static LanguagePresenter _languagePresenter = null;
         private static ResourceDictionary _languageResourceDictionary = null;
         private static ResourceDictionary _themePreviewResourceDictionary = null;
         private static ResourceDictionary _mainResourceDictionary = null;
+
         public static void StartApplication(IEnvironmentWrapper wrapper)
         {
             System.Diagnostics.Debug.Assert(wrapper != null, "You must give a valid wrapper in order to start the application !");
@@ -36,6 +39,15 @@ namespace code_in
         }
 
         #region Accessors
+        public static RootDragNDropManager RootDragNDrop
+        {
+            get
+            {
+                if (_dragNDropMgr == null)
+                    _dragNDropMgr = new RootDragNDropManager();
+                return _dragNDropMgr;
+            }
+        }
         public static ThemePresenter ThemePresenter
         {
             get

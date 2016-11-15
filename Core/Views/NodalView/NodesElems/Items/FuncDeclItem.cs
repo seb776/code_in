@@ -24,8 +24,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         private Image _editButton;
         public GenericItem Generics = null;
 
-        public FuncDeclItem(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public FuncDeclItem(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             _params = new ParametersList(themeResDict);
             //this.AfterName.Margin = new Thickness(2, 4, 2, 4);

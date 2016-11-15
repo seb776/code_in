@@ -31,8 +31,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         public StackPanel _inputs = null;  // public tmp (ham ham)
         public StackPanel _outputs = null; // public tmp (ham ham)
 
-        public AIONode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public AIONode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this._initLayout();
 
@@ -73,41 +73,6 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             _subGrid.Children.Add(_outputs);
             this.ContentLayout.Children.Add(_subGrid);
         }
-        /// <summary>
-        /// TODO rename UpdateLocalNodePosition
-        /// This function is used to update the position of Code_inLinks when moving the node
-        /// </summary>
-        //public override void MoveNodeSpecial()
-        //{
-            // TODO @Seb 04/07/2016
-            //Point nodeAnchorRelativeCoord;
-
-            //foreach (var i in _inputs.Children)
-            //{
-            //    AOItem it = i as AOItem;
-            //    UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
-            //    nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-
-            //    for (int j = 0; j < it._nodeAnchor.IOLine.Count(); ++j)
-            //    {
-            //         it._nodeAnchor.IOLine[j]._x2 = nodeAnchorRelativeCoord.X;
-            //        it._nodeAnchor.IOLine[j]._y2 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
-            //    }
-            //}
-
-            //foreach (var i in _outputs.Children)
-            //{
-            //    AOItem it = i as AOItem;
-            //    UIElement parent = (this.GetParentView() != null ? this.GetParentView() as UIElement : this.GetRootView() as UIElement);
-            //    nodeAnchorRelativeCoord = it._nodeAnchor.TransformToAncestor(parent).Transform(new Point(0, 0));
-
-            //    for (int j = 0; j < it._nodeAnchor.IOLine.Count(); ++j)
-            //    {
-            //        it._nodeAnchor.IOLine[j]._x1 = nodeAnchorRelativeCoord.X;
-            //        it._nodeAnchor.IOLine[j]._y1 = nodeAnchorRelativeCoord.Y + it._nodeAnchor.ActualHeight / 2;
-            //    }
-            //}
-        //}
 
         public override void SetPosition(int posX, int posY)
         {

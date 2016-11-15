@@ -8,9 +8,7 @@ using code_in.Views.NodalView.NodesElems.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Statements.Block;
-using code_in.Views.NodalView.NodesElems.Nodes.Statements.Context;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using code_in.Views.NodalView.NodesElems.Tiles.Statements;
@@ -35,6 +33,7 @@ namespace code_in.Presenters.Nodal
     {
         public INodalView _view = null;
         private NodalModel _model = null;
+        static private NodalModel _parentModel = null;
         private CSharpParser _parser = null;
         const int nodeHorizontalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
         const int nodeVerticalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
@@ -47,10 +46,14 @@ namespace code_in.Presenters.Nodal
             _view = view;
             _parser = new CSharpParser();
         }
-
+        public void RemoveLink(AIOAnchor anchor)
+        {
+            this._view.RemoveLink(anchor);
+        }
         public void OpenFile(String path)
         {
             _model = this.ParseFile(path);
+            _parentModel = _model;
             this._generateVisualASTDeclaration(_model);
         }
         public void EditFunction(FuncDeclItem node)
@@ -69,7 +72,7 @@ namespace code_in.Presenters.Nodal
         {
             int accHorizontal = 0;
             int accVertical = 0;
-            this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical);
+            this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical, null);
         }
 
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
@@ -107,7 +110,7 @@ namespace code_in.Presenters.Nodal
             }
             view.setGenerics(GenericList);
         }
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY)
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY, UsingDeclNode usingDeclNode)
         {
             int currentPosX = posX;
             int currentPosY = posY;
@@ -122,9 +125,15 @@ namespace code_in.Presenters.Nodal
             {
                 int localPosX = nodeHorizontalOffset, localPosY = nodeVerticalOffset;
                 var syntaxTree = node as ICSharpCode.NRefactory.CSharp.SyntaxTree;
+                UsingDeclNode usingDeclNodeInstantiate = null;
                 foreach (var decl in syntaxTree.Members)
                 {
-                    this._generateVisualASTDeclarationRecur(decl, parentContainer, ref localPosX, ref localPosY);
+                    if (decl.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
+                    {
+                        var usingPresenter = new NodePresenter(this, decl as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
+                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
+                    }
+                    this._generateVisualASTDeclarationRecur(decl, parentContainer, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
                 }
             }
             #endregion Global scope
@@ -136,8 +145,16 @@ namespace code_in.Presenters.Nodal
                 visualNode = namespaceNode;
                 var namespaceDecl = node as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
                 namespaceNode.SetName(namespaceDecl.Name);
+                UsingDeclNode usingDeclNodeInstantiate = null;
                 foreach (var member in namespaceDecl.Members)
-                    this._generateVisualASTDeclarationRecur(member, namespaceNode, ref localPosX, ref localPosY);
+                {
+                    if (member.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
+                    {
+                        var usingPresenter = new NodePresenter(this, member as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
+                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
+                    }
+                    this._generateVisualASTDeclarationRecur(member, namespaceNode, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
+                }
             }
             #endregion
             #region Classes (interface, struct, class, enum)
@@ -179,7 +196,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(classDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY);
+                        _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY, null);
                 }
                 #endregion Class
                 #region Interface
@@ -197,7 +214,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, ref posX, ref posY);
+                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, ref posX, ref posY, null);
                 }
                 #endregion Interface
             }
@@ -242,7 +259,7 @@ namespace code_in.Presenters.Nodal
                 constructorDecl.ConstructorNode = node as ConstructorDeclaration;
                 ConstructorDeclaration construct = node as ConstructorDeclaration;
                 var parameters = construct.Parameters.ToList();
-                for(int i = 0; i < parameters.Count; i++)
+                for (int i = 0; i < parameters.Count; i++)
                 {
                     constructorDecl.AddParam(parameters[i].Type.ToString());
                     constructorDecl.SetName(construct.Name);
@@ -275,7 +292,7 @@ namespace code_in.Presenters.Nodal
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
             {
                 var usingDecl = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
-                var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
+                //var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
                 visualNode = usingDeclNode;
                 UsingDeclItem UsingItem = usingDeclNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
                 UsingItem.SetName(usingDecl.Namespace);
@@ -320,13 +337,12 @@ namespace code_in.Presenters.Nodal
         /// <param name="stmtArg"></param>
         private void _generateVisualASTStatements(ITileContainer tileContainer, Statement stmtArg)
         {
-            AStatementNode visualNode = null;
+            //AStatementNode visualNode = null;
             //FlowNodeAnchor defaultFlowOut = null;
             var nodePresenter = new NodePresenter(this, stmtArg);
             #region Block Statement
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
-                int iStmt = 0;
                 foreach (var stmt in (stmtArg as BlockStatement))
                     this._generateVisualASTStatements(tileContainer, stmt);
             }
@@ -361,7 +377,7 @@ namespace code_in.Presenters.Nodal
                 var doWhileStmtTile = tileContainer.CreateAndAddTile<DoWhileStmtTile>(nodePresenter); // Visual Node
 
                 this._generateVisualASTExpressions(doWhileStmtTile.Condition, doWhileStmt.Condition, doWhileStmtTile.Condition.ExprOut, (e) => { doWhileStmt.Condition = e; });
-                this._generateVisualASTStatements(tileContainer, doWhileStmt.EmbeddedStatement);
+                this._generateVisualASTStatements(doWhileStmtTile.trueItem, doWhileStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.WhileStatement))
             {
@@ -466,7 +482,7 @@ namespace code_in.Presenters.Nodal
             }
             #endregion Return Statement
             #region Break Statement
-            else if(stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BreakStatement))
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BreakStatement))
             {
                 var breakStmt = stmtArg as BreakStatement; // ASTNode
                 var breakStmtTile = tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter); // Visual Node
@@ -491,8 +507,7 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
             {
                 var continueStmt = stmtArg as ContinueStatement;
-                var continueStmtNode = this._view.CreateAndAddNode<ContinueStmtNode>(nodePresenter);
-                visualNode = continueStmtNode;
+                var continueStmtNode = tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
             }
             #endregion ContinueStatement
             #endregion Single Statement
@@ -522,6 +537,32 @@ namespace code_in.Presenters.Nodal
                     idx++;
                 }
             }
+            #region Indexer
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IndexerExpression))
+            {
+                var invokExpr = expr as ICSharpCode.NRefactory.CSharp.IndexerExpression;
+                var invokExprNode = container.CreateAndAddNode<IndexerExprNode>(nodePresenter);
+                visualNode = invokExprNode;
+
+                this._generateVisualASTExpressions(container, invokExpr.Target, invokExprNode.Target, (e) => { invokExpr.Target = e; });
+                // TODO @Seb @Mo display for generic parameters in FuncCallExprNode
+                int i = 0;
+                foreach (var param in invokExpr.Arguments)
+                {
+                    var paramMeth = invokExprNode.CreateAndAddInput<DataFlowAnchor>();
+                    //paramMeth.SetName("param" + i);
+                    //this._generateVisualASTExpressions(container, param, paramMeth, (e) =>
+                    //{
+                    //    if (e == param)
+                    //        return;
+                    //    if (e != null)
+                    //        invokExpr.Arguments.InsertAfter(param, e);
+                    //    invokExpr.Arguments.Remove(param);
+                    //});
+                    //i++;
+                }
+            } 
+            #endregion Indexer
             #region UnaryOperator
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression))
             {
@@ -692,7 +733,10 @@ namespace code_in.Presenters.Nodal
                 String code = "// Generated by Visual Studio's Code_in.";
                 sw.AutoFlush = true;
                 sw.WriteLine(code);
-                sw.Write(_model.AST.ToString());
+                if (_model == null)
+                    sw.Write(_parentModel.AST.ToString());
+                else
+                    sw.Write(_model.AST.ToString());
                 sw.Close();
             }
         }
@@ -709,7 +753,6 @@ namespace code_in.Presenters.Nodal
         {
             return new Tuple<EContextMenuOptions, Action<object[]>>[] { 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode), 
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, AlignNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, CollapseAllNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, SaveNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, CloseNode),
@@ -745,7 +788,7 @@ namespace code_in.Presenters.Nodal
         {
             if (((MenuItem)sender).DataContext != null)
             {
-//                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+                //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
                 var nodePresenter = new NodePresenter(_viewStatic._nodalPresenter, null);
@@ -756,7 +799,7 @@ namespace code_in.Presenters.Nodal
                 {
                     node.InstantiateASTNode();
                 }
-                catch (Exception fail)
+                catch (Exception/* fail*/)
                 {
                     MessageBox.Show("You will not be able to modify this node's content with the edit menu.");
                 }
@@ -768,7 +811,7 @@ namespace code_in.Presenters.Nodal
                     if (astNode != null)
                     {
                         var thisAst = (_viewStatic._nodalPresenter as NodalPresenterLocal)._model;
-                        thisAst.AST.Members.Add(astNode);                            
+                        thisAst.AST.Members.Add(astNode);
                     }
                 }
             }
@@ -777,16 +820,7 @@ namespace code_in.Presenters.Nodal
         static NodalView _viewStatic = null;
 
         private static Action EmptyDelegate = delegate() { };
-        static void AlignNode(object[] objects)
-        {
-            for (int i = 0; i < 100; ++i)
-            {
-                Thread.Sleep(10);
-                (objects[0] as NodalPresenterLocal)._view.AlignNodes(0.1);
-                ((UIElement)(objects[0] as NodalPresenterLocal)._view).Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-            }
-            //MessageBox.Show(objects[0].GetType().ToString());
-        }
+
         static void CloseNode(object[] objects)
         {
             MessageBox.Show(objects[0].GetType().ToString());

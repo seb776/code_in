@@ -139,7 +139,8 @@
             
             <StackPanel x:Name="ExecParametersField" IsEnabled="False" Visibility="Hidden">
                 <Label Foreground="White" >Execution Parameters</Label>
-                <TextBox x:Name="ParametersNumber" KeyDown="ParametersNumber_KeyDown"></TextBox>
+                <StackPanel x:Name="ExecParamsStack"></StackPanel>
+                <Button x:Name="AddExecParamButton" Click="AddExecParamButton_Click" Width="40">+</Button>
             </StackPanel>
 
             <Border x:Name="NinthBorder" Margin="5,0,5,0" BorderThickness="1" BorderBrush="Gray" CornerRadius="10,10,10,10" VerticalAlignment="Stretch" IsEnabled="False" Visibility="Hidden"></Border>

@@ -12,8 +12,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class UnaryExprNode : AExpressionNode
     {
         public DataFlowAnchor OperandA = null;
-        public UnaryExprNode(ResourceDictionary themeResDict)
-            : base(themeResDict)
+        public UnaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");

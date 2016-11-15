@@ -10,6 +10,11 @@ namespace code_in.Views.NodalView.NodesElems
 {
     public interface ILinkContainer
     {
+        bool DraggingLink
+        {
+            get;
+            set;
+        }
         void DragLink(AIOAnchor from, bool isGenerated);
         void DropLink(AIOAnchor to, bool isGenerated);
         void UpdateLinkDraw(Point mousePosRelToParentLinkContainer); // This function is here to update the view when mouse is moving (update view and links)

@@ -35,7 +35,43 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
     /// </summary>
     public partial class AIOAnchor : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
+        private ResourceDictionary _themeResourceDictionary = null;
+        private EOrientation _orientation = EOrientation.LEFT;
+        private ILinkContainer _parentLinksContainer = null;
+        public List<IOLink> _links = null;
+
+        public AIOAnchor(ResourceDictionary themeResDict)
+        {
+            this._themeResourceDictionary = themeResDict;
+            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
+            InitializeComponent();
+            this._links = new List<IOLink>();
+            this.MouseLeftButtonDown += AIOAnchor_MouseLeftButtonDown;
+            this.MouseLeftButtonUp += AIOAnchor_MouseLeftButtonUp;
+        }
+
+        #region This
+        public ILinkContainer ParentLinksContainer
+        {
+            get
+            {
+                return _parentLinksContainer;
+            }
+        }
+
+        public void SetParentLinksContainer(ILinkContainer linksContainer)
+        {
+            //System.Diagnostics.Debug.Assert(linksContainer != null);
+            _parentLinksContainer = linksContainer;
+        }
+
+        public void SetParentNode(AIONode parentNode)
+        {
+            System.Diagnostics.Debug.Assert(parentNode != null);
+            ParentNode = parentNode;
+        }
         public AIONode ParentNode { get; private set; }
+
         public void UpdateLinksPosition()
         {
             Point halfRectAnchorSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
@@ -56,7 +92,6 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                 link.Link.InvalidateVisual();
             }
         }
-        public List<IOLink> _links = null;
         public void AttachNewLink(IOLink link)
         {
             System.Diagnostics.Debug.Assert(link != null);
@@ -65,7 +100,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
         public void RemoveLink(IOLink link, bool detachAST)
         {
-            if (link.Input is DataFlowAnchor)
+            if (link.Input is DataFlowAnchor && detachAST)
                 (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
             else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null && detachAST)
                 (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
@@ -76,34 +111,31 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             Point attachLinkHelfSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
             return this.LinkAttach.TranslatePoint(attachLinkHelfSize, relative);
         }
-        public enum EOrientation
+        public void SetName(String name)
         {
-            LEFT = 0,
-            RIGHT = 1,
+            this.IOTextContent.Content = name;
         }
-        private ResourceDictionary _themeResourceDictionary = null;
-        private EOrientation _orientation = EOrientation.LEFT;
-        private ILinkContainer _parentLinksContainer = null;
-        public ILinkContainer ParentLinksContainer
+        public String GetName() { return this.IOTextContent.Content.ToString(); }
+
+        void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            get
+            _parentLinksContainer.DragLink(this, false);
+        }
+        void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_parentLinksContainer.DraggingLink)
             {
-                return _parentLinksContainer;
+                try
+                {
+                    _parentLinksContainer.DropLink(this, false);
+                }
+                catch (Exception except)
+                {
+                    MessageBox.Show(except.ToString());
+                }
+                e.Handled = true;
             }
         }
-
-        public void SetParentLinksContainer(ILinkContainer linksContainer)
-        {
-            //System.Diagnostics.Debug.Assert(linksContainer != null);
-            _parentLinksContainer = linksContainer;
-        }
-
-        public void SetParentNode(AIONode parentNode)
-        {
-            System.Diagnostics.Debug.Assert(parentNode != null);
-            ParentNode = parentNode;
-        }
-
         public EOrientation Orientation
         {
             get { return _orientation; }
@@ -117,45 +149,6 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                 _orientation = value;
             }
         }
-
-        public AIOAnchor(ResourceDictionary themeResDict)
-        {
-            this._themeResourceDictionary = themeResDict;
-            this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
-            InitializeComponent();
-            this._links = new List<IOLink>();
-            this.MouseLeftButtonDown += AIOAnchor_MouseLeftButtonDown;
-            this.MouseLeftButtonUp += AIOAnchor_MouseLeftButtonUp;
-        }
-
-        void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                _parentLinksContainer.DropLink(this, false);
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.ToString());
-            }
-            e.Handled = true;
-        }
-        public void DebugDisplay()
-        {
-            this.LinkAttach.Fill = new SolidColorBrush(Colors.Red);
-        }
-
-        void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _parentLinksContainer.DragLink(this, false);
-        }
-
-        #region This
-        public void SetName(String name)
-        {
-            this.IOTextContent.Content = name;
-        }
-        public String GetName() { return this.IOTextContent.Content.ToString(); }
         #endregion This
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
@@ -179,5 +172,11 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
+
+        public enum EOrientation
+        {
+            LEFT = 0,
+            RIGHT = 1,
+        }
     }
 }

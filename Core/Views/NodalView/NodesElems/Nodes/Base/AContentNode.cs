@@ -6,29 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
-    public abstract class AContentNode : BaseNode, IVisualNodeContainerDragNDrop
+    public abstract class AContentNode : BaseNode, IContainerDragNDrop, IVisualNodeContainer
     {
-        protected AContentNode(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        private Point _lastPosition;
+        protected AContentNode(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
 //            this.SetDynamicResources("AcontentNode");
+            this.ContentLayout.MouseLeftButtonUp += ContentLayout_MouseLeftButtonUp;
+            this.ContentLayout.MouseMove += ContentLayout_MouseMove;
+        }
+        void ContentLayout_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+                Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+            }
+            e.Handled = true;
         }
 
+        void ContentLayout_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
+            e.Handled = true;
+        }
         #region IVisualNodeContainer
         /// <summary>
         /// Creates a INodeElem of type T and add it to this control by passing all required parameters (theme, language...)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem
+        public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
-            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
+            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), this.NodalView);
             node.SetParentView(this);
-            node.SetRootView(this.GetRootView());
             node.SetNodePresenter(nodePresenter);
+            node.NodalView = this.NodalView;
             nodePresenter.SetView(node);
             try
             {
@@ -41,7 +60,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             }
             return node;
         }
-        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, INodeElem;
+        public abstract void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode;
         public abstract void RemoveNode(INodeElem node);
 
         public abstract int GetDropIndex(Point pos);
@@ -54,20 +73,49 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
         }
         #endregion ICodeInVisual
+        #region IContainerDragNDrop
 
-        public bool IsDropNodeValid()
+        public void AddSelectNode(IDragNDropItem item)
+        {
+            Code_inApplication.RootDragNDrop.AddSelectItem(item);
+        }
+
+        public void AddSelectNodes(List<IDragNDropItem> items)
+        {
+            foreach (var i in items)
+                this.AddSelectNode(i);
+        }
+
+        public abstract void Drag(EDragMode dragMode);
+
+        public new void Drop(List<IDragNDropItem> items)
         {
             throw new NotImplementedException();
         }
 
-        public int GetDropNodeIndex(Point pos)
+
+        public void UnselectNode(IDragNDropItem item)
         {
             throw new NotImplementedException();
         }
 
-        public void HighLightDropNodePlace(Point pos)
+        public void UnselectAllNodes()
         {
-            throw new NotImplementedException();
+            Code_inApplication.RootDragNDrop.UnselectAllNodes();
         }
+        #endregion IContainerDragNDrop
+
+        public abstract void Drop(IEnumerable<IDragNDropItem> items);
+
+
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+            return false; // TODO @Seb
+        }
+
+
+        public abstract void UpdateDragInfos(Point mousePosToMainGrid);
     }
 }

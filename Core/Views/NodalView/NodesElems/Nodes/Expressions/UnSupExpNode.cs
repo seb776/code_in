@@ -8,18 +8,18 @@ using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
-    class UnSupExpNode : AExpressionNode
+    public class UnSupExpNode : AExpressionNode
     {
         public TextBox NodeText;
 
         public UnSupExpNode() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
         }
 
-        public UnSupExpNode(System.Windows.ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public UnSupExpNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetType("Unsupported Expr");
             TextBox tb = new TextBox();

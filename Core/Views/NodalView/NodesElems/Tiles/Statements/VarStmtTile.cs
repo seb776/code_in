@@ -10,13 +10,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class VarStmtTile : BaseTile
     {
-        public VarStmtTile(ResourceDictionary themeResDict) :
-             base(themeResDict)
+        public VarStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("Variables");
         }
         public VarStmtTile() :
-            base(Code_inApplication.MainResourceDictionary)
+            base(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

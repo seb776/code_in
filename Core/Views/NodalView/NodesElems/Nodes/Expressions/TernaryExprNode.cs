@@ -14,8 +14,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public DataFlowAnchor OperandA = null;
         public DataFlowAnchor OperandB = null;
         public DataFlowAnchor OperandC = null;
-        public TernaryExprNode(ResourceDictionary themeResDict)
-            : base(themeResDict)
+        public TernaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
+            : base(themeResDict, nodalView)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();

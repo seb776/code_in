@@ -10,13 +10,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class YieldBreakStmtTile : BaseTile
     {
-        public YieldBreakStmtTile(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public YieldBreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             this.SetName("yield break;");
         }
         public YieldBreakStmtTile() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }

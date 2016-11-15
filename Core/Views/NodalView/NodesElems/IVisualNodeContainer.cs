@@ -12,8 +12,8 @@ namespace code_in.Views.NodalView.NodesElems
 {
     public interface IVisualNodeContainer
     {
-        T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, INodeElem;
-        void AddNode<T>(T noden, int idx = -1) where T : UIElement, INodeElem;
+        T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode;
+        void AddNode<T>(T noden, int idx = -1) where T : UIElement, code_in.Views.NodalView.INode;
         void RemoveNode(INodeElem node);
     }
 }

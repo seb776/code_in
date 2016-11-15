@@ -9,13 +9,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class BreakStmtTile : BaseTile
     {
-        public BreakStmtTile(ResourceDictionary themeResDict) :
-             base(themeResDict)
+        public BreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+            base(themeResDict, nodalView)
         {
             //this.SetName("Break");
         }
         public BreakStmtTile() :
-            this(Code_inApplication.MainResourceDictionary)
+            this(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
