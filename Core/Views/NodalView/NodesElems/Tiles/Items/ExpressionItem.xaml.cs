@@ -67,6 +67,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
             InitializeComponent();
             ExprOut = new DataFlowAnchor(themeResourceDictionary);
+            ExprOut.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             this.ExpressionsGrid.Children.Add(ExprOut);
             IsExpanded = false;
             _expression = new List<AExpressionNode>();
@@ -183,7 +184,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
-            throw new NotImplementedException();
+
+            //throw new NotImplementedException();
         }
 
         public bool IsDropValid(IEnumerable<IDragNDropItem> items)

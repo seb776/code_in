@@ -54,8 +54,8 @@ namespace code_in.Presenters.Nodal.Nodes
         void AddExecGeneric();
         //bool AddConstraint() // TODO @z0rg
         void SetName(String name);
-        List<string> getAttributeList();
-        void AddAttribute(string attribute);
+        List<KeyValuePair<string, string>> getAttributeList();
+        void AddAttribute(string attr);
         void RemoveAttribute(int index);
         /// <summary>
         /// This function is used to associate the visual node to the node presenter.

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using code_in.Views.NodalView;
+using code_in.Views.NodalView.NodesElems.Nodes;
+using System.Windows;
+using code_in.Views.MainView;
 
 namespace VSCode_in_UnitTests.Core.UI
 {
@@ -11,9 +15,17 @@ namespace VSCode_in_UnitTests.Core.UI
     public class IVisualNodeDragNDrop
     {
         [TestMethod()]
-        void NodalView()
+        public void NodalView()
         {
+            try
+            {
+            
+            }
+            catch (NotImplementedException e)
+            {
 
+            }
+            
         }
     }
 }
