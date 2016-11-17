@@ -135,10 +135,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
 
-        public void UpdateDisplayedInfosFromPresenter()
-        {
-            throw new NotImplementedException();
-        }
+        public /*abstract*/ void UpdateDisplayedInfosFromPresenter() { }
         public abstract void InstantiateASTNode();
         public void SetName(string name)
         {

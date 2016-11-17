@@ -19,5 +19,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             throw new NotImplementedException();
         }
+
+        //public override void UpdateDisplayedInfosFromPresenter()
+        //{
+        //    var nodePres = GetNodePresenter();
+        //    var astNode = nodePres.GetASTNode() as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
+        //    ExprOut.SetName(astNode.LiteralValue);
+        //}
     }
 }

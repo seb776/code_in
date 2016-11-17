@@ -674,6 +674,110 @@ namespace code_in.Presenters.Nodal
             }
             #endregion MemberReference
             #region Primitive
+                //enum ECSharpNode
+                //{
+                //    // GeneralScope
+                //    ATTRIBUTE,
+                //    ATTRIBUTE_SECTION,
+                //    COMMENT,
+                //    CONSTRAINT,
+                //    DELEGATE_DECL,
+                //    EXTERN_ALIAS_DECL,
+                //    NAMESPACE_DECL,
+                //    PREPROCESSOR_DIRECTIVE,
+                //    TEXT_NODE,
+                //    TYPE_DECL,
+                //    TYPE_PARAMETER_DECL,
+                //    USING_ALIAS_DECL,
+                //    USING_DECL,
+                //    UNSUPER_GENERAL_SCOPE,
+                //    // TypeMembers
+                //    ACCESSOR,
+                //    CTOR_DECL,
+                //    DTOR_DECL,
+                //    ENUM_MEMBER_DECL,
+                //    EVENT_DECL,
+                //    FIELD_DECL,
+                //    FIXED_FIELD_DECL,
+                //    FIXED_VAR_INIT,
+                //    INDEXER_DECL,
+                //    METHOD_DECL,
+                //    OPERATOR_DECL,
+                //    PARAMETER_DECL,
+                //    PROPERTY_DECL,
+                //    VAR_INIT,
+                //    UNSUP_TYPE_MEMBERS,
+                //    // Statements
+                //    BREAK_STMT,
+                //    CHECKED_STMT,
+                //    CONTINUE_STMT,
+                //    DO_WHILE_STMT,
+                //    EXPRESSION_STMT,
+                //    FIXED_STMT,
+                //    FOR_STMT,
+                //    FOREACH_STMT,
+                //    GOTO_STMT,
+                //    IFELSE_STMT,
+                //    LABEL_STMT,
+                //    LOCK_STMT,
+                //    RETURN_STMT,
+                //    SWITCH_STMT,
+                //    THROW_STMT,
+                //    TRY_CATCH_STMT,
+                //    UNCHECKED_STMT,
+                //    UNSAFE_STMT,
+                //    USING_STMT,
+                //    VAR_DECL_STMT,
+                //    YIELD_BREAK_STMT,
+                //    YIELD_RETURN_STMT,
+                //    UNSUP_STMT,
+
+                //    // Expressions
+                //    ANONYMOUS_METHOD_EXPRESSION,
+                //    ANONYMOUS_TYPE_CREATE_EXPRESSION,
+                //    ARRAY_CREATE_EXPRESSION,
+                //    ARRAY_INITIALIZER_EXPRESSION,
+                //    AS_EXPRESSION,
+                //    ASSIGNMENT_EXPRESSION,
+                //    BASE_REFERENCE_EXPRESSION,
+                //    BINARY_OPERATOR_EXPRESSION,
+                //    CAST_EXPRESSION,
+                //    CHECKED_EXPRESSION,
+                //    CONDITIONAL_EXPRESSION,
+                //    DEFAULT_VALUE_EXPRESSION,
+                //    DIRECTION_EXPRESSION,
+                //    ERROR_EXPRESSION,
+                //    IDENTIFIER_EXPRESSION,
+                //    INDEXER_EXPRESSION,
+                //    INVOCATION_EXPRESSION,
+                //    IS_EXPRESSION,
+                //    LAMBDA_EXPRESSION,
+                //    MEMBER_REFERENCE_EXPRESSION,
+                //    NAMED_ARGUMENT_EXPRESSION,
+                //    NAMED_EXPRESSION,
+                //    NULL_REFERENCE_EXPRESSION,
+                //    OBJECT_CREATE_EXPRESSION,
+                //    PARENTHESIZED_EXPRESSION,
+                //    POINTER_REFERENCE_EXPRESSION,
+                //    PRIMITIVE_EXPRESSION,
+                //    QUERY_EXPRESSION,
+                //    SIZEOF_EXPRESSION,
+                //    STACK_ALLOC_EXPRESSION,
+                //    THIS_REFERENCE_EXPRESSION,
+                //    TYPE_OF_EXPRESSION,
+                //    TYPE_REFERENCE_EXPRESSION,
+                //    UNARY_OPERATOR_EXPRESSION,
+                //    UNCHECKED_EXPRESSION,
+                //    UNDOCUMENTED_EXPRESSION,
+                //    UNSUP_EXPR
+                //}
+
+
+
+        // Nodal View
+        //nodePresenter = nodalPresenter.InstantiateNodePresenter(ECSharpNode.PrimaryExprNode)
+        //container.CreateAndAddNode<ECSharpNode.PrimaryExprNode>(nodePresenter);
+        // Presenter
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.PrimitiveExpression))
             {
                 var primExpr = expr as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
