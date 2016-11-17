@@ -93,7 +93,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
         public void delAttribute(int index)
         {
-
+            Attributes.deleteAttribute(index);
+            AttributesLayout.Children.Clear();
+            AttributesLayout.Children.Add(Attributes);
         }
 
         public void setExistingAttributes(List<KeyValuePair<string, string>> list)

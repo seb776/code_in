@@ -65,5 +65,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             updateViewPanel();
         }
 
+
+        public void deleteAttribute(int index)
+        {
+            ItemsList.RemoveAt(index);
+            updateViewPanel();
+        }
     }
 }

@@ -122,14 +122,11 @@ namespace code_in.Presenters.Nodal.Nodes
                             newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
                         else
                             newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
-//                        AttributesList.Add(newElem);
-//                        AddAttribute(attr.Type.ToString() + "(" + attr.Arguments.ElementAt(0).ToString() + ")");
                         (_view as IContainingAttribute).addAttribute(newElem.Key, newElem.Value);
                         ++i;
                     }
                 }
             }
-            //TODO recup infos attributes dans l'ast et stocke dans la liste
         }
 
         public List<string> getModifiersList()
