@@ -923,7 +923,8 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             if (index < AttributesList.Count)
                 AttributesList.RemoveAt(index);
-            //TODO remove in ast and in visual node
+            (_view as IContainingAttribute).delAttribute(index);
+            //TODO remove in ast
         }
         public List<KeyValuePair<string, string>> getAttributeList()
         {
