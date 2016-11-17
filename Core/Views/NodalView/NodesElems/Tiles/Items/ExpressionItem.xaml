@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Top">
             <!--<Button Click="Button_Click" VerticalAlignment="Center">E/C</Button>-->
-            <Label MouseUp="ItemName_MouseDown" Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top"></Label>
+            <Label MouseUp="ItemName_MouseDown" Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top" FontWeight="ExtraBold">zefzef</Label>
         </StackPanel>
         <Grid x:Name="ExpressionsGrid" MouseMove="ExpressionsGrid_MouseMove" MouseLeftButtonUp="ExpressionsGrid_MouseLeftButtonUp" Grid.Column="2">
         </Grid>
