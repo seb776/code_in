@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:MainView="clr-namespace:code_in.Views.MainView"
-             Width="5000" Height="5000">
+             Width="Auto" Height="Auto" MinWidth="5000" MinHeight="5000">
     <UserControl.Resources>
         <!--All resources here are for the designer as tey are loaded on run time, don't try to change values here to affect ...-->
         <!--appearance, it won't have any effect.-->
@@ -39,7 +39,11 @@
       Resource="{DynamicResource linkType}" 
       ResourceChanged="changeResourceLink"/>
     </i:Interaction.Behaviors>
-    <Grid Background="{DynamicResource LocalGridTile}" Width="5000" Height="5000" x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown">
-        <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
+    <Grid x:Name="offsetGrid" Background="{DynamicResource LocalGridTile}">
+        <Border  BorderThickness="50" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid  x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000">
+                <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

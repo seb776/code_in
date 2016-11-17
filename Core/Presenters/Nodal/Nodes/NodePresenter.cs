@@ -36,7 +36,7 @@ namespace code_in.Presenters.Nodal.Nodes
         private List<Tuple<string, EGenericVariance>> GenericList = null;
         private List<string> InheritanceList = null;
         private List<string> ModifiersList = null;
-        private List<string> AttributesList = null;
+        private List<KeyValuePair<string, string>> AttributesList = null;
         private string _type = null;
         private int ExecParamsNb;
         public AstNode GetASTNode()
@@ -56,11 +56,10 @@ namespace code_in.Presenters.Nodal.Nodes
             GetExistingInheritanceFromNode();
             ModifiersList = new List<string>();
             GetExistingModifiersFromNode();
-            AttributesList = new List<string>();
+            AttributesList = new List<KeyValuePair<string, string>>();
             GetTypeFromNode();
             LoadExecParamsCount();
-            //GetExistingAttributesFromNode();
-            //TODO getExistingmodifiers then 
+            GetExistingAttributesFromNode();
         }
 
         private void GetTypeFromNode()
@@ -84,8 +83,50 @@ namespace code_in.Presenters.Nodal.Nodes
 
         private void GetExistingAttributesFromNode()
         {
-            throw new NotImplementedException();
-            //TODO recup infos attributes dans l'ast et stocke dans la liste
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
+                {
+                    int i = 0;
+                    while (i < section.Attributes.Count)
+                    {
+                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>();
+                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
+                        if (attr.Type != null && attr.Arguments.Count > 0)
+                        newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
+                        else if (attr.Type != null && attr.Arguments.Count == 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
+                        else if (attr.Type == null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        AttributesList.Add(newElem);
+                        ++i;
+                    }
+                }
+            }
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var ast = _model as TypeDeclaration;
+                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
+                {
+                    int i = 0;
+                    while (i < section.Attributes.Count)
+                    {
+                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>("", "");
+                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
+                        if (attr.Type != null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
+                        else if (attr.Type != null && attr.Arguments.Count == 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
+                        else if (attr.Type == null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        else
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        (_view as IContainingAttribute).addAttribute(newElem.Key, newElem.Value);
+                        ++i;
+                    }
+                }
+            }
         }
 
         public List<string> getModifiersList()
@@ -847,7 +888,6 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public void AddAttribute(string attribute)
         {
-            AttributesList.Add(attribute);
             CSharpParser parser = new CSharpParser();
 
             ICSharpCode.NRefactory.CSharp.Expression newExpr = parser.ParseExpression(attribute);
@@ -866,10 +906,15 @@ namespace code_in.Presenters.Nodal.Nodes
                 var toto = (_model as TypeDeclaration);
                 toto.Attributes.Add(newSection);
             }
-            /*            foreach(var tmp in newExpr.Children)
-                        {
-                            newAttribute.Arguments.Add(tmp);
-                        }*/
+            if (attribute.Contains("("))
+            {
+                string type = attribute.Substring(0, attribute.IndexOf("("));
+                string arg = attribute.Substring(attribute.IndexOf("("), attribute.IndexOf(")"));
+                (_view as IContainingAttribute).addAttribute(type, arg);
+            }
+            else
+                (_view as IContainingAttribute).addAttribute(attribute, "");
+
             //TODO add in ast + add in visual node
         }
 
@@ -878,9 +923,10 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             if (index < AttributesList.Count)
                 AttributesList.RemoveAt(index);
-            //TODO remove in ast and in visual node
+            (_view as IContainingAttribute).delAttribute(index);
+            //TODO remove in ast
         }
-        public List<string> getAttributeList()
+        public List<KeyValuePair<string, string>> getAttributeList()
         {
             return (AttributesList);
         }

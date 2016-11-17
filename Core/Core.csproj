@@ -153,6 +153,12 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericConstraints.xaml.cs">
       <DependentUpon>GenericConstraints.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\AttributesAsset.xaml.cs">
+      <DependentUpon>AttributesAsset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\AttributesItems.xaml.cs">
+      <DependentUpon>AttributesItems.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml.cs">
       <DependentUpon>GenericItem.xaml</DependentUpon>
     </Compile>
@@ -305,6 +311,14 @@
     <Page Include="Views\NodalView\NodesElems\Nodes\Assets\GenericConstraints.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\AttributesAsset.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Nodes\Assets\AttributesItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Nodes\Assets\GenericItem.xaml">
       <SubType>Designer</SubType>
