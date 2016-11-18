@@ -1191,6 +1191,7 @@ namespace code_in.Presenters.Nodal.Nodes
             else
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
             /*            else // basic behaviour to avoid crashes
                         {

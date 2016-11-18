@@ -1,6 +1,7 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class TileContainer : UserControl, ITileContainer, ICodeInVisual
     {
+        IContainerDragNDrop _parentView = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public TileContainer(ResourceDictionary themeResDict, INodalView nodalView)
         {
@@ -85,7 +87,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void RemoveTile(BaseTile tile)
         {
-            throw new NotImplementedException();
+            Debug.Assert(GetParentView() != null);
+            if (GetParentView() != null)
+                (this.GetParentView() as ITileContainer).RemoveTile(tile);
         }
         #endregion ITileContainer
         #region ICodeInVisual
@@ -182,12 +186,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetParentView(IContainerDragNDrop vc)
         {
-            throw new NotImplementedException();
+            _parentView = vc;
         }
 
         public IContainerDragNDrop GetParentView()
         {
-            throw new NotImplementedException();
+            return _parentView;
         }
         #endregion IDragNDropItem
 
