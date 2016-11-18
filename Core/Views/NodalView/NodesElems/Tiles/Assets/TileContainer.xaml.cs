@@ -66,6 +66,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary, this.NodalView);
 
+            nodePresenter.SetView(tile);
             tile.SetParentView(this);
             tile.SetPresenter(nodePresenter);
             this.AddTile(tile);

@@ -227,6 +227,7 @@ namespace code_in.Views.NodalView
         {
             var options = _nodalPresenter.GetMenuOptions();
             CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this._nodalPresenter);
+            e.Handled = true;
         }
 
         void clickChangeMode(object sender, RoutedEventArgs e)

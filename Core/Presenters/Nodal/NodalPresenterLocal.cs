@@ -70,9 +70,7 @@ namespace code_in.Presenters.Nodal
         }
         private void _generateVisualASTDeclaration(NodalModel model)
         {
-            int accHorizontal = 0;
-            int accVertical = 0;
-            this._generateVisualASTDeclarationRecur(model.AST, this._view, ref accHorizontal, ref accVertical, null);
+            this._generateVisualASTDeclarationRecur(model.AST, this._view, 0, 0, null);
         }
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
@@ -106,7 +104,7 @@ namespace code_in.Presenters.Nodal
             }
             view.setGenerics(GenericList);
         }
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY, UsingDeclNode usingDeclNode)
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, int posX, int posY, UsingDeclNode usingDeclNode)
         {
             int currentPosX = posX;
             int currentPosY = posY;
@@ -129,7 +127,7 @@ namespace code_in.Presenters.Nodal
                         var usingPresenter = new NodePresenter(this, decl as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
                         usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
                     }
-                    this._generateVisualASTDeclarationRecur(decl, parentContainer, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
+                    this._generateVisualASTDeclarationRecur(decl, parentContainer, 0, 0, usingDeclNodeInstantiate);
                 }
             }
             #endregion Global scope
@@ -149,7 +147,7 @@ namespace code_in.Presenters.Nodal
                         var usingPresenter = new NodePresenter(this, member as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
                         usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
                     }
-                    this._generateVisualASTDeclarationRecur(member, namespaceNode, ref localPosX, ref localPosY, usingDeclNodeInstantiate);
+                    this._generateVisualASTDeclarationRecur(member, namespaceNode, 0, 0, usingDeclNodeInstantiate);
                 }
             }
             #endregion
@@ -196,7 +194,7 @@ namespace code_in.Presenters.Nodal
                         classDeclNode.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);
                     }
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, classDeclNode, ref posX, ref posY, null);
+                        _generateVisualASTDeclarationRecur(member, classDeclNode, 0, 0, null);
                 }
                 #endregion Class
                 #region Interface
@@ -214,7 +212,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, ref posX, ref posY, null);
+                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, 0, 0, null);
                 }
                 #endregion Interface
             }
@@ -341,10 +339,8 @@ namespace code_in.Presenters.Nodal
         /// <param name="stmtArg"></param>
         private void _generateVisualASTStatements(ITileContainer tileContainer, Statement stmtArg)
         {
-            //AStatementNode visualNode = null;
-            //FlowNodeAnchor defaultFlowOut = null;
             var nodePresenter = new NodePresenter(this, stmtArg);
-            #region Block Statement
+            #region Block Statements
             if (stmtArg.GetType() == typeof(BlockStatement))
             {
                 foreach (var stmt in (stmtArg as BlockStatement))
@@ -353,15 +349,6 @@ namespace code_in.Presenters.Nodal
             # region IfStmts
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IfElseStatement))
             {
-             /*   var ifStmt = stmtArg as ICSharpCode.NRefactory.CSharp.IfElseStatement;
-                var ifNode = this._view.CreateAndAddNode<IfStmtNode>(nodePresenter);
-                visualNode = ifNode;
-                ifNode.Condition.SetName(ifStmt.Condition.ToString());
-                this._generateVisualASTExpressions(ifStmt.Condition, ifNode.Condition, (e) => { ifStmt.Condition = e; });
-                int curNodeWidth = 0, curNodeHeight = 0;
-                ifNode.GetSize(out curNodeWidth, out curNodeHeight);
-                defaultFlowOut = ifNode.FlowOutAnchor; */
-
                 var ifStmt = stmtArg as IfElseStatement; // AST node
                 var ifTile = tileContainer.CreateAndAddTile<IfStmtTile>(nodePresenter); // Visual Node
 
@@ -370,8 +357,6 @@ namespace code_in.Presenters.Nodal
 
                 this._generateVisualASTStatements(ifTile.ItemTrue, ifStmt.TrueStatement);
                 this._generateVisualASTStatements(ifTile.ItemFalse,  ifStmt.FalseStatement);
-                ifTile.UpdateDisplayedInfosFromPresenter();
-
             }
             # endregion IfStmts
             # region Loops
@@ -447,7 +432,7 @@ namespace code_in.Presenters.Nodal
                 //defaultFlowOut = switchStmtNode.FlowOutAnchor;
             }
             #endregion Switch
-            #endregion Block Statement
+            #endregion Block Statements
             #region Single Statement
             #region Variable Declaration
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement))
@@ -502,24 +487,15 @@ namespace code_in.Presenters.Nodal
             #endregion YieldReturn Statement
             #region YieldBreak Statement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.YieldBreakStatement))
-            {
-                var yieldBreakStmt = stmtArg as BreakStatement; // ASTNode
-                var breakStmtTile = tileContainer.CreateAndAddTile<YieldBreakStmtTile>(nodePresenter); // Visual Node
-            }
+                tileContainer.CreateAndAddTile<YieldBreakStmtTile>(nodePresenter); // Visual Node
             #endregion YieldBreak Statement
             #region Continue Statement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
-            {
-                var continueStmt = stmtArg as ContinueStatement;
-                var continueStmtNode = tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
-            }
+                tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
             #endregion ContinueStatement
             #endregion Single Statement
             else // Default Node
-            {
-                var unSupStmtTile = tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);
-            }
-
+                tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);
             tileContainer.UpdateDisplayedInfosFromPresenter();
         }
         private void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)

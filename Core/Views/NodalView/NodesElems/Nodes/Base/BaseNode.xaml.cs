@@ -136,7 +136,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
 
-        public /*abstract*/ void UpdateDisplayedInfosFromPresenter() { }
+        public virtual/*abstract*/ void UpdateDisplayedInfosFromPresenter() { }
         public abstract void InstantiateASTNode();
         public void SetName(string name)
         {

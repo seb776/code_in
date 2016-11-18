@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Shell;
 using code_in;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Code_in.VSCode_in
 {
@@ -92,7 +93,24 @@ namespace Code_in.VSCode_in
         /// the OleMenuCommandService service and the MenuCommand class.
         /// </summary>
 
-        private void NewFileCallback(object sender, EventArgs e)
+        List<OpenedFile> _fileList = new List<OpenedFile>();
+        
+        private bool _askForNewFile(ref string filePath, ref string fileName)
+        {
+            System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
+
+            fileDialog.Filter = "C# File (*.cs)|*.cs";
+            var res = fileDialog.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK || res == System.Windows.Forms.DialogResult.Yes)
+            {
+                filePath = fileDialog.FileName;
+                fileName = Path.GetFileName(fileDialog.FileName);
+                return true;
+            }
+            return false;
+        }
+
+        NodalWindowPane _createNodalWindow()
         {
             int i = 0;
 
@@ -107,30 +125,66 @@ namespace Code_in.VSCode_in
                     frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
                     frame.Show();
                     (wp as NodalWindowPane).PaneId = i;
-                    (wp as NodalWindowPane).NewFile();
                 }
             }
+            return wp as NodalWindowPane;
         }
 
+        private void NewFileCallback(object sender, EventArgs e)
+        {
+            string filePath = "";
+            string fileName = "";
+            if (_askForNewFile(ref filePath, ref fileName))
+            {
+                File.Create(filePath).Close();
+                var toolWindow = this._createNodalWindow();
+                toolWindow.Caption = fileName;
+                toolWindow.OpenFile(filePath);
+                _fileList.Add(new OpenedFile(filePath, toolWindow));                
+            }
+            else
+            {
+                // TODO custom display
+                MessageBox.Show("You must specify a valid file to create.");
+            }
+
+
+        }
+        private bool _askForOpenFile(ref string filePath, ref string fileName)
+        {
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+
+            ofd.Filter = "C# File (*.cs)|*.cs";
+            var res = ofd.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK && File.Exists(ofd.FileName))
+            {
+                filePath = ofd.FileName;
+                fileName = Path.GetFileName(ofd.FileName);
+                return true;
+            }
+            return false;
+        }
         private void OpenFileCallback(object sender, EventArgs e)
         {
-            int i = 0;
-
-            while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
-                ++i;
-
-            ToolWindowPane wp = this.CreateToolWindow(typeof(NodalWindowPane), i) as ToolWindowPane;
-
-            if (wp != null)
+            string filePath = "";
+            string fileName = "";
+            if (_askForOpenFile(ref filePath, ref fileName))
             {
-                IVsWindowFrame frame = wp.Frame as IVsWindowFrame;
-                if (frame != null)
+                var openedFile = _fileList.Find((of) => { return of._filePath == filePath; });
+                if (openedFile != null) // If already opened we show the original
+                    ((openedFile._windowPane.Frame) as IVsWindowFrame).Show();
+                else
                 {
-                    frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
-                    (wp as NodalWindowPane).PaneId = i;
-                    if ((wp as NodalWindowPane).OpenFile())
-                        frame.Show();
+                    var toolWindow = _createNodalWindow();
+                    toolWindow.Caption = fileName;
+                    toolWindow.OpenFile(filePath);
+                    _fileList.Add(new OpenedFile(filePath, toolWindow));
                 }
+            }
+            else
+            {
+                // TODO custom display
+                MessageBox.Show("You must specify a valid file to open.");
             }
         }
 
@@ -217,57 +271,10 @@ namespace Code_in.VSCode_in
             PaneId = 0;
         }
 
-        public bool OpenFile()
+        public void OpenFile(string filePath)
         {
-            Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
-
-            bool? result = fileDialog.ShowDialog();
-
-            if ((result == true) && (isFileAlreadyOpened(fileDialog.FileName) == false))
-            {
-                this.Caption = fileDialog.SafeFileName;
-                this._mainView.OpenFile(fileDialog.FileName);
-                _fileList.Add(new OpenedFile(fileDialog.FileName, this));
-            }
-            else 
-                foreach (var item in _fileList)
-                {
-                    if (item._filePath == fileDialog.FileName && item._windowPane._mainView != null){
-                        ((item._windowPane.Frame) as IVsWindowFrame).Show();
-                        return false;
-                    }
-                }
-            return true;
+            this._mainView.OpenFile(filePath);
         }
-
-        public void NewFile()
-        {
-            SaveFileDialog fileDialog = new SaveFileDialog();
-
-            fileDialog.Filter = "C# File (*.cs)|*.cs";
-
-            bool? result = fileDialog.ShowDialog();
-
-            if ((result == true) && (File.Exists(fileDialog.FileName) == false))
-            {
-                ((this) as IVsWindowFrame).Show();
-                File.Create(fileDialog.FileName).Close();
-                this.Caption = fileDialog.SafeFileName;
-                this._mainView.OpenFile(fileDialog.FileName);
-                _fileList.Add(new OpenedFile(fileDialog.FileName, this));
-            }
-        }
-
-        private bool isFileAlreadyOpened(string filePath)
-        {
-            foreach (var file in _fileList)
-            {
-                if (filePath == file._filePath)
-                    return true;
-            }
-            return false;
-        }
-
     }
 
     /// <summary>

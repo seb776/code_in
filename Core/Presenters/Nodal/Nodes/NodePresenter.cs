@@ -21,11 +21,6 @@ namespace code_in.Presenters.Nodal.Nodes
     /// <summary>
     /// NodePresenter class
     /// Used to link the visual nodes with the NRefactory AST nodes
-    /// Needed:
-    ///  Generation of AstNode if null
-    /// Done:
-    /// SetName
-    /// Move (kinda)
     /// </summary>
     public class NodePresenter : INodePresenter // TODO @z0rg NodePresenter private and INodePresenter public ?
     {
@@ -1119,7 +1114,12 @@ namespace code_in.Presenters.Nodal.Nodes
         public void SetView(INodeElem visualNode)
         {
             System.Diagnostics.Debug.Assert(visualNode != null);
-            this._view = visualNode;
+            _view = visualNode;
+        }
+        public INodeElem GetView()
+        {
+            System.Diagnostics.Debug.Assert(_view != null);
+            return _view;
         }
 
 
