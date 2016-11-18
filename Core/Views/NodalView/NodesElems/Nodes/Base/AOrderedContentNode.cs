@@ -37,6 +37,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public override void Drop(IEnumerable<IDragNDropItem> items)
         {
+            int finalIndex = 0; // Index for inserting nodes at the right place
+            double movingNodesY = this.CurrentMovingNodes.Margin.Top;
+            foreach (var item in this._orderedLayout.Children)
+            {
+
+                if (((item as FrameworkElement).TranslatePoint(new Point(0, 0), this._orderedLayout).Y + ((item as FrameworkElement).ActualHeight / 2.0f)) > movingNodesY)
+                    break;
+                ++finalIndex;
+            }
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
             {
                 // TODO @Seb
@@ -49,9 +58,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                     backUpItems.Add(uiElem as UIElement);
                 }
                 CurrentMovingNodes.Children.Clear();
+                int endIndex = finalIndex;
                 foreach (var uiElem in backUpItems)
                 {
-                    this._orderedLayout.Children.Add(uiElem);
+                    this._orderedLayout.Children.Insert(endIndex, uiElem);
+                    endIndex++;
                 }
 
                 // TODO @Seb calculate drop index...

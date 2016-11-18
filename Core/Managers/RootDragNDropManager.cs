@@ -40,7 +40,9 @@ namespace code_in.Managers
         public void AddSelectItem(IDragNDropItem item)
         {
             if (SelectedItems.Count != 0 && SelectedItems.ElementAt(0).GetParentView() != item.GetParentView())
+            {
                 UnselectAllNodes();
+            }
             _selectNode(item);
         }
         private void _selectNode(IDragNDropItem item)

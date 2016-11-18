@@ -25,7 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class BaseTile : UserControl, INodeElem
     {
-        protected INodePresenter _presenter = null;
+        public INodePresenter _presenter = null;
         private ResourceDictionary _themeResourceDictionary = null;
         private bool _isBreakpointActive = false;
         private Statement _breakpoint = null;
@@ -218,7 +218,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftShift))
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
             e.Handled = true;
