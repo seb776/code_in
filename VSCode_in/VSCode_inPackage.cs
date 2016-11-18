@@ -87,12 +87,6 @@ namespace Code_in.VSCode_in
         }
         #endregion
 
-        /// <summary>
-        /// This function is the callback used to execute a command when the a menu item is clicked.
-        /// See the Initialize method to see how the menu item is associated to this function using
-        /// the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-
         List<OpenedFile> _fileList = new List<OpenedFile>();
         
         private bool _askForNewFile(ref string filePath, ref string fileName)
@@ -130,26 +124,7 @@ namespace Code_in.VSCode_in
             return wp as NodalWindowPane;
         }
 
-        private void NewFileCallback(object sender, EventArgs e)
-        {
-            string filePath = "";
-            string fileName = "";
-            if (_askForNewFile(ref filePath, ref fileName))
-            {
-                File.Create(filePath).Close();
-                var toolWindow = this._createNodalWindow();
-                toolWindow.Caption = fileName;
-                toolWindow.OpenFile(filePath);
-                _fileList.Add(new OpenedFile(filePath, toolWindow));                
-            }
-            else
-            {
-                // TODO custom display
-                MessageBox.Show("You must specify a valid file to create.");
-            }
 
-
-        }
         private bool _askForOpenFile(ref string filePath, ref string fileName)
         {
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
@@ -163,6 +138,27 @@ namespace Code_in.VSCode_in
                 return true;
             }
             return false;
+        }
+        #region Menu callbacks
+        private void NewFileCallback(object sender, EventArgs e)
+        {
+            string filePath = "";
+            string fileName = "";
+            if (_askForNewFile(ref filePath, ref fileName))
+            {
+                File.Create(filePath).Close();
+                var toolWindow = this._createNodalWindow();
+                toolWindow.Caption = fileName;
+                toolWindow.OpenFile(filePath);
+                _fileList.Add(new OpenedFile(filePath, toolWindow));
+            }
+            else
+            {
+                // TODO custom display
+                MessageBox.Show("You must specify a valid file to create.");
+            }
+
+
         }
         private void OpenFileCallback(object sender, EventArgs e)
         {
@@ -204,7 +200,8 @@ namespace Code_in.VSCode_in
 
 
         }
-
+        #endregion Menu callbacks
+        #region IEnvironmentWrapper
         public T CreateAndAddView<T>() where T : UserControl
         {
             Dictionary<String, Type> dict = new Dictionary<string, Type>()
@@ -212,6 +209,7 @@ namespace Code_in.VSCode_in
                 {"MainView", typeof(NodalWindowPane)},
                 {"ConfigView", typeof(ConfigWindowPane)}
             };
+
             int i = 0;
 
             while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
@@ -233,8 +231,17 @@ namespace Code_in.VSCode_in
         }
         public void CloseView<T>(T view) where T : UserControl
         {
-
+            //_fileList[0].
+            // TODO @Seb
+            //OpenedFile file = _fileList.Find((of) => { return of._filePath == ""; });
+            //if (file != null)
+            //    _fileList.Remove(file);
+            //else
+            //{
+            //    // TODO Error message
+            //}
         }
+        #endregion IEnvironmentWrapper
     }
 
     public class ConfigWindowPane : ToolWindowPane // TODO move this elsewhere

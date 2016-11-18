@@ -59,6 +59,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         private void GetTypeFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(FieldDeclaration))
             {
                 var ast = _model as FieldDeclaration;
@@ -78,6 +80,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         private void GetExistingAttributesFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(MethodDeclaration))
             {
                 var ast = _model as MethodDeclaration;

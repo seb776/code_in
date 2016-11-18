@@ -83,6 +83,10 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
 
         }
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+
+        }
         #region IContainingAccessModifiers
         public void setAccessModifiers(Modifiers modifiers)
         {

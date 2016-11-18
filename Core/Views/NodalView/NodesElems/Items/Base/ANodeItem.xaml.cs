@@ -155,11 +155,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
 
 
-        public void UpdateDisplayedInfosFromPresenter()
-        {
-            throw new NotImplementedException();
-        }
-
+        public abstract void UpdateDisplayedInfosFromPresenter();
 
         public void MustBeRemovedFromContext()
         {

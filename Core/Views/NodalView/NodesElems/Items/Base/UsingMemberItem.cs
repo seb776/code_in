@@ -23,5 +23,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
 
         }
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            this.SetName(_nodePresenter.GetASTNode().ToString());
+        }
     }
 }

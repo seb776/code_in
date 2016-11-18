@@ -17,17 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         protected AFlyingContentNode(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            var resizeBtn = new Polygon();
-            resizeBtn.Points = new System.Windows.Media.PointCollection();
-            resizeBtn.Points.Add(new Point(15, 15));
-            resizeBtn.Points.Add(new Point(0, 15));
-            resizeBtn.Points.Add(new Point(15, 0));
-            resizeBtn.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            resizeBtn.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            resizeBtn.Cursor = Cursors.SizeNWSE;
-            resizeBtn.PreviewMouseLeftButtonDown += EvtDragResize;
-            resizeBtn.Fill = new SolidColorBrush(Colors.GreenYellow);
-            this.ContentLayout.Children.Add(resizeBtn);
+
         }
 
         public override void Drop(IEnumerable<IDragNDropItem> items)
@@ -73,19 +63,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                 draggingNode.SetPosition((int)newMargin.Left, (int)newMargin.Top);
             }
         }
-        private void EvtDragResize(object sender, MouseButtonEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
 
         public override void AddNode<T>(T node, int index = -1)
         {
-            this.ContentLayout.Children.Add(node as UIElement);
+            this.ContentGridLayout.Children.Add(node as UIElement);
         }
 
         public override void RemoveNode(INodeElem node)
         {
-            this.ContentLayout.Children.Remove(node as UIElement);
+            this.ContentGridLayout.Children.Remove(node as UIElement);
         }
     }
 }

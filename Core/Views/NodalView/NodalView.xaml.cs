@@ -59,6 +59,7 @@ namespace code_in.Views.NodalView
         #region This
         public void OpenFile(String path)
         {
+            // TODO Show Animation loadingFile
             this._nodalPresenter.OpenFile(path);
         }
         public void EditFunction(FuncDeclItem node)
@@ -77,6 +78,10 @@ namespace code_in.Views.NodalView
             this._nodalPresenter.EditConstructor(node);
         }
         #region Events
+        private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Code_inApplication.RootDragNDrop.UnselectAllNodes();
+        }
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
@@ -265,7 +270,24 @@ namespace code_in.Views.NodalView
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
         #endregion ICodeInVisual
         #region IContainerDragNDrop
+        public new void Drop(IEnumerable<IDragNDropItem> items)
+        {
+            this.UpdateDragInfos(_lastPosition);
+        }
 
+        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+                return true;
+
+            foreach (var i in items)
+            {
+                if (this.IsDeclarative)
+                    return ((i is code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.UsingDeclNode));
+            }
+            return false;
+
+        }
         public void UpdateDragInfos(Point mousePosition) // @Seb mousePosition must be mouse position from NodalView.MainGrid
         {
             var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
@@ -278,7 +300,6 @@ namespace code_in.Views.NodalView
                 diff = _lastPosition - mousePosition;
             _lastPosition = mousePosition;
 
-            //MessageBox.Show(_selectedNodes.GroupBy(n => n).Any(c => c.Count() > 1).ToString()); // Checks for doublons
             foreach (var selNode in selectedNodes)
             {
                 dynamic draggingNode = selNode;
@@ -299,20 +320,9 @@ namespace code_in.Views.NodalView
             }
         }
 
-        public void AddSelectNode(IDragNDropItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddSelectNodes(List<IDragNDropItem> items)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Drag(EDragMode dragMode)
         {
             _lastPosition = new Point(0.0, 0.0);
-            //throw new NotImplementedException();
         }
 
         #endregion IContainerDragNDrop
@@ -336,9 +346,15 @@ namespace code_in.Views.NodalView
         public void RemoveNode(INodeElem node)
         {
             this.MainGrid.Children.Remove(node as UIElement);
-            throw new NotImplementedException();
         }
         #endregion IVisualNodeContainer
+        #region IVisualLinkContainer
+        public bool DraggingLink
+        {
+            get;
+            set;
+        }
+        #endregion IVisualLinkContainer
         #region INodalView
         public void RemoveLink(AIOAnchor anchor)
         {
@@ -457,35 +473,5 @@ namespace code_in.Views.NodalView
             }
         }
         #endregion INodalView
-
-        public new void Drop(IEnumerable<IDragNDropItem> items)
-        {
-            this.UpdateDragInfos(_lastPosition);
-        }
-
-        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
-        {
-            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
-                return true;
-
-            foreach (var i in items)
-            {
-                if (this.IsDeclarative)
-                    return ((i is code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.UsingDeclNode));
-            }
-            return false;
-
-        }
-
-        private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Code_inApplication.RootDragNDrop.UnselectAllNodes();
-        }
-
-        public bool DraggingLink
-        {
-            get;
-            set;
-        }
     } // Class
 } // Namespace

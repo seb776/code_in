@@ -54,7 +54,7 @@ namespace code_in.Presenters.Nodal
         {
             _model = this.ParseFile(path);
             _parentModel = _model;
-            this._generateVisualASTDeclaration(_model);
+            this._generateVisualAST(_model);
         }
         public void EditFunction(FuncDeclItem node)
         {
@@ -68,9 +68,9 @@ namespace code_in.Presenters.Nodal
         {
             this._generateVisualASTConstructorBody(node.ConstructorNode);
         }
-        private void _generateVisualASTDeclaration(NodalModel model)
+        private void _generateVisualAST(NodalModel model)
         {
-            this._generateVisualASTDeclarationRecur(model.AST, this._view, 0, 0, null);
+            this._generateVisualASTDeclaration(model.AST, this._view);
         }
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
@@ -104,53 +104,59 @@ namespace code_in.Presenters.Nodal
             }
             view.setGenerics(GenericList);
         }
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, int posX, int posY, UsingDeclNode usingDeclNode)
+        private void _alignDeclarations()
         {
-            int currentPosX = posX;
-            int currentPosY = posY;
-            int horizontalStep = 20;
-            int verticalStep = 20;
+        }
+        private void _alignDeclarationsRecur()
+        {
+
+        }
+        private void _generateVisualASTDeclaration(AstNode node, IVisualNodeContainer parentContainer)
+        {
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SyntaxTree))
+            {
+                var usingNodePresenter = new NodePresenter(this, null); // This node presenter does not reflect a node in the AST as our representation is different than the AST
+                var usingNodeView = parentContainer.CreateAndAddNode<UsingDeclNode>(usingNodePresenter); // We have one using view for the global scope
+
+                var syntaxTree = node as ICSharpCode.NRefactory.CSharp.SyntaxTree;
+                foreach (var decl in syntaxTree.Members)
+                    this._generateVisualASTDeclarationRecur(decl, parentContainer, usingNodeView);
+                if (usingNodeView._orderedLayout.Children.Count == 0) // If there is no using at all we remove it
+                    usingNodeView.Remove();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, UsingDeclNode parentUsingDeclNode)
+        {
             INodeElem visualNode = null;
             var nodePresenter = new NodePresenter(this, node);
             if (node.Children == null)
                 return;
-            #region Global scope
-            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SyntaxTree))
+
+            if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
             {
-                int localPosX = nodeHorizontalOffset, localPosY = nodeVerticalOffset;
-                var syntaxTree = node as ICSharpCode.NRefactory.CSharp.SyntaxTree;
-                UsingDeclNode usingDeclNodeInstantiate = null;
-                foreach (var decl in syntaxTree.Members)
-                {
-                    if (decl.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
-                    {
-                        var usingPresenter = new NodePresenter(this, decl as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
-                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
-                    }
-                    this._generateVisualASTDeclarationRecur(decl, parentContainer, 0, 0, usingDeclNodeInstantiate);
-                }
-            }
-            #endregion Global scope
-            #region Namespace
-            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration))
-            {
-                int localPosX = nodeHorizontalOffset, localPosY = nodeVerticalOffset;
                 NamespaceNode namespaceNode = parentContainer.CreateAndAddNode<NamespaceNode>(nodePresenter);
-                visualNode = namespaceNode;
                 var namespaceDecl = node as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
+                var usingNodePres = new NodePresenter(this, null);
+                UsingDeclNode usingDeclView = namespaceNode.CreateAndAddNode<UsingDeclNode>(usingNodePres);
+
+                visualNode = namespaceNode;
                 namespaceNode.SetName(namespaceDecl.Name);
-                UsingDeclNode usingDeclNodeInstantiate = null;
                 foreach (var member in namespaceDecl.Members)
-                {
-                    if (member.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration) && usingDeclNodeInstantiate == null)
-                    {
-                        var usingPresenter = new NodePresenter(this, member as ICSharpCode.NRefactory.CSharp.UsingDeclaration);
-                        usingDeclNodeInstantiate = parentContainer.CreateAndAddNode<UsingDeclNode>(usingPresenter);
-                    }
-                    this._generateVisualASTDeclarationRecur(member, namespaceNode, 0, 0, usingDeclNodeInstantiate);
-                }
+                    this._generateVisualASTDeclarationRecur(member, namespaceNode, usingDeclView);
+                if (usingDeclView._orderedLayout.Children.Count == 0) // TODO do better than this
+                    usingDeclView.Remove();
             }
-            #endregion
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
+            {
+                UsingDeclItem usingItem = null;
+                visualNode = usingItem = parentUsingDeclNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
+                usingItem.SetName(nodePresenter.GetASTNode().ToString());
+            }
             #region Classes (interface, struct, class, enum)
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // Handles class, struct, enum (see further)
             {
@@ -189,12 +195,12 @@ namespace code_in.Presenters.Nodal
                     //Generic
                     SetAllGenerics(classDeclNode, tmpNode);
                     //Constraint
-                    foreach(var constraint in tmpNode.Constraints)
+                    foreach (var constraint in tmpNode.Constraints)
                     {
                         classDeclNode.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);
                     }
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, classDeclNode, 0, 0, null);
+                        _generateVisualASTDeclarationRecur(member, classDeclNode, null); // No using in typeDecl
                 }
                 #endregion Class
                 #region Interface
@@ -212,7 +218,7 @@ namespace code_in.Presenters.Nodal
                     SetAllGenerics(interfaceDeclNode, tmpNode);
 
                     foreach (var member in tmpNode.Members)
-                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, 0, 0, null);
+                        _generateVisualASTDeclarationRecur(member, interfaceDeclNode, null); // No using in interface
                 }
                 #endregion Interface
             }
@@ -290,25 +296,6 @@ namespace code_in.Presenters.Nodal
                 //}
             }
             #endregion Method
-            #region Using
-            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UsingDeclaration))
-            {
-                var usingDecl = node as ICSharpCode.NRefactory.CSharp.UsingDeclaration;
-                //var usingDeclNode = parentContainer.CreateAndAddNode<UsingDeclNode>(nodePresenter);
-                visualNode = usingDeclNode;
-                UsingDeclItem UsingItem = usingDeclNode.CreateAndAddNode<UsingDeclItem>(nodePresenter);
-                UsingItem.SetName(usingDecl.Namespace);
-            }
-            #endregion Using
-
-            if (visualNode != null)
-            {
-                visualNode.SetPosition(currentPosX, currentPosY);
-                int nodeWidth = 0, nodeHeight = 0;
-                visualNode.GetSize(out nodeWidth, out nodeHeight);
-                //posX += nodeWidth + horizontalStep;
-                posY += nodeHeight + verticalStep;
-            }
         }
 
         private void _generateVisualASTFunctionBody(MethodDeclaration method)

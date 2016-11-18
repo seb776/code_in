@@ -92,6 +92,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
             throw new NotImplementedException();
         }
 
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
 
+        }
     }
 }
