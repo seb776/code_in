@@ -41,7 +41,7 @@
     </i:Interaction.Behaviors>
     <Grid x:Name="offsetGrid" Background="{DynamicResource LocalGridTile}">
         <Border  BorderThickness="50" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid  x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000">
+            <Grid  x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000" Background="Transparent">
                 <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
             </Grid>
         </Border>

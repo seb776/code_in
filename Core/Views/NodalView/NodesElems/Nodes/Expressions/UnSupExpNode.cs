@@ -30,5 +30,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             throw new NotImplementedException();
         }
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            this.NodeText.Text = this.GetNodePresenter().GetASTNode().ToString();
+        }
     }
 }

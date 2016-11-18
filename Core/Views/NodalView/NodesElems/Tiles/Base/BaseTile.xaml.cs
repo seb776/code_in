@@ -37,6 +37,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
+
         }
 
         public BaseTile() :
@@ -160,9 +161,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
+        EditNodePanel _editNodePanel;
         public void ShowEditMenu()
         {
-            throw new NotImplementedException();
+            this.EditMenuLayout.Children.Clear();
+            var editMenu = new EditNodePanel(_themeResourceDictionary);
+            editMenu.SetFields(_presenter);
+            this.EditMenuLayout.Children.Add(editMenu);
         }
 
         public void SetPosition(int posX, int posY)
@@ -216,6 +221,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             if (!Keyboard.IsKeyDown(Key.LeftShift))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
+        }
+
+        private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._presenter);
             e.Handled = true;
         }
     }

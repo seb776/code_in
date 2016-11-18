@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal.Nodes;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,11 @@ namespace code_in.Views.NodalView
         {
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
-//            _nodePresenter = new NodePresenter(themeResDict);
-//            UpdateGenericListInEditMenu();
         }
 
         public EditNodePanel() :
             this(Code_inApplication.MainResourceDictionary)
-        { /* Do not use this constructor except for tests */}
+        { throw new DefaultCtorVisualException(); }
 
         /// <summary>
         /// Called when editing a node, it sets the controls that allows specific node's modifications
@@ -450,7 +449,7 @@ namespace code_in.Views.NodalView
 
         private void QuitEditMenu(object sender, RoutedEventArgs e)
         {
-            ((StackPanel)this.Parent).Children.Clear();
+            ((dynamic)this.Parent).Children.Clear(); // TODO dynamic for quickfix but it need to be done differently
         }
 
         private void CheckedModifier(object sender, RoutedEventArgs e)
@@ -702,6 +701,8 @@ namespace code_in.Views.NodalView
                 MessageBox.Show(totalErr);
             }
             this._nodePresenter.GetASTNode().ReplaceWith(node);
+            this._nodePresenter.SetASTNode(node);
+            this._nodePresenter.GetView().UpdateDisplayedInfosFromPresenter(); // TODO @Seb
             // TODO update what is shown in the node
         }
 
