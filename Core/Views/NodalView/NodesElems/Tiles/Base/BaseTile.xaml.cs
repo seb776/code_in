@@ -188,7 +188,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void Remove()
         {
-            (this.GetParentView() as IVisualNodeContainer).RemoveNode(this);
+            (_parentView as ITileContainer).RemoveTile(this); 
         }
 
         public void SelectHighLight(bool highlighetd)

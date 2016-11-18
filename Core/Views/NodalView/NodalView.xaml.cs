@@ -337,6 +337,12 @@ namespace code_in.Views.NodalView
         {
             this.MainGrid.Children.Remove(node as UIElement);
         }
+
+        public void RemoveTile(INodeElem tile)
+        {
+            this.MainGrid.Children.Remove(tile as UIElement);
+        }
+
         #endregion IVisualNodeContainer
         #region INodalView
         public void RemoveLink(AIOAnchor anchor)

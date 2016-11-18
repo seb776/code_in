@@ -85,7 +85,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void RemoveTile(BaseTile tile)
         {
-            throw new NotImplementedException();
+            (this.GetParentView() as ITileContainer).RemoveTile(tile);
         }
         #endregion ITileContainer
         #region ICodeInVisual
