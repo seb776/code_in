@@ -17,23 +17,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             private set;
         }
 
-        public IndexerExprNode(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public IndexerExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
+            base(themeResDict, nodalView, linkContainer)
         {
             Target = this.CreateAndAddInput<DataFlowAnchor>();
         }
 
         public IndexerExprNode() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new DefaultCtorVisualException();
-        }
-
-
-
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
-        }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
     }
 }

@@ -35,10 +35,6 @@ namespace code_in.Presenters.Nodal
         private NodalModel _model = null;
         static private NodalModel _parentModel = null;
         private CSharpParser _parser = null;
-        const int nodeHorizontalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
-        const int nodeVerticalOffset = 50; // Used to set the offset of nodes display from the left-top corner of the screen
-
-        public BaseTile visualTile;
 
         public NodalPresenterLocal(INodalView view)
         {
@@ -46,10 +42,7 @@ namespace code_in.Presenters.Nodal
             _view = view;
             _parser = new CSharpParser();
         }
-        public void RemoveLink(AIOAnchor anchor)
-        {
-            this._view.RemoveLink(anchor);
-        }
+
         public void OpenFile(String path)
         {
             _model = this.ParseFile(path);
@@ -718,10 +711,10 @@ namespace code_in.Presenters.Nodal
 
         private void _createVisualLink(AIOAnchor a, AIOAnchor b)
         {
-            if (a == null || b == null)
-                return;
-            _view.DragLink(a, true);
-            _view.DropLink(b, true);
+            //if (a == null || b == null)
+            //    return;
+            //_view.DragLink(a, true);
+            //_view.DropLink(b, true);
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()

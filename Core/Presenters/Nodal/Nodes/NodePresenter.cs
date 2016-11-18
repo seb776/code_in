@@ -959,7 +959,7 @@ namespace code_in.Presenters.Nodal.Nodes
             System.Diagnostics.Debug.Assert(index < invocExpr.Arguments.Count);
             var dataFlowAnchor = funcExprView._inputs.Children[index + 1] as DataFlowAnchor;
             invocExpr.Arguments.Remove(invocExpr.Arguments.ElementAt(index)); // TODO assert, it may crash
-            _nodalPresenter.RemoveLink(dataFlowAnchor);
+            //_nodalPresenter.RemoveLink(dataFlowAnchor);
             funcExprView._inputs.Children.RemoveAt(index + 1);
 
         }

@@ -13,17 +13,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class FuncCallExprNode : AExpressionNode
     {
         public DataFlowAnchor TargetIn = null; // The method name
-        public FuncCallExprNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public FuncCallExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
             this.SetType("FuncCallExpr");
             TargetIn = this.CreateAndAddInput<DataFlowAnchor>();
             TargetIn.SetName("MethodName");
-        }
-        public override void InstantiateASTNode()
-        {
-            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.InvocationExpression());
-            throw new NotImplementedException();
         }
     }
 }

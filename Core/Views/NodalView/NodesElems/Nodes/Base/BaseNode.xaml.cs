@@ -86,6 +86,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+            e.Handled = true;
         }
         #endregion Events
         #endregion This
@@ -135,7 +136,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
 
         public virtual/*abstract*/ void UpdateDisplayedInfosFromPresenter() { }
-        public abstract void InstantiateASTNode();
         public void SetName(string name)
         {
             this.NodeName.Content = name;

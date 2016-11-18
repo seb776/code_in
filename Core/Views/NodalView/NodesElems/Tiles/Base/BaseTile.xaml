@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300" Padding="2">
-    <Grid x:Name="BackGrid" Background="#A5FF983D" MinWidth="150" MinHeight="0" VerticalAlignment="Top" HorizontalAlignment="Left" MouseLeftButtonDown="BackGrid_MouseLeftButtonDown" PreviewMouseRightButtonDown="BackGrid_MouseRightButtonDown">
+    <Grid x:Name="BackGrid" Background="#A5FF983D" MinWidth="150" MinHeight="0" VerticalAlignment="Top" HorizontalAlignment="Left" MouseLeftButtonDown="BackGrid_MouseLeftButtonDown" MouseRightButtonDown="BackGrid_MouseRightButtonDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>

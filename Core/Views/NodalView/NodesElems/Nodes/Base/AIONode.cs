@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
@@ -7,6 +8,7 @@ using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,39 +24,26 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     /// </summary>
     public abstract class AIONode : BaseNode, IIOAnchorContainer
     {
-        public override void Remove()
-        {
-            (this.GetParentView() as IVisualNodeContainer).RemoveNode(this);
-            this.GetNodePresenter().GetASTNode().Remove();
-        }
-        private ILinkContainer _parentLinksContainer = null;
-        public Grid _subGrid = null; // public tmp
         public StackPanel _inputs = null;  // public tmp (ham ham)
         public StackPanel _outputs = null; // public tmp (ham ham)
 
-        public AIONode(ResourceDictionary themeResDict, INodalView nodalView) :
+        public AIONode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
             base(themeResDict, nodalView)
         {
+            ParentLinksContainer = linkContainer;
             this._initLayout();
-
         }
+        public AIONode() :
+            base(Code_inApplication.MainResourceDictionary, null)
+        { throw new DefaultCtorVisualException(); }
 
-        public void SetParentLinksContainer(ILinkContainer linksContainer)
-        {
-            System.Diagnostics.Debug.Assert(linksContainer != null);
-            _parentLinksContainer = linksContainer;
-            foreach (var i in _inputs.Children)
-                (i as AIOAnchor).SetParentLinksContainer(_parentLinksContainer);
-            foreach (var o in _outputs.Children)
-                (o as AIOAnchor).SetParentLinksContainer(_parentLinksContainer);
-        }
-
+        #region This
         /// <summary>
         /// Sets the visual layouts needed by this node;
         /// </summary>
         private void _initLayout()
         {
-            _subGrid = new Grid();
+            var subGrid = new Grid();
             _inputs = new StackPanel();
             _outputs = new StackPanel();
             var leftCol = new ColumnDefinition();
@@ -63,18 +52,19 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             leftCol.Width = new GridLength(1, GridUnitType.Star);
             rightCol.Width = new GridLength(1, GridUnitType.Star);
 
-            _subGrid.ColumnDefinitions.Add(leftCol);
-            _subGrid.ColumnDefinitions.Add(rightCol);
+            subGrid.ColumnDefinitions.Add(leftCol);
+            subGrid.ColumnDefinitions.Add(rightCol);
 
             _outputs.SetValue(StackPanel.HorizontalAlignmentProperty, HorizontalAlignment.Right);
 
             _inputs.SetValue(Grid.ColumnProperty, 0);
             _outputs.SetValue(Grid.ColumnProperty, 1);
-            _subGrid.Children.Add(_inputs);
-            _subGrid.Children.Add(_outputs);
-            this.ContentLayout.Children.Add(_subGrid);
+            subGrid.Children.Add(_inputs);
+            subGrid.Children.Add(_outputs);
+            this.ContentLayout.Children.Add(subGrid);
         }
-
+        #endregion This
+        #region INodeElem
         public override void SetPosition(int posX, int posY)
         {
             this.Margin = new Thickness(posX, posY, 0, 0);
@@ -92,12 +82,20 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
                 output.UpdateLinksPosition();
             }
         }
-
+        #endregion INodeElem
+        #region IIOAnchorContainer
+        public ILinkContainer ParentLinksContainer
+        {
+            get;
+            set;
+        }
         public T CreateAndAddInput<T>() where T : AIOAnchor
         {
-            T inputAnchor = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
-            this.AddInput(inputAnchor);
-            inputAnchor.SetParentLinksContainer(_parentLinksContainer);
+            Debug.Assert(ParentLinksContainer != null);
+            T inputAnchor = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), ParentLinksContainer);
+
+            inputAnchor.Margin = new Thickness(-10, 0, 0, 0);
+            this._inputs.Children.Add(inputAnchor);
             inputAnchor.SetParentNode(this);
             inputAnchor.Orientation = AIOAnchor.EOrientation.LEFT;
             return inputAnchor;
@@ -105,24 +103,15 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
 
         public T CreateAndAddOutput<T>() where T : AIOAnchor
         {
-            T outputAnchor = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary());
-            this.AddOutput(outputAnchor);
-            outputAnchor.SetParentLinksContainer(_parentLinksContainer);
+            Debug.Assert(ParentLinksContainer != null);
+            T outputAnchor = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), ParentLinksContainer);
+
+            outputAnchor.Margin = new Thickness(0, 0, -10, 0);
+            this._outputs.Children.Add(outputAnchor);
             outputAnchor.SetParentNode(this);
             outputAnchor.Orientation = AIOAnchor.EOrientation.RIGHT;
             return outputAnchor;
         }
-
-        public void AddInput(AIOAnchor input)
-        {
-            input.Margin = new Thickness(-10, 0, 0, 0);
-            this._inputs.Children.Add(input);
-        }
-
-        public void AddOutput(AIOAnchor output)
-        {
-            output.Margin = new Thickness(0, 0, -10, 0);
-            this._outputs.Children.Add(output);
-        }
+        #endregion IIOAnchorContainer
     }
 }

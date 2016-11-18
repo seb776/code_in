@@ -36,9 +36,5 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             this.ContentLayout.Children.Remove(node as UIElement);
         }
-        public override void InstantiateASTNode()
-        {
-            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.UsingDeclaration());
-        }
     }
 }

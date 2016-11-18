@@ -11,7 +11,10 @@ namespace code_in.Views.NodalView.NodesElems
     {
         T CreateAndAddInput<T>() where T : AIOAnchor;
         T CreateAndAddOutput<T>() where T : AIOAnchor;
-        void AddInput(AIOAnchor input);
-        void AddOutput(AIOAnchor output);
+        ILinkContainer ParentLinksContainer
+        {
+            get;
+            set;
+        }
     }
 }

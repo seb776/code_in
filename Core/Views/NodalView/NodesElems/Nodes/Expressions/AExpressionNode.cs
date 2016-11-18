@@ -10,8 +10,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public abstract class AExpressionNode : AValueNode
     {
-        public AExpressionNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public AExpressionNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
         }
         public override void SetThemeResources(string keyPrefix)

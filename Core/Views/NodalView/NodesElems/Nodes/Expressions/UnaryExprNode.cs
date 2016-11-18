@@ -12,17 +12,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class UnaryExprNode : AExpressionNode
     {
         public DataFlowAnchor OperandA = null;
-        public UnaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public UnaryExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             this.SetThemeResources("UnaryExprNode");
             this.SetType("UnaryExpr");
-        }
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
         }
     }
 }
