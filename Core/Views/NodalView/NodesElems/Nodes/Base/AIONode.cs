@@ -24,7 +24,8 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     {
         public override void Remove()
         {
-            throw new NotImplementedException();
+            (this.GetParentView() as IVisualNodeContainer).RemoveNode(this);
+            this.GetNodePresenter().GetASTNode().Remove();
         }
         private ILinkContainer _parentLinksContainer = null;
         public Grid _subGrid = null; // public tmp

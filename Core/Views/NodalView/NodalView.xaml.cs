@@ -335,7 +335,6 @@ namespace code_in.Views.NodalView
         public void RemoveNode(INodeElem node)
         {
             this.MainGrid.Children.Remove(node as UIElement);
-            throw new NotImplementedException();
         }
         #endregion IVisualNodeContainer
         #region INodalView

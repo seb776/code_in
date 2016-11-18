@@ -183,7 +183,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void Remove()
         {
-            throw new NotImplementedException();
+            (this.GetParentView() as IVisualNodeContainer).RemoveNode(this);
         }
 
         public void SelectHighLight(bool highlighetd)
