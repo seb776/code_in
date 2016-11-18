@@ -47,6 +47,7 @@ namespace code_in.Views.NodalView
             _selectedNodes = new List<INodeElem>();
             _lastPosition = new Point();
             RootTileContainer = new TileContainer(_themeResourceDictionary, this) as ITileContainer;
+            RootTileContainer.SetParentView(this);
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
             this.DraggingLink = false;
         }
