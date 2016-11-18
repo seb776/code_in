@@ -45,10 +45,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public virtual void Remove()
         {
-            Debug.Assert(this.GetNodePresenter().GetASTNode() != null);
             Debug.Assert(_parentView != null);
             (_parentView as IVisualNodeContainer).RemoveNode(this); // TODO @Seb beurak
-            this.GetNodePresenter().GetASTNode().Remove();
         }
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }

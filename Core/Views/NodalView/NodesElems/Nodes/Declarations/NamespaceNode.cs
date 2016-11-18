@@ -41,7 +41,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         public override void RemoveNode(INodeElem node)
         {
-            throw new NotImplementedException();
+            this.ContentGridLayout.Children.Remove(node as UIElement);
         }
 
         #endregion IVisualNodeContainer
