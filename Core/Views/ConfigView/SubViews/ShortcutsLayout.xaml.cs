@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
+using code_in.Exceptions;
 
 namespace code_in.Views.ConfigView.SubViews
 {
@@ -35,7 +36,7 @@ namespace code_in.Views.ConfigView.SubViews
         }
         public ShortcutsLayout() :
             this(Code_inApplication.MainResourceDictionary)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+        { throw new DefaultCtorVisualException(); }
 
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }

@@ -35,8 +35,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         { throw new DefaultCtorVisualException(); }
 
 
-        public override void Drop(IEnumerable<IDragNDropItem> items)
+        public override void Drop(IEnumerable<IDragNDropItem> items) // TODO @Seb clean, and package this code
         {
+            INode beforeNode = null; // The node before the drop position (For ASTNode insert)
             int finalIndex = 0; // Index for inserting nodes at the right place
             double movingNodesY = this.CurrentMovingNodes.Margin.Top;
             foreach (var item in this._orderedLayout.Children)
@@ -44,6 +45,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
                 if (((item as FrameworkElement).TranslatePoint(new Point(0, 0), this._orderedLayout).Y + ((item as FrameworkElement).ActualHeight / 2.0f)) > movingNodesY)
                     break;
+                beforeNode = item as INode;
                 ++finalIndex;
             }
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
@@ -53,16 +55,26 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             else if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
             {
                 List<UIElement> backUpItems = new List<UIElement>();
+
                 foreach (var uiElem in this.CurrentMovingNodes.Children)
                 {
                     backUpItems.Add(uiElem as UIElement);
+                    (uiElem as INode).Presenter.RemoveFromAST();
                 }
+                //var astNodeParent = (backUpItems.First() as INode).Presenter.GetASTNode().Parent;
+                var astNodeParent = this.Presenter.GetASTNode(); // TODO might work for now but not ideal
+
                 CurrentMovingNodes.Children.Clear();
                 int endIndex = finalIndex;
                 foreach (var uiElem in backUpItems)
                 {
                     this._orderedLayout.Children.Insert(endIndex, uiElem);
+                    //if (beforeNode != null)
+                    //    astNodeParent.InsertChildAfter(beforeNode.Presenter.GetASTNode(), beforeNode.Presenter.GetASTNode() as dynamic, beforeNode.Presenter.GetASTNode().Role); // TODO beuark
+                    //else
+                    //    astNodeParent.InsertChildAfter(null, this.Presenter.GetASTNode() as dynamic, (uiElem as INode).Presenter.GetASTNode().Role); // TODO beuark
                     endIndex++;
+                    beforeNode = uiElem as INode;
                 }
 
                 // TODO @Seb calculate drop index...
@@ -87,7 +99,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                 }
                 foreach (var item in selItems)
                 {
-                    this._orderedLayout.Children.Remove(item as UIElement); // Temporary
+                    this._orderedLayout.Children.Remove(item as UIElement);
                     //item.RemoveFromContext(); // TODO @Seb
                     CurrentMovingNodes.Children.Add(item as UIElement); // TODO @Seb Beuark
                 }

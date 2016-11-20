@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
@@ -49,9 +50,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
         public ClassDeclNode() :
             this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
+        { throw new DefaultCtorVisualException(); }
+
         #region This
         public void SetClassType(EType type)
         {

@@ -1,4 +1,6 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -19,8 +21,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         ParametersList _params;
         private Image _editButton;
 
-        public ConstructorItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public ConstructorItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             { // TODO This is temporary
                 _editButton = new Image();
@@ -73,9 +75,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
             _params.AddParameter(type);
         }
         public ConstructorItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
+            this(Code_inApplication.MainResourceDictionary, null, null)
         {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");        
+            throw new DefaultCtorVisualException();
         }
         #region IContainingModifiers
         public void setAccessModifiers(Modifiers modifiers)

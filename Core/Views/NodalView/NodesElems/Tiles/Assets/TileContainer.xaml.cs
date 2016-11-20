@@ -143,36 +143,33 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             foreach (var item in this.TileStackPannel.Children)
             {
                 if (((item as FrameworkElement).TranslatePoint(new Point(0, 0), this.TileStackPannel).Y + ((item as FrameworkElement).ActualHeight / 2.0f)) > movingNodesY)
-                {
                     break;
-                }
                 beforeItem = item as BaseTile; // TODO modification AST
                 ++finalIndex;
             }
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
             {
                 ICSharpCode.NRefactory.CSharp.AstNode astNodeParent; // TODO modification AST
-                // TODO @Seb AST
-                if (CurrentMovingNodes != null)
+                if (CurrentMovingNodes != null) // TODO @Seb Replace by assert ?
                 {
                     List<UIElement> saveItems = new List<UIElement>();
                     foreach (var uiElem in CurrentMovingNodes.Children)
                         saveItems.Add(uiElem as UIElement);
                     CurrentMovingNodes.Children.Clear();
-                    astNodeParent = (saveItems.First() as BaseTile)._presenter.GetASTNode().Parent;
+                    astNodeParent = (saveItems.First() as BaseTile).Presenter.GetASTNode().Parent;
                     foreach (var uiElem in saveItems) // TODO modification AST
-                        (uiElem as BaseTile)._presenter.RemoveFromAST();
+                        (uiElem as BaseTile).Presenter.RemoveFromAST();
                     int endIndex = finalIndex;
                     foreach (var uiElem in saveItems)
                     {
                         dynamic item = uiElem;
                         this.AddTile(item, endIndex);
                         if (beforeItem != null)
-                            astNodeParent.InsertChildAfter(beforeItem._presenter.GetASTNode(), (item as BaseTile)._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                            astNodeParent.InsertChildAfter(beforeItem.Presenter.GetASTNode(), (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
                         else
-                            astNodeParent.InsertChildAfter(null, (item as BaseTile)._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                            astNodeParent.InsertChildAfter(null, (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
                         endIndex++;
-                        beforeItem = item; // TODO modification AST
+                        beforeItem = item;
                     }
                     this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
                     CurrentMovingNodes = null;

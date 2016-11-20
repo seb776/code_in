@@ -25,10 +25,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, code_in.Views.NodalView.INode
     {
-
+        public INodePresenter Presenter
+        {
+            get;
+            set;
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private IContainerDragNDrop _parentView = null;
-        private INodePresenter _nodePresenter = null;
         private EditNodePanel EditMenu = null;
         public BaseNode(ResourceDictionary themeResDict, INodalView nodalView)
         {
@@ -85,7 +88,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
         #endregion Events
@@ -96,7 +99,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void SetNodePresenter(INodePresenter nodePresenter)
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
-            _nodePresenter = nodePresenter;
+            Presenter = nodePresenter;
         }
         public Point GetPosition()
         {
@@ -104,14 +107,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         public INodePresenter GetNodePresenter()
         {
-            return _nodePresenter;
+            return Presenter;
         }
 
         public void ShowEditMenu()
         {
             this.EditMenuAndAttributesLayout.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
-            EditMenu.SetFields(_nodePresenter);
+            EditMenu.SetFields(Presenter);
             this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
         }
 

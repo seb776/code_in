@@ -25,7 +25,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class BaseTile : UserControl, INodeElem
     {
-        public INodePresenter _presenter = null;
+        public INodePresenter Presenter
+        {
+            get;
+            set;
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private bool _isBreakpointActive = false;
         private Statement _breakpoint = null;
@@ -88,9 +92,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
 
         #region ITile
-        public void SetPresenter(INodePresenter presenter)
+        public void SetPresenter(INodePresenter presenter) // TODO To remove
         {
-            _presenter = presenter;
+            Presenter = presenter;
         }
 
         public virtual void UpdateDisplayedInfosFromPresenter()
@@ -104,7 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             if (_isBreakpointActive)
             {
-                var thisASTNode = _presenter.GetASTNode();
+                var thisASTNode = Presenter.GetASTNode();
                 if (thisASTNode is Statement)
                 {
                     var thisStmt = thisASTNode as Statement;
@@ -120,7 +124,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
                 var breakpointStmts = parser.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
                 _breakpoint = breakpointStmts.ElementAt(0);
-                var thisASTNode = _presenter.GetASTNode();
+                var thisASTNode = Presenter.GetASTNode();
                 if (thisASTNode is Statement)
                 {
                     var thisStmt = thisASTNode as Statement;
@@ -166,7 +170,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             this.EditMenuLayout.Children.Clear();
             var editMenu = new EditNodePanel(_themeResourceDictionary);
-            editMenu.SetFields(_presenter);
+            editMenu.SetFields(Presenter);
             this.EditMenuLayout.Children.Add(editMenu);
         }
 
@@ -226,7 +230,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._presenter);
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
     }

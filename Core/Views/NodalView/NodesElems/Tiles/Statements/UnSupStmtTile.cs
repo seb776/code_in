@@ -27,8 +27,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         #region INodeElem
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var unSup = this._presenter.GetASTNode();
+            Debug.Assert(Presenter != null);
+            var unSup = Presenter.GetASTNode();
             Expression.SetName(unSup.ToString());
         }
         #endregion INodeElem

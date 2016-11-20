@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Nodes;
@@ -25,7 +26,8 @@ namespace code_in.Views.MainView
         }
         public SearchBar() :
             this(Code_inApplication.MainResourceDictionary)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+        { throw new DefaultCtorVisualException(); }
+
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {

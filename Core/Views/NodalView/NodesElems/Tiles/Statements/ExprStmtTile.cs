@@ -27,8 +27,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var exprStmt = _presenter.GetASTNode();
+            Debug.Assert(Presenter != null);
+            var exprStmt = Presenter.GetASTNode();
            this.Expression.SetName(exprStmt.ToString().Remove(exprStmt.ToString().LastIndexOf(Environment.NewLine)));
            //this.Expression.SetName(exprStmt.ToString().Replace(System.Environment.NewLine, ""));
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using code_in.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,9 +34,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
         }
         public TypeInfo() :
             this(Code_inApplication.MainResourceDictionary)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
+        { throw new DefaultCtorVisualException(); }
+
         public void SetTypeFromString(String type)
         {
             this.TypeLabel.Content = type; ;

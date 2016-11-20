@@ -44,9 +44,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         /// <returns></returns>
         public virtual T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
-            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), this.NodalView);
+            T node = (T)Activator.CreateInstance(typeof(T), this.GetThemeResourceDictionary(), this.NodalView, nodePresenter);
             node.SetParentView(this);
-            node.SetNodePresenter(nodePresenter);
             node.NodalView = this.NodalView;
             nodePresenter.SetView(node);
             try

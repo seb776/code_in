@@ -17,6 +17,7 @@ using code_in.Views.NodalView.NodesElems;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using code_in.Exceptions;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -25,11 +26,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public abstract partial class ANodeItem : UserControl, code_in.Views.NodalView.INode
     {
+        public INodePresenter Presenter
+        {
+            get;
+            set;
+        }
         private IContainerDragNDrop _parentView = null;
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         EditNodePanel EditMenu = null;
-        public INodePresenter _nodePresenter = null;
 
         public void Remove()
         {
@@ -40,8 +45,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
 
 
-        protected ANodeItem(ResourceDictionary themeResDict, INodalView nodalView)
+        protected ANodeItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter)
         {
+            Presenter = presenter;
             this.NodalView = nodalView;
             this._themeResourceDictionary = themeResDict;
             this._languageResourceDictionary = Code_inApplication.LanguageResourcesDictionary;
@@ -52,8 +58,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             this.MouseLeave += Item_MouseLeave;
         }
         protected ANodeItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
 
         void Item_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -77,13 +83,13 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this._nodePresenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this._nodePresenter);
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
         }
         public void ShowEditMenu()
         {
             this.EditItemPanelField.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
-            EditMenu.SetFields(_nodePresenter);
+            EditMenu.SetFields(Presenter);
             this.EditItemPanelField.Children.Add(EditMenu);
         }
 
@@ -98,10 +104,10 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             return this.ItemName.Content as String;
         }
-        public void SetNodePresenter(INodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter) // TODO To remove
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null);
-            _nodePresenter = nodePresenter;
+            Presenter = nodePresenter;
         }
         public void AddGeneric(string name, EGenericVariance variance)
         {

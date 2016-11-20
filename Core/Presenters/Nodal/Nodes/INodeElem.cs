@@ -28,6 +28,11 @@ namespace code_in.Presenters.Nodal
         Point GetPosition();
         void GetSize(out int x, out int y);
         void Remove();
+        INodePresenter Presenter
+        {
+            get;
+            set;
+        }
 
     }
 

@@ -1,4 +1,6 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -18,8 +20,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         private Button _getEditButton;
         private Button _setEditButton;
 
-        public PropertyItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public PropertyItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             _getEditButton = new Button();
             _setEditButton = new Button();
@@ -48,9 +50,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
             view.EditProperty(this, false);
         }
         public PropertyItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
+            this(Code_inApplication.MainResourceDictionary, null, null)
         {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
+            throw new DefaultCtorVisualException();
         }
         #region IContainingModifiers
         public void setAccessModifiers(Modifiers modifiers)
