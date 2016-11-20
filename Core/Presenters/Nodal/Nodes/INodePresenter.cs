@@ -68,5 +68,7 @@ namespace code_in.Presenters.Nodal.Nodes
         int getExecParamsNb();
         void AddExecParam();
         void RemoveExecParam(int index);
+
+        void RemoveFromAST();
     }
 }

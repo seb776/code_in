@@ -157,7 +157,10 @@ namespace code_in.Presenters.Nodal.Nodes
             LoadExecParamsCount();
             GetExistingAttributesFromNode();
         }
-
+        public void RemoveFromAST()
+        {
+            this._model.Remove();
+        }
         private void GetTypeFromNode()
         {
             if (_model == null)

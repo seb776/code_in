@@ -139,19 +139,19 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             int finalIndex = 0; // Index for inserting nodes at the right place
             double movingNodesY = this.CurrentMovingNodes.Margin.Top;
-            BaseTile beforeItem;
+            BaseTile beforeItem = null;
             foreach (var item in this.TileStackPannel.Children)
             {
                 if (((item as FrameworkElement).TranslatePoint(new Point(0, 0), this.TileStackPannel).Y + ((item as FrameworkElement).ActualHeight / 2.0f)) > movingNodesY)
                 {
-                    //beforeItem = item as BaseTile; // TODO modification AST
                     break;
                 }
+                beforeItem = item as BaseTile; // TODO modification AST
                 ++finalIndex;
             }
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
             {
-                //ICSharpCode.NRefactory.CSharp.AstNode astNodeParent; // TODO modification AST
+                ICSharpCode.NRefactory.CSharp.AstNode astNodeParent; // TODO modification AST
                 // TODO @Seb AST
                 if (CurrentMovingNodes != null)
                 {
@@ -159,17 +159,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                     foreach (var uiElem in CurrentMovingNodes.Children)
                         saveItems.Add(uiElem as UIElement);
                     CurrentMovingNodes.Children.Clear();
-                    //foreach (var uiElem in saveItems) // TODO modification AST
-                    //    (uiElem as BaseTile)._presenter.RemoveFromAST();
+                    astNodeParent = (saveItems.First() as BaseTile)._presenter.GetASTNode().Parent;
+                    foreach (var uiElem in saveItems) // TODO modification AST
+                        (uiElem as BaseTile)._presenter.RemoveFromAST();
                     int endIndex = finalIndex;
                     foreach (var uiElem in saveItems)
                     {
                         dynamic item = uiElem;
                         this.AddTile(item, endIndex);
-
-                        //astNodeParent.InsertChildAfter(beforeItem._presenter.GetASTNode(), (item as BaseTile)._presenter.GetASTNode(), null); // TODO modification AST
+                        if (beforeItem != null)
+                            astNodeParent.InsertChildAfter(beforeItem._presenter.GetASTNode(), (item as BaseTile)._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                        else
+                            astNodeParent.InsertChildAfter(null, (item as BaseTile)._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
                         endIndex++;
-                        //beforeItem = item; // TODO modification AST
+                        beforeItem = item; // TODO modification AST
                     }
                     this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
                     CurrentMovingNodes = null;
