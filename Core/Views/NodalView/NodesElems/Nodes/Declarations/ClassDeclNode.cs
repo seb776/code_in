@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
@@ -29,7 +30,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public Assets.ClassNodeModifiers Modifiers = null;
         public Assets.GenericItem Generics = null;
         public Assets.GenericConstraints Constraints = null;
-        public Assets.AttributesAsset Attributes = null;
         private EType _type;
         public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
@@ -42,12 +42,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             Modifiers = new ClassNodeModifiers(themeResDict);
             Constraints = new GenericConstraints(themeResDict);
             Modifiers.SetValue(Grid.ColumnProperty, 0);
-            Attributes = new AttributesAsset(themeResDict);
             this.ModifiersLayout.Children.Add(Modifiers);
             this.GenericsField.Children.Add(Generics);
             this.ConstraintLayout.Children.Add(Constraints);
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
-            this.AttributesLayout.Children.Add(Attributes);
         }
         public ClassDeclNode() :
             this(Code_inApplication.MainResourceDictionary, null, null)
@@ -82,15 +80,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         #region IContainingAttribute
         public void addAttribute(string type, string arg)
         {
-            Attributes.addAttribute(type, arg);
-            AttributesLayout.Children.Clear();
-            AttributesLayout.Children.Add(Attributes);
+            AttributesItems newAttr = new AttributesItems(type, arg);
+            AttributesLayout.Children.Add(newAttr);
         }
         public void delAttribute(int index)
         {
-            Attributes.deleteAttribute(index);
-            AttributesLayout.Children.Clear();
-            AttributesLayout.Children.Add(Attributes);
+            AttributesLayout.Children.RemoveAt(index);
         }
 
         public void setExistingAttributes(List<KeyValuePair<string, string>> list)

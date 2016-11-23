@@ -97,7 +97,32 @@ namespace code_in.Presenters.Nodal
             }
             view.setGenerics(GenericList);
         }
-        private void _alignDeclarations()
+
+        private void InitAttributes(IContainingAttribute view, TypeDeclaration typedecl)
+        {
+            List<KeyValuePair<string, string>> list = new List<KeyValuePair<string, string>>();
+            foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in typedecl.Attributes)
+            {
+                int i = 0;
+                while (i < section.Attributes.Count)
+                {
+                    KeyValuePair<string, string> newElem = new KeyValuePair<string, string>("", "");
+                    ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
+                    if (attr.Type != null && attr.Arguments.Count > 0)
+                        newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
+                    else if (attr.Type != null && attr.Arguments.Count == 0)
+                        newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
+                    else if (attr.Type == null && attr.Arguments.Count > 0)
+                        newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                    else
+                        newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                    list.Add(newElem);
+                    ++i;
+                }
+            }
+            view.setExistingAttributes(list);
+        }
+        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY, UsingDeclNode usingDeclNode)
         {
         }
         private void _alignDeclarationsRecur()
@@ -187,6 +212,8 @@ namespace code_in.Presenters.Nodal
                     InitInheritance(classDeclNode, tmpNode);
                     //Generic
                     SetAllGenerics(classDeclNode, tmpNode);
+                    //Attributes
+                    InitAttributes(classDeclNode, tmpNode);
                     //Constraint
                     foreach (var constraint in tmpNode.Constraints)
                     {

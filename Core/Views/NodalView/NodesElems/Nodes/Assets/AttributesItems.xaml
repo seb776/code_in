@@ -8,11 +8,11 @@
     <StackPanel Orientation="Horizontal" Background="Blue" Width="auto">
         <Label Foreground="White" >[</Label>
         <Label Foreground="White" x:Name="AttributeLabel"></Label>
-        <StackPanel x:Name="ArgsLayout" Orientation="Horizontal" Visibility="Hidden" IsEnabled="False" >
+        <Grid x:Name="ArgsLayout" Visibility="Hidden" IsEnabled="False" >
             <Label Foreground="White">(</Label>
-            <Label x:Name="AttributeArgs" Foreground="White"></Label>
+            <Label x:Name="AttributeArgs" Foreground="White" Content=""></Label>
             <Label Foreground="White">)</Label>
-        </StackPanel>
+        </Grid>
         <Label Foreground="White" >]</Label>
     </StackPanel>
 </UserControl>
