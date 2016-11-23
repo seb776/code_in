@@ -143,6 +143,25 @@ return;
 	if (1 == 1 && 2 == 2 || 3 == 3)
 	{
 	}
-    }	
+    }
+
+    void ternary() {
+	var test = (1 == 1) ? 'toto' : 'tata';
+    }
+
+    void isExpr(object obj) {
+	if (obj is LienAuto)
+	{
+
+	}
+   }
+
+   void asExpr(object obj) {
+	var test = obj as LienAuto;
+   }
+
+   void nullRefExpr() {
+	var a = null;
+   } 
     
 }

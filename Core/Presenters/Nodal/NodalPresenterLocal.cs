@@ -628,6 +628,30 @@ namespace code_in.Presenters.Nodal
 
             }
             #endregion BinaryOperator
+            #region AsExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.AsExpression))
+            {
+                var asExpr = expr as ICSharpCode.NRefactory.CSharp.AsExpression;
+                var asExprNode = container.CreateAndAddNode<AsExprNode>(nodePresenter);
+                visualNode = asExprNode;
+            }
+            #endregion AsExpression
+            #region IsExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.IsExpression))
+            {
+                var isExpr = expr as ICSharpCode.NRefactory.CSharp.IsExpression;
+                var isExprNode = container.CreateAndAddNode<IsExprNode>(nodePresenter);
+                visualNode = isExprNode;
+            }
+            #endregion IsExpression
+            #region NullExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NullReferenceExpression))
+            {
+                var nullExpr = expr as ICSharpCode.NRefactory.CSharp.NullReferenceExpression;
+                var nullExprNode = container.CreateAndAddNode<NullRefExprNode>(nodePresenter);
+                visualNode = nullExprNode;
+            }
+            #endregion NullExpression
             #region MemberReference
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MemberReferenceExpression))
             {
