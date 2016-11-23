@@ -10,16 +10,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
     public class ParenthesizedExprNode : AExpressionNode
     {
-        public DataFlowAnchor OperandA = null;
+        public DataFlowAnchor OperandA
+        {
+            get;
+            private set;
+        }
 
-        public ParenthesizedExprNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public ParenthesizedExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
-        }
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
         }
     }
 }

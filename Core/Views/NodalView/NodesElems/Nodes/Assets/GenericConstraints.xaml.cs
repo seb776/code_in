@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
         }
         public GenericConstraints() :
             this(Code_inApplication.MainResourceDictionary)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
+        { throw new DefaultCtorVisualException(); }
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public ResourceDictionary GetLanguageResourceDictionary() { return _languageResourceDictionary; }

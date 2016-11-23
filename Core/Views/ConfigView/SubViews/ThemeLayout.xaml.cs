@@ -1,4 +1,5 @@
-﻿using code_in.Models.Theme;
+﻿using code_in.Exceptions;
+using code_in.Models.Theme;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,7 +48,7 @@ namespace code_in.Views.ConfigView.SubViews
         }
         public ThemeLayout() :
             this(Code_inApplication.MainResourceDictionary)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+        { throw new DefaultCtorVisualException(); }
 
         #region ICode_inVisual
 

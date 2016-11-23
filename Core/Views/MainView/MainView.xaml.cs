@@ -111,6 +111,7 @@ namespace code_in.Views.MainView
             {
                 _lastMousePosFromWinGrid = e.GetPosition(this.WinGrid);
                 _movingView = true;
+                e.Handled = true;
             }
         }
         private bool _movingView = false;

@@ -33,8 +33,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var foreachStmt = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement);
+            Debug.Assert(Presenter != null);
+            var foreachStmt = (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement);
             this.Condition.SetName(foreachStmt.InExpression.ToString());
             
         }

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using code_in.Presenters.Nodal.Nodes;
 
 
 namespace code_in.Views.NodalView.NodesElems.Items
@@ -20,8 +21,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
     {
         public UsingDeclaration UsingNode = null; // TODO move to ANodePresenter
 
-        public UsingDeclItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public UsingDeclItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             { // TODO This is temporary
 

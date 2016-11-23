@@ -13,18 +13,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     {
         public DataFlowAnchor OperandA = null;
         public DataFlowAnchor OperandB = null;
-        public BinaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public BinaryExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             OperandB.SetName("B");
             this.SetType("BinaryExpr");
-        }
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
         }
     }
 

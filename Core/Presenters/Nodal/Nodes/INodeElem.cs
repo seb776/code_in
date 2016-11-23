@@ -15,7 +15,6 @@ namespace code_in.Presenters.Nodal
 {
     public interface INodeElem : IDragNDropItem, INodalViewElement
     {
-        void InstantiateASTNode();
         // Actions to change/get visualAST displayed state
         void SetName(String name);
         String GetName();
@@ -29,6 +28,11 @@ namespace code_in.Presenters.Nodal
         Point GetPosition();
         void GetSize(out int x, out int y);
         void Remove();
+        INodePresenter Presenter
+        {
+            get;
+            set;
+        }
 
     }
 

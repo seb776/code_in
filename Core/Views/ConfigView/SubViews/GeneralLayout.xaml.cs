@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Markup;
+using code_in.Exceptions;
 
 namespace code_in.Views.ConfigView.SubViews
 {
@@ -40,7 +41,7 @@ namespace code_in.Views.ConfigView.SubViews
         }
         public GeneralLayout() :
             this(Code_inApplication.MainResourceDictionary)
-        { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+        { throw new DefaultCtorVisualException(); }
 
         // The next 3 functions are for the wheckbox of the catégory "General->Activate tutorial"
 

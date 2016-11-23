@@ -1,4 +1,6 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
@@ -11,23 +13,18 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class NamespaceNode : AFlyingContentNode
     {
-        public override void InstantiateASTNode()
-        {
-            this.GetNodePresenter().SetASTNode(new ICSharpCode.NRefactory.CSharp.NamespaceDeclaration("NewNamespace"));
-        }
-        public NamespaceNode()
-            : this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
-
-        public NamespaceNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+        public NamespaceNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
         {
+            this.Presenter = nodePresenter;
             this.SetType("namespace");
             this.SetName("TMP.DefaultNamespaceName");
             //this.SetThemeResources("NamespaceNode");
         }
+        public NamespaceNode()
+            : this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
+
         #region IVisualNodeContainer
         public override void HighLightDropPlace(System.Windows.Point pos)
         {
@@ -41,9 +38,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         public override void RemoveNode(INodeElem node)
         {
-            throw new NotImplementedException();
+            this.ContentGridLayout.Children.Remove(node as UIElement);
         }
-
         #endregion IVisualNodeContainer
     } // Class
 } // Namespace

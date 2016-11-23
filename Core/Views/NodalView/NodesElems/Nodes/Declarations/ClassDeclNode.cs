@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
@@ -19,12 +20,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     /// </summary>
     public class ClassDeclNode : AOrderedContentNode, IContainingAccessModifiers, IContainingModifiers, IContainingInheritance, IContainingGenerics, IContainingAttribute, IContainingConstraints
     {
-        public override void InstantiateASTNode()
-        {
-            var typeDecl = new ICSharpCode.NRefactory.CSharp.TypeDeclaration();
-            typeDecl.ClassType = ClassType.Class;
-            this.GetNodePresenter().SetASTNode(typeDecl);
-        }
         public enum EType
         {
             STRUCT = 0,
@@ -36,9 +31,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public Assets.GenericItem Generics = null;
         public Assets.GenericConstraints Constraints = null;
         private EType _type;
-        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
         {
+            this.Presenter = nodePresenter;
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
@@ -52,10 +48,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
         public ClassDeclNode() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
+
         #region This
         public void SetClassType(EType type)
         {

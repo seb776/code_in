@@ -21,11 +21,6 @@ namespace code_in.Presenters.Nodal.Nodes
     /// <summary>
     /// NodePresenter class
     /// Used to link the visual nodes with the NRefactory AST nodes
-    /// Needed:
-    ///  Generation of AstNode if null
-    /// Done:
-    /// SetName
-    /// Move (kinda)
     /// </summary>
     public class NodePresenter : INodePresenter // TODO @z0rg NodePresenter private and INodePresenter public ?
     {
@@ -42,6 +37,107 @@ namespace code_in.Presenters.Nodal.Nodes
         public AstNode GetASTNode()
         {
             return _model;
+        }
+        public enum ECSharpNode
+        {
+            // GeneralScope
+            ATTRIBUTE,
+            ATTRIBUTE_SECTION,
+            COMMENT,
+            CONSTRAINT,
+            DELEGATE_DECL,
+            EXTERN_ALIAS_DECL,
+            NAMESPACE_DECL,
+            PREPROCESSOR_DIRECTIVE,
+            TEXT_NODE,
+            TYPE_DECL,
+            TYPE_PARAMETER_DECL,
+            USING_ALIAS_DECL,
+            USING_DECL,
+            UNSUPER_GENERAL_SCOPE,
+            // TypeMembers
+            ACCESSOR,
+            CTOR_DECL,
+            DTOR_DECL,
+            ENUM_MEMBER_DECL,
+            EVENT_DECL,
+            FIELD_DECL,
+            FIXED_FIELD_DECL,
+            FIXED_VAR_INIT,
+            INDEXER_DECL,
+            METHOD_DECL,
+            OPERATOR_DECL,
+            PARAMETER_DECL,
+            PROPERTY_DECL,
+            VAR_INIT,
+            UNSUP_TYPE_MEMBERS,
+            // Statements
+            BREAK_STMT,
+            CHECKED_STMT,
+            CONTINUE_STMT,
+            DO_WHILE_STMT,
+            EXPRESSION_STMT,
+            FIXED_STMT,
+            FOR_STMT,
+            FOREACH_STMT,
+            GOTO_STMT,
+            IFELSE_STMT,
+            LABEL_STMT,
+            LOCK_STMT,
+            RETURN_STMT,
+            SWITCH_STMT,
+            THROW_STMT,
+            TRY_CATCH_STMT,
+            UNCHECKED_STMT,
+            UNSAFE_STMT,
+            USING_STMT,
+            VAR_DECL_STMT,
+            YIELD_BREAK_STMT,
+            YIELD_RETURN_STMT,
+            UNSUP_STMT,
+
+            // Expressions
+            ANONYMOUS_METHOD_EXPRESSION,
+            ANONYMOUS_TYPE_CREATE_EXPRESSION,
+            ARRAY_CREATE_EXPRESSION,
+            ARRAY_INITIALIZER_EXPRESSION,
+            AS_EXPRESSION,
+            ASSIGNMENT_EXPRESSION,
+            BASE_REFERENCE_EXPRESSION,
+            BINARY_OPERATOR_EXPRESSION,
+            CAST_EXPRESSION,
+            CHECKED_EXPRESSION,
+            CONDITIONAL_EXPRESSION,
+            DEFAULT_VALUE_EXPRESSION,
+            DIRECTION_EXPRESSION,
+            ERROR_EXPRESSION,
+            IDENTIFIER_EXPRESSION,
+            INDEXER_EXPRESSION,
+            INVOCATION_EXPRESSION,
+            IS_EXPRESSION,
+            LAMBDA_EXPRESSION,
+            MEMBER_REFERENCE_EXPRESSION,
+            NAMED_ARGUMENT_EXPRESSION,
+            NAMED_EXPRESSION,
+            NULL_REFERENCE_EXPRESSION,
+            OBJECT_CREATE_EXPRESSION,
+            PARENTHESIZED_EXPRESSION,
+            POINTER_REFERENCE_EXPRESSION,
+            PRIMITIVE_EXPRESSION,
+            QUERY_EXPRESSION,
+            SIZEOF_EXPRESSION,
+            STACK_ALLOC_EXPRESSION,
+            THIS_REFERENCE_EXPRESSION,
+            TYPE_OF_EXPRESSION,
+            TYPE_REFERENCE_EXPRESSION,
+            UNARY_OPERATOR_EXPRESSION,
+            UNCHECKED_EXPRESSION,
+            UNDOCUMENTED_EXPRESSION,
+            UNSUP_EXPR
+        };
+        public NodePresenter(INodalPresenter nodalPres, ECSharpNode nodeType)
+        {
+            // TODO if nodeType == classDecl ...
         }
         public NodePresenter(INodalPresenter nodalPres, AstNode model)
         {
@@ -61,9 +157,14 @@ namespace code_in.Presenters.Nodal.Nodes
             LoadExecParamsCount();
             GetExistingAttributesFromNode();
         }
-
+        public void RemoveFromAST()
+        {
+            this._model.Remove();
+        }
         private void GetTypeFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(FieldDeclaration))
             {
                 var ast = _model as FieldDeclaration;
@@ -83,6 +184,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
         private void GetExistingAttributesFromNode()
         {
+            if (_model == null)
+                return;
             if (_model.GetType() == typeof(MethodDeclaration))
             {
                 var ast = _model as MethodDeclaration;
@@ -859,7 +962,7 @@ namespace code_in.Presenters.Nodal.Nodes
             System.Diagnostics.Debug.Assert(index < invocExpr.Arguments.Count);
             var dataFlowAnchor = funcExprView._inputs.Children[index + 1] as DataFlowAnchor;
             invocExpr.Arguments.Remove(invocExpr.Arguments.ElementAt(index)); // TODO assert, it may crash
-            _nodalPresenter.RemoveLink(dataFlowAnchor);
+            //_nodalPresenter.RemoveLink(dataFlowAnchor);
             funcExprView._inputs.Children.RemoveAt(index + 1);
 
         }
@@ -1091,6 +1194,7 @@ namespace code_in.Presenters.Nodal.Nodes
             else
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
             /*            else // basic behaviour to avoid crashes
                         {
@@ -1119,7 +1223,12 @@ namespace code_in.Presenters.Nodal.Nodes
         public void SetView(INodeElem visualNode)
         {
             System.Diagnostics.Debug.Assert(visualNode != null);
-            this._view = visualNode;
+            _view = visualNode;
+        }
+        public INodeElem GetView()
+        {
+            System.Diagnostics.Debug.Assert(_view != null);
+            return _view;
         }
 
 

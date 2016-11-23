@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using code_in.Exceptions;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
@@ -12,23 +13,23 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     {
         public TextBox NodeText;
 
-        public UnSupExpNode() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
-
-        public UnSupExpNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public UnSupExpNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
+            base(themeResDict, nodalView, linkContainer)
         {
             this.SetType("Unsupported Expr");
             TextBox tb = new TextBox();
             this.NodeText = tb;
             this.ContentLayout.Children.Add(tb);
         }
-        public override void InstantiateASTNode()
+        public UnSupExpNode() :
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
+
+        #region INodeElem
+        public override void UpdateDisplayedInfosFromPresenter()
         {
-            throw new NotImplementedException();
+            this.NodeText.Text = this.GetNodePresenter().GetASTNode().ToString();
         }
+        #endregion INodeElem
     }
 }

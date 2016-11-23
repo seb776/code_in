@@ -23,8 +23,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var varDecl = _presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement;
+            Debug.Assert(Presenter != null);
+            var varDecl = Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement;
             this.SetName(varDecl.Type.ToString());
         }
     }

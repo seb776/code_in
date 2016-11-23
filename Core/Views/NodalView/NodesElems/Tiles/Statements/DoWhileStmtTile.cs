@@ -31,8 +31,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var doWhileNode = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.DoWhileStatement);
+            Debug.Assert(Presenter != null);
+            var doWhileNode = (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.DoWhileStatement);
             Condition.SetName(doWhileNode.Condition.ToString());
             trueItem.SetName(doWhileNode.EmbeddedStatement.ToString());
         }

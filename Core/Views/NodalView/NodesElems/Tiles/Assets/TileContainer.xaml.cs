@@ -1,6 +1,7 @@
 ﻿using code_in.Presenters.Nodal.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class TileContainer : UserControl, ITileContainer, ICodeInVisual
     {
+        IContainerDragNDrop _parentView = null;
         private ResourceDictionary _themeResourceDictionary = null;
         public TileContainer(ResourceDictionary themeResDict, INodalView nodalView)
         {
@@ -66,6 +68,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             T tile = (T)Activator.CreateInstance(typeof(T), _themeResourceDictionary, this.NodalView);
 
+            nodePresenter.SetView(tile);
             tile.SetParentView(this);
             tile.SetPresenter(nodePresenter);
             this.AddTile(tile);
@@ -79,12 +82,14 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             if (index < 0)
                 this.TileStackPannel.Children.Add(uiTile);
             else
-                this.TileStackPannel.Children.Insert(index + 1, uiTile);
+                this.TileStackPannel.Children.Insert(index, uiTile);
         }
 
         public void RemoveTile(BaseTile tile)
         {
-            throw new NotImplementedException();
+            Debug.Assert(GetParentView() != null);
+            if (GetParentView() != null)
+                (this.GetParentView() as ITileContainer).RemoveTile(tile);
         }
         #endregion ITileContainer
         #region ICodeInVisual
@@ -132,20 +137,47 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
-            // TODO @Seb AST
-            if (CurrentMovingNodes != null)
+            int finalIndex = 0; // Index for inserting nodes at the right place
+            double movingNodesY = this.CurrentMovingNodes.Margin.Top;
+            BaseTile beforeItem = null;
+            foreach (var item in this.TileStackPannel.Children)
             {
-                List<UIElement> saveItems = new List<UIElement>();
-                foreach (var uiElem in CurrentMovingNodes.Children)
-                    saveItems.Add(uiElem as UIElement);
-                CurrentMovingNodes.Children.Clear();
-                foreach (var uiElem in saveItems)
+                if (((item as FrameworkElement).TranslatePoint(new Point(0, 0), this.TileStackPannel).Y + ((item as FrameworkElement).ActualHeight / 2.0f)) > movingNodesY)
+                    break;
+                beforeItem = item as BaseTile; // TODO modification AST
+                ++finalIndex;
+            }
+            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+            {
+                ICSharpCode.NRefactory.CSharp.AstNode astNodeParent; // TODO modification AST
+                if (CurrentMovingNodes != null) // TODO @Seb Replace by assert ?
                 {
-                    dynamic item = uiElem;
-                    this.AddTile(item);
+                    List<UIElement> saveItems = new List<UIElement>();
+                    foreach (var uiElem in CurrentMovingNodes.Children)
+                        saveItems.Add(uiElem as UIElement);
+                    CurrentMovingNodes.Children.Clear();
+                    astNodeParent = (saveItems.First() as BaseTile).Presenter.GetASTNode().Parent;
+                    foreach (var uiElem in saveItems) // TODO modification AST
+                        (uiElem as BaseTile).Presenter.RemoveFromAST();
+                    int endIndex = finalIndex;
+                    foreach (var uiElem in saveItems)
+                    {
+                        dynamic item = uiElem;
+                        this.AddTile(item, endIndex);
+                        if (beforeItem != null)
+                            astNodeParent.InsertChildAfter(beforeItem.Presenter.GetASTNode(), (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                        else
+                            astNodeParent.InsertChildAfter(null, (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                        endIndex++;
+                        beforeItem = item;
+                    }
+                    this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
+                    CurrentMovingNodes = null;
                 }
-                this.TileGridDragNDrop.Children.Remove(CurrentMovingNodes);
-                CurrentMovingNodes = null;
+            }
+            else if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.MOVEOUT)
+            {
+
             }
         }
 
@@ -162,7 +194,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
 
         #endregion IContainerDragNDrop
-
         #region IDragNDropItem
         public void SelectHighLight(bool highlighetd)
         {
@@ -181,12 +212,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetParentView(IContainerDragNDrop vc)
         {
-            throw new NotImplementedException();
+            _parentView = vc;
         }
 
         public IContainerDragNDrop GetParentView()
         {
-            throw new NotImplementedException();
+            return _parentView;
         }
         #endregion IDragNDropItem
 

@@ -25,7 +25,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// </summary>
     public partial class BaseTile : UserControl, INodeElem
     {
-        protected INodePresenter _presenter = null;
+        public INodePresenter Presenter
+        {
+            get;
+            set;
+        }
         private ResourceDictionary _themeResourceDictionary = null;
         private bool _isBreakpointActive = false;
         private Statement _breakpoint = null;
@@ -37,6 +41,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             _themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(themeResDict);
             InitializeComponent();
+
         }
 
         public BaseTile() :
@@ -87,9 +92,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
 
         #region ITile
-        public void SetPresenter(INodePresenter presenter)
+        public void SetPresenter(INodePresenter presenter) // TODO To remove
         {
-            _presenter = presenter;
+            Presenter = presenter;
         }
 
         public virtual void UpdateDisplayedInfosFromPresenter()
@@ -103,7 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             if (_isBreakpointActive)
             {
-                var thisASTNode = _presenter.GetASTNode();
+                var thisASTNode = Presenter.GetASTNode();
                 if (thisASTNode is Statement)
                 {
                     var thisStmt = thisASTNode as Statement;
@@ -119,7 +124,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
                 var breakpointStmts = parser.ParseStatements("if(System.Diagnostics.Debugger.IsAttached)  System.Diagnostics.Debugger.Break();");
                 _breakpoint = breakpointStmts.ElementAt(0);
-                var thisASTNode = _presenter.GetASTNode();
+                var thisASTNode = Presenter.GetASTNode();
                 if (thisASTNode is Statement)
                 {
                     var thisStmt = thisASTNode as Statement;
@@ -160,9 +165,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
+        EditNodePanel _editNodePanel;
         public void ShowEditMenu()
         {
-            throw new NotImplementedException();
+            this.EditMenuLayout.Children.Clear();
+            var editMenu = new EditNodePanel(_themeResourceDictionary);
+            editMenu.SetFields(Presenter);
+            this.EditMenuLayout.Children.Add(editMenu);
         }
 
         public void SetPosition(int posX, int posY)
@@ -183,7 +192,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void Remove()
         {
-            throw new NotImplementedException();
+            (_parentView as ITileContainer).RemoveTile(this); 
         }
 
         public void SelectHighLight(bool highlighetd)
@@ -213,9 +222,15 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftShift))
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
+        }
+
+        private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
     }

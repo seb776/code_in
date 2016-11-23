@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes;
@@ -24,8 +25,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         private Image _editButton;
         public GenericItem Generics = null;
 
-        public FuncDeclItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public FuncDeclItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             _params = new ParametersList(themeResDict);
             //this.AfterName.Margin = new Thickness(2, 4, 2, 4);
@@ -80,6 +81,10 @@ namespace code_in.Views.NodalView.NodesElems.Items
             _params.AddParameter(type);
         }
         public override void SetThemeResources(String keyPrefix)
+        {
+
+        }
+        public override void UpdateDisplayedInfosFromPresenter()
         {
 
         }

@@ -10,8 +10,8 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 {
     public class DataFlowAnchor : AIOAnchor
     {
-        public DataFlowAnchor(ResourceDictionary themeResDict) :
-            base(themeResDict)
+        public DataFlowAnchor(ResourceDictionary themeResDict, ILinkContainer linkContainer) :
+            base(themeResDict, linkContainer)
         {
         }
         public Action<ICSharpCode.NRefactory.CSharp.Expression> MethodAttachASTExpr = null;

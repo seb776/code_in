@@ -1,4 +1,6 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
@@ -18,16 +20,14 @@ namespace code_in.Views.NodalView.NodesElems.Items
 
         public override void SetThemeResources(String keyPrefix) { }
         static Random r = new Random();
-        public ClassItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public ClassItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             //Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
         }
         public ClassItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)");
-        }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new DefaultCtorVisualException(); }
 
         #region IContainingModifiers
         public void setAccessModifiers(Modifiers modifiers)
@@ -92,6 +92,9 @@ namespace code_in.Views.NodalView.NodesElems.Items
             throw new NotImplementedException();
         }
 
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
 
+        }
     }
 }

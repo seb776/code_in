@@ -62,10 +62,13 @@ namespace code_in.Presenters.Nodal.Nodes
         /// </summary>
         /// <param name="visualNode"></param>
         void SetView(INodeElem visualNode);
+        INodeElem GetView(); // TODO properties
         void UpdateType(string type);
         string getType();
         int getExecParamsNb();
         void AddExecParam();
         void RemoveExecParam(int index);
+
+        void RemoveFromAST();
     }
 }

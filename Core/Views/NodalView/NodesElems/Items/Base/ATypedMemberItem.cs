@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Assets;
+﻿using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Items.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             get;
             private set;
         }
-        protected ATypedMemberItem(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        protected ATypedMemberItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+            base(themeResDict, nodalView, presenter)
         {
             Scope = new ScopeItem(this.GetThemeResourceDictionary());
             _typeInfo = new TypeInfo(this.GetThemeResourceDictionary());

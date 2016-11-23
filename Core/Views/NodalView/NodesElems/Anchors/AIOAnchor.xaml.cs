@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +36,20 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
     /// </summary>
     public partial class AIOAnchor : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
+        public void SetParentNode(AIONode parentNode)
+        {
+            System.Diagnostics.Debug.Assert(parentNode != null);
+            ParentNode = parentNode;
+        }
+        public AIONode ParentNode { get; private set; }
         private ResourceDictionary _themeResourceDictionary = null;
         private EOrientation _orientation = EOrientation.LEFT;
-        private ILinkContainer _parentLinksContainer = null;
         public List<IOLink> _links = null;
+        public ILinkContainer ParentLinksContainer = null;
 
-        public AIOAnchor(ResourceDictionary themeResDict)
+        public AIOAnchor(ResourceDictionary themeResDict, ILinkContainer linkContainer)
         {
+            ParentLinksContainer = linkContainer;
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
@@ -51,31 +59,56 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
 
         #region This
-        public ILinkContainer ParentLinksContainer
+        public Point GetAnchorPosition(UIElement relative)
         {
-            get
+            Point attachLinkHelfSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
+            return this.LinkAttach.TranslatePoint(attachLinkHelfSize, relative);
+        }
+        public EOrientation Orientation
+        {
+            get { return _orientation; }
+            set
             {
-                return _parentLinksContainer;
+                this.FlowDirection = (value == EOrientation.LEFT ?
+                    System.Windows.FlowDirection.LeftToRight :
+                    System.Windows.FlowDirection.RightToLeft);
+
+                this.HorizontalAlignment = (value == EOrientation.LEFT ? HorizontalAlignment.Left : HorizontalAlignment.Right);
+                _orientation = value;
             }
         }
-
-        public void SetParentLinksContainer(ILinkContainer linksContainer)
+        public void SetName(String name)
         {
-            //System.Diagnostics.Debug.Assert(linksContainer != null);
-            _parentLinksContainer = linksContainer;
+            this.IOTextContent.Content = name;
         }
-
-        public void SetParentNode(AIONode parentNode)
+        public String GetName() { return this.IOTextContent.Content.ToString(); }
+        #region Events
+        void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Debug.Assert(parentNode != null);
-            ParentNode = parentNode;
+            ParentLinksContainer.DragLink(this, false);
+            e.Handled = true;
         }
-        public AIONode ParentNode { get; private set; }
-
+        void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DraggingLink && Code_inApplication.RootDragNDrop.ParentLinkContainer == this.ParentLinksContainer)
+            {
+                try // TODO @Seb try catch is not a really good way of doing semantic check
+                {
+                    ParentLinksContainer.DropLink(this, false);
+                }
+                catch (Exception except)
+                {
+                    MessageBox.Show(except.ToString());
+                }
+                e.Handled = true;
+            }
+        }
+        #endregion Events
+        #region Manage Links
         public void UpdateLinksPosition()
         {
             Point halfRectAnchorSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
-            Point anchorPos = this.LinkAttach.TranslatePoint(halfRectAnchorSize, (this._parentLinksContainer as UIElement));
+            Point anchorPos = this.LinkAttach.TranslatePoint(halfRectAnchorSize, (this.ParentLinksContainer as ExpressionItem).ExpressionsGrid); // TODO Beaurk
             foreach (var l in _links)
             {
                 IOLink link = l as IOLink;
@@ -106,49 +139,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                 (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
             _links.Remove(link);
         }
-        public Point GetAnchorPosition(UIElement relative)
-        {
-            Point attachLinkHelfSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
-            return this.LinkAttach.TranslatePoint(attachLinkHelfSize, relative);
-        }
-        public void SetName(String name)
-        {
-            this.IOTextContent.Content = name;
-        }
-        public String GetName() { return this.IOTextContent.Content.ToString(); }
-
-        void AIOAnchor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _parentLinksContainer.DragLink(this, false);
-        }
-        void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_parentLinksContainer.DraggingLink)
-            {
-                try
-                {
-                    _parentLinksContainer.DropLink(this, false);
-                }
-                catch (Exception except)
-                {
-                    MessageBox.Show(except.ToString());
-                }
-                e.Handled = true;
-            }
-        }
-        public EOrientation Orientation
-        {
-            get { return _orientation; }
-            set
-            {
-                this.FlowDirection = (value == EOrientation.LEFT ?
-                    System.Windows.FlowDirection.LeftToRight :
-                    System.Windows.FlowDirection.RightToLeft);
-
-                this.HorizontalAlignment = (value == EOrientation.LEFT ? HorizontalAlignment.Left : HorizontalAlignment.Right);
-                _orientation = value;
-            }
-        }
+        #endregion Manage Links
         #endregion This
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()

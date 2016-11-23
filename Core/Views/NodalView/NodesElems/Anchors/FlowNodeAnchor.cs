@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems.Items.Base;
+﻿using code_in.Exceptions;
+using code_in.Views.NodalView.NodesElems.Items.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using ICSharpCode.NRefactory.CSharp;
 using System;
@@ -23,13 +24,13 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         public Func<Statement, Statement> MethodAttachASTStmt = null;
         public Action MethodDetachASTStmt = null;
 
-         public FlowNodeAnchor(ResourceDictionary themeResDict) :
-            base(themeResDict)
+         public FlowNodeAnchor(ResourceDictionary themeResDict, ILinkContainer linkContainer) :
+            base(themeResDict, linkContainer)
         {
             //this.SetName("FlowNode");
         }
          public FlowNodeAnchor() :
-             this(Code_inApplication.MainResourceDictionary)
-         { throw new Exception("z0rg: You shall not pass ! (Never use the Default constructor, if this shows up it's probably because you let something in the xaml and it should not be there)"); }
+             this(Code_inApplication.MainResourceDictionary, null)
+         { throw new DefaultCtorVisualException(); }
     }
 }

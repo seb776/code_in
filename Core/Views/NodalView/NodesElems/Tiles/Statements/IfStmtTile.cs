@@ -36,8 +36,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
         }
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            Debug.Assert(this._presenter != null);
-            var ifElse = (this._presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IfElseStatement);
+            Debug.Assert(this.Presenter != null);
+            var ifElse = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IfElseStatement);
             Condition.SetName(ifElse.Condition.ToString());
             
             //ItemTrue.SetName(ifElse.TrueStatement.ToString());

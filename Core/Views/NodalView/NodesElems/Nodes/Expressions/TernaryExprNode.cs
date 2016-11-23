@@ -14,8 +14,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public DataFlowAnchor OperandA = null;
         public DataFlowAnchor OperandB = null;
         public DataFlowAnchor OperandC = null;
-        public TernaryExprNode(ResourceDictionary themeResDict, INodalView nodalView)
-            : base(themeResDict, nodalView)
+        public TernaryExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
+            : base(themeResDict, nodalView, linkContainer)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();
@@ -23,10 +23,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandA.SetName("A");
             OperandB.SetName("B");
             OperandC.SetName("C");
-        }
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -11,16 +11,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
     public class ArrayCreateExprNode : AExpressionNode
     {
         public DataFlowAnchor ExprIn = null;
-        public ArrayCreateExprNode(ResourceDictionary themeResDict, INodalView nodalView) :
-            base(themeResDict, nodalView)
+        public ArrayCreateExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
+            base(themeResDict, nodalView, linkContainer)
         {
             this.SetType("ArrayCreateExpr");
             ExprIn = this.CreateAndAddInput<DataFlowAnchor>();
-        }
-
-        public override void InstantiateASTNode()
-        {
-            throw new NotImplementedException();
         }
     }
 }
