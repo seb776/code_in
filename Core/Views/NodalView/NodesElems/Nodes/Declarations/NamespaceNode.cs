@@ -1,5 +1,6 @@
 ﻿using code_in.Exceptions;
 using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 {
     public class NamespaceNode : AFlyingContentNode
     {
-        public NamespaceNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+        public NamespaceNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
         {
+            this.Presenter = nodePresenter;
             this.SetType("namespace");
             this.SetName("TMP.DefaultNamespaceName");
             //this.SetThemeResources("NamespaceNode");
         }
         public NamespaceNode()
-            : this(Code_inApplication.MainResourceDictionary, null)
+            : this(Code_inApplication.MainResourceDictionary, null, null)
         { throw new DefaultCtorVisualException(); }
 
         #region IVisualNodeContainer
