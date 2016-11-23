@@ -44,8 +44,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
             InitializeComponent();
             ExprOut = new DataFlowAnchor(themeResourceDictionary, this);
+            ExprOut.ParentLinksContainer = this;
+            ExprOut.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             ExprOut.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            this.ExpressionsGrid.Children.Add(ExprOut);
+            this.ExpressionMainGrid.Children.Add(ExprOut);
             IsExpanded = false;
             _expression = new List<AExpressionNode>();
             _visualNodes = new List<INodeElem>();
@@ -63,19 +65,19 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             get
             {
-                return this.ExpressionsGrid.IsEnabled;
+                return this.ExpressionMainGrid.IsEnabled;
             }
             set
             {
-                this.ExpressionsGrid.IsEnabled = value;
+                this.ExpressionMainGrid.IsEnabled = value;
                 if (value)
                 {
-                    this.ExpressionsGrid.Visibility = System.Windows.Visibility.Visible;
+                    this.ExpressionMainGrid.Visibility = System.Windows.Visibility.Visible;
                     this.PreviewCode.Visibility = System.Windows.Visibility.Collapsed;
                 }
                 else
                 {
-                    this.ExpressionsGrid.Visibility = System.Windows.Visibility.Collapsed;
+                    this.ExpressionMainGrid.Visibility = System.Windows.Visibility.Collapsed;
                     this.PreviewCode.Visibility = System.Windows.Visibility.Visible;
                 }
 
@@ -90,27 +92,44 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.IsExpanded = !this.IsExpanded;
+            e.Handled = true;
         }
 
         private void ItemName_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 this.IsExpanded = !this.IsExpanded;
+                e.Handled = true;
+            }
         }
 
         private void ExpressionsGrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
-                Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+                if (DraggingLink)
+                {
+                    this.UpdateLinkDraw(e.GetPosition(this.ExpressionsGrid));
+                }
+                else
+                {
+                    EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+                    Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+                }
+                e.Handled = true;
             }
-            e.Handled = true;
         }
 
         private void ExpressionsGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            if (Code_inApplication.RootDragNDrop.DraggingLink)
+                this.DropLink(null, false);
+            else
+            {
+                Code_inApplication.RootDragNDrop.Drop(this);
+            }
+            e.Handled = true;
         }
         #endregion Events
         #endregion This
@@ -120,9 +139,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
             T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView, this); // this here is the link container
+            node.SetNodePresenter(nodePresenter); // TODO @Seb replace by constructor param ?
 
             node.SetParentView(this);
-            node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             _visualNodes.Add(node); // TODO @Seb @Steph For automatic placement
             this.AddNode(node);
@@ -156,17 +175,67 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             DraggingLink = true;
             _currentDraggingLink = new Code_inLink();
             this.ExpressionsGrid.Children.Add(_currentDraggingLink);
+            _currentDraggingLink.Stroke = new SolidColorBrush(Colors.GreenYellow);
+            _currentDraggingLink.StrokeThickness = 3;
+            _linkStart = from;
+            Code_inApplication.RootDragNDrop.ParentLinkContainer = this;
+            Code_inApplication.RootDragNDrop.DraggingLink = true;
         }
 
         public void DropLink(AIOAnchor to, bool isGenerated)
         {
+            if (to == null) // We droped in a wrong place
+            {
+                this.ExpressionsGrid.Children.Remove(_currentDraggingLink);
+            }
+            else
+            {
+                if (false)//to._links.Count > 1 ||)
+                {
+
+                }
+                else
+                {
+                    var ioLink = new IOLink();
+                    ioLink.Link = _currentDraggingLink;
+                    ioLink.Input = (to.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
+                    ioLink.Output = (to.Orientation == AIOAnchor.EOrientation.RIGHT ? to : _linkStart);
+                    to.AttachNewLink(ioLink);
+                    _linkStart.AttachNewLink(ioLink);
+                    to.UpdateLinksPosition();
+                }
+            }
+
+            Code_inApplication.RootDragNDrop.DraggingLink = false;
+            Code_inApplication.RootDragNDrop.ParentLinkContainer = null;
             DraggingLink = false;
-            this.ExpressionsGrid.Children.Remove(_currentDraggingLink);
             _currentDraggingLink = null;
+            _linkStart = null;
         }
+        AIOAnchor _linkStart = null;
 
         public void UpdateLinkDraw(Point mousePosRelToParentLinkContainer)
         {
+            System.Diagnostics.Debug.Assert(_currentDraggingLink != null);
+            if (_linkStart != null)
+            {
+                Point startPosition = _linkStart.GetAnchorPosition(this.ExpressionsGrid);
+                if (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT) // Input
+                {
+                    _currentDraggingLink._x2 = startPosition.X;
+                    _currentDraggingLink._y2 = startPosition.Y;
+                    _currentDraggingLink._x1 = mousePosRelToParentLinkContainer.X;
+                    _currentDraggingLink._y1 = mousePosRelToParentLinkContainer.Y;
+                }
+                else
+                {
+                    _currentDraggingLink._x1 = startPosition.X;
+                    _currentDraggingLink._y1 = startPosition.Y;
+                    _currentDraggingLink._x2 = mousePosRelToParentLinkContainer.X;
+                    _currentDraggingLink._y2 = mousePosRelToParentLinkContainer.Y;
+                }
+                _currentDraggingLink.InvalidateVisual();
+            }
         }
         #endregion ILinkContainer
         #region IContainerDragNDrop
@@ -222,6 +291,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
 
         #endregion IContainerDragNDrop
+
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
         {

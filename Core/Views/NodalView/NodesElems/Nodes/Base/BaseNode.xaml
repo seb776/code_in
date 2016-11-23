@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="MainLayout" MouseLeftButtonDown="MainLayout_MouseLeftButtonDown" MouseRightButtonDown="MainLayout_MouseRightButtonDown">
+    <Grid x:Name="MainLayout" MouseRightButtonDown="MainLayout_MouseRightButtonDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
@@ -28,10 +28,6 @@
             </Grid>
             <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">
-                    <!--<Label>typeA</Label>
-                    <Label>typeA</Label>
-                    <Label>typeA</Label>
-                    <Label>typeA</Label>-->
                 </StackPanel>
             </Border>
         </Grid>
@@ -46,7 +42,7 @@
         </Border>-->
         <!-- dock panel that contains the node -->
 
-        <DockPanel Grid.Column="1" Grid.Row="1" Name="DockPanelNode" Height="auto">
+        <DockPanel Grid.Column="1" Grid.Row="1" Name="DockPanelNode" Height="auto" MouseLeftButtonDown="MainLayout_MouseLeftButtonDown">
             <!-- Header content-->
             <Border x:Name="HeaderLayout" DockPanel.Dock="Top" Background="GreenYellow" CornerRadius="0,10,0,0">
                 <Grid>

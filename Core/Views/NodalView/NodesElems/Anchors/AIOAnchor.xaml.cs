@@ -1,4 +1,5 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
+using code_in.Views.NodalView.NodesElems.Tiles.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,9 +90,9 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         }
         void AIOAnchor_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (ParentLinksContainer.DraggingLink)
+            if (Code_inApplication.RootDragNDrop.DraggingLink && Code_inApplication.RootDragNDrop.ParentLinkContainer == this.ParentLinksContainer)
             {
-                try
+                try // TODO @Seb try catch is not a really good way of doing semantic check
                 {
                     ParentLinksContainer.DropLink(this, false);
                 }
@@ -107,7 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         public void UpdateLinksPosition()
         {
             Point halfRectAnchorSize = new Point(this.LinkAttach.Width / 2.0, this.LinkAttach.Height / 2.0);
-            Point anchorPos = this.LinkAttach.TranslatePoint(halfRectAnchorSize, (this.ParentLinksContainer as UIElement));
+            Point anchorPos = this.LinkAttach.TranslatePoint(halfRectAnchorSize, (this.ParentLinksContainer as ExpressionItem).ExpressionsGrid); // TODO Beaurk
             foreach (var l in _links)
             {
                 IOLink link = l as IOLink;

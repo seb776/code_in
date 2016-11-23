@@ -15,6 +15,8 @@ namespace code_in.Managers
     /// </summary>
     public class RootDragNDropManager
     {
+        public ILinkContainer ParentLinkContainer;
+        public bool DraggingLink;
         public bool StartedMove
         {
             get;
@@ -36,6 +38,8 @@ namespace code_in.Managers
             SelectedItems = new HashSet<IDragNDropItem>();
             DragMode = EDragMode.NONE;
             StartedMove = false;
+            DraggingLink = false;
+            ParentLinkContainer = null;
         }
         public void AddSelectItem(IDragNDropItem item)
         {
@@ -63,7 +67,11 @@ namespace code_in.Managers
         }
         public void UpdateDragInfos(EDragMode dragMode, System.Windows.Point mousePosToMainGrid)
         {
-            if (SelectedItems.Count > 0)
+            if (DraggingLink)
+            {
+
+            }
+            else if (SelectedItems.Count > 0)
             {
                 if (!StartedMove)
                 {
@@ -84,13 +92,21 @@ namespace code_in.Managers
         }
         public void Drop(IContainerDragNDrop parentContainer)
         {
-            if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
-                parentContainer = SelectedItems.ElementAt(0).GetParentView();
-            if (parentContainer.IsDropValid(SelectedItems))
-                parentContainer.Drop(SelectedItems);
-            DragMode = EDragMode.NONE;
-            System.Windows.Input.Mouse.OverrideCursor = null;
-            StartedMove = false;
+            if (DraggingLink)
+            {
+                Debug.Assert(ParentLinkContainer != null);
+                ParentLinkContainer.DropLink(null, false);// TODO @Seb params~
+            }
+            else
+            {
+                if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
+                    parentContainer = SelectedItems.ElementAt(0).GetParentView();
+                if (parentContainer.IsDropValid(SelectedItems))
+                    parentContainer.Drop(SelectedItems);
+                DragMode = EDragMode.NONE;
+                System.Windows.Input.Mouse.OverrideCursor = null;
+                StartedMove = false;
+            }
         }
 
         //void SelectNode(INodeElem node);
