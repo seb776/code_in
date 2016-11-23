@@ -473,6 +473,15 @@ namespace code_in.Presenters.Nodal
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
                 tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
             #endregion ContinueStatement
+            #region Throw
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ThrowStatement))
+            {
+                var throwStmt = stmtArg as ThrowStatement; // AST Node
+                var throwStmtTile = tileContainer.CreateAndAddTile<ThrowStmtTile>(nodePresenter); // Visual Node
+                // TODO get anchor from tileItem for generateExpressions
+                this._generateVisualASTExpressions(throwStmtTile.Expression, throwStmt.Expression, throwStmtTile.Expression.ExprOut, (e) => { throwStmt.Expression = e; });
+            }
+            #endregion Throw
             #endregion Single Statement
             else // Default Node
                 tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);

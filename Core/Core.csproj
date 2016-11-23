@@ -228,6 +228,7 @@
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ReturnStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ThrowStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\TryCatchStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UnSupStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\VarStmtTile.cs" />
