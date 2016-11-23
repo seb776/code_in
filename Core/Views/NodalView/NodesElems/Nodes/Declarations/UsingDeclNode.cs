@@ -8,6 +8,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows;
 using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 
 
 namespace code_in.Views.NodalView.NodesElems.Nodes
@@ -15,9 +16,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
     public class UsingDeclNode : AOrderedContentNode
     {
 
-        public UsingDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+        public UsingDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
         {
+            this.Presenter = nodePresenter;
             this.SetType("using");
             this.SetThemeResources("UsingDeclNode");
         }

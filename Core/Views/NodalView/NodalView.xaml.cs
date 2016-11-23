@@ -331,7 +331,7 @@ namespace code_in.Views.NodalView
         public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
             System.Diagnostics.Debug.Assert(nodePresenter != null, "nodePresenter must be a non-null value");
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this);
+            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this, nodePresenter);
 
             node.SetParentView(this);
             node.SetNodePresenter(nodePresenter);

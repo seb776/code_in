@@ -31,9 +31,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         public Assets.GenericConstraints Constraints = null;
         public Assets.AttributesAsset Attributes = null;
         private EType _type;
-        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView) :
+        public ClassDeclNode(System.Windows.ResourceDictionary themeResDict, INodalView nodalView, INodePresenter nodePresenter) :
             base(themeResDict, nodalView)
         {
+            this.Presenter = nodePresenter;
             this.SetType("class");
             this.SetName("TMP.Class");
             //this.SetThemeResources("ClassDeclNode");
@@ -49,7 +50,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.AttributesLayout.Children.Add(Attributes);
         }
         public ClassDeclNode() :
-            this(Code_inApplication.MainResourceDictionary, null)
+            this(Code_inApplication.MainResourceDictionary, null, null)
         { throw new DefaultCtorVisualException(); }
 
         #region This
