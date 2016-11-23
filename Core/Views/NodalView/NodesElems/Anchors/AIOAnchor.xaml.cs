@@ -19,33 +19,36 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 {
     public class IOLink
     {
-        public IOLink()
-        {
-        }
         public Code_inLink Link = null;
         public AIOAnchor Input = null;
         public AIOAnchor Output = null; // The node where the link starts
+
+        public IOLink()
+        { }
+
         public void CheckAssert()
         {
             System.Diagnostics.Debug.Assert(Link != null && Input != null && Output != null && Input != Output);
         }
     }
 
+
+
     /// <summary>
     /// Logique d'interaction pour AIOAnchor.xaml
     /// </summary>
     public partial class AIOAnchor : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
-        public void SetParentNode(AIONode parentNode)
-        {
-            System.Diagnostics.Debug.Assert(parentNode != null);
-            ParentNode = parentNode;
-        }
         public AIONode ParentNode { get; private set; }
         private ResourceDictionary _themeResourceDictionary = null;
         private EOrientation _orientation = EOrientation.LEFT;
         public List<IOLink> _links = null;
         public ILinkContainer ParentLinksContainer = null;
+        public void SetParentNode(AIONode parentNode)
+        {
+            System.Diagnostics.Debug.Assert(parentNode != null);
+            ParentNode = parentNode;
+        }
 
         public AIOAnchor(ResourceDictionary themeResDict, ILinkContainer linkContainer)
         {

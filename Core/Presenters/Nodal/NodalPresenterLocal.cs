@@ -690,7 +690,7 @@ namespace code_in.Presenters.Nodal
             if (visualNode != null && inAnchor != null)
             {
                 inAnchor.SetASTNodeReference(methodAttachIOToASTField);
-                _createVisualLink(inAnchor, visualNode.ExprOut);
+                _createVisualLink(container as dynamic, inAnchor, visualNode.ExprOut); // TODO cast Beuark
             }
         }
 
@@ -718,12 +718,12 @@ namespace code_in.Presenters.Nodal
             }
         }
 
-        private void _createVisualLink(AIOAnchor a, AIOAnchor b)
+        private void _createVisualLink(ILinkContainer parent, AIOAnchor a, AIOAnchor b)
         {
-            //if (a == null || b == null)
-            //    return;
-            //_view.DragLink(a, true);
-            //_view.DropLink(b, true);
+            if (a == null || b == null)
+                return;
+            parent.DragLink(a, true);
+            parent.DropLink(b, true);
         }
 
         Tuple<EContextMenuOptions, Action<object[]>>[] IContextMenu.GetMenuOptions()

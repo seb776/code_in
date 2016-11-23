@@ -28,7 +28,6 @@ namespace code_in.Views.NodalView
         public INodalPresenter _nodalPresenter = null;
         public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
         private ResourceDictionary _themeResourceDictionary = null;
-        
         private Point _lastPosition;
         private AIOAnchor _linkStart = null;
         private Code_inLink _currentLink = null;
@@ -49,7 +48,6 @@ namespace code_in.Views.NodalView
             RootTileContainer = new TileContainer(_themeResourceDictionary, this) as ITileContainer;
             RootTileContainer.SetParentView(this);
             this.MainGrid.Children.Add(RootTileContainer as TileContainer);
-            this.DraggingLink = false;
         }
 
 
@@ -78,82 +76,6 @@ namespace code_in.Views.NodalView
         {
             this._nodalPresenter.EditConstructor(node);
         }
-        #region Events
-        private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Code_inApplication.RootDragNDrop.UnselectAllNodes();
-        }
-        void MainView_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
-                Code_inApplication.RootDragNDrop.Drop(this);
-            this.DropLink(null, false);
-            e.Handled = true;
-        }
-
-        void MainView_KeyDown(object sender, KeyEventArgs e)
-        {
-            int step = 2;
-            Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
-            if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                this._nodalPresenter.SaveFile("TestOutput.cs");
-            }
-            if (e.Key == Key.Add)
-            {
-                tmp.Width += step;
-                tmp.Height += step;
-            }
-            if (e.Key == Key.Subtract && tmp.Width > 15)
-            {
-                tmp.Width -= step;
-                tmp.Height -= step;
-            }
-
-            if (e.Key == Key.L)
-            {
-                var lineType = Code_inApplication.MainResourceDictionary["linkType"];
-                if (lineType == null)
-                    Code_inApplication.MainResourceDictionary["linkType"] = 0;
-                else
-                    Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
-            }
-        }
-
-        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
-        {
-            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (_currentLink == null)
-                    Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
-                else
-                    this.UpdateLinkDraw(e.GetPosition(this.MainGrid)); // TODO fix getpos relative
-            }
-        }
-
-        void _currentLineDrawing_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Code_inLink aLine = sender as Code_inLink;
-            e.Handled = true;
-            var cm = new ContextMenu();
-            var m1 = new MenuItem();
-            m1.Header = "remove link";
-            m1.Click += testClick;
-            m1.DataContext = aLine;
-            cm.Items.Add(m1);
-            cm.Margin = new Thickness(e.GetPosition(this.MainGrid).X, e.GetPosition(this.MainGrid).Y, 0, 0);
-            cm.IsOpen = true;
-        }
-
-        void testClick(object sender, RoutedEventArgs e)
-        {
-            Code_inLink aLine = (sender as MenuItem).DataContext as Code_inLink; // Datacontext isn't for that but it's easier
-            // remove aLine
-            this.MainGrid.Children.Remove(aLine);
-            // need to remove line in nodeAnchor also
-        }
-
         static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
         {
             var im = new HexagonalMenu(themeResDict);
@@ -228,6 +150,55 @@ namespace code_in.Views.NodalView
             im.VerticalOffset = tC.Y - (im.DesiredSize.Height / 2);
             im.IsOpen = true;
         }
+        #region Events
+        #region Events.Keys
+        void MainView_KeyDown(object sender, KeyEventArgs e)
+        {
+            int step = 2;
+            Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
+            if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                this._nodalPresenter.SaveFile("TestOutput.cs");
+            }
+            if (e.Key == Key.Add)
+            {
+                tmp.Width += step;
+                tmp.Height += step;
+            }
+            if (e.Key == Key.Subtract && tmp.Width > 15)
+            {
+                tmp.Width -= step;
+                tmp.Height -= step;
+            }
+
+            if (e.Key == Key.L)
+            {
+                var lineType = Code_inApplication.MainResourceDictionary["linkType"];
+                if (lineType == null)
+                    Code_inApplication.MainResourceDictionary["linkType"] = 0;
+                else
+                    Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
+            }
+        }
+        #endregion Events.Keys
+        #region Events.Mouse
+        private void MainGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Code_inApplication.RootDragNDrop.UnselectAllNodes();
+        }
+        void MainView_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                Code_inApplication.RootDragNDrop.Drop(this);
+            e.Handled = true;
+        }
+
+        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
+            if (e.LeftButton == MouseButtonState.Pressed)
+                Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
+        }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -236,22 +207,11 @@ namespace code_in.Views.NodalView
             e.Handled = true;
         }
 
-        void clickChangeMode(object sender, RoutedEventArgs e)
-        {
-            var lineType = Code_inApplication.MainResourceDictionary["linkType"];
-            if (lineType == null)
-                Code_inApplication.MainResourceDictionary["linkType"] = 0;
-            else
-                Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
-        }
-
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            //this.UnSelectAllNodes();
-            this.DropLink(null, false);
-            //this.DropNodes(null);
         }
-
+        #endregion Events.Mouse
+        #region Events.Others
         private void changeResourceLink(object sender, ResourcesEventArgs e)
         {
             //if (this.MainGrid != null)
@@ -264,8 +224,11 @@ namespace code_in.Views.NodalView
             //        }
             //    }
         }
+        #endregion Events.Others
         #endregion Events
         #endregion This
+        #region INodalView
+        #endregion INodalView
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
         public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
@@ -355,130 +318,6 @@ namespace code_in.Views.NodalView
         }
 
         #endregion IVisualNodeContainer
-        #region IVisualLinkContainer
-        public bool DraggingLink
-        {
-            get;
-            set;
-        }
-        #endregion IVisualLinkContainer
-        #region INodalView
-        public void RemoveLink(AIOAnchor anchor)
-        {
-            if (anchor._links.Count > 0)
-            {
-                var ioLink = anchor._links[0];
-                var currentVisualLink = ioLink.Link;
-                var output = anchor._links[0].Output;
-                var input = anchor._links[0].Input;
-                output.RemoveLink(ioLink, false);
-                input.RemoveLink(ioLink, false);
-                this.MainGrid.Children.Remove(currentVisualLink);
-            }
-        }
-        public void DragLink(AIOAnchor from, bool isGenerated)
-        {
-            DraggingLink = true;
-            _linkStart = from;
-            if (_linkStart._links.Count != 0)
-            {
-                _currentLink = _linkStart._links[0].Link;
-                var ioLink = _linkStart._links[0];
-                var output = _linkStart._links[0].Output;
-                var input = _linkStart._links[0].Input;
-                output.RemoveLink(ioLink, true);
-                input.RemoveLink(ioLink, false);
-                this.MainGrid.Children.Remove(_currentLink);
-                this.MainGrid.Children.Add(_currentLink);
-            }
-            else
-            {
-                _currentLink = new Code_inLink();
-                _currentLink.Stroke = new SolidColorBrush(Colors.GreenYellow);
-                _currentLink.StrokeThickness = 3;
-                this.MainGrid.Children.Add(_currentLink);
-            }
-            this.UpdateLinkDraw(Mouse.GetPosition(from.ParentNode));
-        }
-        public void DropLink(AIOAnchor to, bool isGenerated)
-        {
-            this.DraggingLink = false;
-            if (to == null)
-            {
-                _linkStart = null;
-                if (_currentLink != null)
-                    this.MainGrid.Children.Remove(_currentLink);
-                _currentLink = null;
-            }
-            else
-            {
-                if (_currentLink != null)
-                {
-                    try
-                    {
-                        if (_linkStart.Orientation == to.Orientation)
-                            throw new Exception("Cannot link two IO of the same type (input and input, or output and output)");
-                        if (_linkStart == to)
-                            throw new Exception("Cannot create a link between an IO and itself.");
-                        if (_linkStart.ParentNode == to.ParentNode)
-                            throw new Exception("Cannot create a link between two IO that belongs to the same node.");
-                    }
-                    catch (Exception except)
-                    {
-                        this.MainGrid.Children.Remove(_currentLink);
-                        _linkStart = null;
-                        _currentLink = null;
-                        throw except;
-                    }
-                    IOLink link = new IOLink();
-                    link.Input = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? _linkStart : to);
-                    link.Output = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
-                    link.Link = _currentLink;
-                    if (link.Input._links.Count != 0)
-                        this.MainGrid.Children.Remove(link.Input._links[0].Link);
-                    link.Input._links.Clear();
-                    if (link.Output._links.Count != 0)
-                    {
-                        this.MainGrid.Children.Remove(link.Output._links[0].Link);
-                        link.Output.RemoveLink(link.Output._links[0], true);
-                    }
-                    link.Output._links.Clear();
-                    if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
-                        (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
-                    else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor && !isGenerated)
-                        (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input as FlowNodeAnchor);
 
-                    _linkStart.AttachNewLink(link);
-                    to.AttachNewLink(link);
-                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
-                    _linkStart = null;
-                    _currentLink = null;
-                }
-            }
-        }
-        public void UpdateLinkDraw(Point curPosUnattachedLinkSide)
-        {
-            System.Diagnostics.Debug.Assert(_currentLink != null);
-            if (_linkStart != null)
-            {
-                Point startPosition = _linkStart.GetAnchorPosition(this.MainGrid);
-                if (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT) // Input
-                {
-                    _currentLink._x2 = startPosition.X;
-                    _currentLink._y2 = startPosition.Y;
-                    _currentLink._x1 = curPosUnattachedLinkSide.X;
-                    _currentLink._y1 = curPosUnattachedLinkSide.Y;
-                }
-                else
-                {
-                    _currentLink._x1 = startPosition.X;
-                    _currentLink._y1 = startPosition.Y;
-                    _currentLink._x2 = curPosUnattachedLinkSide.X;
-                    _currentLink._y2 = curPosUnattachedLinkSide.Y;
-                }
-                _currentLink.InvalidateVisual();
-            }
-        }
-        #endregion INodalView
     } // Class
 } // Namespace

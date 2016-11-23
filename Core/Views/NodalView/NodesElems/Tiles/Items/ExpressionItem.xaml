@@ -16,7 +16,7 @@
             <Label MouseUp="ItemName_MouseDown" Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top" FontWeight="ExtraBold">ExampleExpressionStatement;</Label>
         </StackPanel>
         <StackPanel x:Name="ExpressionMainGrid" Orientation="Horizontal" Grid.Column="2" MouseMove="ExpressionsGrid_MouseMove" MouseLeftButtonUp="ExpressionsGrid_MouseLeftButtonUp" Background="Transparent">
-            <Grid x:Name="ExpressionsGrid" Margin="5,5,20,5">
+            <Grid x:Name="ExpressionsGrid" Margin="5,5,50,5" SizeChanged="ExpressionsGrid_SizeChanged">
             </Grid>
         </StackPanel>
         <Label x:Name="PreviewCode" Grid.Column="2"></Label>
