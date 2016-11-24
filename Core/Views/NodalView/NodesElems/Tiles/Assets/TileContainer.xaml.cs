@@ -87,9 +87,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void RemoveTile(BaseTile tile)
         {
-            Debug.Assert(GetParentView() != null);
-            if (GetParentView() != null)
-                (this.GetParentView() as ITileContainer).RemoveTile(tile);
+            this.TileStackPannel.Children.Remove(tile);
         }
         #endregion ITileContainer
         #region ICodeInVisual

@@ -1232,8 +1232,7 @@ namespace code_in.Presenters.Nodal.Nodes
             NodePresenter self = objects[0] as NodePresenter;
 
             self._view.Remove();
-            if (self._model == null)
-                return;
+            self.RemoveFromAST();
         }
         static void SaveNode(object[] objects)
         {
@@ -1284,6 +1283,7 @@ namespace code_in.Presenters.Nodal.Nodes
             else if (_model.GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Statement)))
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD_BREAKPOINT, _addBreakPoint));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
             else
             {

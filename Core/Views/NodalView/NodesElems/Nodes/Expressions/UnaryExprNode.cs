@@ -2,6 +2,7 @@
 using code_in.Views.NodalView.NodesElems.Items;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             this.SetThemeResources("UnaryExprNode");
-            this.SetType("UnaryExpr");
+            //this.SetType("UnaryExpr");
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            Debug.Assert(Presenter.GetASTNode() != null);
+            var astNode = Presenter.GetASTNode();
+            if (astNode is ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression)
+            {
+                this.SetType((astNode as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression).OperatorToken.ToString());
+            }
         }
     }
 }

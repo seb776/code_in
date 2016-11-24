@@ -38,7 +38,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
         public void Remove()
         {
-
+            (this._parentView as IVisualNodeContainer).RemoveNode(this);
         }
         public void InstantiateASTNode()
         {
