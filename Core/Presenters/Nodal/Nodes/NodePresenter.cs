@@ -16,6 +16,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System.Windows.Input;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Tiles;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
@@ -535,7 +536,7 @@ namespace code_in.Presenters.Nodal.Nodes
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
 
             var routine = setNameRoutines[_model.GetType()];
-            if ((routine != null) && routine)
+            if (routine)
                 (_model as dynamic).Name = name;
             else
                 throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
@@ -1157,7 +1158,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
-                Dictionary<Type, ECSharpNode> types = new Dictionary<Type,ECSharpNode>();
+                Dictionary<Type, ECSharpNode> types = new Dictionary<Type, ECSharpNode>();
                 types.Add(typeof(UsingDeclNode), ECSharpNode.USING_DECL); // TODO not sure
                 types.Add(typeof(NamespaceNode), ECSharpNode.NAMESPACE_DECL);
                 types.Add(typeof(FuncDeclItem), ECSharpNode.METHOD_DECL);
@@ -1169,6 +1170,8 @@ namespace code_in.Presenters.Nodal.Nodes
                 var arrayParams = new object[1];
                 arrayParams[0] = nodePresenter;
                 BaseNode visualNode = gmi.Invoke(_viewStatic, arrayParams) as BaseNode;
+                if (visualNode is AIONode)
+                    (visualNode as AIONode).UpdateAnchorAttachAST();
                 var pos = _viewStatic.GetPosition();
                 visualNode.SetPosition((int)pos.X, (int)pos.Y);
             }

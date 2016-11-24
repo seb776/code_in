@@ -28,7 +28,9 @@ namespace code_in.Presenters.Nodal.Nodes
         EXEC_TYPE = 256,
         TYPE = 512,
         TEXT = 1024,
-        EXEC_PARAMETERS = 2048
+        EXEC_PARAMETERS = 2048,
+        BINARY_OPERATOR_CHANGE = 4096, // TODO
+        UNARY_OPERATOR_CHANGE = 4096 * 2 // TODO
     }
     public interface INodePresenter : IContextMenu
     {

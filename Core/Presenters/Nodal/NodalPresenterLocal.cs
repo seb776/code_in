@@ -825,10 +825,15 @@ namespace code_in.Presenters.Nodal
         {
             if (((MenuItem)sender).DataContext != null)
             {
-                //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+                Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode> types = new Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode>();
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
-                var nodePresenter = new NodePresenter(_viewStatic._nodalPresenter, NodePresenter.ECSharpNode.TYPE_DECL); // TODO
+
+                types.Add(typeof(UsingDeclNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.USING_DECL); // TODO not sure
+                types.Add(typeof(NamespaceNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.NAMESPACE_DECL);
+                types.Add(typeof(ClassDeclNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.TYPE_DECL);
+                var astNode = NodePresenter.InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
+                var nodePresenter = new NodePresenter(_viewStatic._nodalPresenter, astNode);
                 var array = new object[1];
                 array[0] = nodePresenter;
                 BaseNode node = gmi.Invoke(_viewStatic, array) as BaseNode;
@@ -836,7 +841,6 @@ namespace code_in.Presenters.Nodal
                 node.SetPosition((int)pos.X, (int)pos.Y);
                 if (_viewStatic.IsDeclarative)
                 {
-                    var astNode = node.GetNodePresenter().GetASTNode();
                     if (astNode != null)
                     {
                         var thisAst = (_viewStatic._nodalPresenter as NodalPresenterLocal)._model;

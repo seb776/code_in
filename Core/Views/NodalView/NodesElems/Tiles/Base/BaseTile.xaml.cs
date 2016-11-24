@@ -171,7 +171,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
-        EditNodePanel _editNodePanel;
         public void ShowEditMenu()
         {
             this.EditMenuLayout.Children.Clear();

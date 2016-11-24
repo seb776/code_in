@@ -568,6 +568,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             AstNode model = NodePresenter.InstantiateASTNode(types[nodeType]);
             var uiElem = Activator.CreateInstance(nodeType, _selfPassingThroughCallbackTmp._themeResourceDictionary, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
             var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as NodalView)._nodalPresenter, model);
+            presenter.SetView(uiElem as BaseNode);
             (uiElem as BaseNode).Presenter = presenter;
             (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
             _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
