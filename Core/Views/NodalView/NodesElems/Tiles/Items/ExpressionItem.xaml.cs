@@ -282,10 +282,15 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
         public void RemoveNode(Presenters.Nodal.INodeElem node)
         {
-            foreach (var v in (node as AIONode)._inputs.Children)
+            foreach (var anchorInput in (node as AIONode)._inputs.Children)
             {
-                var input = v as AIOAnchor;
-                input.RemoveLink(input._links[0].Output._links[0], true);
+                var anchor = anchorInput as AIOAnchor;
+                anchor.RemoveLink(anchor._links[0].Output._links[0], true);
+            }
+            foreach (var anchorOutput in (node as AIONode)._outputs.Children)
+            {
+                var anchor = anchorOutput as AIOAnchor;
+                anchor.RemoveLink(anchor._links[0].Input._links[0], true);
             }
             this.ExpressionsGrid.Children.Remove(node as UIElement);
             _expression.Remove(node as AExpressionNode);
