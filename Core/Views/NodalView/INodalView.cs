@@ -18,5 +18,6 @@ namespace code_in.Views.NodalView
             get;
             set;
         }
+        void AlignDeclarations();
     }
 }

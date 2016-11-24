@@ -86,12 +86,6 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         #endregion
 
-
-        ResourceDictionary GetThemeResourceDictionary()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void UpdateDisplayedInfosFromPresenter()
         {
 

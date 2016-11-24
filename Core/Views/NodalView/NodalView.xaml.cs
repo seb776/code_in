@@ -217,6 +217,7 @@ namespace code_in.Views.NodalView
             EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
             if (e.LeftButton == MouseButtonState.Pressed)
                 Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
+            // TODO e.Handled
         }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

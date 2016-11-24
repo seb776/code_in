@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" Background="Blue" Width="auto">
-        <Label Foreground="White" >[</Label>
+    <StackPanel Orientation="Horizontal" Width="auto">
+        <Label Foreground="DodgerBlue" >[</Label>
         <Label Foreground="White" x:Name="AttributeLabel"></Label>
-        <Grid x:Name="ArgsLayout" Visibility="Hidden" IsEnabled="False" >
+        <StackPanel Orientation="Horizontal" x:Name="ArgsLayout" Visibility="Collapsed" IsEnabled="False">
             <Label Foreground="White">(</Label>
-            <Label x:Name="AttributeArgs" Foreground="White" Content=""></Label>
+            <Label x:Name="AttributeArgs" Foreground="GreenYellow" Content=""></Label>
             <Label Foreground="White">)</Label>
-        </Grid>
-        <Label Foreground="White" >]</Label>
+        </StackPanel>
+        <Label Foreground="DodgerBlue" >]</Label>
     </StackPanel>
 </UserControl>

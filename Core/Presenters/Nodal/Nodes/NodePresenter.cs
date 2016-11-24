@@ -38,6 +38,80 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             return _model;
         }
+        public static AstNode InstantiateASTNode(ECSharpNode csharpNode)
+        {
+            Dictionary<ECSharpNode, Type> types = new Dictionary<ECSharpNode,Type>();
+
+            types.Add(ECSharpNode.NAMESPACE_DECL, typeof(NamespaceDeclaration));
+
+            types.Add(ECSharpNode.METHOD_DECL, typeof(NamespaceDeclaration));
+            types.Add(ECSharpNode.CTOR_DECL, typeof(NamespaceDeclaration));
+
+            types.Add(ECSharpNode.BREAK_STMT, typeof(BreakStatement));
+            types.Add(ECSharpNode.CHECKED_STMT, typeof(CheckedStatement));
+            types.Add(ECSharpNode.CONTINUE_STMT, typeof(ContinueStatement));
+            types.Add(ECSharpNode.DO_WHILE_STMT, typeof(DoWhileStatement));
+            types.Add(ECSharpNode.EXPRESSION_STMT, typeof(ExpressionStatement));
+            types.Add(ECSharpNode.FIXED_STMT, typeof(FixedStatement));
+            types.Add(ECSharpNode.FOR_STMT, typeof(ForStatement));
+            types.Add(ECSharpNode.FOREACH_STMT, typeof(ForeachStatement));
+            types.Add(ECSharpNode.GOTO_STMT, typeof(GotoStatement));
+            types.Add(ECSharpNode.IFELSE_STMT, typeof(IfElseStatement));
+            types.Add(ECSharpNode.LABEL_STMT, typeof(LabelStatement));
+            types.Add(ECSharpNode.LOCK_STMT, typeof(LockStatement));
+            types.Add(ECSharpNode.RETURN_STMT, typeof(ReturnStatement));
+            types.Add(ECSharpNode.SWITCH_STMT, typeof(SwitchStatement));
+            types.Add(ECSharpNode.THROW_STMT, typeof(ThrowStatement));
+            types.Add(ECSharpNode.TRY_CATCH_STMT, typeof(TryCatchStatement));
+            types.Add(ECSharpNode.UNCHECKED_STMT, typeof(UncheckedStatement));
+            types.Add(ECSharpNode.UNSAFE_STMT, typeof(UnsafeStatement));
+            types.Add(ECSharpNode.USING_STMT, typeof(UsingStatement));
+            types.Add(ECSharpNode.VAR_DECL_STMT, typeof(VariableDeclarationStatement));
+            types.Add(ECSharpNode.YIELD_BREAK_STMT, typeof(YieldBreakStatement));
+            types.Add(ECSharpNode.YIELD_RETURN_STMT, typeof(YieldReturnStatement));
+
+
+            types.Add(ECSharpNode.ANONYMOUS_METHOD_EXPRESSION, typeof(AnonymousMethodExpression));
+            types.Add(ECSharpNode.ANONYMOUS_TYPE_CREATE_EXPRESSION, typeof(AnonymousTypeCreateExpression));
+            types.Add(ECSharpNode.ARRAY_CREATE_EXPRESSION, typeof(ArrayCreateExpression));
+            types.Add(ECSharpNode.ARRAY_INITIALIZER_EXPRESSION, typeof(ArrayInitializerExpression));
+            types.Add(ECSharpNode.AS_EXPRESSION, typeof(AsExpression));
+            types.Add(ECSharpNode.ASSIGNMENT_EXPRESSION, typeof(AssignmentExpression));
+            types.Add(ECSharpNode.BASE_REFERENCE_EXPRESSION, typeof(BaseReferenceExpression));
+            types.Add(ECSharpNode.BINARY_OPERATOR_EXPRESSION, typeof(BinaryOperatorExpression));
+            types.Add(ECSharpNode.CAST_EXPRESSION, typeof(CastExpression));
+            types.Add(ECSharpNode.CHECKED_EXPRESSION, typeof(CheckedExpression));
+            types.Add(ECSharpNode.CONDITIONAL_EXPRESSION, typeof(ConditionalExpression));
+            types.Add(ECSharpNode.DEFAULT_VALUE_EXPRESSION, typeof(DefaultValueExpression));
+            types.Add(ECSharpNode.DIRECTION_EXPRESSION, typeof(DirectionExpression));
+            types.Add(ECSharpNode.ERROR_EXPRESSION, typeof(ErrorExpression));
+            types.Add(ECSharpNode.IDENTIFIER_EXPRESSION, typeof(IdentifierExpression));
+            types.Add(ECSharpNode.INDEXER_EXPRESSION, typeof(IndexerExpression));
+            types.Add(ECSharpNode.INVOCATION_EXPRESSION, typeof(InvocationExpression));
+            types.Add(ECSharpNode.IS_EXPRESSION, typeof(IsExpression));
+            types.Add(ECSharpNode.LAMBDA_EXPRESSION, typeof(LambdaExpression));
+            types.Add(ECSharpNode.MEMBER_REFERENCE_EXPRESSION, typeof(MemberReferenceExpression));
+            types.Add(ECSharpNode.NAMED_ARGUMENT_EXPRESSION, typeof(NamedArgumentExpression));
+            types.Add(ECSharpNode.NAMED_EXPRESSION, typeof(NamedExpression));
+            types.Add(ECSharpNode.NULL_REFERENCE_EXPRESSION, typeof(NullReferenceExpression));
+            types.Add(ECSharpNode.OBJECT_CREATE_EXPRESSION, typeof(ObjectCreateExpression));
+            types.Add(ECSharpNode.PARENTHESIZED_EXPRESSION, typeof(ParenthesizedExpression));
+            types.Add(ECSharpNode.POINTER_REFERENCE_EXPRESSION, typeof(PointerReferenceExpression));
+            types.Add(ECSharpNode.PRIMITIVE_EXPRESSION, typeof(PrimitiveExpression));
+            types.Add(ECSharpNode.QUERY_EXPRESSION, typeof(QueryExpression));
+            types.Add(ECSharpNode.SIZEOF_EXPRESSION, typeof(SizeOfExpression));
+            types.Add(ECSharpNode.STACK_ALLOC_EXPRESSION, typeof(StackAllocExpression));
+            types.Add(ECSharpNode.THIS_REFERENCE_EXPRESSION, typeof(ThisReferenceExpression));
+            types.Add(ECSharpNode.TYPE_OF_EXPRESSION, typeof(TypeOfExpression));
+            types.Add(ECSharpNode.TYPE_REFERENCE_EXPRESSION, typeof(TypeReferenceExpression));
+            types.Add(ECSharpNode.UNARY_OPERATOR_EXPRESSION, typeof(UnaryOperatorExpression));
+            types.Add(ECSharpNode.UNCHECKED_EXPRESSION, typeof(UncheckedExpression));
+            types.Add(ECSharpNode.UNDOCUMENTED_EXPRESSION, typeof(UndocumentedExpression));
+
+            if (types.ContainsKey(csharpNode))
+                return Activator.CreateInstance(types[csharpNode]) as AstNode;
+            return null;
+        }
         public enum ECSharpNode
         {
             // GeneralScope
@@ -1082,6 +1156,12 @@ namespace code_in.Presenters.Nodal.Nodes
                 //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
                 MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
                 MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
+                Dictionary<Type, ECSharpNode> types = new Dictionary<Type,ECSharpNode>();
+                types.Add(typeof(UsingDeclNode), ECSharpNode.USING_DECL); // TODO not sure
+                types.Add(typeof(NamespaceNode), ECSharpNode.NAMESPACE_DECL);
+                if (!types.ContainsKey(((MenuItem)sender).DataContext as Type))
+                    return;
+                InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
                 var tmp = new NodePresenter(_presStatic, null);
                 //                var tmp = _presStatic;
                 var toto = new object[1];

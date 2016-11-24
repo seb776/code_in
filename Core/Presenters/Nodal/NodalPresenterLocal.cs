@@ -796,6 +796,7 @@ namespace code_in.Presenters.Nodal
         static void _alignNodes(object[] objects)
         {
             NodalPresenterLocal self = objects[0] as NodalPresenterLocal;
+            self._view.AlignDeclarations();
         }
         static void AddNode(object[] objects)
         {

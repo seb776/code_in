@@ -33,6 +33,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             this.Resources.MergedDictionaries.Add(_themeResourceDictionary);
             this.Resources.MergedDictionaries.Add(_languageResourceDictionary);
             InitializeComponent();
+            GenericsNames.Visibility = System.Windows.Visibility.Collapsed;
+            GenericsNames.IsEnabled = false;
         }
         public GenericItem() :
             this(Code_inApplication.MainResourceDictionary)
@@ -69,6 +71,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
                 GenericsNames.Content += " | ";
             GenericsNames.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0xA2, 0xFF));
            }
+           GenericsNames.Visibility = (tmp.Count == 0 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible);
+           GenericsNames.IsEnabled = tmp.Count != 0;
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,6 +52,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             ExprOut.ParentLinksContainer = this;
             ExprOut.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             ExprOut.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            ExprOut.SetName("out");
             this.ExpressionMainGrid.Children.Add(ExprOut);
             IsExpanded = false;
             _expression = new List<AExpressionNode>();
@@ -408,6 +412,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 _currentDraggingLink.InvalidateVisual();
             }
         }
+        public void RemoveVisualLink(Code_inLink link)
+        {
+            Debug.Assert(link != null);
+            this.ExpressionsGrid.Children.Remove(link);
+        }
         #endregion ILinkContainer
         #region IContainerDragNDrop
         public void UpdateDragInfos(Point mousePosToMainGrid)
@@ -489,5 +498,85 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             this.ExprOut.UpdateLinksPosition();
         }
+        static void _alignNodes(object[] objects)
+        {
+            _selfPassingThroughCallbackTmp.AlignNodes();
+            _selfPassingThroughCallbackTmp = null;
+        }
+        static void _addNode_Callback(object[] objects)
+        {
+            ContextMenu cm = new ContextMenu();
+            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
+            List<Type> types = new List<Type>();
+
+            types.Add(typeof(BinaryExprNode));
+            types.Add(typeof(UnaryExprNode));
+            types.Add(typeof(PrimaryExprNode));
+            types.Add(typeof(AsExprNode));
+            types.Add(typeof(IsExprNode));
+            types.Add(typeof(NullRefExprNode));
+            types.Add(typeof(ParenthesizedExprNode));
+            types.Add(typeof(IdentifierExprNode));
+            types.Add(typeof(IndexerExprNode));
+            types.Add(typeof(FuncCallExprNode));
+            types.Add(typeof(ArrayInitExprNode));
+            types.Add(typeof(ArrayCreateExprNode));
+
+            foreach (var entry in types)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = entry.Name;
+                mi.Click += mi_Click;
+                mi.DataContext = entry; // TODO beaurk
+                cm.Items.Add(mi);
+            }
+            cm.IsOpen = true;
+        }
+
+        static void mi_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<Type, NodePresenter.ECSharpNode> types = new Dictionary<Type,NodePresenter.ECSharpNode>();
+            var menuItem = (sender as MenuItem);
+            var nodeType = menuItem.DataContext as Type;
+
+            types.Add(typeof(BinaryExprNode), NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION);
+            types.Add(typeof(UnaryExprNode), NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION);
+            types.Add(typeof(PrimaryExprNode), NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION);
+            types.Add(typeof(AsExprNode), NodePresenter.ECSharpNode.AS_EXPRESSION);
+            types.Add(typeof(IsExprNode), NodePresenter.ECSharpNode.IS_EXPRESSION);
+            types.Add(typeof(NullRefExprNode), NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION);
+            types.Add(typeof(ParenthesizedExprNode), NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION);
+            types.Add(typeof(IdentifierExprNode), NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION);
+            types.Add(typeof(IndexerExprNode), NodePresenter.ECSharpNode.INDEXER_EXPRESSION);
+            types.Add(typeof(FuncCallExprNode), NodePresenter.ECSharpNode.INVOCATION_EXPRESSION);
+            types.Add(typeof(ArrayInitExprNode), NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION);
+            types.Add(typeof(ArrayCreateExprNode), NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION);
+
+            if (!types.ContainsKey(nodeType))
+                return;
+            AstNode model = NodePresenter.InstantiateASTNode(types[nodeType]);
+            var uiElem = Activator.CreateInstance(nodeType, _selfPassingThroughCallbackTmp._themeResourceDictionary, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
+            var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as NodalView)._nodalPresenter, model);
+            (uiElem as BaseNode).Presenter = presenter;
+            (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
+            _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
+            _selfPassingThroughCallbackTmp = null;
+        }
+
+        static ExpressionItem _selfPassingThroughCallbackTmp = null; // TODO @Seb this is disgusting but faster to dev TODO set it to null after anycallback except add
+        private void ExpressionsGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _selfPassingThroughCallbackTmp = this;
+            Tuple<EContextMenuOptions, Action<object[]>>[] options = {
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, _addNode_Callback),
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes)//,
+                                                                         //new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, _addNode_Callback)
+                                                                     };
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
+            e.Handled = true;            
+        }
+
+
+
     }
 }

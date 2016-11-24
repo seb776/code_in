@@ -18,5 +18,6 @@ namespace code_in.Views.NodalView.NodesElems
         void DragLink(AIOAnchor from, bool isGenerated);
         void DropLink(AIOAnchor to, bool isGenerated);
         void UpdateLinkDraw(Point mousePosRelToParentLinkContainer); // This function is here to update the view when mouse is moving (update view and links)
+        void RemoveVisualLink(Code_inLink link);
     }
 }
