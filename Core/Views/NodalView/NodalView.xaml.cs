@@ -77,9 +77,12 @@ namespace code_in.Views.NodalView
         }
         public void AlignDeclarations()
         {
-            foreach (var nodeUi in this.MainGrid.Children)
+            if (IsDeclarative)
             {
-                var nodeElem = nodeUi as INodeElem;
+                foreach (var nodeUi in this.MainGrid.Children)
+                {
+                    var nodeElem = nodeUi as INodeElem;
+                }
             }
         }
         static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
