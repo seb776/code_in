@@ -100,11 +100,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public virtual void UpdateDisplayedInfosFromPresenter()
         {
             // TODO @Seb uncomment this
-            //throw new NotImplementedException("A method implementation has been forgotten.");
+            throw new NotImplementedException("A method implementation has been forgotten.");
         }
         #endregion ITile
 
-        private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void SwitchBreakPoint()
         {
             if (_isBreakpointActive)
             {
@@ -114,7 +114,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                     var thisStmt = thisASTNode as Statement;
                     _breakpoint.Remove();
                     _breakpoint = null;
-                    this.TileEllipse.Fill = new SolidColorBrush(Color.FromRgb(0x00, 0x88, 0xD6));
+                    this.TileEllipse.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
             else
@@ -131,9 +131,15 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                     thisStmt.Parent.InsertChildBefore(thisASTNode, _breakpoint, BlockStatement.StatementRole); // From Seb Not sure
                 }
                 this.TileEllipse.Fill = new SolidColorBrush(Colors.Red);
+                this.TileEllipse.Visibility = System.Windows.Visibility.Visible;
             }
-            e.Handled = true;
             _isBreakpointActive = !_isBreakpointActive;
+        }
+
+        private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SwitchBreakPoint();
+            e.Handled = true;
         }
 
         public void InstantiateASTNode()

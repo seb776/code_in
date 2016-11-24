@@ -308,10 +308,8 @@ namespace code_in.Presenters.Nodal
                     //item.SetName(parameters[i].Name);
                     //item.SetItemType(parameters[i].Type.ToString());
                 }
-                funcDecl.SetName(method.Name);
-                funcDecl.setTypeFromString(method.ReturnType.ToString());
-                setOtherModifiers(funcDecl, method.Modifiers);
-                setAccessModifiers(funcDecl, method.Modifiers);
+                funcDecl.UpdateDisplayedInfosFromPresenter();
+
                 //foreach (var constraint in method.Constraints)
                 //{
                 //    funcDecl.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);

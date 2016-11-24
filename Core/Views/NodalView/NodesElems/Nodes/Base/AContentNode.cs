@@ -12,7 +12,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 {
     public abstract class AContentNode : BaseNode, IContainerDragNDrop, IVisualNodeContainer
     {
-        private Point _lastPosition;
         protected AContentNode(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
