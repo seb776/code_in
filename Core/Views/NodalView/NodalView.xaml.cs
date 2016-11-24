@@ -29,8 +29,6 @@ namespace code_in.Views.NodalView
         public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
         private ResourceDictionary _themeResourceDictionary = null;
         private Point _lastPosition;
-        private AIOAnchor _linkStart = null;
-        private Code_inLink _currentLink = null;
         public ITileContainer RootTileContainer
         {
             get;
@@ -75,6 +73,10 @@ namespace code_in.Views.NodalView
         public void EditConstructor(ConstructorItem node)
         {
             this._nodalPresenter.EditConstructor(node);
+        }
+        public void AlignDeclarations()
+        {
+
         }
         static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
         {

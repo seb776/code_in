@@ -1,6 +1,7 @@
 ﻿using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
+using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
@@ -99,6 +100,7 @@ namespace code_in.Presenters.Nodal
         }
         private void _alignDeclarations()
         {
+            //foreach ()
         }
         private void _alignDeclarationsRecur()
         {
@@ -730,11 +732,19 @@ namespace code_in.Presenters.Nodal
         {
             return new Tuple<EContextMenuOptions, Action<object[]>>[] { 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode), 
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes), 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, CollapseAllNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, Save),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, CloseNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.HELP, HelpNode)
             };
+        }
+
+
+
+        static void _alignNodes(object[] objects)
+        {
+            NodalPresenterLocal self = objects[0] as NodalPresenterLocal;
         }
         static void AddNode(object[] objects)
         {

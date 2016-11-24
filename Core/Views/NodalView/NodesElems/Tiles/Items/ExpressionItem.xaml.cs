@@ -54,6 +54,128 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             _expression = new List<AExpressionNode>();
             _visualNodes = new List<INodeElem>();
         }
+
+        void _aligNodesStraightRecur(List<List<AIONode>> nodes, AIONode curNode, int depth)
+        {
+            if (depth >= nodes.Count)
+                nodes.Add(new List<AIONode>());
+            nodes[depth].Add(curNode);
+            foreach (var v in curNode._inputs.Children)
+            {
+                var input = v as AIOAnchor;
+                if (input._links.Count != 0)
+                    _aligNodesStraightRecur(nodes, input._links[0].Output.ParentNode, depth + 1);
+            }
+        }
+        void _alignFromArray(List<List<AIONode>> nodes)
+        {
+            float vertOffset = 20.0f;
+            float horizontalOffset = 100.0f;
+            float curX = 20.0f;
+            foreach (var level in nodes)
+            {
+                float maxX = 0.0f;
+                float curY = 20.0f;
+                foreach (var node in level)
+                {
+                    node.SetPosition((int)curX, (int)curY);
+                    int sizeX = 0, sizeY = 0;
+                    node.GetSize(out sizeX, out sizeY);
+                    curY += sizeY + vertOffset;
+                    if (sizeX > maxX)
+                        maxX = sizeX;
+                }
+                curX += maxX + horizontalOffset;
+            }
+        }
+
+        float _getDirectChildMiddle(AIONode node, ref bool hasChild)
+        {
+            bool start = true;
+            float yStart = 0.0f;
+            float yEnd = 0.0f;
+
+            foreach (var v in node._inputs.Children)
+            {
+                var input = v as AIOAnchor;
+                var nodePos = input._links[0].Output.ParentNode.GetPosition();
+                if (start)
+                {
+                    yStart = (float)nodePos.Y;
+                    start = false;
+                }
+                int sizeX = 0, sizeY = 0;
+                input._links[0].Output.ParentNode.GetSize(out sizeX, out sizeY);
+                yEnd = (float)nodePos.Y + sizeY;
+            }
+            if (start)
+            {
+                hasChild = false;
+                return 0.0f;
+            }
+            hasChild = true;
+            return yStart + ((yEnd - yStart) / 2.0f);
+        }
+
+        void _alignFromArrayLast(List<List<AIONode>> nodes)
+        {
+            float vertOffset = 20.0f;
+            foreach (var level in nodes)
+            {
+                float lastY = 0.0f;
+                foreach (var node in level)
+                {
+                    bool hasChild = true;
+                    float middle = _getDirectChildMiddle(node, ref hasChild);
+                    int sizeX = 0, sizeY = 0;
+                    node.GetSize(out sizeX, out sizeY);
+                    var nodePos = node.GetPosition();
+                    if (hasChild)
+                    {
+                        float halfY = sizeY / 2.0f;
+                        node.SetPosition((int)nodePos.X, (int)(middle - halfY));
+                        lastY = middle + halfY + vertOffset;
+                    }
+                    else
+                    {
+                        node.SetPosition((int)nodePos.X, (int)lastY);
+                        lastY = (float)(node.GetPosition().Y + sizeY + vertOffset);
+                    }
+                }
+            }
+        }
+
+        Rect _alignNodesRecur(AIONode ioNode)
+        {
+            Rect currentRect = new Rect(0,0,0,0);
+            //float verticalOffset = 20.0f;
+            //float horizontalOffset = 50.0f;
+            //foreach (var v in ioNode._inputs.Children)
+            //{
+            //    var input = v as AIOAnchor;
+            //    if (input._links.Count != 0)
+            //    {
+            //        var prevRect = _alignNodesRecur(input._links[0].Output.ParentNode);
+            //        currentRect.Size.Height += prevRect.Size.Height + verticalOffset;
+            //    }
+
+            //}
+            
+            ////ioNode.GetSize()
+            return currentRect;
+        }
+        public void AlignNodes()
+        {
+            if (ExprOut != null && ExprOut._links.Count != 0)
+            {
+                var doubleArray = new List<List<AIONode>>();
+                _aligNodesStraightRecur(doubleArray, ExprOut._links[0].Output.ParentNode, 0);
+                doubleArray.Reverse();
+                _alignFromArray(doubleArray);
+                _alignFromArrayLast(doubleArray);
+            }
+        }
+
         public ExpressionItem() :
             this(Code_inApplication.MainResourceDictionary, null)
         {
@@ -76,6 +198,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 {
                     this.ExpressionMainGrid.Visibility = System.Windows.Visibility.Visible;
                     this.PreviewCode.Visibility = System.Windows.Visibility.Collapsed;
+                    AlignNodes();
                 }
                 else
                 {
@@ -195,106 +318,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             }
         }
 
-        // The below code will be used as base to make links creation back to normal
-        //public void BACKUP_NodalView.DropLink(AIOAnchor to, bool isGenerated)
-        //{
-        //    this.DraggingLink = false;
-        //    if (to == null)
-        //    {
-        //        _linkStart = null;
-        //        if (_currentLink != null)
-        //            this.MainGrid.Children.Remove(_currentLink);
-        //        _currentLink = null;
-        //    }
-        //    else
-        //    {
-        //        if (_currentLink != null)
-        //        {
-        //            try
-        //            {
-        //                if (_linkStart.Orientation == to.Orientation)
-        //                    throw new Exception("Cannot link two IO of the same type (input and input, or output and output)");
-        //                if (_linkStart == to)
-        //                    throw new Exception("Cannot create a link between an IO and itself.");
-        //                if (_linkStart.ParentNode == to.ParentNode)
-        //                    throw new Exception("Cannot create a link between two IO that belongs to the same node.");
-        //            }
-        //            catch (Exception except)
-        //            {
-        //                this.MainGrid.Children.Remove(_currentLink);
-        //                _linkStart = null;
-        //                _currentLink = null;
-        //                throw except;
-        //            }
-        //            IOLink link = new IOLink();
-        //            link.Input = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? _linkStart : to);
-        //            link.Output = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
-        //            link.Link = _currentLink;
-        //            if (link.Input._links.Count != 0)
-        //                this.MainGrid.Children.Remove(link.Input._links[0].Link);
-        //            link.Input._links.Clear();
-        //            if (link.Output._links.Count != 0)
-        //            {
-        //                this.MainGrid.Children.Remove(link.Output._links[0].Link);
-        //                link.Output.RemoveLink(link.Output._links[0], true);
-        //            }
-        //            link.Output._links.Clear();
-        //            if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor) // To apply links creation to AST for expressions
-        //                (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
-        //            else if (link.Input is FlowNodeAnchor && link.Output is FlowNodeAnchor && !isGenerated)
-        //                (link.Output as FlowNodeAnchor).AttachASTStmt(link.Input as FlowNodeAnchor);
-
-        //            _linkStart.AttachNewLink(link);
-        //            to.AttachNewLink(link);
-        //            this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
-        //            _linkStart = null;
-        //            _currentLink = null;
-        //        }
-        //    }
-        //}
-
         public void DropLink(AIOAnchor to, bool isGenerated)
         {
-            //if (to == null || _linkStart == to || _linkStart.ParentLinksContainer == to.ParentLinksContainer || _linkStart.Orientation == to.Orientation) // We droped in a wrong place
-            //{
-            //    this.ExpressionsGrid.Children.Remove(_currentDraggingLink);
-            //}
-            //else
-            //{
-            //    if (to._links.Count != 0)
-            //    {
-            //        //this.ExpressionsGrid.Children.Remove(_currentDraggingLink);
-
-            //        var code_inLink = to._links[0].Link;
-            //        if (to.Orientation == AIOAnchor.EOrientation.LEFT)
-            //        {
-            //            to._links[0].Output.RemoveLink(to._links[0], true);
-            //            to.RemoveLink(to._links[0], true);
-            //        }
-            //        else
-            //        {
-
-            //        }
-            //    }
-            //    else
-            //    {
-            //        var ioLink = new IOLink();
-            //        ioLink.Link = _currentDraggingLink;
-            //    }
-            //    ioLink.Input = (to.Orientation == AIOAnchor.EOrientation.LEFT ? to : _linkStart);
-            //    ioLink.Output = (to.Orientation == AIOAnchor.EOrientation.RIGHT ? to : _linkStart);
-            //    to.AttachNewLink(ioLink);
-            //    _linkStart.AttachNewLink(ioLink);
-            //    _linkStart.UpdateLinksPosition();
-            //    to.UpdateLinksPosition();
-            //}
-
-            //Code_inApplication.RootDragNDrop.DraggingLink = false;
-            //Code_inApplication.RootDragNDrop.ParentLinkContainer = null;
-            //DraggingLink = false;
-            //_currentDraggingLink = null;
-            //_linkStart = null;
-
             Code_inApplication.RootDragNDrop.DraggingLink = false;
             if (to == null)
             {
@@ -414,7 +439,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
-
             //throw new NotImplementedException();
         }
 
