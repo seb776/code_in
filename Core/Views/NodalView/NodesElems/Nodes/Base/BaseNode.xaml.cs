@@ -58,8 +58,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");
             this.ContentLayout.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
             this.ContentLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
-            this.NodeName.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
-            this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
+            //this.NodeName.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
+            //this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
         }
         #endregion ICodeInVisual
         #region This

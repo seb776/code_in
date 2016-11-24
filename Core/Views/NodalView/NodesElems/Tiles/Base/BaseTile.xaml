@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="EditMenuLayout"></Grid>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Orientation="Horizontal" x:Name="FieldAfterKeyWord">
-            <Ellipse x:Name="TileEllipse" Fill="#FF0088D6" Width="20" Height="20" MouseLeftButtonDown="TileEllipse_MouseLeftButtonDown"/>
+            <Ellipse x:Name="TileEllipse" Fill="#FF0088D6" Width="20" Height="20" MouseLeftButtonDown="TileEllipse_MouseLeftButtonDown" Visibility="Collapsed"/>
             <Label x:Name="TileName" Foreground="#FF0088D6" VerticalAlignment="Center">int</Label>
         </StackPanel>
         <StackPanel x:Name="TileContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Orientation="Vertical" Grid.Row="2">

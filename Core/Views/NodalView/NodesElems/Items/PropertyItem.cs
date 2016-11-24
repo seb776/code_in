@@ -55,18 +55,18 @@ namespace code_in.Views.NodalView.NodesElems.Items
             throw new DefaultCtorVisualException();
         }
         #region IContainingModifiers
-        public void setAccessModifiers(Modifiers modifiers)
-        {
-            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-                Scope.Scope = ScopeItem.EScope.PUBLIC;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-                Scope.Scope = ScopeItem.EScope.PRIVATE;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-                Scope.Scope = ScopeItem.EScope.PROTECTED;
-            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-                Scope.Scope = ScopeItem.EScope.INTERNAL;
+        //public void setAccessModifiers(Modifiers modifiers)
+        //{
+        //    if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+        //        Scope.Scope = ScopeItem.EScope.PUBLIC;
+        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
+        //        Scope.Scope = ScopeItem.EScope.PRIVATE;
+        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
+        //        Scope.Scope = ScopeItem.EScope.PROTECTED;
+        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
+        //        Scope.Scope = ScopeItem.EScope.INTERNAL;
 
-        }
+        //}
         #endregion
         #region IContainingAccessModifiers
         public void setModifiersList(Modifiers modifiers)

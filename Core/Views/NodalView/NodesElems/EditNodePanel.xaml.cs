@@ -25,7 +25,6 @@ namespace code_in.Views.NodalView
     public partial class EditNodePanel : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
         INodePresenter _nodePresenter = null;
-        bool RedOrGreen = false;
         public EditNodePanel(ResourceDictionary themeResDict)
         {
             this.Resources.MergedDictionaries.Add(themeResDict);

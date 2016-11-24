@@ -15,6 +15,7 @@ namespace code_in.Presenters.Nodal
         COLLAPSE,
         EXPANDALL,
         COLLAPSEALL,
+        ADD_BREAKPOINT,
         HELP,
         ADD,
         ALIGN,

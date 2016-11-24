@@ -20,7 +20,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();
             OperandA.SetName("A");
             OperandB.SetName("B");
-            this.SetType("BinaryExpr");
+            //this.SetType("BinaryExpr");
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var binaryOpExpr = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
+            this.SetType(binaryOpExpr.OperatorToken.ToString());
         }
     }
 

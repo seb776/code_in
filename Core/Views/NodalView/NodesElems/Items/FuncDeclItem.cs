@@ -7,6 +7,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +87,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         public override void UpdateDisplayedInfosFromPresenter()
         {
-
+            // TODO do not use AST directly here
+            Debug.Assert(MethodNode != null);
+            this.SetName(MethodNode.Name);
+            setTypeFromString(MethodNode.ReturnType.ToString());
+            setModifiersList(MethodNode.Modifiers);
+            setAccessModifiers(MethodNode.Modifiers);
         }
         #region IContainingAccessModifiers
         public void setAccessModifiers(Modifiers modifiers)

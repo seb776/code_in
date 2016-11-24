@@ -15,6 +15,7 @@ using System.Reflection;
 using code_in.Views.NodalView.NodesElems.Nodes.Base;
 using System.Windows.Input;
 using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView.NodesElems.Tiles;
 
 namespace code_in.Presenters.Nodal.Nodes
 {
@@ -44,8 +45,8 @@ namespace code_in.Presenters.Nodal.Nodes
 
             types.Add(ECSharpNode.NAMESPACE_DECL, typeof(NamespaceDeclaration));
 
-            types.Add(ECSharpNode.METHOD_DECL, typeof(NamespaceDeclaration));
-            types.Add(ECSharpNode.CTOR_DECL, typeof(NamespaceDeclaration));
+            types.Add(ECSharpNode.METHOD_DECL, typeof(MethodDeclaration));
+            types.Add(ECSharpNode.CTOR_DECL, typeof(ConstructorDeclaration));
 
             types.Add(ECSharpNode.BREAK_STMT, typeof(BreakStatement));
             types.Add(ECSharpNode.CHECKED_STMT, typeof(CheckedStatement));
@@ -1159,16 +1160,17 @@ namespace code_in.Presenters.Nodal.Nodes
                 Dictionary<Type, ECSharpNode> types = new Dictionary<Type,ECSharpNode>();
                 types.Add(typeof(UsingDeclNode), ECSharpNode.USING_DECL); // TODO not sure
                 types.Add(typeof(NamespaceNode), ECSharpNode.NAMESPACE_DECL);
+                types.Add(typeof(FuncDeclItem), ECSharpNode.METHOD_DECL);
+                types.Add(typeof(ClassItem), ECSharpNode.FIELD_DECL);
                 if (!types.ContainsKey(((MenuItem)sender).DataContext as Type))
                     return;
-                InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
-                var tmp = new NodePresenter(_presStatic, null);
-                //                var tmp = _presStatic;
-                var toto = new object[1];
-                toto[0] = tmp;
-                BaseNode node = gmi.Invoke(_viewStatic, toto) as BaseNode;
+                var astNode = InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
+                var nodePresenter = new NodePresenter(_presStatic, astNode);
+                var arrayParams = new object[1];
+                arrayParams[0] = nodePresenter;
+                BaseNode visualNode = gmi.Invoke(_viewStatic, arrayParams) as BaseNode;
                 var pos = _viewStatic.GetPosition();
-                node.SetPosition((int)pos.X, (int)pos.Y);
+                visualNode.SetPosition((int)pos.X, (int)pos.Y);
             }
             //_viewStatic = null;
         }
@@ -1193,6 +1195,14 @@ namespace code_in.Presenters.Nodal.Nodes
         static void DuplicateNode(object[] objects)
         {
             MessageBox.Show(objects[0].GetType().ToString());
+        }
+        static void _addBreakPoint(object[] objects)
+        {
+            NodePresenter nodePresenter = objects[0] as NodePresenter;
+            if (nodePresenter._model.GetType().IsSubclassOf(typeof(Statement)))
+            {
+                (nodePresenter._view as BaseTile).SwitchBreakPoint(); // TODO @Seb really dirty
+            }
         }
         static void EditNode(object[] objects)
         {
@@ -1261,15 +1271,19 @@ namespace code_in.Presenters.Nodal.Nodes
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
             }
-            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)) // for namespace
+            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration))
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
             }
-            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression)) // for namespace
+            else if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.InvocationExpression))
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+            }
+            else if (_model.GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Statement)))
+            {
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD_BREAKPOINT, _addBreakPoint));
             }
             else
             {
@@ -1314,21 +1328,21 @@ namespace code_in.Presenters.Nodal.Nodes
 
         public List<Type> GetAvailableNodes()
         {
-            List<Type> tmp = new List<Type>();
+            List<Type> availableNodes = new List<Type>();
             if (_model == null)
-                return tmp;
+                return availableNodes;
             if (_model.GetType() == typeof(NamespaceDeclaration))
             {
-                tmp.Add(typeof(UsingDeclNode));
-                tmp.Add(typeof(ClassDeclNode));
+                availableNodes.Add(typeof(UsingDeclNode));
+                availableNodes.Add(typeof(ClassDeclNode));
             }
             if (_model.GetType() == typeof(TypeDeclaration))
             {
-                tmp.Add(typeof(ClassDeclNode));
-                tmp.Add(typeof(FuncDeclItem));
-                tmp.Add(typeof(ClassItem));
+                availableNodes.Add(typeof(ClassDeclNode));
+                availableNodes.Add(typeof(FuncDeclItem));
+                availableNodes.Add(typeof(ClassItem));
             }
-            return (tmp);
+            return (availableNodes);
         }
 
        
