@@ -225,7 +225,7 @@ namespace code_in.Presenters.Nodal.Nodes
                             newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
                         else
                             newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
-                        (_view as IContainingAttribute).addAttribute(newElem.Key, newElem.Value);
+                        AttributesList.Add(newElem);
                         ++i;
                     }
                 }
@@ -993,11 +993,12 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             CSharpParser parser = new CSharpParser();
 
+            AttributesList.Add(new KeyValuePair<string, string>(attribute, ""));
             ICSharpCode.NRefactory.CSharp.Expression newExpr = parser.ParseExpression(attribute);
             ICSharpCode.NRefactory.CSharp.Attribute newAttribute = new ICSharpCode.NRefactory.CSharp.Attribute();
             newAttribute.Type = new SimpleType(newExpr.Children.ElementAt(0).ToString());
-            newExpr.FirstChild.Remove();
-            newExpr.FirstChild.Remove();
+/*            newExpr.FirstChild.Remove();
+            newExpr.FirstChild.Remove();*/
             /*            newExpr.Children.ElementAt(0).Remove(); // TODO Try to remove brackets from expression but be carefull, i tried to remove more than one time, but didn't worked
                                     newExpr.Children.ElementAt(newExpr.Children.Count() - 1).Remove();*/
             newAttribute.Arguments.Add(newExpr);
@@ -1008,17 +1009,16 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 var toto = (_model as TypeDeclaration);
                 toto.Attributes.Add(newSection);
-            }
-            if (attribute.Contains("("))
-            {
-                string type = attribute.Substring(0, attribute.IndexOf("("));
-                string arg = attribute.Substring(attribute.IndexOf("("), attribute.IndexOf(")"));
-                (_view as IContainingAttribute).addAttribute(type, arg);
-            }
-            else
-                (_view as IContainingAttribute).addAttribute(attribute, "");
 
-            //TODO add in ast + add in visual node
+                if (attribute.Contains("("))
+                {
+                    string type = attribute.Substring(0, attribute.IndexOf("("));
+                    string arg = attribute.Substring(attribute.IndexOf("("), attribute.IndexOf(")"));
+                    (_view as IContainingAttribute).addAttribute(type, arg);
+                }
+                else
+                (_view as IContainingAttribute).addAttribute(attribute, "");
+            }
         }
 
 

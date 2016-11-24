@@ -22,8 +22,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        private string _type = null;
-        private string _arguments = null;
+        public string _type = null;
+        public string _arguments = null;
         public AttributesItems(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -43,11 +43,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Assets
             _type = type;
             _arguments = arg;
             AttributeLabel.Content = type;
-            if (arg != null)
+            AttributeArgs.Content = arg;
+            if (arg != null && arg != "")
             {
                 ArgsLayout.Visibility = System.Windows.Visibility.Visible;
                 ArgsLayout.IsEnabled = true;
-                AttributeArgs.Content = arg;
             }
         }
 

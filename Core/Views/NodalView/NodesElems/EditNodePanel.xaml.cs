@@ -586,7 +586,7 @@ namespace code_in.Views.NodalView
                 NewAttributeLine.Name = "Attribute" + AttributeStack.Children.Count.ToString();
                 if (attribute.Key != null)
                     NewAttribute.Text = attribute.Key + " ";
-                NewAttribute.Text = attribute.Value;
+                NewAttribute.Text = attribute.Key;
                 NewAttribute.KeyDown += AttributeName_KeyDown;
                 NewAttribute.Width = 100;
                 deleteAttribute.Click += DeleteAttribute;
