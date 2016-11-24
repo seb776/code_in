@@ -58,6 +58,7 @@ namespace code_in.Views.NodalView
         {
             // TODO Show Animation loadingFile
             this._nodalPresenter.OpenFile(path);
+            AlignDeclarations();
         }
         public void EditFunction(FuncDeclItem node)
         {
@@ -76,7 +77,10 @@ namespace code_in.Views.NodalView
         }
         public void AlignDeclarations()
         {
-
+            foreach (var nodeUi in this.MainGrid.Children)
+            {
+                var nodeElem = nodeUi as INodeElem;
+            }
         }
         static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
         {
