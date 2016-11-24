@@ -393,7 +393,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
-                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
+                    MessageBox.Show(to.GetAnchorPosition(to.ParentNode).X.ToString() + "    " + to.GetAnchorPosition(to.ParentNode).Y.ToString() + to.ParentNode.ToString());
+                    //this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
                     _linkStart = null;
                     _currentDraggingLink = null;
                 }
