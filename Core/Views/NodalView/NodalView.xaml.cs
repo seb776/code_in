@@ -79,9 +79,19 @@ namespace code_in.Views.NodalView
         {
             if (IsDeclarative)
             {
+                int offset_x = 50;
+                int pos_x = 0;
                 foreach (var nodeUi in this.MainGrid.Children)
                 {
-                    var nodeElem = nodeUi as INodeElem;
+                    var nodeElem = (nodeUi as INodeElem);
+                    if (nodeElem != null)
+                    {
+                        nodeElem.SetPosition(pos_x, 0);
+                        int x_size;
+                        int y_size;
+                        nodeElem.GetSize(out x_size, out y_size);
+                        pos_x += offset_x + x_size;
+                    }
                 }
             }
         }
