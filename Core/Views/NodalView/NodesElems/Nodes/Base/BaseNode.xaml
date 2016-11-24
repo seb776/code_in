@@ -20,15 +20,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="EditMenuAndAttributesLayout" Grid.Column="2">
+            <StackPanel x:Name="EditMenuAndAttributesLayout" Grid.Column="0">
             </StackPanel>
 
-            <StackPanel Orientation="Vertical" x:Name="AttributesLayout" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" x:Name="AttributesLayout" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             </StackPanel>
-            <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">
                 </StackPanel>
             </Border>

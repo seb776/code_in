@@ -43,7 +43,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 _editButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                 _editButton.Width = 35;
                 _editButton.Height = 35;
-                _editButton.PreviewMouseDown += editButton_PreviewMouseDown;
+                _editButton.PreviewMouseLeftButtonDown += editButton_PreviewMouseDown;
                 this.AfterName.Children.Add(_editButton);
                 //_editButton.Visibility = System.Windows.Visibility.Visible;
                 _editButton.SetValue(Image.OpacityProperty, 0.0);
