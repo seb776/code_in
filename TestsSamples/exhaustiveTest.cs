@@ -1,17 +1,56 @@
 ﻿using System;
 
+public class DescriptionAttribute : Attribute 
+{
+    public string _description {get; set;}
+    
+    DescriptionAttribute(string description) {
+        _description = description;
+    }
+}
+
+public interface IexhaustiveTest
+{
+    private string _name;
+
+    public void getName() {
+        return _name;
+    }
+
+    public void setName(string name)
+    {
+        _name = name;
+    }
+}
+
 public class exhaustiveTest : heritage1, heritage2
 {
+    enum Months
+    {
+        Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+    }
+
+    public int _publicInt;
+    private int _privateInt;
+    protected int _protectedInt;
+    static int _staticInt;
+
+
     public exhaustiveTest() 
 	{
         MessageBox.Show("here is a constructor with no parameter");
     }
-
+    
     public exhaustiveTest(string name)
     {
         MessageBox.Show("Here is a constructor with a name. Name is : " + name);
     }
-        
+
+    public exhaustiveTest(String name, int value) 
+    {
+    }
+
+    [DescriptionAttribute("This method is only assigning values")]
     void funcAssign() {
         var assignNull = null;
         int assignInt = 42;
@@ -39,7 +78,6 @@ public class exhaustiveTest : heritage1, heritage2
     void funcCondition(int x, int y) {
         if ((x == y) || (x < y)) {
             funcAssign();
-            MessageBox.Show("This function assign does not return anything");
             printDay(x);
         }
         else {
@@ -90,6 +128,11 @@ public class exhaustiveTest : heritage1, heritage2
         }
     }
 
+    void DepthExpressions()
+    {
+        int variable = 5 + 3 + (2 - 9) + 10 + 9 + (8 * 9);
+    }
+
     void printDay(int x) {
         var day = new String[7] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         if (x > 7)
@@ -103,6 +146,44 @@ public class exhaustiveTest : heritage1, heritage2
                 MessageBox.Show(day[i]);
                 break;
             }
+        }
+    }
+
+    int getNumberMonth()
+    {
+        int month = (int)Months.Jul;
+        return month;
+    }
+
+    private void funcPrivate()
+    {
+        MessageBox.Show("this function is to test private method");
+    }
+
+    public void funcPublic()
+    {
+        MessageBox.Show("this function is to test public method");
+    }
+
+    protected void funcProtected()
+    {
+        MessageBox.Show("this function is to test protected method");
+    }
+
+    void funcThrow()
+    {
+        throw new NotImplementedException();
+    }
+
+    void funcTryCatch()
+    {
+        try
+        {
+            MessageBox.Show("this is try part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("this is catch part");
         }
     }
 }
