@@ -289,12 +289,23 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             foreach (var anchorInput in (node as AIONode)._inputs.Children)
             {
                 var anchor = anchorInput as AIOAnchor;
-                anchor.RemoveLink(anchor._links[0].Output._links[0], true);
+                if (anchor._links.Count != 0)
+                {
+                    this.RemoveVisualLink(anchor._links[0].Link);
+                    anchor._links[0].Output.RemoveLink(anchor._links[0], true);
+                    anchor.RemoveLink(anchor._links[0], true);
+                }
             }
             foreach (var anchorOutput in (node as AIONode)._outputs.Children)
             {
                 var anchor = anchorOutput as AIOAnchor;
-                anchor.RemoveLink(anchor._links[0].Input._links[0], true);
+                if (anchor._links.Count != 0)
+                {
+                    this.RemoveVisualLink(anchor._links[0].Link);
+                    anchor._links[0].Input.RemoveLink(anchor._links[0], true);
+                    anchor.RemoveLink(anchor._links[0], true);
+                }
+                
             }
             this.ExpressionsGrid.Children.Remove(node as UIElement);
             _expression.Remove(node as AExpressionNode);
