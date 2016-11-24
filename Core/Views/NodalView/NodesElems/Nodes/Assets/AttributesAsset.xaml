@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <StackPanel Orientation="Vertical" x:Name="AttributeField">
-    </StackPanel>
-    
+
+    <Border CornerRadius="5,5,0,0" Background="#FF151515"  HorizontalAlignment="Left" VerticalAlignment="Top">
+        <StackPanel Orientation="Vertical" x:Name="AttributeField">
+        </StackPanel>
+    </Border>
+
 </UserControl>

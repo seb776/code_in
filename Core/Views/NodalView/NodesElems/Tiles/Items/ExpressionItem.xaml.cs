@@ -402,6 +402,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 _currentDraggingLink.InvalidateVisual();
             }
         }
+        public void RemoveVisualLink(Code_inLink link)
+        {
+            Debug.Assert(link != null);
+            this.ExpressionsGrid.Children.Remove(link);
+        }
         #endregion ILinkContainer
         #region IContainerDragNDrop
         public void UpdateDragInfos(Point mousePosToMainGrid)
@@ -560,5 +565,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
             e.Handled = true;            
         }
+
+
+
     }
 }

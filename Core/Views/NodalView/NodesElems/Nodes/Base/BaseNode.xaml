@@ -25,9 +25,10 @@
 
             <StackPanel x:Name="EditMenuAndAttributesLayout" Grid.Column="0">
             </StackPanel>
-
-            <StackPanel Orientation="Vertical" x:Name="AttributesLayout" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-            </StackPanel>
+            <Border x:Name="AttributesBorder" CornerRadius="5,5,0,0" Background="#FF151515"  HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False">
+                <StackPanel Orientation="Vertical" x:Name="AttributesLayout" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                </StackPanel>
+            </Border>
             <Border CornerRadius="5,5,0,0" Background="DodgerBlue" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <StackPanel x:Name="InheritanceLayout" Orientation="Vertical">
                 </StackPanel>

@@ -82,10 +82,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             AttributesItems newAttr = new AttributesItems(type, arg);
             AttributesLayout.Children.Add(newAttr);
+            AttributesBorder.Visibility = System.Windows.Visibility.Visible;
+            AttributesBorder.IsEnabled = true;
         }
         public void delAttribute(int index)
         {
             AttributesLayout.Children.RemoveAt(index);
+            AttributesBorder.Visibility = (AttributesLayout.Children.Count == 0 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible);
+            AttributesBorder.IsEnabled = AttributesLayout.Children.Count != 0;
         }
 
         public void setExistingAttributes(List<KeyValuePair<string, string>> list)
