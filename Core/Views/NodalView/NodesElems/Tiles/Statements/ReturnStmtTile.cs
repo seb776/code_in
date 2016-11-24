@@ -23,5 +23,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            //this.SetName() // TODO
+        }
     }
 }

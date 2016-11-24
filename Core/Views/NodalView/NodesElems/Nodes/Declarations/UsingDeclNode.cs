@@ -22,6 +22,27 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.Presenter = nodePresenter;
             this.SetType("using");
             this.SetThemeResources("UsingDeclNode");
+            this.DockPanelNode.MouseRightButtonDown += DockPanelNode_MouseRightButtonDown;
+        }
+        static void _addUsing(object[] objects)
+        {
+            NodePresenter nodePres = objects[0] as NodePresenter;
+
+        }
+        static void _removeNode(object[] objects)
+        {
+            NodePresenter nodePres = objects[0] as NodePresenter;
+            nodePres.GetView().Remove();
+        }
+        void DockPanelNode_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //var options = Presenter.GetMenuOptions(); // TODO astNode is null
+            Tuple<EContextMenuOptions,Action<object[]>>[] options = {
+                new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.ADD, _addUsing),
+                new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.REMOVE, _removeNode)
+                                                            };
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this.Presenter);
+            e.Handled = true;
         }
 
         #region ICodeInVisual
@@ -34,9 +55,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             } */
         }
         #endregion ICodeInVisual
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            // TODO update childs
+        }
         public override void RemoveNode(INodeElem node)
         {
-            this.ContentLayout.Children.Remove(node as UIElement);
+            this._orderedLayout.Children.Remove(node as UIElement);
         }
     }
 }
