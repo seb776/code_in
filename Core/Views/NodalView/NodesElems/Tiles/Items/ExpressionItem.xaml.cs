@@ -49,6 +49,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             ExprOut.ParentLinksContainer = this;
             ExprOut.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             ExprOut.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            ExprOut.SetName("out");
             this.ExpressionMainGrid.Children.Add(ExprOut);
             IsExpanded = false;
             _expression = new List<AExpressionNode>();
@@ -478,6 +479,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         private void ExpressionsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.ExprOut.UpdateLinksPosition();
+        }
+        static void _addNode_Callback(object[] objects)
+        {
+
+        }
+        private void ExpressionsGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tuple<EContextMenuOptions, Action<object[]>>[] options = {
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, _addNode_Callback),
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _addNode_Callback)//,
+                                                                         //new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, _addNode_Callback)
+                                                                     };
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
+            e.Handled = true;            
         }
     }
 }
