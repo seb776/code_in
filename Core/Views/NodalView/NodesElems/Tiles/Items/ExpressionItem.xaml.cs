@@ -104,15 +104,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             foreach (var v in node._inputs.Children)
             {
                 var input = v as AIOAnchor;
-                var nodePos = input._links[0].Output.ParentNode.GetPosition();
-                if (start)
+                if (input._links.Count != 0)
                 {
-                    yStart = (float)nodePos.Y;
-                    start = false;
+                    var nodePos = input._links[0].Output.ParentNode.GetPosition();
+                    if (start)
+                    {
+                        yStart = (float)nodePos.Y;
+                        start = false;
+                    }
+                    int sizeX = 0, sizeY = 0;
+                    input._links[0].Output.ParentNode.GetSize(out sizeX, out sizeY);
+                    yEnd = (float)nodePos.Y + sizeY;
                 }
-                int sizeX = 0, sizeY = 0;
-                input._links[0].Output.ParentNode.GetSize(out sizeX, out sizeY);
-                yEnd = (float)nodePos.Y + sizeY;
             }
             if (start)
             {
