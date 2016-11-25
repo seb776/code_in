@@ -393,7 +393,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
-                    //this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
+                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode.Parent as UIElement));
                     _linkStart = null;
                     _currentDraggingLink = null;
                 }
