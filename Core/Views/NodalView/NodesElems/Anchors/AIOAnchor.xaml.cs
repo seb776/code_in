@@ -101,7 +101,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
                 }
                 catch (Exception except)
                 {
-                    MessageBox.Show(except.ToString());
+                    //MessageBox.Show(except.ToString());
                 }
                 e.Handled = true;
             }
