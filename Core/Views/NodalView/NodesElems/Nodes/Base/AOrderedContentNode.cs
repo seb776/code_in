@@ -76,12 +76,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                     endIndex++;
                     beforeNode = uiElem as INode;
                 }
-
-                // TODO @Seb calculate drop index...
-                //foreach (var uiElem in this._orderedLayout.Children)
-                //{
-
-                //}
             }
         }
         public override void Drag(EDragMode dragMode)

@@ -25,8 +25,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             {
                 EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
                 Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+                e.Handled = true;
             }
-            e.Handled = true;
         }
 
         void ContentLayout_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
