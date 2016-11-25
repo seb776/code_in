@@ -1163,7 +1163,8 @@ namespace code_in.Presenters.Nodal.Nodes
                 if (visualNode is AIONode)
                     (visualNode as AIONode).UpdateAnchorAttachAST();
                 var pos = _viewStatic.GetPosition();
-                visualNode.SetPosition((int)pos.X, (int)pos.Y);
+                if (visualNode != null) // Fix Forum
+                    visualNode.SetPosition((int)pos.X, (int)pos.Y);
             }
             //_viewStatic = null;
         }
