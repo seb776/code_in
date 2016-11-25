@@ -100,7 +100,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public virtual void UpdateDisplayedInfosFromPresenter()
         {
             // TODO @Seb uncomment this
-            throw new NotImplementedException("A method implementation has been forgotten.");
+            //throw new NotImplementedException("A method implementation has been forgotten."); 
         }
         #endregion ITile
 
