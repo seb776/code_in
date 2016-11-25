@@ -232,6 +232,7 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Code_inApplication.RootDragNDrop.Drop(null);
         }
         #endregion Events.Mouse
         #region Events.Others
@@ -267,6 +268,7 @@ namespace code_in.Views.NodalView
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
                 return true;
 
+            return false; // Quick fix
             foreach (var i in items)
             {
                 if (this.IsDeclarative)
@@ -275,7 +277,11 @@ namespace code_in.Views.NodalView
             return false;
 
         }
-        public void UpdateDragInfos(Point mousePosition) // @Seb mousePosition must be mouse position from NodalView.MainGrid
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mousePosition"> must be mouse position relative to NodalView.MainGrid</param>
+        public void UpdateDragInfos(Point mousePosition)
         {
             var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
             if (selectedNodes.Count == 0)

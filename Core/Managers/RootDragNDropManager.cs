@@ -99,10 +99,14 @@ namespace code_in.Managers
             }
             else
             {
-                if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
-                    parentContainer = SelectedItems.ElementAt(0).GetParentView();
-                if (parentContainer.IsDropValid(SelectedItems))
-                    parentContainer.Drop(SelectedItems);
+                IContainerDragNDrop container = parentContainer;
+                if (container != null)
+                {
+                    if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
+                        container = SelectedItems.ElementAt(0).GetParentView();
+                    if (container.IsDropValid(SelectedItems))
+                        container.Drop(SelectedItems);
+                }
                 DragMode = EDragMode.NONE;
                 System.Windows.Input.Mouse.OverrideCursor = null;
                 StartedMove = false;

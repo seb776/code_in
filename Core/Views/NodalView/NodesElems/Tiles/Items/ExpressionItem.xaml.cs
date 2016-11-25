@@ -41,8 +41,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             get;
             set;
         }
-        public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView)
+        BaseTile _parentTile = null;
+        public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView, BaseTile parentTile)
         {
+            _parentTile = parentTile;
             this.NodalView = nodalView;
             Debug.Assert(themeResourceDictionary != null);
             _themeResourceDictionary = themeResourceDictionary;
@@ -181,10 +183,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
 
         public ExpressionItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exceptions.DefaultCtorVisualException();
-        }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new Exceptions.DefaultCtorVisualException(); }
         #region This
         /// <summary>
         /// Gets or set the expanded state of the item.
@@ -228,7 +228,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                this.IsExpanded = !this.IsExpanded;
+                if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                {
+                    Code_inApplication.RootDragNDrop.Drop(this._parentTile.GetParentView());
+                }
+                else
+                    this.IsExpanded = !this.IsExpanded;
                 e.Handled = true;
             }
         }

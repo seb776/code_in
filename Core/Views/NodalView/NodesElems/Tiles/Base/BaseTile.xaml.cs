@@ -61,7 +61,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public T CreateAndAddItem<T>(bool addAfterKeyword = false) where T : UIElement, ITileItem
         {
-            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView);
+            T item = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary, this.NodalView, this);
             item.NodalView = this.NodalView;
             if (addAfterKeyword)
                 this.FieldAfterKeyWord.Children.Add(item);
@@ -136,23 +136,33 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             _isBreakpointActive = !_isBreakpointActive;
         }
 
+        #region Events
         private void TileEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             SwitchBreakPoint();
             e.Handled = true;
         }
-
-        public void InstantiateASTNode()
+        private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
+                Code_inApplication.RootDragNDrop.UnselectAllNodes();
+            Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            e.Handled = true;
         }
+
+        private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
+            e.Handled = true;
+        }
+        #endregion Events
 
         public string GetName()
         {
             throw new NotImplementedException();
         }
 
-        public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance)
+        public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance) // TODO @Seb Remove
         {
             throw new NotImplementedException();
         }
@@ -166,9 +176,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             return _parentView;
         }
 
-        public void SetNodePresenter(INodePresenter nodePresenter)
+        public void SetNodePresenter(INodePresenter nodePresenter) // TODO @Seb remove we have Presenter now
         {
-            throw new NotImplementedException();
+            Presenter = nodePresenter;
         }
 
         public void ShowEditMenu()
@@ -186,18 +196,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public Point GetPosition()
         {
-            throw new NotImplementedException();
+            return new Point(this.Margin.Left, this.Margin.Top);
         }
 
         public void GetSize(out int x, out int y)
         {
-            throw new NotImplementedException();
+            x = (int)this.Width;
+            y = (int)this.Height;
         }
 
 
         public void Remove()
         {
-            (_parentView as ITileContainer).RemoveTile(this); 
+            (_parentView as ITileContainer).RemoveTile(this);
+            Presenter.RemoveFromAST();
         }
 
         public void SelectHighLight(bool highlighetd)
@@ -223,20 +235,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             get;
             set;
-        }
-
-        private void BackGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
-                Code_inApplication.RootDragNDrop.UnselectAllNodes();
-            Code_inApplication.RootDragNDrop.AddSelectItem(this);
-            e.Handled = true;
-        }
-
-        private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
-            e.Handled = true;
         }
     }
 }
