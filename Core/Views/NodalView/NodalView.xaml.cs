@@ -211,16 +211,20 @@ namespace code_in.Views.NodalView
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+            {
                 Code_inApplication.RootDragNDrop.Drop(this);
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
             EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
-            // TODO e.Handled
+                e.Handled = true;
+            }
         }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

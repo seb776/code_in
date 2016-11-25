@@ -100,10 +100,10 @@ namespace code_in.Managers
             else
             {
                 IContainerDragNDrop container = parentContainer;
+                if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
+                    container = SelectedItems.ElementAt(0).GetParentView();
                 if (container != null)
                 {
-                    if (DragMode == EDragMode.STAYINCONTEXT && SelectedItems.Count > 0)
-                        container = SelectedItems.ElementAt(0).GetParentView();
                     if (container.IsDropValid(SelectedItems))
                         container.Drop(SelectedItems);
                 }
