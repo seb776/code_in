@@ -24,6 +24,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     {
         private TileContainer _tileContainer = null;
         private ResourceDictionary _themeResourceDictionary = null;
+        BaseTile _parentTile = null;
         /// <summary>
         /// Gets or sets the expaded state of the tile.
         /// </summary>
@@ -49,11 +50,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         }
 
         public FlowTileItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
+            this(Code_inApplication.MainResourceDictionary, null, null)
         { throw new Exceptions.DefaultCtorVisualException();  }
 
-        public FlowTileItem(ResourceDictionary themeResDict, INodalView nodalView)
+        public FlowTileItem(ResourceDictionary themeResDict, INodalView nodalView, BaseTile parentTile)
         {
+            _parentTile = parentTile;
             Debug.Assert(nodalView != null);
             this.NodalView = nodalView;
             _themeResourceDictionary = themeResDict;
