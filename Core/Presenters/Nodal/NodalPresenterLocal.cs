@@ -845,7 +845,8 @@ namespace code_in.Presenters.Nodal
                     if (astNode != null)
                     {
                         var thisAst = (_viewStatic._nodalPresenter as NodalPresenterLocal)._model;
-                        thisAst.AST.Members.Add(astNode);
+                        if (thisAst != null)
+                            thisAst.AST.Members.Add(astNode);
                     }
                 }
             }
