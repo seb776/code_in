@@ -148,7 +148,7 @@ namespace code_in.Views.NodalView
                         imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/save.png");
                         break;
                     case EContextMenuOptions.ADD_BREAKPOINT:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/duplicate.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/breakpoint.png");
                         break;
                 }
                 imageSrc.EndInit();
