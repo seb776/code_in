@@ -732,6 +732,24 @@ namespace code_in.Presenters.Nodal
                 }
             }
             #endregion Invocative
+            #region SizeOf
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SizeOfExpression))
+            {
+                var sizeofExpr = expr as ICSharpCode.NRefactory.CSharp.SizeOfExpression;
+                var sizeofExprNode = container.CreateAndAddNode<SizeOfExprNode>(nodePresenter);
+                visualNode = sizeofExprNode;
+              //  this._generateVisualASTExpressions(container, sizeofExpr, sizeofExprNode.Input, null);
+            }
+            #endregion Sizeof
+            #region TypeOf
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeOfExpression))
+            {
+                var typeofExpr = expr as ICSharpCode.NRefactory.CSharp.TypeOfExpression;
+                var typeofExprNode = container.CreateAndAddNode<TypeOfExprNode>(nodePresenter);
+                visualNode = typeofExprNode;
+                //this._generateVisualASTExpressions(container, typeofExpr, typeofExprNode.Input, ((e) => {typeofExpr.Type}));
+            }
+            #endregion TypeOf
             else
             {
                 var defaultUnsupportedNode = container.CreateAndAddNode<UnSupExpNode>(nodePresenter);
