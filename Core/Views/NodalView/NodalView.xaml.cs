@@ -148,7 +148,7 @@ namespace code_in.Views.NodalView
                         imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/save.png");
                         break;
                     case EContextMenuOptions.ADD_BREAKPOINT:
-                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/duplicate.png");
+                        imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/breakpoint.png");
                         break;
                 }
                 imageSrc.EndInit();
@@ -211,16 +211,20 @@ namespace code_in.Views.NodalView
         void MainView_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+            {
                 Code_inApplication.RootDragNDrop.Drop(this);
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)
         {
             EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition(this.MainGrid));
-            // TODO e.Handled
+                e.Handled = true;
+            }
         }
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -232,6 +236,7 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Code_inApplication.RootDragNDrop.Drop(null);
         }
         #endregion Events.Mouse
         #region Events.Others
@@ -267,6 +272,7 @@ namespace code_in.Views.NodalView
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
                 return true;
 
+            return false; // Quick fix
             foreach (var i in items)
             {
                 if (this.IsDeclarative)
@@ -275,7 +281,11 @@ namespace code_in.Views.NodalView
             return false;
 
         }
-        public void UpdateDragInfos(Point mousePosition) // @Seb mousePosition must be mouse position from NodalView.MainGrid
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mousePosition"> must be mouse position relative to NodalView.MainGrid</param>
+        public void UpdateDragInfos(Point mousePosition)
         {
             var selectedNodes = Code_inApplication.RootDragNDrop.SelectedItems;
             if (selectedNodes.Count == 0)

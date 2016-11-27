@@ -165,7 +165,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                         if (beforeItem != null)
                             astNodeParent.InsertChildAfter(beforeItem.Presenter.GetASTNode(), (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
                         else
-                            astNodeParent.InsertChildAfter(null, (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
+                            if (astNodeParent != null && (item as BaseTile).Presenter.GetASTNode() != null) // Quickfix forum
+                                astNodeParent.InsertChildAfter(null, (item as BaseTile).Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.Statement, ICSharpCode.NRefactory.CSharp.BlockStatement.StatementRole); // TODO modification AST
                         endIndex++;
                         beforeItem = item;
                     }

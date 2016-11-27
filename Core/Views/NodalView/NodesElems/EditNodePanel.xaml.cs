@@ -1,6 +1,7 @@
 ﻿using code_in.Exceptions;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using code_in.Views.NodalView.NodesElems.Nodes.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -677,6 +678,8 @@ namespace code_in.Views.NodalView
         // event caught by the validate buton with the textBox
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!(_nodePresenter.GetView() is UnSupExpNode)) // Fix Forum
+                return;
             var parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
             ICSharpCode.NRefactory.CSharp.AstNode node = null;
             if (_nodePresenter.GetASTNode().GetType().IsSubclassOf(typeof(ICSharpCode.NRefactory.CSharp.Expression)))
@@ -699,7 +702,8 @@ namespace code_in.Views.NodalView
                     totalErr += err + "\n";
                 MessageBox.Show(totalErr);
             }
-            this._nodePresenter.GetASTNode().ReplaceWith(node);
+            if (node.Parent != null)
+                this._nodePresenter.GetASTNode().ReplaceWith(node);
             this._nodePresenter.SetASTNode(node);
             this._nodePresenter.GetView().UpdateDisplayedInfosFromPresenter(); // TODO @Seb
             // TODO update what is shown in the node

@@ -284,12 +284,13 @@ namespace code_in.Presenters.Nodal
                 visualNode = constructorDecl;
                 constructorDecl.ConstructorNode = node as ConstructorDeclaration;
                 ConstructorDeclaration construct = node as ConstructorDeclaration;
+                constructorDecl.SetName(construct.Name);
+                setAccessModifiers(constructorDecl, construct.Modifiers);
+
                 var parameters = construct.Parameters.ToList();
                 for (int i = 0; i < parameters.Count; i++)
                 {
                     constructorDecl.AddParam(parameters[i].Type.ToString());
-                    constructorDecl.SetName(construct.Name);
-                    setAccessModifiers(constructorDecl, construct.Modifiers);
                 }
             }
             #endregion Constructor
@@ -862,7 +863,8 @@ namespace code_in.Presenters.Nodal
                     if (astNode != null)
                     {
                         var thisAst = (_viewStatic._nodalPresenter as NodalPresenterLocal)._model;
-                        thisAst.AST.Members.Add(astNode);
+                        if (thisAst != null)
+                            thisAst.AST.Members.Add(astNode);
                     }
                 }
             }

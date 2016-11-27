@@ -41,8 +41,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             get;
             set;
         }
-        public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView)
+        BaseTile _parentTile = null;
+        public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView, BaseTile parentTile)
         {
+            _parentTile = parentTile;
             this.NodalView = nodalView;
             Debug.Assert(themeResourceDictionary != null);
             _themeResourceDictionary = themeResourceDictionary;
@@ -102,15 +104,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             foreach (var v in node._inputs.Children)
             {
                 var input = v as AIOAnchor;
-                var nodePos = input._links[0].Output.ParentNode.GetPosition();
-                if (start)
+                if (input._links.Count != 0)
                 {
-                    yStart = (float)nodePos.Y;
-                    start = false;
+                    var nodePos = input._links[0].Output.ParentNode.GetPosition();
+                    if (start)
+                    {
+                        yStart = (float)nodePos.Y;
+                        start = false;
+                    }
+                    int sizeX = 0, sizeY = 0;
+                    input._links[0].Output.ParentNode.GetSize(out sizeX, out sizeY);
+                    yEnd = (float)nodePos.Y + sizeY;
                 }
-                int sizeX = 0, sizeY = 0;
-                input._links[0].Output.ParentNode.GetSize(out sizeX, out sizeY);
-                yEnd = (float)nodePos.Y + sizeY;
             }
             if (start)
             {
@@ -181,10 +186,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
 
         public ExpressionItem() :
-            this(Code_inApplication.MainResourceDictionary, null)
-        {
-            throw new Exceptions.DefaultCtorVisualException();
-        }
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new Exceptions.DefaultCtorVisualException(); }
         #region This
         /// <summary>
         /// Gets or set the expanded state of the item.
@@ -228,7 +231,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                this.IsExpanded = !this.IsExpanded;
+                if (Code_inApplication.RootDragNDrop.DragMode != EDragMode.NONE)
+                {
+                    Code_inApplication.RootDragNDrop.Drop(this._parentTile.GetParentView());
+                }
+                else
+                    this.IsExpanded = !this.IsExpanded;
                 e.Handled = true;
             }
         }
@@ -393,7 +401,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
-                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode));
+                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode.Parent as UIElement));
                     _linkStart = null;
                     _currentDraggingLink = null;
                 }

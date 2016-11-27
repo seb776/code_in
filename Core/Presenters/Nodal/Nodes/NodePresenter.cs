@@ -1053,10 +1053,6 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
             }
-            /*            while (paramsNumber >= 0)
-                        {
-            //                _view.
-                        }*/
         }
 
         public void AddExecGeneric()
@@ -1114,12 +1110,6 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             ContextMenu cm = new ContextMenu();
             UIElement view = (objects[0] as NodePresenter)._view as UIElement;
-            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
-
-            //var listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-            //                from assemblyType in domainAssembly.GetTypes()
-            //                where typeof(BaseNode).IsAssignableFrom(assemblyType)
-            //                select assemblyType).ToArray();
 
             var listOfBs = (objects[0] as NodePresenter).GetAvailableNodes();
 
@@ -1173,7 +1163,8 @@ namespace code_in.Presenters.Nodal.Nodes
                 if (visualNode is AIONode)
                     (visualNode as AIONode).UpdateAnchorAttachAST();
                 var pos = _viewStatic.GetPosition();
-                visualNode.SetPosition((int)pos.X, (int)pos.Y);
+                if (visualNode != null) // Fix Forum
+                    visualNode.SetPosition((int)pos.X, (int)pos.Y);
             }
             //_viewStatic = null;
         }
