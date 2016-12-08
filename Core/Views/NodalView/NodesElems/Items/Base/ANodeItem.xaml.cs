@@ -92,7 +92,6 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             EditMenu.IsOpen = true;
             EditMenu.PlacementTarget = this.EditItemPanelField;
             EditMenu.VerticalOffset -= EditMenu.ActualHeight;
-
         }
 
         #region INodeElem
