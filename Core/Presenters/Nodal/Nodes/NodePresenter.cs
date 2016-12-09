@@ -1188,7 +1188,10 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void DuplicateNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            //MessageBox.Show(objects[0].GetType().ToString());
+            BaseNode view = (objects[0] as NodePresenter)._view as BaseNode;
+            view.duplicateNode();
+            
         }
         static void _addBreakPoint(object[] objects)
         {
@@ -1278,11 +1281,13 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD_BREAKPOINT, _addBreakPoint));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
             }
             else
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
             }
             /*            else // basic behaviour to avoid crashes
                         {

@@ -149,6 +149,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #endregion INodeElem
 
+        public void duplicateNode()
+        {
+            Code_inApplication.RootDragNDrop.duplicateNode();
+        }
 
 
         public INodalView NodalView
