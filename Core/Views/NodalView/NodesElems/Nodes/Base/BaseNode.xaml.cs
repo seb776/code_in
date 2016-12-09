@@ -112,10 +112,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         public void ShowEditMenu()
         {
-            this.EditMenuAndAttributesLayout.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
-            this.EditMenuAndAttributesLayout.Children.Add(EditMenu);
+            EditMenu.IsOpen = true;
+            EditMenu.PlacementTarget = this.EditMenuAndAttributesLayout;
+            EditMenu.VerticalOffset -= EditMenu.ActualHeight;
         }
 
         public virtual void SetPosition(int left, int top)

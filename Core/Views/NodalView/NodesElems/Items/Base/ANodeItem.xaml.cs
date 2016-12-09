@@ -87,10 +87,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         }
         public void ShowEditMenu()
         {
-            this.EditItemPanelField.Children.Clear();
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
-            this.EditItemPanelField.Children.Add(EditMenu);
+            EditMenu.IsOpen = true;
+            EditMenu.PlacementTarget = this.EditItemPanelField;
+            EditMenu.VerticalOffset -= EditMenu.ActualHeight;
         }
 
         #region INodeElem

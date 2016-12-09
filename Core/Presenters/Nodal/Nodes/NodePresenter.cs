@@ -485,7 +485,7 @@ namespace code_in.Presenters.Nodal.Nodes
         }
 
         // Return actions according to types
-        public ENodeActions GetActions()
+        public ENodeActions GetActions() // TODO FINISH /!\ ADD ALL ITEMS ETC /!\
         {
             if (_model != null)
             {
@@ -511,6 +511,8 @@ namespace code_in.Presenters.Nodal.Nodes
                     return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(PrimitiveExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(PropertyDeclaration))
+                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
                 else
                     return (ENodeActions.TEXT); // Any not supported node allows text modification
             }
@@ -802,6 +804,21 @@ namespace code_in.Presenters.Nodal.Nodes
             if (_model.GetType() == typeof(FieldDeclaration))
             {
                 var typeDecl = (_model as FieldDeclaration);
+                Modifiers tmp = typeDecl.Modifiers;
+                typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
+                if (AccessModifier == "public")
+                    typeDecl.Modifiers |= Modifiers.Public;
+                if (AccessModifier == "private")
+                    typeDecl.Modifiers |= Modifiers.Private;
+                if (AccessModifier == "protected")
+                    typeDecl.Modifiers |= Modifiers.Protected;
+                if (AccessModifier == "internal")
+                    typeDecl.Modifiers |= Modifiers.Internal;
+                (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
+            }
+            if (_model.GetType() == typeof(PropertyDeclaration))
+            {
+                var typeDecl = (_model as PropertyDeclaration);
                 Modifiers tmp = typeDecl.Modifiers;
                 typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
                 if (AccessModifier == "public")
