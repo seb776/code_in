@@ -2,6 +2,7 @@
 using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
+using code_in.Views.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -115,8 +116,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
             EditMenu.IsOpen = true;
-            EditMenu.PlacementTarget = this.EditMenuAndAttributesLayout;
-            EditMenu.VerticalOffset -= EditMenu.ActualHeight;
+            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as NodalView);
+            EditMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
+            //EditMenu.PlacementTarget = this.EditMenuAndAttributesLayout;
+            //EditMenu.VerticalOffset -= EditMenu.ActualHeight;
         }
 
         public virtual void SetPosition(int left, int top)

@@ -240,6 +240,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldBreakStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldReturnStmtTile.cs" />
+    <Compile Include="Views\Utils\FindVisualAncestor.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>
     </Compile>

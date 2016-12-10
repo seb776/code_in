@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" VerticalAlignment="Top">
-    <Grid x:Name="EditMenuMainGrid" Background="#6B000000" Height="auto" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+    <Grid x:Name="EditMenuMainGrid" Background="#CB000000" Height="auto" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
         <Button Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="QuitEditMenu">X</Button>
         <Grid Height="auto" VerticalAlignment="Top" Margin="15">
             <Grid.ColumnDefinitions>

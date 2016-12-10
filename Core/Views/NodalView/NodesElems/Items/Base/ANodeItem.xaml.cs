@@ -18,6 +18,7 @@ using code_in.Presenters.Nodal.Nodes;
 using code_in.Presenters.Nodal;
 using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 using code_in.Exceptions;
+using code_in.Views.Utils;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
@@ -85,13 +86,15 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             e.Handled = true;
             code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
         }
+
         public void ShowEditMenu()
         {
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
             EditMenu.IsOpen = true;
-            EditMenu.PlacementTarget = this.EditItemPanelField;
-            EditMenu.VerticalOffset -= EditMenu.ActualHeight;
+            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as NodalView);//this.EditItemPanelField;
+            EditMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
+            //EditMenu.VerticalOffset -= EditMenu.ActualHeight;
         }
 
         #region INodeElem
