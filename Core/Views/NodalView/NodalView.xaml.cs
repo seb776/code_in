@@ -26,7 +26,7 @@ namespace code_in.Views.NodalView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class NodalView : UserControl, INodalView, stdole.IDispatch
+    public abstract partial class ANodalView : UserControl, INodalView, stdole.IDispatch
     {
         static public INodeElem InstantiateVisualNode(NodePresenter.ECSharpNode nodeType, INodalView nodalView, ILinkContainer linkContainer)
         {
@@ -134,7 +134,7 @@ namespace code_in.Views.NodalView
                 var typeTuple = types[nodeType];
                 if (typeTuple != null)
                 {
-                    var newVisualNode = Activator.CreateInstance(typeTuple, (nodalView as NodalView)._themeResourceDictionary/*TODO beaurk*/, nodalView, linkContainer) as INodeElem;
+                    var newVisualNode = Activator.CreateInstance(typeTuple, (nodalView as ANodalView)._themeResourceDictionary/*TODO beaurk*/, nodalView, linkContainer) as INodeElem;
                     return newVisualNode;
                 }
                 throw new NotImplementedException("Cannot find the node \"" + nodeType.ToString() + "\" you are trying to instantiate.");
@@ -157,7 +157,7 @@ namespace code_in.Views.NodalView
         }
         public SearchBar SearchBar = null;
 
-        public NodalView(ResourceDictionary themeResDict)
+        public ANodalView(ResourceDictionary themeResDict)
         {
             this._nodalPresenter = new NodalPresenterLocal(this);
             this._themeResourceDictionary = themeResDict;
@@ -176,7 +176,7 @@ namespace code_in.Views.NodalView
         }
 
 
-        public NodalView() :
+        public ANodalView() :
             this(Code_inApplication.MainResourceDictionary)
         { throw new DefaultCtorVisualException(); }
 

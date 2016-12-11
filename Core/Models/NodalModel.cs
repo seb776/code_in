@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Models.NodalModel
 {
-    public class NodalModel
+    public class DeclarationsNodalModel
     {
         private SyntaxTree _ast;
         public SyntaxTree AST
@@ -22,7 +22,7 @@ namespace code_in.Models.NodalModel
             }
         }
 
-        public NodalModel(SyntaxTree ast)
+        public DeclarationsNodalModel(SyntaxTree ast)
         {
             AST = ast;
         }

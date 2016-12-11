@@ -30,26 +30,21 @@ namespace code_in.Presenters.Nodal
     /// <summary>
     /// This NodalPresenter is used when you are wroking on a local file, without using network.
     /// </summary>
-    public class NodalPresenterLocal : INodalPresenter
+    public abstract class ANodalPresenterLocal : INodalPresenter
     {
         public INodalView _view = null;
-        private NodalModel _model = null;
-        static private NodalModel _parentModel = null;
+        //private NodalModel _model = null;
+        //static private NodalModel _parentModel = null;
         private CSharpParser _parser = null;
 
-        public NodalPresenterLocal(INodalView view)
+        public ANodalPresenterLocal(INodalView view)
         {
             System.Diagnostics.Debug.Assert(view != null);
             _view = view;
             _parser = new CSharpParser();
         }
 
-        public void OpenFile(String path)
-        {
-            _model = this.ParseFile(path);
-            _parentModel = _model;
-            this._generateVisualAST(_model);
-        }
+
         public void EditFunction(FuncDeclItem node)
         {
             this._generateVisualASTFunctionBody(node.MethodNode);
@@ -62,10 +57,7 @@ namespace code_in.Presenters.Nodal
         {
             this._generateVisualASTConstructorBody(node.ConstructorNode);
         }
-        private void _generateVisualAST(NodalModel model)
-        {
-            this._generateVisualASTDeclaration(model.AST, this._view);
-        }
+
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
             view.setModifiersList(tmpModifiers);
@@ -123,15 +115,8 @@ namespace code_in.Presenters.Nodal
             }
             view.setExistingAttributes(list);
         }
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, ref int posX, ref int posY, UsingDeclNode usingDeclNode)
-        {
-            //foreach ()
-        }
-        private void _alignDeclarationsRecur()
-        {
 
-        }
-        private void _generateVisualASTDeclaration(AstNode node, IVisualNodeContainer parentContainer)
+        protected void _generateVisualASTDeclaration(AstNode node, IVisualNodeContainer parentContainer)
         {
             if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SyntaxTree))
             {
@@ -150,7 +135,7 @@ namespace code_in.Presenters.Nodal
             }
         }
 
-        private void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, UsingDeclNode parentUsingDeclNode)
+        protected void _generateVisualASTDeclarationRecur(AstNode node, IVisualNodeContainer parentContainer, UsingDeclNode parentUsingDeclNode)
         {
             INodeElem visualNode = null;
             var nodePresenter = new NodePresenter(this, node);
@@ -319,21 +304,21 @@ namespace code_in.Presenters.Nodal
             #endregion Method
         }
 
-        private void _generateVisualASTFunctionBody(MethodDeclaration method)
+        protected void _generateVisualASTFunctionBody(MethodDeclaration method)
         {
             (this._view as NodalView).IsDeclarative = false;
             (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
             this._generateVisualASTStatements(this._view.RootTileContainer, method.Body);
         }
         //TODO @YAYA
-        private void _generateVisualASTConstructorBody(ConstructorDeclaration constructor)
+        protected void _generateVisualASTConstructorBody(ConstructorDeclaration constructor)
         {
             (this._view as NodalView).IsDeclarative = false;
             (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
             _generateVisualASTStatements(this._view.RootTileContainer, constructor.Body);
         }
 
-        private void _generateVisualASTPropertyBody(Accessor access)
+        protected void _generateVisualASTPropertyBody(Accessor access)
         {
             (this._view as NodalView).IsDeclarative = false;
             (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
@@ -345,7 +330,7 @@ namespace code_in.Presenters.Nodal
         /// This function displays the execution code from stmtArg to the NodalView attached.
         /// </summary>
         /// <param name="stmtArg"></param>
-        private void _generateVisualASTStatements(ITileContainer tileContainer, Statement stmtArg)
+        protected void _generateVisualASTStatements(ITileContainer tileContainer, Statement stmtArg)
         {
             var nodePresenter = new NodePresenter(this, stmtArg);
             #region Block Statements
@@ -515,7 +500,7 @@ namespace code_in.Presenters.Nodal
                 tileContainer.CreateAndAddTile<UnSupStmtTile>(nodePresenter);
             tileContainer.UpdateDisplayedInfosFromPresenter();
         }
-        private void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
+        protected void _generateVisualASTExpressions(IVisualNodeContainer container, ICSharpCode.NRefactory.CSharp.Expression expr, DataFlowAnchor inAnchor, Action<ICSharpCode.NRefactory.CSharp.Expression> methodAttachIOToASTField)
         {
             if (expr.IsNull)
                 return;
@@ -764,15 +749,7 @@ namespace code_in.Presenters.Nodal
             }
         }
 
-        public NodalModel ParseFile(String path)
-        {
-            StreamReader fileStream = new StreamReader(path);
-            var ast = _parser.Parse(fileStream);
-            NodalModel model = new NodalModel(ast);
-            return model;
-        }
-
-        public void SaveFile(String dirPath)
+        public virtual void SaveFile(String dirPath)
         {
             string filePath = dirPath + "\\TestExportFile.cs";
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(filePath))

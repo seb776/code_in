@@ -1,4 +1,5 @@
 ﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView.NodesElems.Items.Assets;
 using ICSharpCode.NRefactory.CSharp;
@@ -18,6 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
     public class ConstructorItem : ClassItem
     {
         public ConstructorDeclaration ConstructorNode = null;
+        public ExecutionNodalPresenterLocal _constructorNodalPresenter = null;
         ParametersList _params;
         private Image _editButton;
 
@@ -47,7 +49,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>();
+            view._nodalPresenter = _constructorNodalPresenter;
             view.EditConstructor(this);
         }
         public override void SetThemeResources(String keyPrefix) { }

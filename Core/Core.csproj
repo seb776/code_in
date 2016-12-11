@@ -98,7 +98,10 @@
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
     <Compile Include="Managers\RootDragNDropManager.cs" />
+    <Compile Include="Models\ExecutionNodalModel.cs" />
     <Compile Include="Presenters\LanguagePresenter.cs" />
+    <Compile Include="Presenters\Nodal\DeclarationsNodalPresenterLocal.cs" />
+    <Compile Include="Presenters\Nodal\ExecutionNodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\IContainingAccessModifiers.cs" />
     <Compile Include="Presenters\Nodal\IContainingAttribute.cs" />
     <Compile Include="Presenters\Nodal\IContainingGenerics.cs" />
@@ -121,6 +124,8 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\NodalView\DeclarationsNodalView.cs" />
+    <Compile Include="Views\NodalView\ExecutionNodalView.cs" />
     <Compile Include="Views\NodalView\IDragNDropItem.cs" />
     <Compile Include="Views\NodalView\INode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
