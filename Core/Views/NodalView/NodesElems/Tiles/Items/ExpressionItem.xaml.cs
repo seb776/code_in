@@ -526,25 +526,50 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         {
             ContextMenu cm = new ContextMenu();
             cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
-            List<Type> types = new List<Type>();
+            List<Tuple<NodePresenter.ECSharpNode, String>> types = new List<Tuple<NodePresenter.ECSharpNode, String>>();
 
-            types.Add(typeof(BinaryExprNode));
-            types.Add(typeof(UnaryExprNode));
-            types.Add(typeof(PrimaryExprNode));
-            types.Add(typeof(AsExprNode));
-            types.Add(typeof(IsExprNode));
-            types.Add(typeof(NullRefExprNode));
-            types.Add(typeof(ParenthesizedExprNode));
-            types.Add(typeof(IdentifierExprNode));
-            types.Add(typeof(IndexerExprNode));
-            types.Add(typeof(FuncCallExprNode));
-            types.Add(typeof(ArrayInitExprNode));
-            types.Add(typeof(ArrayCreateExprNode));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_METHOD_EXPRESSION, "Anonymous method"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_TYPE_CREATE_EXPRESSION, "Anonymous type create"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION, "Array create"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.OBJECT_CREATE_EXPRESSION, "Object create"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION, "Array init"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BASE_REFERENCE_EXPRESSION, "Base reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CHECKED_EXPRESSION, "Checked"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CONDITIONAL_EXPRESSION, "Conditional"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DIRECTION_EXPRESSION, "Direction"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ERROR_EXPRESSION, "Error"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DEFAULT_VALUE_EXPRESSION, "Default"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION, "Primitive"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION, "Identifier"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION, "Null"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.THIS_REFERENCE_EXPRESSION, "This"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INDEXER_EXPRESSION, "Indexer"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INVOCATION_EXPRESSION, "Invocation"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, "Assignment"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION, "Unary operator"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION, "Binary operator"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IS_EXPRESSION, "Is"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.AS_EXPRESSION, "As"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CAST_EXPRESSION, "Cast"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.LAMBDA_EXPRESSION, "Lambda"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.MEMBER_REFERENCE_EXPRESSION, "Member reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_ARGUMENT_EXPRESSION, "Named argument"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_EXPRESSION, "Named"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION, "Parenthesis"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.POINTER_REFERENCE_EXPRESSION, "Pointer reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.QUERY_EXPRESSION, "Query"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.SIZEOF_EXPRESSION, "Sizeof"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_OF_EXPRESSION, "Typeof"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.STACK_ALLOC_EXPRESSION, "Stackalloc"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_REFERENCE_EXPRESSION, "Type reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNCHECKED_EXPRESSION, "Unchecked"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNDOCUMENTED_EXPRESSION, "Undocumented"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNSUP_EXPR, "Unsupported"));
 
             foreach (var entry in types)
             {
                 MenuItem mi = new MenuItem();
-                mi.Header = entry.Name;
+                mi.Header = entry.Item2;
                 mi.Click += mi_Click;
                 mi.DataContext = entry; // TODO beaurk
                 cm.Items.Add(mi);
@@ -552,35 +577,39 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             cm.IsOpen = true;
         }
 
+
         static void mi_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<Type, NodePresenter.ECSharpNode> types = new Dictionary<Type,NodePresenter.ECSharpNode>();
+            //Dictionary<Type, NodePresenter.ECSharpNode> types = new Dictionary<Type,NodePresenter.ECSharpNode>();
             var menuItem = (sender as MenuItem);
-            var nodeType = menuItem.DataContext as Type;
+            var nodeType = menuItem.DataContext as Tuple<NodePresenter.ECSharpNode, String>;
 
-            types.Add(typeof(BinaryExprNode), NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION);
-            types.Add(typeof(UnaryExprNode), NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION);
-            types.Add(typeof(PrimaryExprNode), NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION);
-            types.Add(typeof(AsExprNode), NodePresenter.ECSharpNode.AS_EXPRESSION);
-            types.Add(typeof(IsExprNode), NodePresenter.ECSharpNode.IS_EXPRESSION);
-            types.Add(typeof(NullRefExprNode), NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION);
-            types.Add(typeof(ParenthesizedExprNode), NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION);
-            types.Add(typeof(IdentifierExprNode), NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION);
-            types.Add(typeof(IndexerExprNode), NodePresenter.ECSharpNode.INDEXER_EXPRESSION);
-            types.Add(typeof(FuncCallExprNode), NodePresenter.ECSharpNode.INVOCATION_EXPRESSION);
-            types.Add(typeof(ArrayInitExprNode), NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION);
-            types.Add(typeof(ArrayCreateExprNode), NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION);
+            //types.Add(typeof(BinaryExprNode), NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION);
+            //types.Add(typeof(UnaryExprNode), NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION);
+            //types.Add(typeof(PrimaryExprNode), NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION);
+            //types.Add(typeof(AsExprNode), NodePresenter.ECSharpNode.AS_EXPRESSION);
+            //types.Add(typeof(IsExprNode), NodePresenter.ECSharpNode.IS_EXPRESSION);
+            //types.Add(typeof(NullRefExprNode), NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION);
+            //types.Add(typeof(ParenthesizedExprNode), NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION);
+            //types.Add(typeof(IdentifierExprNode), NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION);
+            //types.Add(typeof(IndexerExprNode), NodePresenter.ECSharpNode.INDEXER_EXPRESSION);
+            //types.Add(typeof(FuncCallExprNode), NodePresenter.ECSharpNode.INVOCATION_EXPRESSION);
+            //types.Add(typeof(ArrayInitExprNode), NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION);
+            //types.Add(typeof(ArrayCreateExprNode), NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION);
 
-            if (!types.ContainsKey(nodeType))
-                return;
-            AstNode model = NodePresenter.InstantiateASTNode(types[nodeType]);
-            var uiElem = Activator.CreateInstance(nodeType, _selfPassingThroughCallbackTmp._themeResourceDictionary, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
-            var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as NodalView)._nodalPresenter, model);
-            presenter.SetView(uiElem as BaseNode);
-            (uiElem as BaseNode).Presenter = presenter;
-            (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
-            _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
-            _selfPassingThroughCallbackTmp = null;
+            ////if (!types.ContainsKey(nodeType))
+            ////    return;
+            AstNode model = NodePresenter.InstantiateASTNode(nodeType.Item1);
+            var uiElem = code_in.Views.NodalView.NodalView.InstantiateVisualNode(nodeType.Item1, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
+            if (uiElem != null)
+            {
+                var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as NodalView)._nodalPresenter, model);
+                presenter.SetView(uiElem as BaseNode);
+                (uiElem as BaseNode).Presenter = presenter;
+                (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
+                _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
+                _selfPassingThroughCallbackTmp = null;
+            }
         }
 
         static ExpressionItem _selfPassingThroughCallbackTmp = null; // TODO @Seb this is disgusting but faster to dev TODO set it to null after anycallback except add
