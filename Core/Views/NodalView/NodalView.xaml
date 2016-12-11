@@ -8,8 +8,67 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:MainView="clr-namespace:code_in.Views.MainView"
-             Width="Auto" Height="Auto" MinWidth="5000" MinHeight="5000">
+             Width="Auto" Height="Auto">
     <UserControl.Resources>
+            <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                <Setter Property="OverridesDefaultStyle" Value="false"/>
+                <Setter Property="Height" Value="18"/>
+                <Setter Property="Width" Value="10"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Thumb">
+                            <Polygon Name="ThumbIco" Fill="GreenYellow" Points="0,10 10,10 10,-10 5,-15 0,-10" VerticalAlignment="Bottom"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ThumbIco" Property="Fill" Value="#DFFFB8"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Slider" x:Key="SliderStyle">
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Slider">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" Name="row" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" Name="column" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Name="PART_Border"
+                           BorderBrush="Black" BorderThickness="1"
+                           Padding="2"
+                          Grid.Row="1" Grid.Column="1"
+                           Width="{TemplateBinding Width}"
+                           Height="5"
+                           Background="Black"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" />
+                                <Track Name="PART_Track"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Grid.Row="1" Grid.Column="1"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}">
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource SliderThumbStyle}" />
+                                    </Track.Thumb>
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         <!--All resources here are for the designer as tey are loaded on run time, don't try to change values here to affect ...-->
         <!--appearance, it won't have any effect.-->
         <Rect x:Key="LocalRectDims" X="0" Y="0" Width="30" Height="30"></Rect>
@@ -39,11 +98,19 @@
       Resource="{DynamicResource linkType}" 
       ResourceChanged="changeResourceLink"/>
     </i:Interaction.Behaviors>
-    <Grid x:Name="offsetGrid" Background="{DynamicResource LocalGridTile}">
-        <Border  BorderThickness="50" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid  x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000" Background="Transparent">
-                <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
-            </Grid>
-        </Border>
+    <Grid x:Name="WinGrid" PreviewMouseWheel="WinGrid_MouseWheel" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <ScrollViewer x:Name="ScrollView" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <Viewbox x:Name="ZoomPanel" Stretch="Fill" MouseDown="ZoomPanel_MouseDown" MouseUp="ZoomPanel_MouseUp" MouseLeave="ZoomPanel_MouseLeave" MouseMove="ZoomPanel_MouseMove" >
+                <Grid x:Name="offsetGrid" Background="{DynamicResource LocalGridTile}">
+                    <Border  BorderThickness="50" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000" Background="Transparent">
+                            <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Viewbox>
+        </ScrollViewer>
+        <!--<cur:MainButton VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" Height="300"/>-->
+        <Slider x:Name="ZoomSlider" Style="{StaticResource SliderStyle}" Width="75" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20" ValueChanged="SliderZoom" Minimum="0.5" Maximum="2" Value="1.25"></Slider>
     </Grid>
 </UserControl>

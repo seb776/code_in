@@ -27,7 +27,7 @@ namespace code_in.Views.ConfigView.SubViews
 
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        private MainView.MainView _preview = null;
+        private NodalView.NodalView _preview = null;
 
         public ThemeLayout(ResourceDictionary themeResDict)
         {
@@ -38,7 +38,7 @@ namespace code_in.Views.ConfigView.SubViews
             InitializeComponent();
 
 
-            _preview = new MainView.MainView(Code_inApplication.ThemePreviewResourceDictionary);
+            _preview = new NodalView.NodalView(Code_inApplication.ThemePreviewResourceDictionary);
             _preview.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             _preview.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.PreviewArea.Content = _preview;

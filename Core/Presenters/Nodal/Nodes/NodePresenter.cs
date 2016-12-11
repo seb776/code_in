@@ -168,6 +168,7 @@ namespace code_in.Presenters.Nodal.Nodes
             UNSAFE_STMT,
             USING_STMT,
             VAR_DECL_STMT,
+            WHILE_STMT,
             YIELD_BREAK_STMT,
             YIELD_RETURN_STMT,
             UNSUP_STMT,

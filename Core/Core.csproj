@@ -241,6 +241,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldBreakStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\YieldReturnStmtTile.cs" />
+    <Compile Include="Views\Utils\FindVisualAncestor.cs" />
     <Compile Include="Views\Utils\HexagonalButton.xaml.cs">
       <DependentUpon>HexagonalButton.xaml</DependentUpon>
     </Compile>
@@ -290,10 +291,6 @@
     <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView\MainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml">
       <SubType>Designer</SubType>
@@ -351,9 +348,6 @@
     </Compile>
     <Compile Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml.cs">
       <DependentUpon>ShortcutsLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\ClassDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\NamespaceNode.cs" />
