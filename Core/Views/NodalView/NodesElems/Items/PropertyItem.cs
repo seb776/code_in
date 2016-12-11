@@ -41,12 +41,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         void getEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
             view.EditProperty(this, true);
         }
         void setEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<MainView.MainView>();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
             view.EditProperty(this, false);
         }
         public PropertyItem() :
