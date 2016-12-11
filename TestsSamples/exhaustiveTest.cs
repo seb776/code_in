@@ -73,6 +73,8 @@ public class exhaustiveTest : heritage1, heritage2
         var assignBoolOr = (false || assignBoolDif);
         var assignBoolNot = !assignBoolDif;
         GenericList<int> assignGenericListInt = new GenericList<int>();
+	// int *pointer = &assignArray[42];
+	this.privateInt = 42;
     }
 
     void funcCondition(int x, int y) {
@@ -186,4 +188,49 @@ public class exhaustiveTest : heritage1, heritage2
             MessageBox.Show("this is catch part");
         }
     }
+
+    void funcGoto()
+    {
+        goto testGoto;
+
+	testGoto:
+	    MessageBox.Show("This is a test for goto");
+    }
+
+    void funcLambdaExpr() 
+    {
+	var squareFunc = x => x * x;
+	var val = squareFunc(9);
+    }
+
+    void funcNamedArgumentExpression() 
+    {
+	namedArgumentExpression(height: 42, width: 42);
+    }
+
+    void funcQueryExpression() 
+    {
+	int[] scores = new int[] { 97, 92, 81, 60 };
+
+        IEnumerable<int> scoreQuery =
+            from score in scores
+            where score > 80
+            select score;
+
+        foreach (int i in scoreQuery)
+        {
+            Console.Write(i + " ");
+        }            
+    }
+
+    void functhis() {
+	this.toto = "tata";
+    }
+
+    void funcYield()
+    {
+	yield break;
+	yield return "test";
+    }
+
 }
