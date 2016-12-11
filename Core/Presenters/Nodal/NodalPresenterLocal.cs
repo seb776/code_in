@@ -498,8 +498,9 @@ namespace code_in.Presenters.Nodal
                 tileContainer.CreateAndAddTile<YieldBreakStmtTile>(nodePresenter); // Visual Node
             #endregion YieldBreak Statement
             #region Continue Statement
-            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement))
-                tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter);
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ContinueStatement)) {
+                tileContainer.CreateAndAddTile<ContinueStmtTile>(nodePresenter);
+            }
             #endregion ContinueStatement
             #region Throw
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ThrowStatement))

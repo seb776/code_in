@@ -106,6 +106,7 @@ public class exhaustiveTest : heritage1, heritage2
             MessageBox.Show("While loop");
             MessageBox.Show("Still not negative: value is " + coundWhile.ToString());
             --coundWhile;
+	   continue;
         }
 
         for (int countFor = 42; i > 0; --countFor) {

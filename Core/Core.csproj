@@ -218,6 +218,7 @@
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\BreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ContinueStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
