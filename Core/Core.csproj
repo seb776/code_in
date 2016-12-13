@@ -191,8 +191,8 @@
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\TypeInfo.xaml.cs">
       <DependentUpon>TypeInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NodalView\NodalView.xaml.cs">
-      <DependentUpon>NodalView.xaml</DependentUpon>
+    <Compile Include="Views\NodalView\ANodalView.xaml.cs">
+      <DependentUpon>ANodalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Nodes\Declarations\UsingDeclNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Base\BaseNode.xaml.cs">
@@ -367,7 +367,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NodalView\NodalView.xaml">
+    <Page Include="Views\NodalView\ANodalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

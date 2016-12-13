@@ -847,7 +847,7 @@ namespace code_in.Presenters.Nodal
             }
             //_viewStatic = null;
         }
-        static NodalView _viewStatic = null;
+        static DeclarationsNodalView _viewStatic = null;
 
         private static Action EmptyDelegate = delegate() { };
 
