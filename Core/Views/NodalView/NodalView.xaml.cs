@@ -75,6 +75,8 @@ namespace code_in.Views.NodalView
         {
             this._nodalPresenter.EditConstructor(node);
         }
+        public void EditDestructor(DestructorItem node)
+        { this._nodalPresenter.EditDestructor(node); }
         public void AlignDeclarations()
         {
             if (IsDeclarative)

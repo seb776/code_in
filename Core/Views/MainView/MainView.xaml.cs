@@ -58,6 +58,12 @@ namespace code_in.Views.MainView
         {
             this._nodalView.EditConstructor(node);
         }
+
+        public void EditDestructor(DestructorItem node)
+        {
+            this._nodalView.EditDestructor(node);
+        }
+
         public MainView(ResourceDictionary resourceDict)
         {
             this._themeResourceDictionary = resourceDict;

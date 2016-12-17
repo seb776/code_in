@@ -24,6 +24,7 @@ namespace code_in.Presenters.Nodal
         void EditFunction(FuncDeclItem node);
         void EditAccessor(Accessor node);
         void EditConstructor(ConstructorItem node);
+        void EditDestructor(DestructorItem node);
     }
 
 

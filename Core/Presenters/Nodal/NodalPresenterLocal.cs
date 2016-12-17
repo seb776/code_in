@@ -62,6 +62,10 @@ namespace code_in.Presenters.Nodal
         {
             this._generateVisualASTConstructorBody(node.ConstructorNode);
         }
+        public void EditDestructor(DestructorItem node)
+        {
+            this._generateVisualASTDestructorBody(node.DestructorNode);
+        }
         private void _generateVisualAST(NodalModel model)
         {
             this._generateVisualASTDeclaration(model.AST, this._view);
@@ -294,6 +298,18 @@ namespace code_in.Presenters.Nodal
                 }
             }
             #endregion Constructor
+            #region Destructor
+            else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.DestructorDeclaration))
+            {
+                DestructorItem constructorDecl = parentContainer.CreateAndAddNode<DestructorItem>(nodePresenter);
+                visualNode = constructorDecl;
+                constructorDecl.DestructorNode = node as DestructorDeclaration;
+                DestructorDeclaration construct = node as DestructorDeclaration;
+                constructorDecl.SetName(construct.Name);
+                setAccessModifiers(constructorDecl, construct.Modifiers);
+
+            }
+            #endregion Destructor
             #region Method
             else if (node.GetType() == typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration))
             {
@@ -332,7 +348,12 @@ namespace code_in.Presenters.Nodal
             (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
             _generateVisualASTStatements(this._view.RootTileContainer, constructor.Body);
         }
-
+        private void _generateVisualASTDestructorBody(DestructorDeclaration destructor)
+        {
+            (this._view as NodalView).IsDeclarative = false;
+            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
+            _generateVisualASTStatements(this._view.RootTileContainer, destructor.Body);
+        }
         private void _generateVisualASTPropertyBody(Accessor access)
         {
             (this._view as NodalView).IsDeclarative = false;
