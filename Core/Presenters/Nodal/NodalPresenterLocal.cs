@@ -506,6 +506,14 @@ namespace code_in.Presenters.Nodal
                 var breakStmtTile = tileContainer.CreateAndAddTile<BreakStmtTile>(nodePresenter); // Visual Node
             }
             #endregion Break Statement
+            #region Label Statement
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.LabelStatement))
+            {
+                var labelStmt = stmtArg as LabelStatement; // ASTNode
+                var labelStmtTile = tileContainer.CreateAndAddTile<LabelStmtTile>(nodePresenter); // Visual Node
+                //this._generateVisualASTExpressions(labelStmtTile.Expression, labelStmt.Expression, labelStmtTile.Expression.ExprOut, (e) => { labelStmt.Expression = e; });
+            }
+            #endregion Label Statement
             #region YieldReturn Statement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.YieldReturnStatement))
             {
@@ -529,6 +537,14 @@ namespace code_in.Presenters.Nodal
                 var throwStmtTile = tileContainer.CreateAndAddTile<ThrowStmtTile>(nodePresenter); // Visual Node
                 // TODO get anchor from tileItem for generateExpressions
                 this._generateVisualASTExpressions(throwStmtTile.Expression, throwStmt.Expression, throwStmtTile.Expression.ExprOut, (e) => { throwStmt.Expression = e; });
+            }
+            #endregion Throw
+            #region Goto
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.GotoStatement))
+            {
+                var gotoStmt = stmtArg as GotoStatement; // AST Node
+                var gotoStmtTile = tileContainer.CreateAndAddTile<GotoStmtTile>(nodePresenter); // Visual Node
+//                this._generateVisualASTExpressions(gotoStmtTile.Expression, gotoStmt.Expression, gotoStmtTile.Expression.ExprOut, (e) => { gotoStmt.Expression = e; });
             }
             #endregion Throw
             #endregion Single Statement

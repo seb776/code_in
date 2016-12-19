@@ -8,25 +8,20 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class ReturnStmtTile : BaseTile
+    class GotoStmtTile : BaseTile
     {
         public ExpressionItem Expression = null;
 
-        public ReturnStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+        public GotoStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("return;");
-//            Expression = this.CreateAndAddItem<ExpressionItem>(true);
+            this.SetName("Goto");
+            Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
-        public ReturnStmtTile() :
+        public GotoStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
-        }
-
-        public override void UpdateDisplayedInfosFromPresenter()
-        {
-            //this.SetName() // TODO
         }
     }
 }
