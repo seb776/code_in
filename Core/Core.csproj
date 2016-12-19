@@ -224,6 +224,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\GotoStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\Base\ITileItem.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml.cs">
       <DependentUpon>TileContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\LabelStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ReturnStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ThrowStmtTile.cs" />
