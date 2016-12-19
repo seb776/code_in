@@ -257,7 +257,7 @@ namespace Code_in.VSCode_in
 
     public class NodalWindowPane : ToolWindowPane
     {
-        public code_in.Views.MainView.MainView _mainView = null;
+        public code_in.Views.NodalView.NodalView _mainView = null;
         private int _paneId = 0;
         static private List<OpenedFile> _fileList = new List<OpenedFile>();
         public int PaneId
@@ -273,7 +273,7 @@ namespace Code_in.VSCode_in
 
         public NodalWindowPane()
         {
-            _mainView = new code_in.Views.MainView.MainView();
+            _mainView = new code_in.Views.NodalView.NodalView(Code_inApplication.MainResourceDictionary);
             this.Content = _mainView;
             PaneId = 0;
         }

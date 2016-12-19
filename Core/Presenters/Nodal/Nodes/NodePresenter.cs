@@ -168,6 +168,7 @@ namespace code_in.Presenters.Nodal.Nodes
             UNSAFE_STMT,
             USING_STMT,
             VAR_DECL_STMT,
+            WHILE_STMT,
             YIELD_BREAK_STMT,
             YIELD_RETURN_STMT,
             UNSUP_STMT,
@@ -485,7 +486,7 @@ namespace code_in.Presenters.Nodal.Nodes
         }
 
         // Return actions according to types
-        public ENodeActions GetActions()
+        public ENodeActions GetActions() // TODO FINISH /!\ ADD ALL ITEMS ETC /!\
         {
             if (_model != null)
             {
@@ -511,6 +512,8 @@ namespace code_in.Presenters.Nodal.Nodes
                     return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(PrimitiveExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(PropertyDeclaration))
+                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
                 else
                     return (ENodeActions.TEXT); // Any not supported node allows text modification
             }
@@ -802,6 +805,21 @@ namespace code_in.Presenters.Nodal.Nodes
             if (_model.GetType() == typeof(FieldDeclaration))
             {
                 var typeDecl = (_model as FieldDeclaration);
+                Modifiers tmp = typeDecl.Modifiers;
+                typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
+                if (AccessModifier == "public")
+                    typeDecl.Modifiers |= Modifiers.Public;
+                if (AccessModifier == "private")
+                    typeDecl.Modifiers |= Modifiers.Private;
+                if (AccessModifier == "protected")
+                    typeDecl.Modifiers |= Modifiers.Protected;
+                if (AccessModifier == "internal")
+                    typeDecl.Modifiers |= Modifiers.Internal;
+                (_view as IContainingAccessModifiers).setAccessModifiers(typeDecl.Modifiers);
+            }
+            if (_model.GetType() == typeof(PropertyDeclaration))
+            {
+                var typeDecl = (_model as PropertyDeclaration);
                 Modifiers tmp = typeDecl.Modifiers;
                 typeDecl.Modifiers = typeDecl.Modifiers & ~Modifiers.VisibilityMask;
                 if (AccessModifier == "public")
@@ -1188,7 +1206,10 @@ namespace code_in.Presenters.Nodal.Nodes
         }
         static void DuplicateNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            //MessageBox.Show(objects[0].GetType().ToString());
+            BaseNode view = (objects[0] as NodePresenter)._view as BaseNode;
+            view.duplicateNode();
+            
         }
         static void _addBreakPoint(object[] objects)
         {
@@ -1278,11 +1299,13 @@ namespace code_in.Presenters.Nodal.Nodes
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD_BREAKPOINT, _addBreakPoint));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
             }
             else
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EDIT, EditNode));
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.REMOVE, RemoveNode));
+                optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.DUPLICATE, DuplicateNode));
             }
             /*            else // basic behaviour to avoid crashes
                         {

@@ -70,8 +70,31 @@ namespace code_in.Views.MainView
         }
         #endregion ICodeInVisual
 
+        // TODO @yaya
+        //List<INodeElem> _searchMatchinNodes(string name, bool[]userOptions)
+        //{
+        //    // 1 Get the nodalView
+        //    // 2 parcours les noeuds en fonction si declarations ou execution
+        //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
+        //    //toto.MainGrid // Iterate over nodes (declaration)
+        //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
+        //    // 4 if nameFound && iter.Match(userOptions)
+        //    // 4.1 list.add();
+        //    // return list;
+        //}
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //_searchMatchinNodes(SearchBar.TextInput, null);
+
+
+            // Display results
+            //if (checkGood)
+            //{
+            //    this.SearchResult.Add(treeParent);
+            //  [Icone] [preinfo] [name][generic] [post infos]
+            //    treeParent.Add(new ResearchResultItem("toto", "int", "float", INodeElem));
+            //}
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)

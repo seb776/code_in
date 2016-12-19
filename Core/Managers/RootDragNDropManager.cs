@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace code_in.Managers
 {
@@ -27,6 +28,11 @@ namespace code_in.Managers
             get;
             private set;
         }
+        public HashSet<IDragNDropItem> copyItems
+        {
+            get;
+            private set;
+        }
         public EDragMode DragMode
         {
             get;
@@ -36,6 +42,7 @@ namespace code_in.Managers
         public RootDragNDropManager()
         {
             SelectedItems = new HashSet<IDragNDropItem>();
+            copyItems = null;
             DragMode = EDragMode.NONE;
             StartedMove = false;
             DraggingLink = false;
@@ -111,6 +118,21 @@ namespace code_in.Managers
                 System.Windows.Input.Mouse.OverrideCursor = null;
                 StartedMove = false;
             }
+        }
+
+        public void duplicateNode()
+        {
+            if (copyItems == null) {
+                copyItems = new HashSet<IDragNDropItem>(SelectedItems);
+            }
+            else
+            {
+                foreach (var node in SelectedItems)
+                {
+
+                }
+            }
+
         }
 
         //void SelectNode(INodeElem node);
