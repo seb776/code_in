@@ -710,6 +710,22 @@ namespace code_in.Presenters.Nodal
                 visualNode = isExprNode;
             }
             #endregion IsExpression
+            #region BaseReferenceExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BaseReferenceExpression))
+            {
+                var isExpr = expr as ICSharpCode.NRefactory.CSharp.BaseReferenceExpression;
+                var isExprNode = container.CreateAndAddNode<BaseReferenceExprNode>(nodePresenter);
+                visualNode = isExprNode;
+            }
+            #endregion BaseReferenceExpression
+            #region TypeReferenceExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeReferenceExpression))
+            {
+                var isExpr = expr as ICSharpCode.NRefactory.CSharp.TypeReferenceExpression;
+                var isExprNode = container.CreateAndAddNode<TypeReferenceExprNode>(nodePresenter);
+                visualNode = isExprNode;
+            }
+            #endregion TypeReferenceExpression
             #region NullExpression
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.NullReferenceExpression))
             {

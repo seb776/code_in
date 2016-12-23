@@ -97,6 +97,8 @@ namespace code_in.Views.NodalView
             //types.Add(NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             types.Add(NodePresenter.ECSharpNode.AS_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.AsExprNode));
             types.Add(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.IsExprNode));
+            types.Add(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.BaseReferenceExprNode));
+            types.Add(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.TypeReferenceExprNode));
             //types.Add(NodePresenter.ECSharpNode.BASE_REFERENCE_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             types.Add(NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.BinaryExprNode));
             //types.Add(NodePresenter.ECSharpNode.CAST_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
@@ -109,6 +111,8 @@ namespace code_in.Views.NodalView
             types.Add(NodePresenter.ECSharpNode.INDEXER_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.IdentifierExprNode));
             types.Add(NodePresenter.ECSharpNode.INVOCATION_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode));
             types.Add(NodePresenter.ECSharpNode.IS_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.IsExprNode));
+            types.Add(NodePresenter.ECSharpNode.IS_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.BaseReferenceExprNode));
+            types.Add(NodePresenter.ECSharpNode.IS_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.Expressions.TypeReferenceExprNode));
             //types.Add(NodePresenter.ECSharpNode.LAMBDA_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             //types.Add(NodePresenter.ECSharpNode.MEMBER_REFERENCE_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             //types.Add(NodePresenter.ECSharpNode.NAMED_ARGUMENT_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
