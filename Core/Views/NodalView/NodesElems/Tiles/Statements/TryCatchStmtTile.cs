@@ -9,13 +9,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class TryCatchStmtTile : BaseTile
     {
-        public FlowTileItem Statements = null;
+        public FlowTileItem ItemTry = null;
+        public List<FlowTileItem> ItemsCatch = null;
 
         public TryCatchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            Statements = this.CreateAndAddItem<FlowTileItem>();
-
+            this.SetName("tryCatch");
+            ItemTry = this.CreateAndAddItem<FlowTileItem>();
+            ItemTry.SetName("try");
+            ItemsCatch = new List<FlowTileItem>();
         }
         public TryCatchStmtTile() :
             base(Code_inApplication.MainResourceDictionary, null)

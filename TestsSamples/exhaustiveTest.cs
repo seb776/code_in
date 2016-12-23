@@ -188,6 +188,10 @@ public class exhaustiveTest : heritage1, heritage2
         {
             MessageBox.Show("this is catch part");
         }
+        catch (Exception e)
+        {
+            MessageBox.Show("other catch");
+        }
     }
 
     void funcGoto()

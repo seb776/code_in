@@ -388,6 +388,21 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(ifTile.ItemFalse,  ifStmt.FalseStatement);
             }
             # endregion IfStmts
+            # region tryCatchStmt
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TryCatchStatement))
+            {
+                var tryStmt = stmtArg as TryCatchStatement;
+                var tryTile = tileContainer.CreateAndAddTile<TryCatchStmtTile>(nodePresenter);
+
+                this._generateVisualASTStatements(tryTile.ItemTry, tryStmt.TryBlock);
+                foreach (var blockCatch in tryStmt.CatchClauses) {
+                    var item = tryTile.CreateAndAddItem<FlowTileItem>();
+                    tryTile.ItemsCatch.Add(item);
+                    item.SetName("catch " + blockCatch.VariableName);
+                    this._generateVisualASTStatements(item, blockCatch.Body);
+                }
+            }
+            # endregion tryCatchStmt
             # region Loops
             else if (stmtArg.GetType() == typeof(DoWhileStatement))
             {
@@ -496,7 +511,7 @@ namespace code_in.Presenters.Nodal
                 var returnStmt = stmtArg as ReturnStatement; // AST Node
                 var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter); // Visual Node
                 // TODO get anchor from tileItem for generateExpressions
-                this._generateVisualASTExpressions(returnStmtTile.Expression, returnStmt.Expression, returnStmtTile.Expression.ExprOut, (e) => { returnStmt.Expression = e; });
+           //     this._generateVisualASTExpressions(returnStmtTile.Expression, returnStmt.Expression, returnStmtTile.Expression.ExprOut, (e) => { returnStmt.Expression = e; });
             }
             #endregion Return Statement
             #region Break Statement
