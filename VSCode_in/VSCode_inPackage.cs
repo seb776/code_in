@@ -206,7 +206,7 @@ namespace Code_in.VSCode_in
         {
             Dictionary<String, Type> dict = new Dictionary<string, Type>()
             {
-                {"MainView", typeof(NodalWindowPane)},
+                {"NodalView", typeof(NodalWindowPane)},
                 {"ConfigView", typeof(ConfigWindowPane)}
             };
 
