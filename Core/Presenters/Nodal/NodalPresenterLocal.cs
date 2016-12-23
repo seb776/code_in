@@ -449,31 +449,24 @@ namespace code_in.Presenters.Nodal
             #region Switch
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.SwitchStatement))
             {
-                // TODO From Seb & Steph
-                // Will come back on this later because of the change Node -> Tile for the statements
-                // It's a bit more complicated for the switch.
-                //var switchStmt = (stmtArg as SwitchStatement);
-                //var switchStmtTile = tileContainer.CreateAndAddTile<SwitchStmtTile>(nodePresenter);
-                //var exprInput = switchStmtNode.CreateAndAddInput<DataFlowAnchor>();
-                //exprInput.SetName(switchStmt.Expression.ToString());
-
-                ////_generateVisualASTExpressions(switchStmt.Expression, exprInput, (e) => { switchStmt.Expression = e; });
-                //foreach (var switchSection in switchStmt.SwitchSections)
-                //{
-                //    foreach (var caseLabel in switchSection.CaseLabels)
-                //    {
-                //        var caseInput = switchStmtNode.CreateAndAddInput<DataFlowAnchor>();
-                //        caseInput.SetName(caseLabel.Expression.ToString());
-                //        //_generateVisualASTExpressions(caseLabel.Expression, caseInput, (e) => { caseLabel.Expression = e; });
-                //    }
-                //    foreach (var switchSectionStmt in switchSection.Statements) // TODO @Seb @Mo something is wrong here
-                //    {
-                //        var caseOutput = switchStmtNode.CreateAndAddOutput<FlowNodeAnchor>();
-                //        caseOutput.SetName("CaseOut");
-                //        _generateVisualASTStatements(tileContainer, switchSectionStmt); // TODO @z0rg
-                //    }
-                //}
-                //defaultFlowOut = switchStmtNode.FlowOutAnchor;
+                var switchStmt = stmtArg as SwitchStatement;
+                var switchStmtTile = tileContainer.CreateAndAddTile<SwitchStmtTile>(nodePresenter);
+                this._generateVisualASTExpressions(switchStmtTile.Expression, switchStmt.Expression, switchStmtTile.Expression.ExprOut, (e) => {switchStmt.Expression = e;} );
+                foreach (var caseBlock in switchStmt.SwitchSections)
+                {
+                    foreach (var caseLabel in caseBlock.CaseLabels) {
+                        var itemExpr = switchStmtTile.CreateAndAddItem<ExpressionItem>();
+                        itemExpr.SetName(caseLabel.Expression.ToString());
+                        switchStmtTile.ExpressionCases.Add(itemExpr);
+                        this._generateVisualASTExpressions(itemExpr, caseLabel.Expression, itemExpr.ExprOut, (e) => { caseLabel.Expression = e; });
+                    }
+                    foreach (var caseBlockStmt in caseBlock.Statements) {
+                        var itemCase = switchStmtTile.CreateAndAddItem<FlowTileItem>();
+                        //itemCase.SetName(switchStmtTile.ExpressionCases.get)
+                        switchStmtTile.itemCases.Add(itemCase);
+                        this._generateVisualASTStatements(itemCase, caseBlockStmt);
+                    }
+                }
             }
             #endregion Switch
             #endregion Block Statements
