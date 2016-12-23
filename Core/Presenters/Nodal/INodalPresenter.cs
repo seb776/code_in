@@ -19,11 +19,14 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public interface INodalPresenter : IContextMenu 
     {
-        void OpenFile(String path);
-        void SaveFile(String path);
+        String DocumentName
+        {
+            get;
+        }
         void EditFunction(FuncDeclItem node);
         void EditAccessor(Accessor node);
         void EditConstructor(ConstructorItem node);
+        void EditDestructor(DestructorItem node);
     }
 
 

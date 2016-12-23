@@ -13,6 +13,9 @@ using code_in;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Windows;
+using code_in.Views;
+using code_in.Views.NodalView;
+using code_in.Views.ConfigView;
 
 namespace Code_in.VSCode_in
 {
@@ -148,7 +151,6 @@ namespace Code_in.VSCode_in
             {
                 File.Create(filePath).Close();
                 var toolWindow = this._createNodalWindow();
-                toolWindow.Caption = fileName;
                 toolWindow.OpenFile(filePath);
                 _fileList.Add(new OpenedFile(filePath, toolWindow));
             }
@@ -168,11 +170,11 @@ namespace Code_in.VSCode_in
             {
                 var openedFile = _fileList.Find((of) => { return of._filePath == filePath; });
                 if (openedFile != null) // If already opened we show the original
-                    ((openedFile._windowPane.Frame) as IVsWindowFrame).Show();
+                    openedFile._windowPane.FocusCode_inWindow();
                 else
                 {
                     var toolWindow = _createNodalWindow();
-                    toolWindow.Caption = fileName;
+                    toolWindow.SetTitle(fileName);
                     toolWindow.OpenFile(filePath);
                     _fileList.Add(new OpenedFile(filePath, toolWindow));
                 }
@@ -186,27 +188,57 @@ namespace Code_in.VSCode_in
 
         private void ConfigCallback(object sender, EventArgs e)
         {
-            ToolWindowPane wp = this.FindToolWindow(typeof(ConfigWindowPane), 0, true);
+            _createOrFocusConfigWindowPane();
+        }
 
-            if (wp != null)
-            {
-                IVsWindowFrame frame = wp.Frame as IVsWindowFrame;
-                if (frame != null)
-                {
-                    frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
-                    frame.Show();
-                }
-            }
+        private ConfigWindowPane _createOrFocusConfigWindowPane()
+        {
+            ConfigWindowPane cwp = this.FindToolWindow(typeof(ConfigWindowPane), 0, true) as ConfigWindowPane;
 
+            return cwp;
+        }
+        private NodalWindowPane _createOrFocusNodalView(params object[] args)
+        {
 
+            return null;
         }
         #endregion Menu callbacks
         #region IEnvironmentWrapper
-        public T CreateAndAddView<T>() where T : UserControl
+        public T CreateAndAddView<T>(params object[] args) where T : UserControl, ICode_inWindow
         {
+            ACode_inWindowPane wp;
+
+            if (typeof(T) == typeof(ConfigView))
+                wp = _createOrFocusConfigWindowPane();
+            else
+            {
+                wp = _createOrFocusNodalView(args);
+                //int i = 0;
+                //while (this.FindToolWindow(typeof(NodalWindowPane), i, false) != null)
+                //    ++i;
+                //wp = this.CreateToolWindow(typeof(NodalWindowPane), i) as ToolWindowPane;
+                NodalWindowPane np = wp as NodalWindowPane;
+                T nodalView = Activator.CreateInstance(typeof(T), args) as T;
+                np.Code_inView = nodalView;
+                if (typeof(T) == typeof(DeclarationsNodalView))
+                {
+                    Debug.Assert(args.Length > 0);
+                    (nodalView as DeclarationsNodalView).OpenFile(args[0] as String);
+                }
+
+                np.FocusCode_inWindow();
+            }
+
+            wp.FocusCode_inWindow();
+
+            if (wp != null)
+                return wp.Content as T;
+
+            return null;
+
             Dictionary<String, Type> dict = new Dictionary<string, Type>()
             {
-                {"MainView", typeof(NodalWindowPane)},
+                {"NodalView", typeof(NodalWindowPane)},
                 {"ConfigView", typeof(ConfigWindowPane)}
             };
 
@@ -216,6 +248,12 @@ namespace Code_in.VSCode_in
                 ++i;
 
             ToolWindowPane wp = this.CreateToolWindow(dict[typeof(T).Name], i) as ToolWindowPane;
+
+            //if (wp.GetType().IsAssignableFrom(typeof(NodalWindowPane)))
+            //{
+            //    NodalWindowPane np = wp as NodalWindowPane;
+            //    np.Code_inView;
+            //}
 
             if (wp != null)
             {
@@ -244,20 +282,60 @@ namespace Code_in.VSCode_in
         #endregion IEnvironmentWrapper
     }
 
-    public class ConfigWindowPane : ToolWindowPane // TODO move this elsewhere
+    public class ConfigWindowPane : ACode_inWindowPane
     {
         private code_in.Views.ConfigView.ConfigView _configView = null;
         public ConfigWindowPane()
         {
             _configView = new code_in.Views.ConfigView.ConfigView();
             this.Content = _configView;
-            this.Caption = "Configuration";
+            this.SetTitle("Configuration");
         }
     }
 
-    public class NodalWindowPane : ToolWindowPane
+    public abstract class ACode_inWindowPane : ToolWindowPane, IEnvironmentWindowWrapper
     {
-        public code_in.Views.NodalView.DeclarationsNodalView _mainView = null;
+
+        public void FocusCode_inWindow()
+        {
+            IVsWindowFrame frame = this.Frame as IVsWindowFrame;
+            if (frame != null)
+                frame.Show();
+        }
+
+        public void CloseCode_inWindow()
+        {
+            IVsWindowFrame frame = this.Frame as IVsWindowFrame;
+            if (frame != null)
+            {
+                frame.SetProperty((int)Microsoft.VisualStudio.Shell.Interop.__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
+                frame.CloseFrame((uint)Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave);
+            }
+        }
+
+        public void SetTitle(string title)
+        {
+            this.Caption = title;
+        }
+    }
+
+    public class NodalWindowPane : ACode_inWindowPane
+    {
+        ICode_inWindow _code_inView;
+        public ICode_inWindow Code_inView
+        {
+            get
+            {
+                return _code_inView;
+            }
+            set
+            {
+                if (_code_inView != null)
+                    ;//SaveFile => _code_inView.CloseFile() ? TODO maybe
+                _code_inView = value;
+                this.Content = _code_inView;
+            }
+        }
         private int _paneId = 0;
         static private List<OpenedFile> _fileList = new List<OpenedFile>();
         public int PaneId
@@ -273,14 +351,13 @@ namespace Code_in.VSCode_in
 
         public NodalWindowPane()
         {
-            _mainView = new code_in.Views.NodalView.DeclarationsNodalView(Code_inApplication.MainResourceDictionary);
-            this.Content = _mainView;
             PaneId = 0;
         }
 
         public void OpenFile(string filePath)
         {
-            this._mainView.OpenFile(filePath);
+            if (this._code_inView.GetType() == typeof(DeclarationsNodalView))
+                (this._code_inView as DeclarationsNodalView).OpenFile(filePath);
         }
     }
 

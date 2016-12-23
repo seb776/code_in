@@ -9,7 +9,7 @@ namespace code_in
 {
     public interface IEnvironmentWrapper
     {
-        T CreateAndAddView<T>() where T : UserControl;
+        T CreateAndAddView<T>(params object[] args) where T : UserControl;
         void CloseView<T>(T view) where T : UserControl;
         //void RenameView<T>(T view, String name) where T : UserControl;
     }

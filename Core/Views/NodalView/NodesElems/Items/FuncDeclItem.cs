@@ -53,10 +53,16 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 this.GenericsField.Children.Add(Generics);
             }
         }
+        ExecutionNodalView _execNodalView;
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
-            view.EditFunction(this);
+            if (_execNodalView == null)
+            {
+                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.NodalView);
+                _execNodalView.EditFunction(this);
+            }
+            else
+                _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
         }
         public override void OnMouseLeave()
         {

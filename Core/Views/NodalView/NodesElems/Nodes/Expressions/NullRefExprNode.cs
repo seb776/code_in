@@ -12,7 +12,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public NullRefExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
             base(themeResDict, nodalView, linkContainer)
         {
-            this.SetType("NullRefExprNode");
+            this.SetType("Null");
         }
     }
 }

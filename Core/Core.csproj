@@ -112,7 +112,7 @@
     <Compile Include="Presenters\Nodal\IContainingConstraints.cs" />
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
-    <Compile Include="Models\NodalModel.cs" />
+    <Compile Include="Models\DeclarationsNodalModel.cs" />
     <Compile Include="Models\Theme\DarkThemeData.cs" />
     <Compile Include="Models\Theme\DefaultThemeData.cs" />
     <Compile Include="Models\Theme\ModThemeData.cs" />
@@ -124,6 +124,8 @@
     </Compile>
     <Compile Include="Views\ICodeInTextLanguage.cs" />
     <Compile Include="Views\ICodeInVisual.cs" />
+    <Compile Include="Views\ICode_inWindow.cs" />
+    <Compile Include="Views\IEnvironmentWindowWrapper.cs" />
     <Compile Include="Views\NodalView\DeclarationsNodalView.cs" />
     <Compile Include="Views\NodalView\ExecutionNodalView.cs" />
     <Compile Include="Views\NodalView\IDragNDropItem.cs" />
@@ -147,6 +149,7 @@
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Base\ATypedMemberItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\Base\UsingMemberItem.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\DestructorItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\ConstructorItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\FuncDeclItem.cs" />
     <Compile Include="Views\NodalView\NodesElems\Items\PropertyItem.cs" />
@@ -201,6 +204,8 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AExpressionNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ArrayCreateExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ArrayInitExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TypeReferenceExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BaseReferenceExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TypeOfExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\SizeOfExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AsExprNode.cs" />
@@ -223,10 +228,12 @@
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\BreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ContinueStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\GotoStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\IfStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\ITileContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Items\Base\ITileItem.cs" />
@@ -236,6 +243,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Assets\TileContainer.xaml.cs">
       <DependentUpon>TileContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\LabelStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ReturnStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ThrowStmtTile.cs" />

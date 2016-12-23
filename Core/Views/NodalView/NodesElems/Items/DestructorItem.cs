@@ -9,75 +9,83 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace code_in.Views.NodalView.NodesElems.Items
 {
-    public class PropertyItem : ClassItem
+    public class DestructorItem : ClassItem
     {
-        public PropertyDeclaration PropertyNode = null;
-        public override void SetThemeResources(String keyPrefix) { }
-        static Random r = new Random();
-        private Button _getEditButton;
-        private Button _setEditButton;
+        public DestructorDeclaration DestructorNode = null;
+        private Image _editButton;
 
-        public PropertyItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
+        public DestructorItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
             base(themeResDict, nodalView, presenter)
         {
-            _getEditButton = new Button();
-            _setEditButton = new Button();
-            _getEditButton.Content = "Get";
-            _setEditButton.Content = "Set";
-            _getEditButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            _setEditButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            _getEditButton.Width = 35;
-            _getEditButton.Height = 25;
-            _setEditButton.Width = 35;
-            _setEditButton.Height = 25;
-            this.AfterName.Children.Add(_getEditButton);
-            this.AfterName.Children.Add(_setEditButton);
-            _getEditButton.PreviewMouseDown += getEditButton_PreviewMouseDown;
-            _setEditButton.PreviewMouseDown += setEditButton_PreviewMouseDown;
-            //Scope.Scope = (ScopeItem.EScope)r.Next(0, 4); // TODO remove this, here only for demo purpose
-        }
-        ExecutionNodalView _execNodalView;
-        void getEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (_execNodalView == null)
-            {
-                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.NodalView);
-                _execNodalView.EditProperty(this, true);
+            { // TODO This is temporary
+                _editButton = new Image();
+                var imageSrc = new BitmapImage();
+                imageSrc.BeginInit();
+                imageSrc.UriSource = new Uri("pack://application:,,,/code_inCore;component/Resources/Graphics/edit.png");
+                imageSrc.EndInit();
+                _editButton.Source = imageSrc;
+                _editButton.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.Fant);
+                _editButton.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+                _editButton.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _editButton.Width = 35;
+                _editButton.Height = 35;
+                _editButton.PreviewMouseDown += editButton_PreviewMouseDown;
+                this.AfterName.Children.Add(_editButton);
+                //_editButton.Visibility = System.Windows.Visibility.Visible;
+                _editButton.SetValue(Image.OpacityProperty, 0.0);
+                _editButton.IsEnabled = false;
             }
-            else
-                _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
         }
-        void setEditButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+        void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (_execNodalView == null)
-            {
-                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.NodalView);
-                _execNodalView.EditProperty(this, false);
-            }
-            else
-                _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
+            view.EditDestructor(this);
         }
-        public PropertyItem() :
+        public override void SetThemeResources(String keyPrefix) { }
+        public override void OnMouseLeave()
+        {
+            DoubleAnimation da = new DoubleAnimation();
+            da.From = 1.0;
+            da.To = 0.0;
+            da.Duration = new Duration(TimeSpan.FromSeconds(0.1));
+            _editButton.BeginAnimation(Image.OpacityProperty, da);
+            da.Completed += _animEditDisapearCompleted;
+        }
+        void _animEditDisapearCompleted(object sender, EventArgs e)
+        {
+            _editButton.IsEnabled = false;
+        }
+        public override void OnMouseEnter()
+        {
+            _editButton.BeginAnimation(Image.OpacityProperty, null);
+            _editButton.SetValue(Image.OpacityProperty, 1.0);
+            _editButton.IsEnabled = true;
+        }
+
+        public DestructorItem() :
             this(Code_inApplication.MainResourceDictionary, null, null)
         {
             throw new DefaultCtorVisualException();
         }
         #region IContainingModifiers
-        //public void setAccessModifiers(Modifiers modifiers)
-        //{
-        //    if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
-        //        Scope.Scope = ScopeItem.EScope.PUBLIC;
-        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
-        //        Scope.Scope = ScopeItem.EScope.PRIVATE;
-        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
-        //        Scope.Scope = ScopeItem.EScope.PROTECTED;
-        //    else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
-        //        Scope.Scope = ScopeItem.EScope.INTERNAL;
+        public void setAccessModifiers(Modifiers modifiers)
+        {
+            if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Public) == ICSharpCode.NRefactory.CSharp.Modifiers.Public)
+                Scope.Scope = ScopeItem.EScope.PUBLIC;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Private) != 0)
+                Scope.Scope = ScopeItem.EScope.PRIVATE;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Protected) != 0)
+                Scope.Scope = ScopeItem.EScope.PROTECTED;
+            else if ((modifiers & ICSharpCode.NRefactory.CSharp.Modifiers.Internal) != 0)
+                Scope.Scope = ScopeItem.EScope.INTERNAL;
 
-        //}
+        }
         #endregion
         #region IContainingAccessModifiers
         public void setModifiersList(Modifiers modifiers)

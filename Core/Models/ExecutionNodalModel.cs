@@ -1,4 +1,5 @@
 ﻿using code_in.Models.NodalModel;
+using code_in.Presenters.Nodal;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,24 @@ namespace code_in.Models
 {
     public class ExecutionNodalModel
     {
-        private DeclarationsNodalModel _associatedFile = null;
-        private AstNode _root;
+        public ExecutionNodalPresenterLocal Presenter;
+        public DeclarationsNodalModel AssociatedFile
+        {
+            get;
+            private set;
+        }
+        public AstNode Root
+        {
+            get;
+            private set;
+        }
 
         public ExecutionNodalModel(DeclarationsNodalModel assocFile, AstNode root)
         {
             Debug.Assert(assocFile != null);
             Debug.Assert(root != null);
-            _associatedFile = assocFile;
-            _root = root;
+            AssociatedFile = assocFile;
+            Root = root;
         }
     }
 }
