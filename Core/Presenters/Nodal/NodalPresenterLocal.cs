@@ -501,10 +501,9 @@ namespace code_in.Presenters.Nodal
             #region Return Statement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ReturnStatement))
             {
-                var returnStmt = stmtArg as ReturnStatement; // AST Node
-                var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter); // Visual Node
-                // TODO get anchor from tileItem for generateExpressions
-           //     this._generateVisualASTExpressions(returnStmtTile.Expression, returnStmt.Expression, returnStmtTile.Expression.ExprOut, (e) => { returnStmt.Expression = e; });
+                var returnStmt = stmtArg as ReturnStatement;
+                var returnStmtTile = tileContainer.CreateAndAddTile<ReturnStmtTile>(nodePresenter);
+                this._generateVisualASTExpressions(returnStmtTile.Expression, returnStmt.Expression, returnStmtTile.Expression.ExprOut, (e) => { returnStmt.Expression = e; });
             }
             #endregion Return Statement
             #region Break Statement
