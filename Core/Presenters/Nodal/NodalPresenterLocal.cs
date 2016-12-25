@@ -456,13 +456,11 @@ namespace code_in.Presenters.Nodal
                 {
                     foreach (var caseLabel in caseBlock.CaseLabels) {
                         var itemExpr = switchStmtTile.CreateAndAddItem<ExpressionItem>();
-                        itemExpr.SetName(caseLabel.Expression.ToString());
                         switchStmtTile.ExpressionCases.Add(itemExpr);
                         this._generateVisualASTExpressions(itemExpr, caseLabel.Expression, itemExpr.ExprOut, (e) => { caseLabel.Expression = e; });
                     }
                     foreach (var caseBlockStmt in caseBlock.Statements) {
                         var itemCase = switchStmtTile.CreateAndAddItem<FlowTileItem>();
-                        //itemCase.SetName(switchStmtTile.ExpressionCases.get)
                         switchStmtTile.itemCases.Add(itemCase);
                         this._generateVisualASTStatements(itemCase, caseBlockStmt);
                     }

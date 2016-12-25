@@ -27,5 +27,21 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         {
             throw new Exceptions.DefaultCtorVisualException();
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.SwitchStatement);
+            Expression.SetName(stmt.Expression.ToString());
+            int i = 0;
+
+            foreach (var cases in stmt.SwitchSections)
+            {
+                foreach (var labels in cases.CaseLabels)
+                {
+                    ExpressionCases[i].SetName(labels.ToString());
+                }
+                ++i;
+            }
+        }
     }
 }

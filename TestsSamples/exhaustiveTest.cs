@@ -88,10 +88,10 @@ public class exhaustiveTest : heritage1, heritage2
         }
 
         switch (x) {
-            case 42:
+            case 42 + 12:
                 MessageBox.Show("Excellent !");
                 break;
-            case  12:
+            case 12:
                 MessageBox.Show("12...");
                 break;
             default:
