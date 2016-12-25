@@ -10,18 +10,24 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class GotoStmtTile : BaseTile
     {
-        public ExpressionItem Expression = null;
+        public ExpressionItem label = null;
 
         public GotoStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
             this.SetName("Goto");
-            Expression = this.CreateAndAddItem<ExpressionItem>(true);
+            label = this.CreateAndAddItem<ExpressionItem>();
         }
         public GotoStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.GotoStatement);
+            label.SetName(stmt.Label);
         }
     }
 }
