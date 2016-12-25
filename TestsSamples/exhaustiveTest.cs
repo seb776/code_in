@@ -275,4 +275,15 @@ public class exhaustiveTest : heritage1, heritage2
             MessageBox.Show("there's an overflow in the block try");
         }
     }
+
+    void UncheckedFunc()
+    {
+        int x = 42;
+        unchecked
+        {
+            MessageBox.Show("uncheck the verification of the int in case of overflow");
+        }
+
+        unchecked(x + 484151515);
+    }
 }

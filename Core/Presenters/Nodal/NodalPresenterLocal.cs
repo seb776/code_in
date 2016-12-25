@@ -559,6 +559,14 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(checkedStmtTile.itemsChecked, checkedStmt.Body);
             }
             #endregion checked
+            #region unchecked
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.UncheckedStatement))
+            {
+                var uncheckedStmt = stmtArg as UncheckedStatement;
+                var uncheckedStmtTile = tileContainer.CreateAndAddTile<UncheckedStmtTile>(nodePresenter);
+                this._generateVisualASTStatements(uncheckedStmtTile.itemsUnchecked, uncheckedStmt.Body);
+            }
+            #endregion unchecked
             #region Goto
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.GotoStatement))
             {
