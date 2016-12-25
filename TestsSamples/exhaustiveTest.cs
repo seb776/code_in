@@ -254,8 +254,25 @@ public class exhaustiveTest : heritage1, heritage2
 
     void funcYield()
     {
-	yield break;
-	yield return "test";
+	    yield break;
+    	yield return "test";
     }
 
+    void CheckedFunc()
+    {
+        int x = 42;
+        checked
+        {
+            MessageBox.Show("check the values of the int");
+        }
+
+        try
+        {
+            checked(x + 484151515);
+        }
+        catch (System.OverflowException e)
+        {
+            MessageBox.Show("there's an overflow in the block try");
+        }
+    }
 }

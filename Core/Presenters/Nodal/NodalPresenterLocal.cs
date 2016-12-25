@@ -551,6 +551,14 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTExpressions(throwStmtTile.Expression, throwStmt.Expression, throwStmtTile.Expression.ExprOut, (e) => { throwStmt.Expression = e; });
             }
             #endregion Throw
+            #region checked
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.CheckedStatement)) 
+            {
+                var checkedStmt = stmtArg as CheckedStatement;
+                var checkedStmtTile = tileContainer.CreateAndAddTile<CheckedStmtTile>(nodePresenter);
+                this._generateVisualASTStatements(checkedStmtTile.itemsChecked, checkedStmt.Body);
+            }
+            #endregion checked
             #region Goto
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.GotoStatement))
             {
