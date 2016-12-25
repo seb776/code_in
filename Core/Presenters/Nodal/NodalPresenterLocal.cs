@@ -522,7 +522,7 @@ namespace code_in.Presenters.Nodal
             #region YieldReturn Statement
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.YieldReturnStatement))
             {
-                var yieldReturnStmt = stmtArg as ReturnStatement; // AST Node
+                var yieldReturnStmt = stmtArg as YieldReturnStatement; // AST Node
                 var yieldReturnStmtTile = tileContainer.CreateAndAddTile<YieldReturnStmtTile>(nodePresenter); // Visual Node
                 this._generateVisualASTExpressions(yieldReturnStmtTile.Expression, yieldReturnStmt.Expression, yieldReturnStmtTile.Expression.ExprOut, (e) => { yieldReturnStmt.Expression = e; });
             }
