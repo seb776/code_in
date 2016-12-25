@@ -11,6 +11,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public FlowTileItem ItemTry = null;
         public List<FlowTileItem> ItemsCatch = null;
+        public FlowTileItem itemFinally = null;
 
         public TryCatchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)

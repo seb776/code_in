@@ -178,7 +178,27 @@ public class exhaustiveTest : heritage1, heritage2
         throw new NotImplementedException();
     }
 
-    void funcTryCatch()
+    void funcTryCatchWitFinally()
+    {
+        try
+        {
+            MessageBox.Show("this is try part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("this is catch part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("other catch");
+        }
+        finally
+        {
+            MessageBox.Show("finally part");
+        }
+    }
+
+    void funcTryCatchWithoutFinally()
     {
         try
         {

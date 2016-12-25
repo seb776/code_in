@@ -401,6 +401,12 @@ namespace code_in.Presenters.Nodal
                     item.SetName("catch " + blockCatch.VariableName);
                     this._generateVisualASTStatements(item, blockCatch.Body);
                 }
+                if (tryStmt.FinallyBlock.ToString() != "") // TODO: eww need to find a way to detect if there's a finally block or not in the code
+                {
+                    var item = tryTile.CreateAndAddItem<FlowTileItem>();
+                    item.SetName("finally");
+                    this._generateVisualASTStatements(item, tryStmt.FinallyBlock);
+                }
             }
             # endregion tryCatchStmt
             # region Loops
