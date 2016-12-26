@@ -567,6 +567,15 @@ namespace code_in.Presenters.Nodal
                 this._generateVisualASTStatements(uncheckedStmtTile.itemsUnchecked, uncheckedStmt.Body);
             }
             #endregion unchecked
+            #region fixed
+            else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.FixedStatement))
+            {
+                var fixedStmt = stmtArg as FixedStatement;
+                var fixedStmtTile = tileContainer.CreateAndAddTile<fixedStmtTile>(nodePresenter);
+                
+                this._generateVisualASTStatements(fixedStmtTile.itemsFixed, fixedStmt.EmbeddedStatement);
+            }
+            #endregion fixed
             #region Goto
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.GotoStatement))
             {

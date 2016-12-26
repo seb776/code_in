@@ -286,4 +286,14 @@ public class exhaustiveTest : heritage1, heritage2
 
         unchecked(x + 484151515);
     }
+
+    unsafe static void fixedFunc()
+    {
+        Point pt = new Point();
+
+        fixed (int* p = &pt.x)
+        {
+            *p = 1;
+        }        
+    }
 }
