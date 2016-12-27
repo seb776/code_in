@@ -32,6 +32,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             Debug.Assert(Presenter != null);
+            this.SetName("DoWhile");
             var doWhileNode = (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.DoWhileStatement);
             Condition.SetName(doWhileNode.Condition.ToString());
             trueItem.SetName(doWhileNode.EmbeddedStatement.ToString());

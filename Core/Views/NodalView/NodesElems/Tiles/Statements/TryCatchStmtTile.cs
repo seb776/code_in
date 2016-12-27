@@ -16,15 +16,27 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public TryCatchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("tryCatch");
+            this.SetName("TryCatch");
             ItemTry = this.CreateAndAddItem<FlowTileItem>();
-            ItemTry.SetName("try");
+            ItemTry.SetName("Try");
             ItemsCatch = new List<FlowTileItem>();
         }
         public TryCatchStmtTile() :
             base(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.TryCatchStatement);
+            this.SetName("TryCatch");
+            int i = 0;
+
+            foreach (var catchItem in stmt.CatchClauses)
+            {
+                // set type and varibleName here
+            }
         }
     }
 }

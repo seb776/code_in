@@ -423,7 +423,6 @@ namespace code_in.Presenters.Nodal
                 var whileStmt = stmtArg as WhileStatement; // AST Node
                 var whileStmtTile = tileContainer.CreateAndAddTile<WhileStmtTile>(nodePresenter); // Visual Node
 
-                //doWhileStmtTile.SetName("While");
                 this._generateVisualASTExpressions(whileStmtTile.Condition, whileStmt.Condition, whileStmtTile.Condition.ExprOut, (e) => { whileStmt.Condition = e; });
                 this._generateVisualASTStatements(whileStmtTile.trueItem, whileStmt.EmbeddedStatement);
             }
@@ -432,22 +431,14 @@ namespace code_in.Presenters.Nodal
                 var forStmt = stmtArg as ForStatement; // AST Node
                 var forStmtTile = tileContainer.CreateAndAddTile<ForStmtTile>(nodePresenter); // Visual Node
 
-                // TODO @Seb @Steph
-
-                //foreach (var forStmts in forStmt.Initializers) // TODO @Seb @Mo
-                //    this._generateVisualASTStatements(forStmtTile.Condition, forStmts);
-
-                //foreach (var forStmts in forStmt.Iterators)
-                //    this._generateVisualASTStatements(forStmts);
-
-                //this._generateVisualASTExpressions(forStmtTile.cond, nodeLoop.Condition, (e) => { forStmt.Condition = e; });
+                this._generateVisualASTExpressions(forStmtTile.Condition, forStmt.Condition, forStmtTile.Condition.ExprOut,  (e) => { forStmt.Condition = e; });
                 this._generateVisualASTStatements(forStmtTile.trueItem, forStmt.EmbeddedStatement);
             }
             else if (stmtArg.GetType() == typeof(ICSharpCode.NRefactory.CSharp.ForeachStatement))
             {
                 var forEachStmt = stmtArg as ForeachStatement;
                 var forEachStmtTile = tileContainer.CreateAndAddTile<ForEachStmtTile>(nodePresenter);
-
+                
                 this._generateVisualASTExpressions(forEachStmtTile.Condition, forEachStmt.InExpression, forEachStmtTile.Condition.ExprOut, (e) => { forEachStmt.InExpression = e; });
                 this._generateVisualASTStatements(forEachStmtTile.trueItem, forEachStmt.EmbeddedStatement);
             }
@@ -547,7 +538,6 @@ namespace code_in.Presenters.Nodal
             {
                 var throwStmt = stmtArg as ThrowStatement; // AST Node
                 var throwStmtTile = tileContainer.CreateAndAddTile<ThrowStmtTile>(nodePresenter); // Visual Node
-                // TODO get anchor from tileItem for generateExpressions
                 this._generateVisualASTExpressions(throwStmtTile.Expression, throwStmt.Expression, throwStmtTile.Expression.ExprOut, (e) => { throwStmt.Expression = e; });
             }
             #endregion Throw

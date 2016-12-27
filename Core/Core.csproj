@@ -225,6 +225,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ContinueStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\fixedStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\GotoStmtTile.cs" />

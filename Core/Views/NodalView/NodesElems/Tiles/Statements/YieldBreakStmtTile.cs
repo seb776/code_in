@@ -13,12 +13,19 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public YieldBreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("yield break;");
+            this.SetName("YieldBreak");
         }
         public YieldBreakStmtTile() :
             this(Code_inApplication.MainResourceDictionary, null)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var stmt = Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.YieldBreakStatement;
+            this.SetName("YieldBreak");
+
         }
     }
 }

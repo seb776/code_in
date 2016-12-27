@@ -15,7 +15,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public YieldReturnStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("yield return;");
+            this.SetName("YieldReturn;");
             Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public YieldReturnStmtTile() :
@@ -27,6 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.YieldReturnStatement);
+            this.SetName("YieldReturn");
             Expression.SetName(stmt.Expression.ToString());
         }
     }

@@ -15,9 +15,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public fixedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("fixed");
+            this.SetName("Fixed");
             itemsFixed = this.CreateAndAddItem<FlowTileItem>();
-            itemsFixed.SetName("fixed");
         }
         public fixedStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
@@ -28,6 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.FixedStatement);
+            //this.SetName("Fixed " + stmt.Type.ToString() + " " + stmt.Variables.ToString());
         }
     }
 }

@@ -14,9 +14,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public CheckedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("checked");
+            this.SetName("Checked");
             itemsChecked = this.CreateAndAddItem<FlowTileItem>();
-            itemsChecked.SetName("checked");
         }
         public CheckedStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
@@ -26,6 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
+            this.SetName("Checked");
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.CheckedStatement);
         }
     }

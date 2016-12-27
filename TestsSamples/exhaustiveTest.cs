@@ -101,8 +101,8 @@ public class exhaustiveTest : heritage1, heritage2
     }
 
     void funcLoop() {
-        int coundWhile = 42;
-        while (coundWhile > 0) {
+        int countWhile = 42;
+        while (countWhile > 0) {
             MessageBox.Show("While loop");
             MessageBox.Show("Still not negative: value is " + coundWhile.ToString());
             --coundWhile;

@@ -14,9 +14,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public UncheckedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("unchecked");
+            this.SetName("Unchecked");
             itemsUnchecked = this.CreateAndAddItem<FlowTileItem>();
-            itemsUnchecked.SetName("unchecked");
         }
         public UncheckedStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
@@ -27,6 +26,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.UncheckedStatement);
+            this.SetName("Unchecked");
         }
     }
 }

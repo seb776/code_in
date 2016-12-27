@@ -27,6 +27,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ReturnStatement);
+            this.SetName("return");
             Expression.SetName(stmt.Expression.ToString());
         }
     }
