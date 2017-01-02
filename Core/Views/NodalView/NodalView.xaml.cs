@@ -149,6 +149,21 @@ namespace code_in.Views.NodalView
             }
             return null;
         }
+        // TODO @yaya
+        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[]userOptions)
+        {
+            var results = new List<Tuple<string, List<INodeElem>>>();
+
+        //    // 1 Get the nodalView
+        //    // 2 parcours les noeuds en fonction si declarations ou execution
+        //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
+        //    //toto.MainGrid // Iterate over nodes (declaration)
+        //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
+        //    // 4 if nameFound && iter.Match(userOptions)
+        //    // 4.1 list.add();
+        //    // return list;
+            return results;
+        }
         private List<INodeElem> _selectedNodes = null;
         public INodalPresenter _nodalPresenter = null;
         public bool IsDeclarative = true; // Defines if the view stores declarations or execution code

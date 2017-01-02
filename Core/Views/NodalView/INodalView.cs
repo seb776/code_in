@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems;
+﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using System;
@@ -19,5 +20,6 @@ namespace code_in.Views.NodalView
             set;
         }
         void AlignDeclarations();
+        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions);
     }
 }
