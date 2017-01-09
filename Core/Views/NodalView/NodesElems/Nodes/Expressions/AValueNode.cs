@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 {
@@ -18,6 +19,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             ExprOut = this.CreateAndAddOutput<DataFlowAnchor>();
             ExprOut.SetName("expression");
+            SetThemeResources("AValueNode");
+        }
+        public override void SetThemeResources(string keyPrefix)
+        {
+            base.SetThemeResources(keyPrefix);
+            this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");
+            this.ContentBorder.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
+            this.ContentBorder.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
         }
     }
 }

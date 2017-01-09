@@ -16,6 +16,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         }
         public override void SetThemeResources(string keyPrefix)
         {
+            base.SetThemeResources(keyPrefix);
         }
     }
 }

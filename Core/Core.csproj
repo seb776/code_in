@@ -110,9 +110,6 @@
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
     <Compile Include="Models\NodalModel.cs" />
-    <Compile Include="Models\Theme\DarkThemeData.cs" />
-    <Compile Include="Models\Theme\DefaultThemeData.cs" />
-    <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\Nodes\NodePresenter.cs" />
@@ -344,7 +341,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>

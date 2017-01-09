@@ -57,8 +57,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public virtual void SetThemeResources(string keyPrefix)
         {
             this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");
-            this.ContentLayout.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
-            this.ContentLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
+            this.ContentBorder.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
+            this.ContentBorder.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
             //this.NodeName.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
             //this.NodeType.SetResourceReference(Label.ForegroundProperty, keyPrefix + "SecondaryColor");
         }
