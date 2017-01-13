@@ -32,35 +32,17 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public abstract class ANodalPresenterLocal : INodalPresenter
     {
-        public INodalView _view = null;
-        //private NodalModel _model = null;
-        //static private NodalModel _parentModel = null;
-        private CSharpParser _parser = null;
-
-        public ANodalPresenterLocal(INodalView view)
+        public abstract String DocumentName
         {
-            System.Diagnostics.Debug.Assert(view != null);
-            _view = view;
-            _parser = new CSharpParser();
+            get;
+        }
+
+        public ANodalPresenterLocal()
+        {
         }
 
 
-        public void EditFunction(FuncDeclItem node)
-        {
-            this._generateVisualASTFunctionBody(node.MethodNode);
-        }
-        public void EditAccessor(Accessor node)
-        {
-            _generateVisualASTPropertyBody(node);
-        }
-        public void EditConstructor(ConstructorItem node)
-        {
-            this._generateVisualASTConstructorBody(node.ConstructorNode);
-        }
-        public void EditDestructor(DestructorItem node)
-        {
-            this._generateVisualASTDestructorBody(node.DestructorNode);
-        }
+
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
             view.setModifiersList(tmpModifiers);
@@ -317,33 +299,6 @@ namespace code_in.Presenters.Nodal
                 //}
             }
             #endregion Method
-        }
-
-        protected void _generateVisualASTFunctionBody(MethodDeclaration method)
-        {
-            (this._view as ANodalView).IsDeclarative = false;
-            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
-            this._generateVisualASTStatements(this._view.RootTileContainer, method.Body);
-        }
-        //TODO @YAYA
-        protected void _generateVisualASTConstructorBody(ConstructorDeclaration constructor)
-        {
-            (this._view as ANodalView).IsDeclarative = false;
-            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
-            _generateVisualASTStatements(this._view.RootTileContainer, constructor.Body);
-        }
-        private void _generateVisualASTDestructorBody(DestructorDeclaration destructor)
-        {
-            (this._view as ANodalView).IsDeclarative = false;
-            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
-            _generateVisualASTStatements(this._view.RootTileContainer, destructor.Body);
-        }
-        protected void _generateVisualASTPropertyBody(Accessor access)
-        {
-            (this._view as ANodalView).IsDeclarative = false;
-            (this._view.RootTileContainer as UserControl).Margin = new Thickness(100, 100, 0, 0);
-            _generateVisualASTStatements(this._view.RootTileContainer, access.Body);
-
         }
 
         /// <summary>
@@ -844,20 +799,15 @@ namespace code_in.Presenters.Nodal
         static void _alignNodes(object[] objects)
         {
             ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;
-            self._view.AlignDeclarations();
+            self.View.AlignDeclarations();
         }
         static void AddNode(object[] objects)
         {
             ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;
 
             ContextMenu cm = new ContextMenu();
-            UIElement view = self._view as UIElement;
+            UIElement view = self.View as UIElement;
             cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
-
-            //var listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-            //                from assemblyType in domainAssembly.GetTypes()
-            //                where typeof(BaseNode).IsAssignableFrom(assemblyType)
-            //                select assemblyType).ToArray();
 
             var listOfBs = self.GetAvailableNodes();
 
@@ -885,21 +835,22 @@ namespace code_in.Presenters.Nodal
                 types.Add(typeof(NamespaceNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.NAMESPACE_DECL);
                 types.Add(typeof(ClassDeclNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.TYPE_DECL);
                 var astNode = NodePresenter.InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
-                var nodePresenter = new NodePresenter(_viewStatic._nodalPresenter, astNode);
+                var nodePresenter = new NodePresenter(_viewStatic.Presenter, astNode);
                 var array = new object[1];
                 array[0] = nodePresenter;
                 BaseNode node = gmi.Invoke(_viewStatic, array) as BaseNode;
                 var pos = Mouse.GetPosition(_viewStatic.MainGrid);
                 node.SetPosition((int)pos.X, (int)pos.Y);
-                if (_viewStatic.IsDeclarative)
-                {
-                    if (astNode != null)
-                    {
-                        //var thisAst = (_viewStatic._nodalPresenter as ANodalPresenterLocal)._model; // TODO uncomment this
-                        //if (thisAst != null)
-                        //    thisAst.AST.Members.Add(astNode);
-                    }
-                }
+
+                //if (_viewStatic.IsDeclarative) // TODO @Seb 05/01/2017
+                //{
+                //    if (astNode != null)
+                //    {
+                //        //var thisAst = (_viewStatic._nodalPresenter as ANodalPresenterLocal)._model; // TODO uncomment this
+                //        //if (thisAst != null)
+                //        //    thisAst.AST.Members.Add(astNode);
+                //    }
+                //}
             }
             //_viewStatic = null;
         }
@@ -940,6 +891,23 @@ namespace code_in.Presenters.Nodal
                 //TODO zorg
             }
             return (tmp);
+        }
+
+        public INodalView View
+        {
+            get;
+            set;
+        }
+
+        public void Save(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public abstract bool IsSaved
+        {
+            get;
         }
     }
 }

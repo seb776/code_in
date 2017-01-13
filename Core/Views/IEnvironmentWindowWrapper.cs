@@ -11,5 +11,6 @@ namespace code_in.Views
         void FocusCode_inWindow();
         void CloseCode_inWindow();
         void SetTitle(string title);
+        void UpdateTitleState();
     }
 }

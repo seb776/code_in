@@ -152,7 +152,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         private void BackGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
         #endregion Events

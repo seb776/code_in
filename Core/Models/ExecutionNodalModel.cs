@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Models
 {
-    public class ExecutionNodalModel
+    public class ExecutionNodalModel : INodalModel
     {
         public ExecutionNodalPresenterLocal Presenter;
         public DeclarationsNodalModel AssociatedFile
@@ -24,12 +24,35 @@ namespace code_in.Models
             private set;
         }
 
+        public bool IsSaved
+        {
+            get
+            {
+                return AssociatedFile.IsSaved;
+            }
+            set
+            {
+                AssociatedFile.IsSaved = value;
+            }
+        }
+
         public ExecutionNodalModel(DeclarationsNodalModel assocFile, AstNode root)
         {
             Debug.Assert(assocFile != null);
             Debug.Assert(root != null);
             AssociatedFile = assocFile;
             Root = root;
+        }
+
+
+        public void Save()
+        {
+            try
+            {
+                this.AssociatedFile.Save();
+                this.Presenter.View.EnvironmentWindowWrapper.UpdateTitleState();
+            }
+            catch (Exception e) { }
         }
     }
 }

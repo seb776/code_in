@@ -4,19 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace code_in.Views
+namespace code_in.Models
 {
-    public interface ICode_inWindow
+    public interface INodalModel
     {
-        IEnvironmentWindowWrapper EnvironmentWindowWrapper
+        bool IsSaved
         {
             get;
             set;
         }
-        bool IsSaved
-        {
-            get;
-        }
+
         void Save();
     }
 }

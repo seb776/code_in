@@ -252,7 +252,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 else
                 {
                     EDragMode dragMode = (Keyboard.IsKeyDown(Key.LeftCtrl) ? EDragMode.MOVEOUT : EDragMode.STAYINCONTEXT);
-                    Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as NodalView).MainGrid));
+                    Code_inApplication.RootDragNDrop.UpdateDragInfos(dragMode, e.GetPosition((this.NodalView as ANodalView).MainGrid));
                 }
                 e.Handled = true;
             }
@@ -600,10 +600,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             ////if (!types.ContainsKey(nodeType))
             ////    return;
             AstNode model = NodePresenter.InstantiateASTNode(nodeType.Item1);
-            var uiElem = code_in.Views.NodalView.NodalView.InstantiateVisualNode(nodeType.Item1, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
+            var uiElem = code_in.Views.NodalView.ANodalView.InstantiateVisualNode(nodeType.Item1, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
             if (uiElem != null)
             {
-                var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as NodalView)._nodalPresenter, model);
+                var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as ANodalView).Presenter, model);
                 presenter.SetView(uiElem as BaseNode);
                 (uiElem as BaseNode).Presenter = presenter;
                 (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
@@ -621,11 +621,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                                                                          new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes)//,
                                                                          //new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, _addNode_Callback)
                                                                      };
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
             e.Handled = true;            
         }
-
-
-
     }
 }

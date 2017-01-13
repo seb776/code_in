@@ -84,7 +84,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
         }
 
         public void ShowEditMenu()
@@ -92,7 +92,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
             EditMenu.IsOpen = true;
-            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as NodalView);//this.EditItemPanelField;
+            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as ANodalView);//this.EditItemPanelField;
             EditMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
             //EditMenu.VerticalOffset -= EditMenu.ActualHeight;
         }

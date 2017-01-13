@@ -40,7 +40,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
-
         }
         public BaseNode() :
             this(Code_inApplication.MainResourceDictionary, null)
@@ -89,7 +88,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
 
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
         #endregion Events
@@ -116,7 +115,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             EditMenu = new EditNodePanel(_themeResourceDictionary);
             EditMenu.SetFields(Presenter);
             EditMenu.IsOpen = true;
-            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as NodalView);
+            EditMenu.PlacementTarget = FindVisualAncestor.FindParent<Grid>(this.NodalView as ANodalView);
             EditMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
             //EditMenu.PlacementTarget = this.EditMenuAndAttributesLayout;
             //EditMenu.VerticalOffset -= EditMenu.ActualHeight;

@@ -1,4 +1,5 @@
 ﻿using code_in.Models.NodalModel;
+using code_in.Views.NodalView;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,13 +12,25 @@ namespace code_in.Presenters.Nodal
 {
     public class DeclarationsNodalPresenterLocal : ANodalPresenterLocal
     {
-        private DeclarationsNodalModel _model = null;
+        public DeclarationsNodalModel _model = null;
+        public override String DocumentName
+        {
+            get
+            {
+                return _model.FileName;
+            }
+        }
+        public DeclarationsNodalPresenterLocal() :
+            base()
+        {
+
+        }
         public bool OpenFile(String path)
         {
             try
             {
-                _model = this._parseFile(path);
-                this._generateVisualASTDeclaration(_model.AST, this._view);
+                _model = new DeclarationsNodalModel(path);
+                this._generateVisualASTDeclaration(_model.AST, this.View);
             }
             catch (Exception e)
             {
@@ -27,13 +40,9 @@ namespace code_in.Presenters.Nodal
             return true;
         }
 
-        private DeclarationsNodalModel _parseFile(String path)
+        public override bool IsSaved
         {
-            var parser = new ICSharpCode.NRefactory.CSharp.CSharpParser();
-            StreamReader fileStream = new StreamReader(path);
-            var ast = parser.Parse(fileStream);
-            var model = new DeclarationsNodalModel(ast);
-            return model;
+            get { return _model.IsSaved; }
         }
     }
 }

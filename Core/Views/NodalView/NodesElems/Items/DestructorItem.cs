@@ -44,7 +44,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<NodalView>();
+            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>();
             view.EditDestructor(this);
         }
         public override void SetThemeResources(String keyPrefix) { }

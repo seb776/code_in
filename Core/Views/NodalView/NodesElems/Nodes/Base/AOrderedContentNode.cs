@@ -108,7 +108,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         {
             if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
             {
-                var relPos = (this.NodalView as NodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this.ContentGridLayout);
+                var relPos = (this.NodalView as ANodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this.ContentGridLayout);
                 this.CurrentMovingNodes.Margin = new Thickness(0.0, Math.Max(relPos.Y, 0.0), 0.0, 0.0);
             }
             else

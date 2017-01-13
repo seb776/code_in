@@ -129,7 +129,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void UpdateDragInfos(Point mousePosToMainGrid)
         {
-            var relPos = (this.NodalView as NodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this);
+            var relPos = (this.NodalView as ANodalView).MainGrid.TranslatePoint(mousePosToMainGrid, this);
             this.CurrentMovingNodes.Margin = new Thickness(0.0, relPos.Y, 0.0, 0.0);
         }
 

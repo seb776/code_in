@@ -1,4 +1,5 @@
-﻿using code_in.Views.NodalView.NodesElems;
+﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using System;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace code_in.Views.NodalView
 {
-    public interface INodalView : IVisualNodeContainer, IContainerDragNDrop
+    public interface INodalView : IVisualNodeContainer, IContainerDragNDrop, ICode_inWindow
     {
-        //void RemoveLink(AIOAnchor anchor);
-
-        ITileContainer RootTileContainer
+        INodalPresenter Presenter
         {
             get;
             set;
         }
+        //void RemoveLink(AIOAnchor anchor);
+
         void AlignDeclarations();
     }
 }

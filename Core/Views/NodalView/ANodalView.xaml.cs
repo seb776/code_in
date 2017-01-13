@@ -26,7 +26,7 @@ namespace code_in.Views.NodalView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public abstract partial class ANodalView : UserControl, INodalView, stdole.IDispatch, ICode_inWindow
+    public abstract partial class ANodalView : UserControl, INodalView, stdole.IDispatch
     {
         static public INodeElem InstantiateVisualNode(NodePresenter.ECSharpNode nodeType, INodalView nodalView, ILinkContainer linkContainer)
         {
@@ -150,28 +150,20 @@ namespace code_in.Views.NodalView
             return null;
         }
         private List<INodeElem> _selectedNodes = null;
-        public INodalPresenter _nodalPresenter = null;
-        public bool IsDeclarative = true; // Defines if the view stores declarations or execution code
+
+
         private ResourceDictionary _themeResourceDictionary = null;
         private Point _lastPosition;
-        public ITileContainer RootTileContainer
-        {
-            get;
-            set; // TODO From seb set it to private
-        }
         public SearchBar SearchBar = null;
 
         public ANodalView(ResourceDictionary themeResDict)
         {
-            this._nodalPresenter = new NodalPresenterLocal(this);
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
             _selectedNodes = new List<INodeElem>();
             _lastPosition = new Point();
-            RootTileContainer = new TileContainer(_themeResourceDictionary, this) as ITileContainer;
-            RootTileContainer.SetParentView(this);
-            this.MainGrid.Children.Add(RootTileContainer as TileContainer);
+
             this.ZoomPanel.RenderTransform = new ScaleTransform();
             this.SearchBar = new SearchBar(this.GetThemeResourceDictionary());
             this.SearchBar.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
@@ -186,38 +178,9 @@ namespace code_in.Views.NodalView
 
         #region This
 
-        public void EditFunction(FuncDeclItem node)
-        {
-            this.EnvironmentWindowWrapper.SetTitle(this._nodalPresenter.DocumentName + ":" + node.GetName() + "()");
-            this._nodalPresenter.EditFunction(node);
-        }
-        public void EditProperty(PropertyItem node, bool isGetter)
-        {
-            if (isGetter)
-            {
-                this.EnvironmentWindowWrapper.SetTitle(this._nodalPresenter.DocumentName + ":" + node.GetName() + "{get}");
-                this._nodalPresenter.EditAccessor(node.PropertyNode.Getter);
-            }
-            else
-            {
-                this.EnvironmentWindowWrapper.SetTitle(this._nodalPresenter.DocumentName + ":" + node.GetName() + "{set}");
-                this._nodalPresenter.EditAccessor(node.PropertyNode.Setter);
-            }
-        }
-        public void EditConstructor(ConstructorItem node)
-        {
-            this.EnvironmentWindowWrapper.SetTitle(this._nodalPresenter.DocumentName + ":" + node.GetName() + "(ctor)");
-            this._nodalPresenter.EditConstructor(node);
-        }
-        public void EditDestructor(DestructorItem node)
-        { 
-            this._nodalPresenter.EditDestructor(node);
-            this.EnvironmentWindowWrapper.SetTitle(this._nodalPresenter.DocumentName + ":~" + node.GetName() + "()");
-
-        }
         public void AlignDeclarations()
         {
-            if (IsDeclarative)
+            if (true)
             {
                 int offset_x = 50;
                 int pos_x = 0;
@@ -422,9 +385,7 @@ namespace code_in.Views.NodalView
             int step = 2;
             Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
             if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                this._nodalPresenter.SaveFile("TestOutput.cs");
-            }
+                this.Presenter.Save("TestOutput.cs");
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -472,8 +433,8 @@ namespace code_in.Views.NodalView
 
         private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var options = _nodalPresenter.GetMenuOptions();
-            CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this._nodalPresenter);
+            var options = Presenter.GetMenuOptions();
+            CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
 
@@ -510,20 +471,20 @@ namespace code_in.Views.NodalView
             this.UpdateDragInfos(_lastPosition);
         }
 
-        public bool IsDropValid(IEnumerable<IDragNDropItem> items)
-        {
-            if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
-                return true;
+        public abstract bool IsDropValid(IEnumerable<IDragNDropItem> items);
+        //{
+        //    if (Code_inApplication.RootDragNDrop.DragMode == EDragMode.STAYINCONTEXT)
+        //        return true;
 
-            return false; // Quick fix
-            foreach (var i in items)
-            {
-                if (this.IsDeclarative)
-                    return ((i is code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.UsingDeclNode));
-            }
-            return false;
+        //    return false; // Quick fix
+        //    foreach (var i in items)
+        //    {
+        //        if (this.IsDeclarative)
+        //            return ((i is code_in.Views.NodalView.NodesElems.Nodes.ClassDeclNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode) || (i is code_in.Views.NodalView.NodesElems.Nodes.UsingDeclNode));
+        //    }
+        //    return false;
 
-        }
+        //}
         /// <summary>
         /// 
         /// </summary>
@@ -597,6 +558,23 @@ namespace code_in.Views.NodalView
 
 
         public IEnvironmentWindowWrapper EnvironmentWindowWrapper
+        {
+            get;
+            set;
+        }
+
+
+        public bool IsSaved
+        {
+            get { return Presenter.IsSaved; }
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalPresenter Presenter
         {
             get;
             set;

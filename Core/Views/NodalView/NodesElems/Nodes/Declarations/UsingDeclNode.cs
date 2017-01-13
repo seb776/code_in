@@ -41,7 +41,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
                 new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.ADD, _addUsing),
                 new Tuple<EContextMenuOptions,Action<object[]>>(EContextMenuOptions.REMOVE, _removeNode)
                                                             };
-            code_in.Views.NodalView.NodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this.Presenter);
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), this.Presenter);
             e.Handled = true;
         }
 

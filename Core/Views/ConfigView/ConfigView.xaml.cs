@@ -22,7 +22,7 @@ namespace code_in.Views.ConfigView
     /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual, ICodeInTextLanguage
+    public partial class ConfigView : UserControl, stdole.IDispatch, ICodeInVisual, ICodeInTextLanguage, ICode_inWindow
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
@@ -109,5 +109,24 @@ namespace code_in.Views.ConfigView
             _currentMenu.IsEnabled = true;
         }
         #endregion Events
+
+        public IEnvironmentWindowWrapper EnvironmentWindowWrapper
+        {
+            get;
+            set;
+        }
+
+        public bool IsSaved
+        {
+            get
+            { 
+                return false;
+            }
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

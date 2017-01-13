@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using ICSharpCode.NRefactory.CSharp;
 using code_in.Views.NodalView.NodesElems.Anchors;
+using code_in.Views.NodalView;
 
 namespace code_in.Presenters.Nodal
 {
@@ -19,14 +20,20 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public interface INodalPresenter : IContextMenu 
     {
+        INodalView View
+        {
+            get;
+            set;
+        }
         String DocumentName
         {
             get;
         }
-        void EditFunction(FuncDeclItem node);
-        void EditAccessor(Accessor node);
-        void EditConstructor(ConstructorItem node);
-        void EditDestructor(DestructorItem node);
+        void Save(string filePath);
+        bool IsSaved
+        {
+            get;
+        }
     }
 
 

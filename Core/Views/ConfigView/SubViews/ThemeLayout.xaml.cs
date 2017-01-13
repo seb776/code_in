@@ -1,5 +1,6 @@
 ﻿using code_in.Exceptions;
 using code_in.Models.Theme;
+using code_in.Presenters.Nodal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,8 +38,13 @@ namespace code_in.Views.ConfigView.SubViews
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
 
-
+            var declNodalPres = new DeclarationsNodalPresenterLocal();
+            //declNodalPres.OpenFile("PreviewThemeCodeExample.cs"); // TODO create this file
             _preview = new NodalView.DeclarationsNodalView(Code_inApplication.ThemePreviewResourceDictionary);
+
+            NodalView.NodalViewActions.AttachNodalViewAndPresenter(_preview, declNodalPres);
+
+
             _preview.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             _preview.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.PreviewArea.Content = _preview;
