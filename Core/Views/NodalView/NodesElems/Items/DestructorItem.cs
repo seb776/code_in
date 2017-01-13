@@ -17,6 +17,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
 {
     public class DestructorItem : ClassItem
     {
+        private ExecutionNodalView _execNodalView;
         public DestructorDeclaration DestructorNode = null;
         private Image _editButton;
 
@@ -44,8 +45,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var view = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>();
-            view.EditDestructor(this);
+            if (_execNodalView == null)
+            {
+                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.Presenter, this.NodalView.Presenter);
+                _execNodalView.EditDestructor(this);
+            }
+            _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
         }
         public override void SetThemeResources(String keyPrefix) { }
         public override void OnMouseLeave()

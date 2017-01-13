@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
     public class ConstructorItem : ClassItem
     {
         public ConstructorDeclaration ConstructorNode = null;
-        public ExecutionNodalPresenterLocal _constructorNodalPresenter = null;
+        private ExecutionNodalView _execNodalView;
         ParametersList _params;
         private Image _editButton;
 
@@ -49,10 +49,12 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var nodeNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>();
-            var nodeNodalPresenter = new ExecutionNodalPresenterLocal(this.NodalView.Presenter as DeclarationsNodalPresenterLocal, this.Presenter);
-            code_in.Views.NodalView.NodalViewActions.AttachNodalViewAndPresenter(nodeNodalView, nodeNodalPresenter);
-            nodeNodalPresenter.EditConstructor(this);
+            if (_execNodalView == null)
+            {
+                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.Presenter, this.NodalView.Presenter);
+                _execNodalView.EditConstructor(this);
+            }
+            _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
         }
         public override void SetThemeResources(String keyPrefix) { }
         public override void OnMouseLeave()
