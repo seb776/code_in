@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel x:Name="DescriptionPanel" Orientation="Horizontal" Grid.Column="0" Background="#4200FF00" Width="5">
             <!--<Button x:Name="buttonExpand" Click="buttonExpand_Click" VerticalAlignment="Top">E/C</Button>-->
-            <!--<Label x:Name="ItemName" MouseDown="ItemName_MouseDown" Foreground="GreenYellow" HorizontalAlignment="Left" VerticalAlignment="Top">true</Label>-->
+            <!--<Label x:Name="ItemName" MouseDown="ItemName_MouseDown" Foreground="GreenYellow"  HorizontalAlignment="Left" VerticalAlignment="Top"></Label>-->
         </StackPanel>
     </Grid>
 </UserControl>

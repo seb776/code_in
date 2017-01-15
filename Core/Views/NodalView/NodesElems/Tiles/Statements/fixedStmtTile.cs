@@ -8,17 +8,17 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class YieldReturnStmtTile : BaseTile
+    class fixedStmtTile : BaseTile
     {
-        public ExpressionItem Expression = null;
+        public FlowTileItem itemsFixed = null;
 
-        public YieldReturnStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
+        public fixedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("YieldReturn;");
-            Expression = this.CreateAndAddItem<ExpressionItem>(true);
+            this.SetName("Fixed");
+            itemsFixed = this.CreateAndAddItem<FlowTileItem>();
         }
-        public YieldReturnStmtTile() :
+        public fixedStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
@@ -26,9 +26,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.YieldReturnStatement);
-            this.SetName("YieldReturn");
-            Expression.SetName(stmt.Expression.ToString());
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.FixedStatement);
+            //this.SetName("Fixed " + stmt.Type.ToString() + " " + stmt.Variables.ToString());
         }
     }
 }

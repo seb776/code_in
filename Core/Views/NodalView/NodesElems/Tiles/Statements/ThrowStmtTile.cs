@@ -15,13 +15,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public ThrowStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("throw");
+            this.SetName("Throw");
             Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public ThrowStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
         {
             throw new Exceptions.DefaultCtorVisualException();
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ThrowStatement);
+            this.SetName("Throw");
+            Expression.SetName(stmt.Expression.ToString());
         }
     }
 }

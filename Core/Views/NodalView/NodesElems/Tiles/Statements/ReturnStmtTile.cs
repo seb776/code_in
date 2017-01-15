@@ -15,8 +15,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public ReturnStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("return;");
-//            Expression = this.CreateAndAddItem<ExpressionItem>(true);
+            this.SetName("return");
+            Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public ReturnStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
@@ -26,7 +26,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            //this.SetName() // TODO
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ReturnStatement);
+            this.SetName("return");
+            Expression.SetName(stmt.Expression.ToString());
         }
     }
 }

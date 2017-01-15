@@ -28,5 +28,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             throw new Exceptions.DefaultCtorVisualException();
         }
 
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            this.SetName("For");
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForStatement);
+            Condition.SetName(stmt.Condition.ToString());
+        }
     }
 }

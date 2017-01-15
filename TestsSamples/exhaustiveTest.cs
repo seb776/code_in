@@ -88,10 +88,10 @@ public class exhaustiveTest : heritage1, heritage2
         }
 
         switch (x) {
-            case 42:
+            case 42 + 12:
                 MessageBox.Show("Excellent !");
                 break;
-            case  12:
+            case 12:
                 MessageBox.Show("12...");
                 break;
             default:
@@ -101,8 +101,8 @@ public class exhaustiveTest : heritage1, heritage2
     }
 
     void funcLoop() {
-        int coundWhile = 42;
-        while (coundWhile > 0) {
+        int countWhile = 42;
+        while (countWhile > 0) {
             MessageBox.Show("While loop");
             MessageBox.Show("Still not negative: value is " + coundWhile.ToString());
             --coundWhile;
@@ -178,7 +178,7 @@ public class exhaustiveTest : heritage1, heritage2
         throw new NotImplementedException();
     }
 
-    void funcTryCatch()
+    void funcTryCatchWitFinally()
     {
         try
         {
@@ -187,6 +187,30 @@ public class exhaustiveTest : heritage1, heritage2
         catch (Exception e)
         {
             MessageBox.Show("this is catch part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("other catch");
+        }
+        finally
+        {
+            MessageBox.Show("finally part");
+        }
+    }
+
+    void funcTryCatchWithoutFinally()
+    {
+        try
+        {
+            MessageBox.Show("this is try part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("this is catch part");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("other catch");
         }
     }
 
@@ -230,8 +254,46 @@ public class exhaustiveTest : heritage1, heritage2
 
     void funcYield()
     {
-	yield break;
-	yield return "test";
+	    yield break;
+    	yield return "test";
     }
 
+    void CheckedFunc()
+    {
+        int x = 42;
+        checked
+        {
+            MessageBox.Show("check the values of the int");
+        }
+
+        try
+        {
+            checked(x + 484151515);
+        }
+        catch (System.OverflowException e)
+        {
+            MessageBox.Show("there's an overflow in the block try");
+        }
+    }
+
+    void UncheckedFunc()
+    {
+        int x = 42;
+        unchecked
+        {
+            MessageBox.Show("uncheck the verification of the int in case of overflow");
+        }
+
+        unchecked(x + 484151515);
+    }
+
+    unsafe static void fixedFunc()
+    {
+        Point pt = new Point();
+
+        fixed (int* p = &pt.x)
+        {
+            *p = 1;
+        }        
+    }
 }

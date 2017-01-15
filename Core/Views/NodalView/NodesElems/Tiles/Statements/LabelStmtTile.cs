@@ -11,6 +11,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     class LabelStmtTile : BaseTile
     {
         public ExpressionItem Expression = null;
+
         public LabelStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
@@ -26,6 +27,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             this.SetName("Label");
+            var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.LabelStatement);
+            Expression.SetName(stmt.Label);
         }
     }
 }

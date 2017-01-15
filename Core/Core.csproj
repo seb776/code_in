@@ -114,9 +114,6 @@
     <Compile Include="Presenters\Nodal\Nodes\INodePresenter.cs" />
     <Compile Include="Presenters\ThemePresenter.cs" />
     <Compile Include="Models\DeclarationsNodalModel.cs" />
-    <Compile Include="Models\Theme\DarkThemeData.cs" />
-    <Compile Include="Models\Theme\DefaultThemeData.cs" />
-    <Compile Include="Models\Theme\ModThemeData.cs" />
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\Nodes\NodePresenter.cs" />
@@ -229,9 +226,11 @@
       <DependentUpon>ExpressionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\BreakStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\CheckedStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ContinueStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\DoWhileStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ExprStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\fixedStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForEachStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ForStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\GotoStmtTile.cs" />
@@ -249,6 +248,7 @@
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\SwitchStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\ThrowStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\TryCatchStmtTile.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UncheckedStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\UnSupStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\VarStmtTile.cs" />
     <Compile Include="Views\NodalView\NodesElems\Tiles\Statements\WhileStmtTile.cs" />
@@ -349,7 +349,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Models\Theme\AThemeData.cs" />
     <Compile Include="Views\ConfigView\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>

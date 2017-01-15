@@ -21,7 +21,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.SetName("Foreach");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
             trueItem = this.CreateAndAddItem<FlowTileItem>();
-            trueItem.SetName("");
             trueItem.DescriptionPanel.Background = new SolidColorBrush(Colors.Transparent);
             this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(51, 0x20, 0x77, 0xE3));
         }
@@ -34,9 +33,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             Debug.Assert(Presenter != null);
+            this.SetName("Foreach");
             var foreachStmt = (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement);
-            this.Condition.SetName(foreachStmt.InExpression.ToString());
-            
+          //  this.Condition.SetName(foreachStmt.InExpression.ToString());
         }
     }
 }

@@ -14,5 +14,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             : base(themeResDict, nodalView, linkContainer)
         {
         }
+        public override void SetThemeResources(string keyPrefix)
+        {
+            base.SetThemeResources(keyPrefix);
+        }
     }
 }

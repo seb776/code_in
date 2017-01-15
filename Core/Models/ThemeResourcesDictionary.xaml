@@ -159,7 +159,15 @@
     <SolidColorBrush x:Key="FuncExprNodeMainColor" Color="Black"/>
     <SolidColorBrush x:Key="FuncExprNodeSecondaryColor" Color="Black"/>
 
-    
+    <!-- For AValueNode color handling -->
+    <SolidColorBrush x:Key="AValueNodeTypeForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeMainColor" Color="#999966"/>
+    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="BlueViolet"/>
+    <SolidColorBrush x:Key="AValueNodeTest" Color="Red"/>
+
+
     <!-- These are the colors for the input-output -->
     <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
     <SolidColorBrush x:Key="CharColor" Color="LightSalmon"/>

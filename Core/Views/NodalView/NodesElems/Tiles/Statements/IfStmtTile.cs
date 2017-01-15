@@ -23,9 +23,9 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             this.SetName("If");
             Condition = this.CreateAndAddItem<ExpressionItem>(true);
             ItemTrue = this.CreateAndAddItem<FlowTileItem>();
-            ItemTrue.SetName("true");
+           // ItemTrue.SetName("true");
             ItemFalse = this.CreateAndAddItem<FlowTileItem>();
-            ItemFalse.SetName("false");
+            ItemFalse.SetName("else");
             ItemFalse.SetThemeResources("false");
             this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(51, 0x20, 0x77, 0xE3));
         }
@@ -40,8 +40,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             var ifElse = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IfElseStatement);
             Condition.SetName(ifElse.Condition.ToString());
             
-            //ItemTrue.SetName(ifElse.TrueStatement.ToString());
-            //ItemFalse.SetName(ifElse.FalseStatement.ToString());
+            ItemFalse.SetName("else");
         }
     }
 }
