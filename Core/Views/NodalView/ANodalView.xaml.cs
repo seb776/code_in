@@ -149,21 +149,39 @@ namespace code_in.Views.NodalView
             }
             return null;
         }
-        // TODO @yaya
-        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[]userOptions)
+        public Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
         {
-            var results = new List<Tuple<string, List<INodeElem>>>();
+            //var results = new List<Tuple<string, List<INodeElem>>>();
+            var results = new Dictionary<string, List<INodeElem>>();
 
-        //    // 1 Get the nodalView
-        //    // 2 parcours les noeuds en fonction si declarations ou execution
-        //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
-        //    //toto.MainGrid // Iterate over nodes (declaration)
-        //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
-        //    // 4 if nameFound && iter.Match(userOptions)
-        //    // 4.1 list.add();
-        //    // return list;
+            //    // 1 Get the nodalView
+            //    // 2 parcours les noeuds en fonction si declarations ou execution
+            //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
+            //    //toto.MainGrid // Iterate over nodes (declaration)
+            //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
+            //    // 4 if nameFound && iter.Match(userOptions)
+            //    // 4.1 list.add();
+            //    // return list;
             return results;
         }
+        public void FocusToNode(INodeElem node, bool fromNodalView = false)
+        {
+            if (!fromNodalView) // To avoid infinite recursion
+            {
+                ((ANodalView)node.NodalView).EnvironmentWindowWrapper.FocusCode_inWindow();
+                ((ANodalView)node.NodalView).FocusToNode(node, true);
+            }
+
+            var middleOfScrollViewer = new Point(this.ScrollView.ActualWidth / 2.0f, this.ScrollView.ActualHeight / 2.0f);
+            var offset = this.MainGrid.TranslatePoint((node as UserControl).TransformToAncestor(this.MainGrid).Transform(new Point()), this.ScrollView);
+
+            int sizeX;
+            int sizeY;
+            node.GetSize(out sizeX, out sizeY);
+            ScrollView.ScrollToHorizontalOffset(offset.X + ScrollView.HorizontalOffset - middleOfScrollViewer.X + (sizeX / 2.0f));
+            ScrollView.ScrollToVerticalOffset(offset.Y + ScrollView.VerticalOffset - middleOfScrollViewer.Y + (sizeY / 2.0f));
+        }
+
         private List<INodeElem> _selectedNodes = null;
 
 

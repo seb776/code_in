@@ -43,10 +43,10 @@ namespace code_in.Views.MainView
         }
         public void AddNode<T>(T node, int idx = -1) where T : UIElement, code_in.Views.NodalView.INode
         {
-            if (idx < 0)
-                this.SearchResult.Children.Add(node as UIElement);
-            else
-                this.SearchResult.Children.Insert(idx, node as UIElement);
+            //if (idx < 0)
+            //    this.SearchResult..Add(node as UIElement);
+            //else
+            //    this.SearchResult.Children.Insert(idx, node as UIElement);
         }
         public void RemoveNode(INodeElem node)
         {

@@ -236,5 +236,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             get;
             set;
         }
+
+
+        public void FocusToNode()
+        {
+            ((ANodalView)this.NodalView).FocusToNode(this);
+        }
     }
 }

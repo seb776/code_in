@@ -192,5 +192,11 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
         }
+
+
+        public void FocusToNode()
+        {
+            ((ANodalView)this.NodalView).FocusToNode(this);
+        }
     } // Class
 } // Namespace

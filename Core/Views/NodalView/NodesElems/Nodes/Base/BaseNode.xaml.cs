@@ -81,6 +81,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Code_inApplication.RootDragNDrop.IsSelectedItem(this))
                 Code_inApplication.RootDragNDrop.UnselectAllNodes();
             Code_inApplication.RootDragNDrop.AddSelectItem(this);
+            this.FocusToNode();
 
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
 
@@ -173,6 +174,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void RemoveFromContext()
         {
             throw new NotImplementedException();
+        }
+
+
+        public void FocusToNode()
+        {
+            ((ANodalView)this.NodalView).FocusToNode(this);
         }
     }
 }
