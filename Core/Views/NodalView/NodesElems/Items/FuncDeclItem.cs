@@ -58,11 +58,10 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
             if (_execNodalView == null)
             {
-                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.NodalView);
+                _execNodalView = Code_inApplication.EnvironmentWrapper.CreateAndAddView<ExecutionNodalView>(this.Presenter, this.NodalView.Presenter);
                 _execNodalView.EditFunction(this);
             }
-            else
-                _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
+            _execNodalView.EnvironmentWindowWrapper.FocusCode_inWindow();
         }
         public override void OnMouseLeave()
         {

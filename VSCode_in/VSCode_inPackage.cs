@@ -17,6 +17,7 @@ using code_in.Views;
 using code_in.Views.NodalView;
 using code_in.Views.ConfigView;
 using code_in.Presenters.Nodal;
+using code_in.Presenters.Nodal.Nodes;
 
 namespace Code_in.VSCode_in
 {
@@ -39,7 +40,8 @@ namespace Code_in.VSCode_in
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(ConfigWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
-    [ProvideToolWindow(typeof(NodalWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
+    [ProvideToolWindow(typeof(DeclarationNodalWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
+    [ProvideToolWindow(typeof(ExecutionNodalWindowPane), Style = VsDockStyle.MDI, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110058", Transient = true)] // TODO Wrong GUID ?
     [Guid(GuidList.guidVSCode_inPkgString)]
     public sealed class VSCode_inPackage : Package, IEnvironmentWrapper
     {
@@ -91,7 +93,7 @@ namespace Code_in.VSCode_in
         }
         #endregion
 
-        private Dictionary<string, NodalWindowPane> _openedFiles = new Dictionary<string, NodalWindowPane>();
+        private Dictionary<string, ANodalWindowPane> _openedFiles = new Dictionary<string, ANodalWindowPane>();
         private HashSet<int> _takenIndexes = new HashSet<int>();
 
         private bool _askForNewFile(ref string filePath, ref string fileName)
@@ -109,7 +111,7 @@ namespace Code_in.VSCode_in
             return false;
         }
 
-        NodalWindowPane _createNewEmptyNodalWindow()
+        T _createNewEmptyNodalWindow<T>() where T : ANodalWindowPane
         {
             int index = 0;
             if (_takenIndexes.Count != 0)
@@ -124,9 +126,8 @@ namespace Code_in.VSCode_in
                 }
             }
             _takenIndexes.Add(index);
-            var nwp = this.CreateToolWindow(typeof(NodalWindowPane), index) as NodalWindowPane;
+            var nwp = this.CreateToolWindow(typeof(T), index) as T;
             nwp.PaneId = index;
-            nwp.FocusCode_inWindow();
             return nwp;
         }
 
@@ -169,9 +170,8 @@ namespace Code_in.VSCode_in
             string fileName = "";
             if (_askForOpenFile(ref filePath, ref fileName))
             {
-                NodalWindowPane matchingWindowsPane;
-                _openedFiles.TryGetValue(filePath, out matchingWindowsPane);
-                if (matchingWindowsPane != null)
+                ANodalWindowPane matchingWindowsPane = null;
+                if (_openedFiles.TryGetValue(filePath, out matchingWindowsPane))
                     matchingWindowsPane.FocusCode_inWindow();
                 else
                 {
@@ -198,23 +198,19 @@ namespace Code_in.VSCode_in
             return cwp;
         }
 
-        private NodalWindowPane _createOrFocusFileNodalWindowPane(String filePath)
+        private ANodalWindowPane _createOrFocusFileNodalWindowPane(String filePath)
         {
-            NodalWindowPane wp = null;
+            ANodalWindowPane wp = null;
             try
             {
-                if (_openedFiles.TryGetValue(filePath, out wp))
-                    wp.FocusCode_inWindow();
-                else
+                if (!_openedFiles.TryGetValue(filePath, out wp))
                 {
-                    wp = _createNewEmptyNodalWindow();
-                    var presenter = new DeclarationsNodalPresenterLocal();
-                    var nodalView = new DeclarationsNodalView(Code_inApplication.MainResourceDictionary);
-                    wp.Code_inView = nodalView;
-                    code_in.Views.NodalView.NodalViewActions.AttachNodalViewAndPresenter(nodalView, presenter);
-                    wp.OpenFile(filePath);
+                    wp = _createNewEmptyNodalWindow<DeclarationNodalWindowPane>();
+                    (wp as DeclarationNodalWindowPane).OpenFile(filePath);
                     _openedFiles.Add(filePath, wp);
+                    wp.FocusCode_inWindow();
                 }
+                wp.FocusCode_inWindow();
             }
             catch (Exception e)
             {
@@ -240,8 +236,9 @@ namespace Code_in.VSCode_in
                     else if (typeof(T) == typeof(ExecutionNodalView))
                     {
                         // Do not check if it exist (the doublon avoid is done in "Code_in.Core"
-                        wp = this._createNewEmptyNodalWindow();
-                        wp.Code_inView = new ExecutionNodalView(Code_inApplication.MainResourceDictionary);
+                        wp = this._createNewEmptyNodalWindow<ExecutionNodalWindowPane>();
+                        var execNodalPres = new ExecutionNodalPresenterLocal(args[1] as DeclarationsNodalPresenterLocal, args[0] as INodePresenter);
+                        code_in.Views.NodalView.NodalViewActions.AttachNodalViewAndPresenter(wp.Code_inView as INodalView, execNodalPres);
                     }
                 }
                 if (wp != null)
@@ -352,26 +349,82 @@ namespace Code_in.VSCode_in
         }
     }
 
-    public class NodalWindowPane : ACode_inWindowPane
+    public class ExecutionNodalWindowPane : ANodalWindowPane
     {
-        public int PaneId; // TODO init to -1
-        public NodalWindowPane(System.IServiceProvider provider) :
+        public ExecutionNodalView ExecutionNodalView
+        {
+            get;
+            private set;
+        }
+        private void _init()
+        {
+            ExecutionNodalView = new ExecutionNodalView(Code_inApplication.MainResourceDictionary);
+            Code_inView = ExecutionNodalView;
+            // TODO launch parse ?
+        }
+        public ExecutionNodalWindowPane(System.IServiceProvider provider) :
             base(provider)
         {
-            this.Content = new UserControl();
+            this._init();
         }
-        public NodalWindowPane() :
+
+        public ExecutionNodalWindowPane() :
             base()
         {
-            this.Content = new UserControl();
+            this._init();
+        }
+    }
 
+    public class DeclarationNodalWindowPane : ANodalWindowPane
+    {
+        public DeclarationsNodalView DeclarationsNodalView
+        {
+            get;
+            private set;
+        }
+        private void _init()
+        {
+            var presenter = new DeclarationsNodalPresenterLocal();
+            DeclarationsNodalView = new DeclarationsNodalView(Code_inApplication.MainResourceDictionary);
+            code_in.Views.NodalView.NodalViewActions.AttachNodalViewAndPresenter(DeclarationsNodalView, presenter);
+            Code_inView = DeclarationsNodalView;
+        }
+        public DeclarationNodalWindowPane(System.IServiceProvider provider) :
+            base(provider)
+        {
+            this._init();
+        }
+
+        public DeclarationNodalWindowPane() :
+            base()
+        {
+            this._init();
         }
 
         public void OpenFile(string filePath)
         {
-            Debug.Assert((this._code_inView.GetType() == typeof(DeclarationsNodalView)));
-            (this._code_inView as DeclarationsNodalView).OpenFile(filePath);
+            DeclarationsNodalView.OpenFile(filePath);
             this.SetTitle(Path.GetFileName(filePath));
+        }
+    }
+
+    public class ANodalWindowPane : ACode_inWindowPane
+    {
+        public int PaneId; // TODO init to -1
+
+        private void _init()
+        {
+            this.PaneId = -1;
+        }
+        public ANodalWindowPane(System.IServiceProvider provider) :
+            base(provider)
+        {
+            this._init();
+        }
+        public ANodalWindowPane() :
+            base()
+        {
+            this._init();
         }
     }
 }
