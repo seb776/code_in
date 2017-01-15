@@ -115,12 +115,17 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox HorizontalAlignment="Stretch" Foreground="Gray" Background="White" Text="Type in to search"/>
+                        <TextBox x:Name="SearchBox" HorizontalAlignment="Stretch" Foreground="Gray" Background="White" Text="Type in to search"/>
                         <Button HorizontalAlignment="Right" Content="Search" Foreground="Black" Width="100" Click="Button_Click"/>
                     </StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="3">
-                        <StackPanel x:Name="SearchResult" HorizontalAlignment="Center" >
-                        </StackPanel>
+                        <TreeView x:Name="SearchResult" Background="Transparent">
+                            <TreeViewItem Header="toto" Foreground="White" IsExpanded="True">
+                                <TreeViewItem Header="titi" Foreground="Azure"></TreeViewItem>
+                            </TreeViewItem>
+                        </TreeView>
+                        <!--<StackPanel x:Name="SearchResult" HorizontalAlignment="Center">
+                        </StackPanel>-->
                     </ScrollViewer>
                     <Grid/>
                 </Grid>

@@ -21,7 +21,7 @@ namespace code_in.Presenters.Nodal
         void AddGeneric(string name, EGenericVariance variance);
         void UpdateDisplayedInfosFromPresenter();
         // END
-
+        void FocusToNode();
         void SetNodePresenter(INodePresenter nodePresenter); // Each visual node has a nodePresenter (TODO unit tests)
         void ShowEditMenu();
         void SetPosition(int posX, int posY);

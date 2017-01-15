@@ -20,5 +20,6 @@ namespace code_in.Views.NodalView
         //void RemoveLink(AIOAnchor anchor);
 
         void AlignDeclarations();
+        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions);
     }
 }

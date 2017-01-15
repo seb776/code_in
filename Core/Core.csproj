@@ -126,6 +126,9 @@
     <Compile Include="Views\IEnvironmentWindowWrapper.cs" />
     <Compile Include="Views\NodalView\DeclarationsNodalView.cs" />
     <Compile Include="Views\NodalView\ExecutionNodalView.cs" />
+    <Compile Include="Views\MainView\SearchResultItem.xaml.cs">
+      <DependentUpon>SearchResultItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\IDragNDropItem.cs" />
     <Compile Include="Views\NodalView\INode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Anchors\AIOAnchor.xaml.cs">
@@ -302,6 +305,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigView\SubViews\ShortcutsLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView\SearchResultItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

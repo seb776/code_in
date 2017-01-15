@@ -1,9 +1,11 @@
 ﻿using code_in.Exceptions;
 using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Nodes;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,6 +18,7 @@ namespace code_in.Views.MainView
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
+        private INodalView _nodalView;
         public SearchBar(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -24,7 +27,7 @@ namespace code_in.Views.MainView
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
         }
-        public SearchBar() :
+        public SearchBar(INodalView MainView) :
             this(Code_inApplication.MainResourceDictionary)
         { throw new DefaultCtorVisualException(); }
 
@@ -70,31 +73,25 @@ namespace code_in.Views.MainView
         }
         #endregion ICodeInVisual
 
-        // TODO @yaya
-        //List<INodeElem> _searchMatchinNodes(string name, bool[]userOptions)
-        //{
-        //    // 1 Get the nodalView
-        //    // 2 parcours les noeuds en fonction si declarations ou execution
-        //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
-        //    //toto.MainGrid // Iterate over nodes (declaration)
-        //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
-        //    // 4 if nameFound && iter.Match(userOptions)
-        //    // 4.1 list.add();
-        //    // return list;
-        //}
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //_searchMatchinNodes(SearchBar.TextInput, null);
+            this.SearchResult.Items.Clear();
+            var searchResults = this._nodalView.SearchMatchinNodes(this.SearchBox.Text, null);
 
+            foreach (var category in searchResults.Keys)
+            {
+                var categoryItem = new TreeViewItem();
+                categoryItem.Header = category;
+                this.SearchResult.Items.Add(categoryItem);
+                foreach (var result in searchResults[category])
+                {
+                    var resultItem = new SearchResultItem(this._themeResourceDictionary);
 
-            // Display results
-            //if (checkGood)
-            //{
-            //    this.SearchResult.Add(treeParent);
-            //  [Icone] [preinfo] [name][generic] [post infos]
-            //    treeParent.Add(new ResearchResultItem("toto", "int", "float", INodeElem));
-            //}
+                    resultItem.Name = result.GetName();
+                    resultItem.AssociatedNode = result;
+                    categoryItem.Items.Add(resultItem);
+                }
+            }
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
