@@ -96,6 +96,13 @@ namespace Code_in.VSCode_in
         private Dictionary<string, ANodalWindowPane> _openedFiles = new Dictionary<string, ANodalWindowPane>();
         private HashSet<int> _takenIndexes = new HashSet<int>();
 
+        public void CloseNodalWindowPane(ANodalWindowPane wp) // TODO Beaurk API
+        {
+            _takenIndexes.Remove(wp.PaneId);
+            if (wp is DeclarationNodalWindowPane)
+                _openedFiles.Remove((((DeclarationNodalWindowPane)wp).Code_inView as DeclarationsNodalView).NodalPresenterDecl._model.FilePath);
+        }
+
         private bool _askForNewFile(ref string filePath, ref string fileName)
         {
             System.Windows.Forms.SaveFileDialog fileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -332,6 +339,8 @@ namespace Code_in.VSCode_in
                 IVsWindowFrame frame = this.Frame as IVsWindowFrame;
                 if (frame != null)
                     frame.CloseFrame((uint)Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave);
+                if (this is ANodalWindowPane)
+                    ((VSCode_inPackage)Code_inApplication.EnvironmentWrapper).CloseNodalWindowPane(this as ANodalWindowPane);
             }
         }
 
@@ -360,7 +369,6 @@ namespace Code_in.VSCode_in
         {
             ExecutionNodalView = new ExecutionNodalView(Code_inApplication.MainResourceDictionary);
             Code_inView = ExecutionNodalView;
-            // TODO launch parse ?
         }
         public ExecutionNodalWindowPane(System.IServiceProvider provider) :
             base(provider)
@@ -377,6 +385,7 @@ namespace Code_in.VSCode_in
 
     public class DeclarationNodalWindowPane : ANodalWindowPane
     {
+
         public DeclarationsNodalView DeclarationsNodalView
         {
             get;
