@@ -13,6 +13,10 @@ namespace code_in.Views.NodalView
 {
     public class ExecutionNodalView : ANodalView
     {
+        public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
+        {
+            return this.ExecPresenter._model.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
+        }
         public ExecutionNodalPresenterLocal ExecPresenter
         {
             get
