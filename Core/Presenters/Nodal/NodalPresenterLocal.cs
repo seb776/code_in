@@ -899,11 +899,7 @@ namespace code_in.Presenters.Nodal
             set;
         }
 
-        public void Save(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
+        public abstract void Save();
 
         public abstract bool IsSaved
         {

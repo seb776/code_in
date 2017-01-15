@@ -385,7 +385,7 @@ namespace code_in.Views.NodalView
             int step = 2;
             Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
             if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
-                this.Presenter.Save("TestOutput.cs");
+                this.Presenter.Save();
             if (e.Key == Key.Add)
             {
                 tmp.Width += step;
@@ -571,7 +571,7 @@ namespace code_in.Views.NodalView
 
         public void Save()
         {
-            throw new NotImplementedException();
+            this.Presenter.Save();
         }
 
         public INodalPresenter Presenter

@@ -14,6 +14,7 @@ namespace code_in.Presenters.Nodal
 {
     public class ExecutionNodalPresenterLocal : ANodalPresenterLocal
     {
+
         private ExecutionNodalModel _model;
         public ExecutionNodalView ExecNodalView
         {
@@ -78,6 +79,10 @@ namespace code_in.Presenters.Nodal
         public override bool IsSaved
         {
             get { return _model.IsSaved; }
+        }
+        public override void Save()
+        {
+            this._model.Save();
         }
     }
 }

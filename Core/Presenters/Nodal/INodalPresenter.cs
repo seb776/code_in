@@ -29,7 +29,7 @@ namespace code_in.Presenters.Nodal
         {
             get;
         }
-        void Save(string filePath);
+        void Save();
         bool IsSaved
         {
             get;

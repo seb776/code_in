@@ -20,6 +20,14 @@ namespace code_in.Presenters.Nodal
                 return _model.FileName;
             }
         }
+        public override void Save()
+        {
+            this._model.Save();
+        }
+        public void Save(string filePath)
+        {
+            this._model.Save(filePath);
+        }
         public DeclarationsNodalPresenterLocal() :
             base()
         {

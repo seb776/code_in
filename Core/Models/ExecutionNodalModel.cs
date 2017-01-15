@@ -49,6 +49,7 @@ namespace code_in.Models
         {
             try
             {
+
                 this.AssociatedFile.Save();
                 this.Presenter.View.EnvironmentWindowWrapper.UpdateTitleState();
             }
