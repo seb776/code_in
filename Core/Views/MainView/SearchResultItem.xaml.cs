@@ -1,4 +1,5 @@
-﻿using code_in.Presenters.Nodal;
+﻿using code_in.Exceptions;
+using code_in.Presenters.Nodal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,13 @@ namespace code_in.Views.MainView
     {
         public SearchResultItem(ResourceDictionary themeResDict)
         {
+            InitializeComponent();
             // TODO
         }
-        public SearchResultItem()
+        public SearchResultItem() :
+            this(Code_inApplication.MainResourceDictionary)
         {
-            InitializeComponent();
+            throw new DefaultCtorVisualException();
         }
         public INodeElem AssociatedNode;
 

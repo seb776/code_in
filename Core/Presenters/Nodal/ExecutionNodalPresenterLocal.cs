@@ -15,7 +15,7 @@ namespace code_in.Presenters.Nodal
     public class ExecutionNodalPresenterLocal : ANodalPresenterLocal
     {
 
-        private ExecutionNodalModel _model;
+        public ExecutionNodalModel _model;
         public ExecutionNodalView ExecNodalView
         {
             get
@@ -27,6 +27,7 @@ namespace code_in.Presenters.Nodal
             base()
         {
             _model = new ExecutionNodalModel(assocFile._model, nodePresenter.GetASTNode());
+            _model.Presenter = this;
         }
         public override String DocumentName
         {

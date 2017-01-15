@@ -38,6 +38,7 @@ namespace code_in.Presenters.Nodal
             try
             {
                 _model = new DeclarationsNodalModel(path);
+                _model.Presenter = this;
                 this._generateVisualASTDeclaration(_model.AST, this.View);
             }
             catch (Exception e)

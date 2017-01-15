@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace code_in.Views.MainView
 {
@@ -18,7 +19,7 @@ namespace code_in.Views.MainView
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
-        private INodalView _nodalView;
+        public INodalView _nodalView;
         public SearchBar(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -81,13 +82,14 @@ namespace code_in.Views.MainView
             foreach (var category in searchResults.Keys)
             {
                 var categoryItem = new TreeViewItem();
+                categoryItem.Foreground = new SolidColorBrush(Colors.White);
                 categoryItem.Header = category;
                 this.SearchResult.Items.Add(categoryItem);
                 foreach (var result in searchResults[category])
                 {
                     var resultItem = new SearchResultItem(this._themeResourceDictionary);
 
-                    resultItem.Name = result.GetName();
+                    resultItem.ResultName.Content = result.GetName();
                     resultItem.AssociatedNode = result;
                     categoryItem.Items.Add(resultItem);
                 }

@@ -149,9 +149,8 @@ namespace code_in.Views.NodalView
             }
             return null;
         }
-        public Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
+        public virtual Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
         {
-            //var results = new List<Tuple<string, List<INodeElem>>>();
             var results = new Dictionary<string, List<INodeElem>>();
 
             //    // 1 Get the nodalView
@@ -199,6 +198,7 @@ namespace code_in.Views.NodalView
 
             this.ZoomPanel.RenderTransform = new ScaleTransform();
             this.SearchBar = new SearchBar(this.GetThemeResourceDictionary());
+            SearchBar._nodalView = this;
             this.SearchBar.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
             this.SearchBar.SetValue(WidthProperty, Double.NaN); // Width auto
             this.WinGrid.Children.Add(this.SearchBar);
