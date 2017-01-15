@@ -135,6 +135,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public new void Drop(IEnumerable<IDragNDropItem> items)
         {
+            if (CurrentMovingNodes == null) // TODO quickfix to remove
+                return;
             int finalIndex = 0; // Index for inserting nodes at the right place
             double movingNodesY = this.CurrentMovingNodes.Margin.Top;
             BaseTile beforeItem = null;
