@@ -159,7 +159,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public string GetName()
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance) // TODO @Seb Remove

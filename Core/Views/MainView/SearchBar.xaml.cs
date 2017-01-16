@@ -15,7 +15,7 @@ namespace code_in.Views.MainView
     /// <summary>
     /// Logique d'interaction pour SearchBar.xaml
     /// </summary>
-    public partial class SearchBar : UserControl, IVisualNodeContainer, IContainerDragNDrop
+    public partial class SearchBar : UserControl
     {
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
@@ -27,39 +27,12 @@ namespace code_in.Views.MainView
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
+            SetLanguageResources("");
         }
         public SearchBar(INodalView MainView) :
             this(Code_inApplication.MainResourceDictionary)
         { throw new DefaultCtorVisualException(); }
 
-        #region IVisualNodeContainer
-        public T CreateAndAddNode<T>(INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
-        {
-            T node = (T)Activator.CreateInstance(typeof(T), this._themeResourceDictionary); // TODO From Seb: This may crash if the constructor is not implemented
-            node.SetParentView(null);
-            node.SetNodePresenter(nodePresenter);
-            nodePresenter.SetView(node);
-            this.AddNode(node);
-            return node;
-        }
-        public void AddNode<T>(T node, int idx = -1) where T : UIElement, code_in.Views.NodalView.INode
-        {
-            //if (idx < 0)
-            //    this.SearchResult..Add(node as UIElement);
-            //else
-            //    this.SearchResult.Children.Insert(idx, node as UIElement);
-        }
-        public void RemoveNode(INodeElem node)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion IVisualNodeContainer
-        #region IContainerDragNDrop
-        public void SelectNode(INodeElem node) { } // Do nothing
-        public void UnSelectNode(INodeElem node) { } // Do nothing
-
-        #endregion IContainerDragNDrop
         #region ICodeInVisual
 
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
@@ -70,7 +43,8 @@ namespace code_in.Views.MainView
         }
         public void SetLanguageResources(String keyPrefix)
         {
-            throw new NotImplementedException();
+            this.SearchButton.SetResourceReference(Button.ContentProperty, "Search");
+            this.SearchBox.SetResourceReference(TextBox.TextProperty, "Search");
         }
         #endregion ICodeInVisual
 
@@ -85,6 +59,7 @@ namespace code_in.Views.MainView
                 categoryItem.Foreground = new SolidColorBrush(Colors.White);
                 categoryItem.Header = category;
                 this.SearchResult.Items.Add(categoryItem);
+                categoryItem.IsExpanded = true;
                 foreach (var result in searchResults[category])
                 {
                     var resultItem = new SearchResultItem(this._themeResourceDictionary);
@@ -188,6 +163,12 @@ namespace code_in.Views.MainView
         public bool IsDropValid(System.Collections.Generic.IEnumerable<NodalView.IDragNDropItem> items)
         {
             throw new NotImplementedException();
+        }
+
+        private void SearchBox_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.SearchBox.SelectAll();
+            e.Handled = true;
         }
     }
 }

@@ -15,7 +15,38 @@ namespace code_in.Views.NodalView
     {
         public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
         {
-            return this.ExecPresenter._model.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
+            var localDict = new Dictionary<string, List<INodeElem>>();
+            var declDict = this.ExecPresenter._model.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
+
+            if (true) // option for decls
+                localDict = declDict;
+
+            foreach (var nodeView in _registeredNodes)
+            {
+                bool shouldAdd = false;
+                string categoryString = "";
+                var nodePresenter = nodeView.Presenter;
+                var nodeAST = nodePresenter.GetASTNode();
+                if (ANodalView.NameMatch(name, nodeView.GetName(), true))
+                {
+                    shouldAdd = true;
+                    if (nodeAST is ICSharpCode.NRefactory.CSharp.InvocationExpression)
+                        categoryString = "function";
+                    else
+                        categoryString = "others";
+
+                }
+                if (shouldAdd)
+                {
+                    if (!localDict.ContainsKey(categoryString))
+                        localDict.Add(categoryString, null);
+                    if (localDict[categoryString] == null)
+                        localDict[categoryString] = new List<INodeElem>();
+                    localDict[categoryString].Add(nodeView);
+                }
+            }
+
+            return declDict;// localDict;
         }
         public ExecutionNodalPresenterLocal ExecPresenter
         {

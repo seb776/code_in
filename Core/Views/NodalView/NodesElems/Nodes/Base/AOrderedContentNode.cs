@@ -128,6 +128,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
                 this._orderedLayout.Children.Add(node as UIElement);
             else
                 this._orderedLayout.Children.Insert(index, node as UIElement);
+            ((ANodalView)this.NodalView)._registeredNodes.Add(node);
         }
         
         public override void HighLightDropPlace(Point pos)
@@ -152,6 +153,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public override void RemoveNode(INodeElem node)
         {
             _orderedLayout.Children.Remove(node as UIElement);
+            ((ANodalView)this.NodalView)._registeredNodes.Remove(node);
         }
         #endregion IVisualNodeContainer
 

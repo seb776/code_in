@@ -9,6 +9,7 @@
     <sys:String x:Key="Browse">Type de nœud</sys:String>
     <sys:String x:Key="Confirm">Type de nœud</sys:String>
     <sys:String x:Key="Cancel">Type de nœud</sys:String>
+    <sys:String x:Key="Search">Rechercher</sys:String>
 
     <!-- Config panels -->
     <sys:String x:Key="GeneralConfigPanelTitle">Général</sys:String>

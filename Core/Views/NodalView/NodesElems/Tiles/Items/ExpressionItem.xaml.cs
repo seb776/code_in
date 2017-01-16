@@ -289,6 +289,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         public void AddNode<T>(T node, int idx = -1) where T : UIElement, code_in.Views.NodalView.INode
         {
             this.ExpressionsGrid.Children.Add(node as UIElement);
+            ((ANodalView)this.NodalView)._registeredNodes.Add(node);
         }
 
 
@@ -317,6 +318,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             }
             this.ExpressionsGrid.Children.Remove(node as UIElement);
             _expression.Remove(node as AExpressionNode);
+            ((ANodalView)this.NodalView)._registeredNodes.Remove(node);
         }
         #endregion IVisualNodeContainer
         #region ILinkContainer

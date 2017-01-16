@@ -177,6 +177,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public void FocusToNode()
         {
             ((ANodalView)this.NodalView).FocusToNode(this);
+
         }
     }
 }

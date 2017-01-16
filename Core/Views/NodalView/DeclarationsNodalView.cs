@@ -28,21 +28,42 @@ namespace code_in.Views.NodalView
             var results = new Dictionary<string, List<INodeElem>>();
 
             var listFunc = new List<INodeElem>();
-            foreach (var c in this.MainGrid.Children)
+            var listClass = new List<INodeElem>();
+            var listMembers = new List<INodeElem>();
+            var listEnums = new List<INodeElem>();
+            var listNamespaces = new List<INodeElem>();
+            foreach (var nodeView in _registeredNodes)
             {
-                if (c is INodeElem)
-                    listFunc.Add(c as INodeElem);
+                var nodePresenter = nodeView.Presenter;
+                var nodeAST = nodePresenter.GetASTNode();
+
+                if (ANodalView.NameMatch(name, nodeView.GetName(), true))
+                {
+                    if (nodeAST is ICSharpCode.NRefactory.CSharp.MethodDeclaration)
+                    {
+                        listFunc.Add(nodeView);
+                    }
+                    else if (nodeAST is ICSharpCode.NRefactory.CSharp.TypeDeclaration)
+                    {
+                        listClass.Add(nodeView);
+                    }
+                    else if (nodeAST is ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)
+                    {
+                        listClass.Add(nodeView);
+                    }
+                }
             }
-            
-            results.Add("function", listFunc);
-            //    // 1 Get the nodalView
-            //    // 2 parcours les noeuds en fonction si declarations ou execution
-            //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
-            //    //toto.MainGrid // Iterate over nodes (declaration)
-            //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
-            //    // 4 if nameFound && iter.Match(userOptions)
-            //    // 4.1 list.add();
-            //    // return list;
+
+            if (listFunc.Count != 0)
+                results.Add("function", listFunc);
+            if (listClass.Count != 0)
+                results.Add("class", listClass);
+            if (listMembers.Count != 0)
+                results.Add("Members", listMembers);
+            if (listEnums.Count != 0)
+                results.Add("Enums", listEnums);
+            if (listNamespaces.Count != 0)
+                results.Add("Namespace", listNamespaces);
             return results;
         }
         public override bool IsDropValid(IEnumerable<IDragNDropItem> items)
@@ -81,7 +102,7 @@ namespace code_in.Views.NodalView
             this.NodalPresenterDecl.OpenFile(path);
             AlignDeclarations();
             FileSystemWatcher w = new FileSystemWatcher();
-            
+
             if (this.NodalPresenterDecl._model != null)
             {
                 var pathFile = this.NodalPresenterDecl._model.FilePath;
@@ -98,7 +119,7 @@ namespace code_in.Views.NodalView
 
                 w.EnableRaisingEvents = true;
             }
-            
+
         }
 
         private static void OnChanged(object source, FileSystemEventArgs e)

@@ -28,6 +28,10 @@ namespace code_in.Views.NodalView
     [ClassInterface(ClassInterfaceType.None)]
     public abstract partial class ANodalView : UserControl, INodalView, stdole.IDispatch
     {
+        static public bool NameMatch(string nameA, string nameB, bool ignoreCase)
+        {
+            return String.Compare(nameA, nameB, ignoreCase) < 1;
+        }
         static public INodeElem InstantiateVisualNode(NodePresenter.ECSharpNode nodeType, INodalView nodalView, ILinkContainer linkContainer)
         {
             Dictionary<NodePresenter.ECSharpNode, Type> types = new Dictionary<NodePresenter.ECSharpNode, Type>();
@@ -179,6 +183,7 @@ namespace code_in.Views.NodalView
             node.GetSize(out sizeX, out sizeY);
             ScrollView.ScrollToHorizontalOffset(offset.X + ScrollView.HorizontalOffset - middleOfScrollViewer.X + (sizeX / 2.0f));
             ScrollView.ScrollToVerticalOffset(offset.Y + ScrollView.VerticalOffset - middleOfScrollViewer.Y + (sizeY / 2.0f));
+
         }
 
         private List<INodeElem> _selectedNodes = null;
@@ -309,6 +314,7 @@ namespace code_in.Views.NodalView
             im.IsOpen = true;
         }
         #region Events
+
         private void SliderZoom(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (this.ZoomPanel != null && this.offsetGrid != null)
@@ -575,16 +581,15 @@ namespace code_in.Views.NodalView
         public void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode
         {
             this.MainGrid.Children.Add(node as UIElement);
+            _registeredNodes.Add(node);
         }
+
+        public List<INodeElem> _registeredNodes = new List<INodeElem>(); // All nodes within the view (To make search easier)
 
         public void RemoveNode(INodeElem node)
         {
             this.MainGrid.Children.Remove(node as UIElement);
-        }
-
-        public void RemoveTile(INodeElem tile)
-        {
-            this.MainGrid.Children.Remove(tile as UIElement);
+            _registeredNodes.Remove(node);
         }
 
         #endregion IVisualNodeContainer

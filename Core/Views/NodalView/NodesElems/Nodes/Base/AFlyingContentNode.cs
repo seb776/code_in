@@ -67,11 +67,13 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         public override void AddNode<T>(T node, int index = -1)
         {
             this.ContentGridLayout.Children.Add(node as UIElement);
+            ((ANodalView)this.NodalView)._registeredNodes.Add(node);
         }
 
         public override void RemoveNode(INodeElem node)
         {
             this.ContentGridLayout.Children.Remove(node as UIElement);
+            ((ANodalView)this.NodalView)._registeredNodes.Remove(node);
         }
     }
 }

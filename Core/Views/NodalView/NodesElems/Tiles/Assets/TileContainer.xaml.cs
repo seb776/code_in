@@ -83,11 +83,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
                 this.TileStackPannel.Children.Add(uiTile);
             else
                 this.TileStackPannel.Children.Insert(index, uiTile);
+            ((ANodalView)this.NodalView)._registeredNodes.Add(tile);
         }
 
         public void RemoveTile(BaseTile tile)
         {
             this.TileStackPannel.Children.Remove(tile);
+            ((ANodalView)this.NodalView)._registeredNodes.Remove(tile);
         }
         #endregion ITileContainer
         #region ICodeInVisual

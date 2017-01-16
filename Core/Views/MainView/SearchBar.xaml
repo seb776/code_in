@@ -101,31 +101,40 @@
     </UserControl.Resources>
     <Expander x:Name="Sb" Header="" VerticalAlignment="Stretch" Foreground="Black" IsExpanded="False" Expanded="Expander_Expanded" Collapsed="Sb_Collapsed" ExpandDirection="Right" FlowDirection="RightToLeft">
         <Expander.Content>
-            <Grid Background="#70000000">
+            <Grid Background="#DD000000">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
                 <Grid x:Name="Sb_content" Grid.Column="1" FlowDirection="LeftToRight">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="10"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="10" />
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox x:Name="SearchBox" HorizontalAlignment="Stretch" Foreground="Gray" Background="White" Text="Type in to search"/>
-                        <Button HorizontalAlignment="Right" Content="Search" Foreground="Black" Width="100" Click="Button_Click"/>
+                        <TextBox x:Name="SearchBox" HorizontalAlignment="Stretch" Width="120" MouseDoubleClick="SearchBox_MouseDown" Foreground="Gray" Background="White" Text="TMP: Type in to search"/>
+                        <Button HorizontalAlignment="Right" x:Name="SearchButton" Content="TMP: Search" Foreground="Black" Width="100" Click="Button_Click"/>
                     </StackPanel>
-                    <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="3">
-                        <TreeView x:Name="SearchResult" Background="Transparent">
-                            <TreeViewItem Header="toto" Foreground="White" IsExpanded="True">
-                                <TreeViewItem Header="titi" Foreground="Azure"></TreeViewItem>
-                            </TreeViewItem>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3">
+                        <StackPanel Orientation="Vertical">
+                            <CheckBox Foreground="White">TMP: Current scope</CheckBox>
+                            <CheckBox Foreground="White">TMP: Upper scope</CheckBox>
+                            <CheckBox Foreground="White">TMP: Declarations</CheckBox>
+                            <CheckBox Foreground="White">TMP: Execution</CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <CheckBox Foreground="White">TMP: Exact match</CheckBox>
+                            <CheckBox Foreground="White">TMP: Case sensitive</CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Grid.Row="5">
+                        <TreeView x:Name="SearchResult" Background="Transparent" BorderBrush="Transparent">
                         </TreeView>
-                        <!--<StackPanel x:Name="SearchResult" HorizontalAlignment="Center">
-                        </StackPanel>-->
                     </ScrollViewer>
                     <Grid/>
                 </Grid>
