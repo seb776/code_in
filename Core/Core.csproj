@@ -205,6 +205,7 @@
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\AExpressionNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ArrayCreateExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\ArrayInitExprNode.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\CastExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TypeReferenceExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\BaseReferenceExprNode.cs" />
     <Compile Include="Views\NodalView\NodesElems\Nodes\Expressions\TypeOfExprNode.cs" />

@@ -675,6 +675,14 @@ namespace code_in.Presenters.Nodal
                 visualNode = isExprNode;
             }
             #endregion IsExpression
+            #region CastExpression
+            else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.CastExpression))
+            {
+                var isExpr = expr as ICSharpCode.NRefactory.CSharp.CastExpression;
+                var isExprNode = container.CreateAndAddNode<CastExprNode>(nodePresenter);
+                visualNode = isExprNode;
+            }
+            #endregion CastExpression
             #region BaseReferenceExpression
             else if (expr.GetType() == typeof(ICSharpCode.NRefactory.CSharp.BaseReferenceExpression))
             {
