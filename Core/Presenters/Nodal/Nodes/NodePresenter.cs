@@ -40,6 +40,8 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             return _model;
         }
+
+        #region InitAndManagementOfNode
         public static AstNode InstantiateASTNode(ECSharpNode csharpNode)
         {
             Dictionary<ECSharpNode, Type> types = new Dictionary<ECSharpNode,Type>();
@@ -212,6 +214,44 @@ namespace code_in.Presenters.Nodal.Nodes
             UNDOCUMENTED_EXPRESSION,
             UNSUP_EXPR
         };
+
+        public enum EVirtualNodeType
+        {
+            AST_NODE,
+            FUNC_ENTRY
+        }
+
+        public void SetASTNode(AstNode node)
+        {
+            _model = node;
+        }
+
+        public void RemoveFromAST()
+        {
+            this._model.Remove();
+        }
+
+        static void AddNode(object[] objects)
+        {
+            ContextMenu cm = new ContextMenu();
+            UIElement view = (objects[0] as NodePresenter)._view as UIElement;
+
+            var listOfBs = (objects[0] as NodePresenter).GetAvailableNodes();
+
+            foreach (var entry in listOfBs)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = entry.Name;
+                mi.Click += mi_Click;
+                mi.DataContext = entry;
+                cm.Items.Add(mi);
+            }
+            cm.IsOpen = true;
+            _viewStatic = ((objects[0] as NodePresenter)._view) as INodeElem;
+            _presStatic = ((objects[0] as NodePresenter)._nodalPresenter) as INodalPresenter;
+        }
+
+        #endregion InstantiationOfPresenter
         public NodePresenter(INodalPresenter nodalPres, ECSharpNode nodeType)
         {
             // TODO if nodeType == classDecl ...
@@ -234,10 +274,29 @@ namespace code_in.Presenters.Nodal.Nodes
             LoadExecParamsCount();
             GetExistingAttributesFromNode();
         }
-        public void RemoveFromAST()
+
+        #region NameManagement
+        public void SetName(String name)
         {
-            this._model.Remove();
+            if (_model == null)
+                return;
+            Dictionary<Type, bool> setNameRoutines = new Dictionary<Type, bool>();
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
+
+            var routine = setNameRoutines[_model.GetType()];
+            if (routine)
+                (_model as dynamic).Name = name;
+            else
+                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
+            _view.SetName(name);
         }
+
+        #endregion Namemanagement
+
+        #region TypeManagement
         private void GetTypeFromNode()
         {
             if (_model == null)
@@ -259,56 +318,27 @@ namespace code_in.Presenters.Nodal.Nodes
             return (_type);
         }
 
-        private void GetExistingAttributesFromNode()
+        public void UpdateType(string type)
         {
-            if (_model == null)
-                return;
+            if (_model.GetType() == typeof(FieldDeclaration))
+            {
+                var ast = _model as FieldDeclaration;
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
+            }
             if (_model.GetType() == typeof(MethodDeclaration))
             {
                 var ast = _model as MethodDeclaration;
-                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
-                {
-                    int i = 0;
-                    while (i < section.Attributes.Count)
-                    {
-                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>();
-                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
-                        if (attr.Type != null && attr.Arguments.Count > 0)
-                        newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
-                        else if (attr.Type != null && attr.Arguments.Count == 0)
-                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
-                        else if (attr.Type == null && attr.Arguments.Count > 0)
-                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
-                        AttributesList.Add(newElem);
-                        ++i;
-                    }
-                }
-            }
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                var ast = _model as TypeDeclaration;
-                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
-                {
-                    int i = 0;
-                    while (i < section.Attributes.Count)
-                    {
-                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>("", "");
-                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
-                        if (attr.Type != null && attr.Arguments.Count > 0)
-                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
-                        else if (attr.Type != null && attr.Arguments.Count == 0)
-                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
-                        else if (attr.Type == null && attr.Arguments.Count > 0)
-                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
-                        else
-                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
-                        AttributesList.Add(newElem);
-                        ++i;
-                    }
-                }
+
+                ast.ReturnType = new PrimitiveType(type);
+                (_view as IContainingType).SetTypeFromString(type);
             }
         }
 
+        #endregion TypeManagement
+
+        #region ModifiersManagement
         public List<string> getModifiersList()
         {
             return (ModifiersList);
@@ -423,349 +453,6 @@ namespace code_in.Presenters.Nodal.Nodes
                     ModifiersList.Add("volatile");
             }
             ModifiersList.Distinct();
-        }
-
-        private void GetExistingGenericsFromNode()
-        {
-            if (_model == null)
-                return;
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                Tuple<string, EGenericVariance> ExistingGeneric;
-                foreach (var tmp in (_model as TypeDeclaration).TypeParameters)
-                {
-                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
-                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
-                    else
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
-                    GenericList.Add(ExistingGeneric);
-                }
-            }
-            if (_model.GetType() == typeof(MethodDeclaration))
-            {
-                Tuple<string, EGenericVariance> ExistingGeneric;
-                foreach (var tmp in (_model as MethodDeclaration).TypeParameters)
-                {
-                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
-                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
-                    else
-                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
-                    GenericList.Add(ExistingGeneric);
-                }
-            }
-        }
-
-        private void GetExistingInheritanceFromNode()
-        {
-            if (_model == null)
-                return;
-            if (_model.GetType() == typeof(TypeDeclaration) && (_model as TypeDeclaration).BaseTypes != null)
-            {
-                foreach (var inherit in (_model as TypeDeclaration).BaseTypes)
-                    InheritanceList.Add(inherit.ToString());
-            }
-        }
-        /// <summary>
-        /// This describes the type of node when it's a node that does not exist in the AST
-        /// </summary>
-        public enum EVirtualNodeType
-        {
-            AST_NODE,
-            FUNC_ENTRY
-        }
-        public NodePresenter(INodalPresenter nodalPres, EVirtualNodeType nodeType)
-        {
-            System.Diagnostics.Debug.Assert(nodalPres != null);
-            _nodalPresenter = nodalPres;
-            _model = null;
-            _virtualType = nodeType;
-        }
-
-        // Return actions according to types
-        public ENodeActions GetActions() // TODO FINISH /!\ ADD ALL ITEMS ETC /!\
-        {
-            if (_model != null)
-            {
-                if (_model.GetType() == typeof(TypeDeclaration))
-                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.INHERITANCE | ENodeActions.MODIFIERS | ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.GENERICS);
-                else if (_model.GetType() == typeof(NamespaceDeclaration))
-                    return (ENodeActions.NAME | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(MethodDeclaration))
-                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS | ENodeActions.TYPE);
-                else if (_model.GetType() == typeof(FieldDeclaration))
-                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE | ENodeActions.TYPE);
-                else if (_model.GetType() == typeof(PropertyDeclaration))
-                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(UsingDeclaration))
-                    return (ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(ObjectCreateExpression))
-                    return (ENodeActions.COMMENT | ENodeActions.EXEC_TYPE);
-                else if (_model.GetType() == typeof(IdentifierExpression))
-                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(MemberReferenceExpression))
-                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(InvocationExpression))
-                    return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(PrimitiveExpression))
-                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
-                else if (_model.GetType() == typeof(PropertyDeclaration))
-                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
-                else
-                    return (ENodeActions.TEXT); // Any not supported node allows text modification
-            }
-
-            return (0);
-        }
-
-        public void SetASTNode(AstNode node)
-        {
-            _model = node;
-        }
-        // methods for the Nodes modification
-
-        // this method changes the name into ast and update the view
-        public void SetName(String name)
-        {
-            if (_model == null)
-                return;
-            Dictionary<Type, bool> setNameRoutines = new Dictionary<Type, bool>();
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
-            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
-
-            var routine = setNameRoutines[_model.GetType()];
-            if (routine)
-                (_model as dynamic).Name = name;
-            else
-                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
-            _view.SetName(name);
-        }
-
-        // this method add a generic into the genericList and update the view -> add the new generic to view
-
-        public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
-        {
-            if (_model == null)
-                return;
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
-                Tuple<string, EGenericVariance> NewGenericInList = null;
-                var typeDecl = _model as TypeDeclaration;
-                NewGeneric.Name = name;
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
-                }
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
-                }
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
-                }
-                typeDecl.TypeParameters.Add(NewGeneric);
-                GenericList.Add(NewGenericInList);
-            }
-            if (_model.GetType() == typeof(MethodDeclaration))
-            {
-                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
-                Tuple<string, EGenericVariance> NewGenericInList = null;
-                var typeDecl = _model as MethodDeclaration;
-                NewGeneric.Name = name;
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
-                }
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
-                }
-                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
-                {
-                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
-                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
-                }
-                typeDecl.TypeParameters.Add(NewGeneric);
-                GenericList.Add(NewGenericInList);
-            }
-            (_view as IContainingGenerics).setGenerics(GenericList);
-            UpdateGenericsInAst();
-        }
-
-        // this method allow the get of the GenericList
-
-        public List<Tuple<string, EGenericVariance>> getGenericList()
-        {
-            if (GenericList != null)
-                return (GenericList);
-            else
-                return (new List<Tuple<string, EGenericVariance>>());
-        }
-
-        // this method is an event called when the Generic name is modified
-
-        public void ModifGenericName(string name, int index)
-        {
-            if (GenericList.Count > index)
-            {
-                EGenericVariance CopyVariance;
-                CopyVariance = GenericList[index].Item2;
-                GenericList.RemoveAt(index);
-                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, CopyVariance);
-                GenericList.Insert(index, ModifTuple);
-                (_view as IContainingGenerics).setGenerics(GenericList);
-            }
-            UpdateGenericsInAst();
-        }
-
-        // this method allow the modification of an existing Generic variance's
-        public void ModifGenericVariance(int index, EGenericVariance variance, string name)
-        {
-            if (GenericList.Count > index)
-            {
-                GenericList.RemoveAt(index);
-                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, variance);
-                GenericList.Insert(index, ModifTuple);
-                (_view as IContainingGenerics).setGenerics(GenericList);
-            }
-            UpdateGenericsInAst();
-        }
-
-        // return true if the genericName in parameters match in List
-
-        public bool ifGenericExist(string name)
-        {
-            foreach (var tmp in GenericList)
-            {
-                if (tmp.Item1.Equals(name))
-                    return true;
-            }
-            return false;
-        }
-
-        // this method allow the remove of and existing generic
-
-        public void RemoveGeneric(int index)
-        {
-            if (GenericList.Count > index)
-            {
-                GenericList.RemoveAt(index);
-                (_view as IContainingGenerics).setGenerics(GenericList);
-            }
-            UpdateGenericsInAst();
-        }
-
-        public void UpdateGenericsInAst()
-        {
-            if (_model == null)
-                return;
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                var TypeDecl = (_model as TypeDeclaration);
-
-                TypeDecl.TypeParameters.Clear();
-                TypeParameterDeclaration updatedGeneric;
-                foreach (Tuple<string, EGenericVariance> generic in GenericList)
-                {
-                    if (generic.Item2 == EGenericVariance.IN)
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
-                    }
-                    else if (generic.Item2 == EGenericVariance.OUT)
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
-                    }
-                    else
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
-                    }
-                    TypeDecl.TypeParameters.Add(updatedGeneric);
-                }
-            }
-            if (_model.GetType() == typeof(MethodDeclaration))
-            {
-                var TypeDecl = (_model as MethodDeclaration);
-
-                TypeDecl.TypeParameters.Clear();
-                TypeParameterDeclaration updatedGeneric;
-                foreach (Tuple<string, EGenericVariance> generic in GenericList)
-                {
-                    if (generic.Item2 == EGenericVariance.IN)
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
-                    }
-                    else if (generic.Item2 == EGenericVariance.OUT)
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
-                    }
-                    else
-                    {
-                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
-                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
-                    }
-                    TypeDecl.TypeParameters.Add(updatedGeneric);
-                }
-            }
-        }
-
-        public void AddInheritance(string name)
-        {
-            if (_model == null)
-                return;
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                InheritanceList.Add(name);
-                SimpleType NewInheriance = new SimpleType();
-                NewInheriance.Identifier = name;
-                (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
-            }
-            (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
-        }
-        public void RemoveInheritance(int index)
-        {
-            if (InheritanceList.Count > index)
-            {
-                InheritanceList.RemoveAt(index);
-                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
-                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
-            }
-        }
-
-        public void ChangeInheritanceName(int index, string name)
-        {
-            SimpleType newNamedInheritance = new SimpleType();
-            newNamedInheritance.Identifier = name;
-            if (InheritanceList.Count > index)
-            {
-                InheritanceList.RemoveAt(index);
-                InheritanceList.Insert(index, name);
-                (_model as TypeDeclaration).BaseTypes.InsertAfter((_model as TypeDeclaration).BaseTypes.ElementAt(index), newNamedInheritance);
-                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
-                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
-            }
-
-        }
-
-        public List<string> getInheritanceList()
-        {
-            return (InheritanceList);
         }
 
         public void SetAccesModifier(string AccessModifier)
@@ -1032,6 +719,378 @@ namespace code_in.Presenters.Nodal.Nodes
             }
         }
 
+        #endregion ModifiersManagement
+
+        #region GenericsManagement
+        private void GetExistingGenericsFromNode()
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                Tuple<string, EGenericVariance> ExistingGeneric;
+                foreach (var tmp in (_model as TypeDeclaration).TypeParameters)
+                {
+                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
+                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
+                    else
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
+                    GenericList.Add(ExistingGeneric);
+                }
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                Tuple<string, EGenericVariance> ExistingGeneric;
+                foreach (var tmp in (_model as MethodDeclaration).TypeParameters)
+                {
+                    if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.IN);
+                    else if (tmp.Variance == ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant)
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.OUT);
+                    else
+                        ExistingGeneric = new Tuple<string, EGenericVariance>(tmp.Name.ToString(), EGenericVariance.NOTHING);
+                    GenericList.Add(ExistingGeneric);
+                }
+            }
+        }
+
+        public void AddGeneric(string name, Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance variance)
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
+                Tuple<string, EGenericVariance> NewGenericInList = null;
+                var typeDecl = _model as TypeDeclaration;
+                NewGeneric.Name = name;
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
+                }
+                typeDecl.TypeParameters.Add(NewGeneric);
+                GenericList.Add(NewGenericInList);
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                TypeParameterDeclaration NewGeneric = new TypeParameterDeclaration();
+                Tuple<string, EGenericVariance> NewGenericInList = null;
+                var typeDecl = _model as MethodDeclaration;
+                NewGeneric.Name = name;
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.IN)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.IN);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.OUT)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.OUT);
+                }
+                if (variance == Views.NodalView.NodesElems.Nodes.Assets.EGenericVariance.NOTHING)
+                {
+                    NewGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    NewGenericInList = new Tuple<string, EGenericVariance>(name, EGenericVariance.NOTHING);
+                }
+                typeDecl.TypeParameters.Add(NewGeneric);
+                GenericList.Add(NewGenericInList);
+            }
+            (_view as IContainingGenerics).setGenerics(GenericList);
+            UpdateGenericsInAst();
+        }
+
+        // this method allow the get of the GenericList
+
+        public List<Tuple<string, EGenericVariance>> getGenericList()
+        {
+            if (GenericList != null)
+                return (GenericList);
+            else
+                return (new List<Tuple<string, EGenericVariance>>());
+        }
+
+        // this method is an event called when the Generic name is modified
+
+        public void ModifGenericName(string name, int index)
+        {
+            if (GenericList.Count > index)
+            {
+                EGenericVariance CopyVariance;
+                CopyVariance = GenericList[index].Item2;
+                GenericList.RemoveAt(index);
+                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, CopyVariance);
+                GenericList.Insert(index, ModifTuple);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+            UpdateGenericsInAst();
+        }
+
+        // this method allow the modification of an existing Generic variance's
+        public void ModifGenericVariance(int index, EGenericVariance variance, string name)
+        {
+            if (GenericList.Count > index)
+            {
+                GenericList.RemoveAt(index);
+                Tuple<string, EGenericVariance> ModifTuple = new Tuple<string, EGenericVariance>(name, variance);
+                GenericList.Insert(index, ModifTuple);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+            UpdateGenericsInAst();
+        }
+
+        // return true if the genericName in parameters match in List
+
+        public bool ifGenericExist(string name)
+        {
+            foreach (var tmp in GenericList)
+            {
+                if (tmp.Item1.Equals(name))
+                    return true;
+            }
+            return false;
+        }
+
+        // this method allow the remove of and existing generic
+
+        public void RemoveGeneric(int index)
+        {
+            if (GenericList.Count > index)
+            {
+                GenericList.RemoveAt(index);
+                (_view as IContainingGenerics).setGenerics(GenericList);
+            }
+            UpdateGenericsInAst();
+        }
+
+        public void UpdateGenericsInAst()
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var TypeDecl = (_model as TypeDeclaration);
+
+                TypeDecl.TypeParameters.Clear();
+                TypeParameterDeclaration updatedGeneric;
+                foreach (Tuple<string, EGenericVariance> generic in GenericList)
+                {
+                    if (generic.Item2 == EGenericVariance.IN)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    }
+                    else if (generic.Item2 == EGenericVariance.OUT)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    }
+                    else
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    }
+                    TypeDecl.TypeParameters.Add(updatedGeneric);
+                }
+            }
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var TypeDecl = (_model as MethodDeclaration);
+
+                TypeDecl.TypeParameters.Clear();
+                TypeParameterDeclaration updatedGeneric;
+                foreach (Tuple<string, EGenericVariance> generic in GenericList)
+                {
+                    if (generic.Item2 == EGenericVariance.IN)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Contravariant;
+                    }
+                    else if (generic.Item2 == EGenericVariance.OUT)
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Covariant;
+                    }
+                    else
+                    {
+                        updatedGeneric = new TypeParameterDeclaration(generic.Item1);
+                        updatedGeneric.Variance = ICSharpCode.NRefactory.TypeSystem.VarianceModifier.Invariant;
+                    }
+                    TypeDecl.TypeParameters.Add(updatedGeneric);
+                }
+            }
+        }
+
+        #endregion GenericsManagements
+
+        #region InheritanceManagement
+        private void GetExistingInheritanceFromNode()
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(TypeDeclaration) && (_model as TypeDeclaration).BaseTypes != null)
+            {
+                foreach (var inherit in (_model as TypeDeclaration).BaseTypes)
+                    InheritanceList.Add(inherit.ToString());
+            }
+        }
+
+        public void AddInheritance(string name)
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                InheritanceList.Add(name);
+                SimpleType NewInheriance = new SimpleType();
+                NewInheriance.Identifier = name;
+                (_model as TypeDeclaration).BaseTypes.Add(NewInheriance);
+            }
+            (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
+        }
+        public void RemoveInheritance(int index)
+        {
+            if (InheritanceList.Count > index)
+            {
+                InheritanceList.RemoveAt(index);
+                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
+                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
+            }
+        }
+
+        public void ChangeInheritanceName(int index, string name)
+        {
+            SimpleType newNamedInheritance = new SimpleType();
+            newNamedInheritance.Identifier = name;
+            if (InheritanceList.Count > index)
+            {
+                InheritanceList.RemoveAt(index);
+                InheritanceList.Insert(index, name);
+                (_model as TypeDeclaration).BaseTypes.InsertAfter((_model as TypeDeclaration).BaseTypes.ElementAt(index), newNamedInheritance);
+                (_model as TypeDeclaration).BaseTypes.Remove((_model as TypeDeclaration).BaseTypes.ElementAt(index));
+                (_view as IContainingInheritance).ManageInheritance(InheritanceList); // here Nodalview update
+            }
+
+        }
+
+        public List<string> getInheritanceList()
+        {
+            return (InheritanceList);
+        }
+
+        #endregion InheritanceManagement
+
+        #region AttributesManagement
+        private void GetExistingAttributesFromNode()
+        {
+            if (_model == null)
+                return;
+            if (_model.GetType() == typeof(MethodDeclaration))
+            {
+                var ast = _model as MethodDeclaration;
+                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
+                {
+                    int i = 0;
+                    while (i < section.Attributes.Count)
+                    {
+                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>();
+                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
+                        if (attr.Type != null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
+                        else if (attr.Type != null && attr.Arguments.Count == 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
+                        else if (attr.Type == null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        AttributesList.Add(newElem);
+                        ++i;
+                    }
+                }
+            }
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var ast = _model as TypeDeclaration;
+                foreach (ICSharpCode.NRefactory.CSharp.AttributeSection section in ast.Attributes)
+                {
+                    int i = 0;
+                    while (i < section.Attributes.Count)
+                    {
+                        KeyValuePair<string, string> newElem = new KeyValuePair<string, string>("", "");
+                        ICSharpCode.NRefactory.CSharp.Attribute attr = section.Attributes.ElementAt(i);
+                        if (attr.Type != null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), attr.Arguments.ElementAt(0).ToString());
+                        else if (attr.Type != null && attr.Arguments.Count == 0)
+                            newElem = new KeyValuePair<string, string>(attr.Type.ToString(), "");
+                        else if (attr.Type == null && attr.Arguments.Count > 0)
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        else
+                            newElem = new KeyValuePair<string, string>("", attr.Arguments.ElementAt(0).ToString());
+                        AttributesList.Add(newElem);
+                        ++i;
+                    }
+                }
+            }
+        }
+
+        public void AddAttribute(string attribute)
+        {
+            CSharpParser parser = new CSharpParser();
+
+            AttributesList.Add(new KeyValuePair<string, string>(attribute, ""));
+            ICSharpCode.NRefactory.CSharp.Expression newExpr = parser.ParseExpression(attribute);
+            ICSharpCode.NRefactory.CSharp.Attribute newAttribute = new ICSharpCode.NRefactory.CSharp.Attribute();
+            newAttribute.Type = new SimpleType(newExpr.Children.ElementAt(0).ToString());
+            /*            newExpr.FirstChild.Remove();
+                        newExpr.FirstChild.Remove();*/
+            /*            newExpr.Children.ElementAt(0).Remove(); // TODO Try to remove brackets from expression but be carefull, i tried to remove more than one time, but didn't worked
+                                    newExpr.Children.ElementAt(newExpr.Children.Count() - 1).Remove();*/
+            newAttribute.Arguments.Add(newExpr);
+            ICSharpCode.NRefactory.CSharp.AttributeSection newSection = new AttributeSection();
+            newSection.Attributes.Add(newAttribute);
+
+            if (_model.GetType() == typeof(TypeDeclaration))
+            {
+                var toto = (_model as TypeDeclaration);
+                toto.Attributes.Add(newSection);
+
+                if (attribute.Contains("("))
+                {
+                    string type = attribute.Substring(0, attribute.IndexOf("("));
+                    string arg = attribute.Substring(attribute.IndexOf("("), attribute.IndexOf(")"));
+                    (_view as IContainingAttribute).addAttribute(type, arg);
+                }
+                else
+                    (_view as IContainingAttribute).addAttribute(attribute, "");
+            }
+        }
+
+
+        public void RemoveAttribute(int index)
+        {
+            if (index < AttributesList.Count)
+                AttributesList.RemoveAt(index);
+            (_view as IContainingAttribute).delAttribute(index);
+            //TODO remove in ast
+        }
+        public List<KeyValuePair<string, string>> getAttributeList()
+        {
+            return (AttributesList);
+        }
+
+        #endregion AttributesManagement
+
+        #region ExecParamsManagement
         public void AddExecParam()
         {
             System.Diagnostics.Debug.Assert(_view is code_in.Views.NodalView.NodesElems.Nodes.Expressions.FuncCallExprNode);
@@ -1041,7 +1100,7 @@ namespace code_in.Presenters.Nodal.Nodes
             var invocExpr = this._model as InvocationExpression;
             var inAnchor = funcExprView.CreateAndAddInput<code_in.Views.NodalView.NodesElems.Anchors.DataFlowAnchor>();
             var idExpr = new IdentifierExpression(""); // This node is only used to fill the gap, the type of this node could be anything it does not matter
-            invocExpr.Arguments.Add(idExpr); 
+            invocExpr.Arguments.Add(idExpr);
             inAnchor.SetASTNodeReference((e) => { idExpr.ReplaceWith(e); });
         }
 
@@ -1073,77 +1132,6 @@ namespace code_in.Presenters.Nodal.Nodes
             }
         }
 
-        public void AddExecGeneric()
-        {
-
-        }
-
-
-        public void AddAttribute(string attribute)
-        {
-            CSharpParser parser = new CSharpParser();
-
-            AttributesList.Add(new KeyValuePair<string, string>(attribute, ""));
-            ICSharpCode.NRefactory.CSharp.Expression newExpr = parser.ParseExpression(attribute);
-            ICSharpCode.NRefactory.CSharp.Attribute newAttribute = new ICSharpCode.NRefactory.CSharp.Attribute();
-            newAttribute.Type = new SimpleType(newExpr.Children.ElementAt(0).ToString());
-/*            newExpr.FirstChild.Remove();
-            newExpr.FirstChild.Remove();*/
-            /*            newExpr.Children.ElementAt(0).Remove(); // TODO Try to remove brackets from expression but be carefull, i tried to remove more than one time, but didn't worked
-                                    newExpr.Children.ElementAt(newExpr.Children.Count() - 1).Remove();*/
-            newAttribute.Arguments.Add(newExpr);
-            ICSharpCode.NRefactory.CSharp.AttributeSection newSection = new AttributeSection();
-            newSection.Attributes.Add(newAttribute);
-
-            if (_model.GetType() == typeof(TypeDeclaration))
-            {
-                var toto = (_model as TypeDeclaration);
-                toto.Attributes.Add(newSection);
-
-                if (attribute.Contains("("))
-                {
-                    string type = attribute.Substring(0, attribute.IndexOf("("));
-                    string arg = attribute.Substring(attribute.IndexOf("("), attribute.IndexOf(")"));
-                    (_view as IContainingAttribute).addAttribute(type, arg);
-                }
-                else
-                (_view as IContainingAttribute).addAttribute(attribute, "");
-            }
-        }
-
-
-        public void RemoveAttribute(int index)
-        {
-            if (index < AttributesList.Count)
-                AttributesList.RemoveAt(index);
-            (_view as IContainingAttribute).delAttribute(index);
-            //TODO remove in ast
-        }
-        public List<KeyValuePair<string, string>> getAttributeList()
-        {
-            return (AttributesList);
-        }
-        // methods for the contextMenu
-        static void AddNode(object[] objects)
-        {
-            ContextMenu cm = new ContextMenu();
-            UIElement view = (objects[0] as NodePresenter)._view as UIElement;
-
-            var listOfBs = (objects[0] as NodePresenter).GetAvailableNodes();
-
-            foreach (var entry in listOfBs)
-            {
-                MenuItem mi = new MenuItem();
-                mi.Header = entry.Name;
-                mi.Click += mi_Click;
-                mi.DataContext = entry;
-                cm.Items.Add(mi);
-            }
-            cm.IsOpen = true;
-            _viewStatic = ((objects[0] as NodePresenter)._view) as INodeElem;
-            _presStatic = ((objects[0] as NodePresenter)._nodalPresenter) as INodalPresenter;
-        }
-
         public void LoadExecParamsCount()
         {
             if (_model != null && _model.GetType() == typeof(InvocationExpression))
@@ -1157,6 +1145,69 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             LoadExecParamsCount();
             return (ExecParamsNb);
+        }
+
+        #endregion ExecParamsManagement
+
+        #region ExecGenericsManagement
+        public void AddExecGeneric()
+        {
+
+        }
+
+        #endregion ExecGenericsManagement
+
+
+        /// <summary>
+        /// This describes the type of node when it's a node that does not exist in the AST
+        /// </summary>
+        public NodePresenter(INodalPresenter nodalPres, EVirtualNodeType nodeType)
+        {
+            System.Diagnostics.Debug.Assert(nodalPres != null);
+            _nodalPresenter = nodalPres;
+            _model = null;
+            _virtualType = nodeType;
+        }
+
+
+        // methods for the contextMenu
+
+        #region ContextMenuManagement
+
+        // Return actions according to types
+        public ENodeActions GetActions() // TODO FINISH /!\ ADD ALL ITEMS ETC /!\
+        {
+            if (_model != null)
+            {
+                if (_model.GetType() == typeof(TypeDeclaration))
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.INHERITANCE | ENodeActions.MODIFIERS | ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.GENERICS);
+                else if (_model.GetType() == typeof(NamespaceDeclaration))
+                    return (ENodeActions.NAME | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(MethodDeclaration))
+                    return (ENodeActions.ATTRIBUTE | ENodeActions.COMMENT | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.NAME | ENodeActions.GENERICS | ENodeActions.TYPE);
+                else if (_model.GetType() == typeof(FieldDeclaration))
+                    return (ENodeActions.NAME | ENodeActions.ACCESS_MODIFIERS | ENodeActions.MODIFIERS | ENodeActions.COMMENT | ENodeActions.ATTRIBUTE | ENodeActions.TYPE);
+                else if (_model.GetType() == typeof(PropertyDeclaration))
+                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(UsingDeclaration))
+                    return (ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(ObjectCreateExpression))
+                    return (ENodeActions.COMMENT | ENodeActions.EXEC_TYPE);
+                else if (_model.GetType() == typeof(IdentifierExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(MemberReferenceExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(InvocationExpression))
+                    return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(PrimitiveExpression))
+                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                else if (_model.GetType() == typeof(PropertyDeclaration))
+                    return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
+                else
+                    return (ENodeActions.TEXT); // Any not supported node allows text modification
+            }
+
+            return (0);
         }
 
         static void mi_Click(object sender, RoutedEventArgs e)
@@ -1361,25 +1412,6 @@ namespace code_in.Presenters.Nodal.Nodes
             }
             return (availableNodes);
         }
-
-       
-
-        public void UpdateType(string type)
-        {
-            if (_model.GetType() == typeof(FieldDeclaration))
-            {
-                var ast = _model as FieldDeclaration;
-
-                ast.ReturnType = new PrimitiveType(type);
-                (_view as IContainingType).SetTypeFromString(type);
-            }
-            if (_model.GetType() == typeof(MethodDeclaration))
-            {
-                var ast = _model as MethodDeclaration;
-
-                ast.ReturnType = new PrimitiveType(type);
-                (_view as IContainingType).SetTypeFromString(type);
-            }
-        }
+        #endregion ContextMenuManagement
     }
 }
