@@ -727,6 +727,9 @@ namespace code_in.Views.NodalView
             NewAttribute.KeyDown += AttributeName_KeyDown;
             NewAttribute.Foreground = Brushes.Red;
             NewAttribute.Width = 100;
+            NewAttribute.Text = "Type a name";
+            NewAttribute.Foreground = Brushes.Gray;
+            NewAttribute.GotFocus += AttributeNameGotFocus;
             deleteAttribute.Click += DeleteAttribute;
             deleteAttribute.Margin = new Thickness(10, 0, 0, 0);
             deleteAttribute.Width = 20;
@@ -735,6 +738,13 @@ namespace code_in.Views.NodalView
             NewAttributeLine.Children.Add(NewAttribute);
             NewAttributeLine.Children.Add(deleteAttribute);
             AttributeStack.Children.Add(NewAttributeLine);
+        }
+
+        private void AttributeNameGotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox AttributeName = sender as TextBox;
+
+            AttributeName.Text = "";
         }
 
         private void DeleteAttribute(object sender, RoutedEventArgs e)
