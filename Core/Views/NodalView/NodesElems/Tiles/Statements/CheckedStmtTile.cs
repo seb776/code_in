@@ -11,6 +11,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public FlowTileItem itemsChecked = null;
 
+        public override bool IsExpanded
+        {
+            get
+            {
+                return itemsChecked.IsExpanded;
+            }
+            set
+            {
+                itemsChecked.IsExpanded = value;
+            }
+        }
+
         public CheckedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

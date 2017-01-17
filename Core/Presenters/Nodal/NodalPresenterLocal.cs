@@ -1,4 +1,5 @@
-﻿using code_in.Models.NodalModel;
+﻿using code_in.Models;
+using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
 using code_in.Views.NodalView.NodesElem.Nodes.Base;
@@ -32,6 +33,12 @@ namespace code_in.Presenters.Nodal
     /// </summary>
     public abstract class ANodalPresenterLocal : INodalPresenter
     {
+        public INodalView View
+        {
+            get;
+            set;
+        }
+        public INodalModel Model;
         public abstract String DocumentName
         {
             get;
@@ -41,8 +48,11 @@ namespace code_in.Presenters.Nodal
         {
         }
 
+        #region INodalPresenter
+        public abstract void User_AddNode_Callback(Type nodeTypeToAdd, Point mousePos);
+        #endregion INodalPresenter
 
-
+        #region this
         private void setOtherModifiers(IContainingModifiers view, Modifiers tmpModifiers)
         {
             view.setModifiersList(tmpModifiers);
@@ -58,6 +68,9 @@ namespace code_in.Presenters.Nodal
                 InheritanceList.Add(inherit.ToString());
             view.ManageInheritance(InheritanceList);
         }
+        #endregion this
+
+
         private void SetAllGenerics(IContainingGenerics view, TypeDeclaration typeDecl)
         {
             Tuple<string, EGenericVariance> tuple;
@@ -797,8 +810,8 @@ namespace code_in.Presenters.Nodal
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode), 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes), 
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSEALL, CollapseAllNode),
+                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.EXPANDALL, ExpandAllNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.SAVE, Save),
-                new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.CLOSE, CloseNode),
                 new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.HELP, HelpNode)
             };
         }
@@ -824,46 +837,19 @@ namespace code_in.Presenters.Nodal
             {
                 MenuItem mi = new MenuItem();
                 mi.Header = entry.Name;
-                mi.Click += mi_Click;
+                mi.Click += AddNodeCallback_Click;
                 mi.DataContext = entry;
                 cm.Items.Add(mi);
             }
             cm.IsOpen = true;
-            //_viewStatic = (self._view) as ANodalView; // TODO
+            _viewStatic = (self.View) as ANodalView; // TODO
         }
 
-        static void mi_Click(object sender, RoutedEventArgs e)
+        static void AddNodeCallback_Click(object sender, RoutedEventArgs e)
         {
-            if (((MenuItem)sender).DataContext != null)
-            {
-                Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode> types = new Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode>();
-                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
-                MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
-
-                types.Add(typeof(UsingDeclNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.USING_DECL); // TODO not sure
-                types.Add(typeof(NamespaceNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.NAMESPACE_DECL);
-                types.Add(typeof(ClassDeclNode), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.TYPE_DECL);
-                var astNode = NodePresenter.InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
-                var nodePresenter = new NodePresenter(_viewStatic.Presenter, astNode);
-                var array = new object[1];
-                array[0] = nodePresenter;
-                BaseNode node = gmi.Invoke(_viewStatic, array) as BaseNode;
-                var pos = Mouse.GetPosition(_viewStatic.MainGrid);
-                node.SetPosition((int)pos.X, (int)pos.Y);
-
-                //if (_viewStatic.IsDeclarative) // TODO @Seb 05/01/2017
-                //{
-                //    if (astNode != null)
-                //    {
-                //        //var thisAst = (_viewStatic._nodalPresenter as ANodalPresenterLocal)._model; // TODO uncomment this
-                //        //if (thisAst != null)
-                //        //    thisAst.AST.Members.Add(astNode);
-                //    }
-                //}
-            }
-            //_viewStatic = null;
+            _viewStatic.Presenter.User_AddNode_Callback(((MenuItem)sender).DataContext as Type, Mouse.GetPosition(_viewStatic.MainGrid));
         }
-        static DeclarationsNodalView _viewStatic = null;
+        protected static ANodalView _viewStatic = null;
 
         private static Action EmptyDelegate = delegate() { };
 
@@ -873,7 +859,17 @@ namespace code_in.Presenters.Nodal
         }
         static void CollapseAllNode(object[] objects)
         {
-            MessageBox.Show(objects[0].GetType().ToString());
+            ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;
+
+            foreach (var node in ((ANodalView)self.View)._registeredNodes)
+                node.IsExpanded = false;
+        }
+        static void ExpandAllNode(object[] objects)
+        {
+            ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;
+
+            foreach (var node in ((ANodalView)self.View)._registeredNodes)
+                node.IsExpanded = true;
         }
         static void HelpNode(object[] objects)
         {
@@ -887,25 +883,10 @@ namespace code_in.Presenters.Nodal
             ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;
             self.Save();
         }
-        public List<Type> GetAvailableNodes()
-        {
-            List<Type> tmp = new List<Type>();
+        public abstract List<Type> GetAvailableNodes();
 
-            tmp.Add(typeof(ClassDeclNode));
-            tmp.Add(typeof(NamespaceNode));
-            tmp.Add(typeof(UsingDeclNode));
-            if (false)
-            {
-                //TODO zorg
-            }
-            return (tmp);
-        }
 
-        public INodalView View
-        {
-            get;
-            set;
-        }
+
 
         public abstract void Save();
 

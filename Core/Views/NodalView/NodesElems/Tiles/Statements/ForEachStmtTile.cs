@@ -14,7 +14,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public ExpressionItem Condition = null;
         public FlowTileItem trueItem = null;
-
+        public override bool IsExpanded
+        {
+            get
+            {
+                return Condition.IsExpanded;
+            }
+            set
+            {
+                Condition.IsExpanded = value;
+                trueItem.IsExpanded = value;
+            }
+        }
         public ForEachStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

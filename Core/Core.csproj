@@ -98,7 +98,7 @@
     <Compile Include="Managers\ResourcesEvent.cs" />
     <Compile Include="Managers\ResourcesEventArgs.cs" />
     <Compile Include="Managers\RootDragNDropManager.cs" />
-    <Compile Include="Models\ANodalModel.cs" />
+    <Compile Include="Models\INodalModel.cs" />
     <Compile Include="Models\ExecutionNodalModel.cs" />
     <Compile Include="Presenters\LanguagePresenter.cs" />
     <Compile Include="Presenters\Nodal\DeclarationsNodalPresenterLocal.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Presenters\Nodal\INodalPresenter.cs" />
     <Compile Include="Presenters\Nodal\NodalPresenterLocal.cs" />
     <Compile Include="Presenters\Nodal\Nodes\NodePresenter.cs" />
+    <Compile Include="Tools\Tools.cs" />
     <Compile Include="Views\ConfigView\SubViews\ConfigSubViewTemplate.xaml.cs">
       <DependentUpon>ConfigSubViewTemplate.xaml</DependentUpon>
     </Compile>

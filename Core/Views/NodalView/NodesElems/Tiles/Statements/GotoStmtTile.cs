@@ -12,6 +12,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public ExpressionItem label = null;
 
+        public override bool IsExpanded
+        {
+            get
+            {
+                return label.IsExpanded;
+            }
+            set
+            {
+                label.IsExpanded = value;
+            }
+        }
+
         public GotoStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

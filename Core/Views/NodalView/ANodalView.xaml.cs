@@ -9,6 +9,7 @@ using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView.NodesElems.Items;
 using code_in.Views.NodalView.NodesElems.Tiles;
 using code_in.Views.Utils;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -576,6 +577,11 @@ namespace code_in.Views.NodalView
             node.SetNodePresenter(nodePresenter);
             nodePresenter.SetView(node);
             this.AddNode(node);
+
+            if (typeof(T) == typeof(FuncDeclItem))
+            {
+                (node as FuncDeclItem).MethodNode = nodePresenter.GetASTNode() as MethodDeclaration;
+            }
             return node;
         }
         public void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode

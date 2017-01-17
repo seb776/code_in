@@ -16,7 +16,7 @@ namespace code_in.Views.NodalView
         public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
         {
             var localDict = new Dictionary<string, List<INodeElem>>();
-            var declDict = this.ExecPresenter._model.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
+            var declDict = this.ExecPresenter.ExecModel.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
 
             if (true) // option for decls
                 localDict = declDict;

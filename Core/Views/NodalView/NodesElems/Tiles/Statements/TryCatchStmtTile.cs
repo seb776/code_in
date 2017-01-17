@@ -13,6 +13,25 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public List<FlowTileItem> ItemsCatch = null;
         public FlowTileItem itemFinally = null;
 
+        public override bool IsExpanded
+        {
+            get
+            {
+                return ItemTry.IsExpanded;
+            }
+            set
+            {
+                ItemTry.IsExpanded = value;
+                if (ItemsCatch != null)
+                {
+                    foreach (var item in ItemsCatch)
+                        item.IsExpanded = value;
+                }
+                if (itemFinally != null)
+                    itemFinally.IsExpanded = value;
+            }
+        }
+
         public TryCatchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

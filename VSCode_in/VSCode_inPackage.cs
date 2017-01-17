@@ -100,7 +100,7 @@ namespace Code_in.VSCode_in
         {
             _takenIndexes.Remove(wp.PaneId);
             if (wp is DeclarationNodalWindowPane)
-                _openedFiles.Remove((((DeclarationNodalWindowPane)wp).Code_inView as DeclarationsNodalView).NodalPresenterDecl._model.FilePath);
+                _openedFiles.Remove((((DeclarationNodalWindowPane)wp).Code_inView as DeclarationsNodalView).NodalPresenterDecl.DeclModel.FilePath);
         }
 
         private bool _askForNewFile(ref string filePath, ref string fileName)

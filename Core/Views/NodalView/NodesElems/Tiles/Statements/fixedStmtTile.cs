@@ -12,6 +12,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     {
         public FlowTileItem itemsFixed = null;
 
+        public override bool IsExpanded
+        {
+            get
+            {
+                return itemsFixed.IsExpanded;
+            }
+            set
+            {
+                itemsFixed.IsExpanded = value;
+            }
+        }
+
         public fixedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

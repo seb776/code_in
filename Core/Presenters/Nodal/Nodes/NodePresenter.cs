@@ -45,6 +45,7 @@ namespace code_in.Presenters.Nodal.Nodes
             Dictionary<ECSharpNode, Type> types = new Dictionary<ECSharpNode,Type>();
 
             types.Add(ECSharpNode.NAMESPACE_DECL, typeof(NamespaceDeclaration));
+            types.Add(ECSharpNode.TYPE_DECL, typeof(TypeDeclaration));
 
             types.Add(ECSharpNode.METHOD_DECL, typeof(MethodDeclaration));
             types.Add(ECSharpNode.CTOR_DECL, typeof(ConstructorDeclaration));
@@ -110,9 +111,17 @@ namespace code_in.Presenters.Nodal.Nodes
             types.Add(ECSharpNode.UNCHECKED_EXPRESSION, typeof(UncheckedExpression));
             types.Add(ECSharpNode.UNDOCUMENTED_EXPRESSION, typeof(UndocumentedExpression));
 
+            AstNode result = null;
             if (types.ContainsKey(csharpNode))
-                return Activator.CreateInstance(types[csharpNode]) as AstNode;
-            return null;
+                result = Activator.CreateInstance(types[csharpNode]) as AstNode;
+            if (csharpNode == ECSharpNode.METHOD_DECL && result != null)
+            {
+                MethodDeclaration methodDecl = result as MethodDeclaration;
+
+                methodDecl.Body = new BlockStatement();
+            }
+            
+            return result;
         }
         public enum ECSharpNode
         {
@@ -1177,7 +1186,10 @@ namespace code_in.Presenters.Nodal.Nodes
                 var nodePresenter = new NodePresenter(_presStatic, astNode);
                 var arrayParams = new object[1];
                 arrayParams[0] = nodePresenter;
-                BaseNode visualNode = gmi.Invoke(_viewStatic, arrayParams) as BaseNode;
+
+                code_in.Views.NodalView.INode visualNode = gmi.Invoke(_viewStatic, arrayParams) as code_in.Views.NodalView.INode;
+
+
                 if (visualNode is AIONode)
                     (visualNode as AIONode).UpdateAnchorAttachAST();
                 var pos = _viewStatic.GetPosition();
@@ -1259,7 +1271,9 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             List<Tuple<EContextMenuOptions, Action<object[]>>> optionsList = new List<Tuple<EContextMenuOptions, Action<object[]>>>();
             if (_model == null)
+            {
                 return optionsList.ToArray();
+            }
             if (_model.GetType() == typeof(ICSharpCode.NRefactory.CSharp.TypeDeclaration)) // for classes, enums, interfaces
             {
                 optionsList.Add(new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, AddNode));
@@ -1346,8 +1360,10 @@ namespace code_in.Presenters.Nodal.Nodes
         public List<Type> GetAvailableNodes()
         {
             List<Type> availableNodes = new List<Type>();
+
             if (_model == null)
                 return availableNodes;
+
             if (_model.GetType() == typeof(NamespaceDeclaration))
             {
                 availableNodes.Add(typeof(UsingDeclNode));

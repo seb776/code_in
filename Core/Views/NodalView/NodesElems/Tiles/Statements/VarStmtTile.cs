@@ -10,6 +10,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class VarStmtTile : BaseTile
     {
+        public override bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
         public VarStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

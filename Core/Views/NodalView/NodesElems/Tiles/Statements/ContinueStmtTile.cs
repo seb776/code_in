@@ -9,6 +9,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class ContinueStmtTile : BaseTile
     {
+        public override bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
+
         public ContinueStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

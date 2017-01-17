@@ -10,6 +10,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     class UncheckedStmtTile : BaseTile
     {
         public FlowTileItem itemsUnchecked = null;
+        public override bool IsExpanded
+        {
+            get
+            {
+                return itemsUnchecked.IsExpanded;
+            }
+            set
+            {
+                itemsUnchecked.IsExpanded = value;
+            }
+        }
 
         public UncheckedStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)

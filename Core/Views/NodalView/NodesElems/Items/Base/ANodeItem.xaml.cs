@@ -22,11 +22,22 @@ using code_in.Views.Utils;
 
 namespace code_in.Views.NodalView.NodesElems.Items.Base
 {
+
     /// <summary>
     /// Interaction logic for ANodeItem.xaml
     /// </summary>
     public abstract partial class ANodeItem : UserControl, code_in.Views.NodalView.INode
     {
+        public bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
         public INodePresenter Presenter
         {
             get;

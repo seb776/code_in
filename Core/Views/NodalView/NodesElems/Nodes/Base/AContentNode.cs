@@ -1,5 +1,7 @@
 ﻿using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.NodalView.NodesElems.Items;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             try
             {
                 this.AddNode(node);
+                if (typeof(T) == typeof(FuncDeclItem))
+                {
+                    (node as FuncDeclItem).MethodNode = nodePresenter.GetASTNode() as MethodDeclaration;
+                }
             }
             catch (Exception e)
             {

@@ -34,6 +34,12 @@ namespace code_in.Presenters.Nodal
             set;
         }
 
+        bool IsExpanded
+        {
+            get;
+            set;
+        }
+
     }
 
     public enum EAccessModifier

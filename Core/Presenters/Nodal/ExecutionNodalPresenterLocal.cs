@@ -3,19 +3,30 @@ using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
 using code_in.Views.NodalView;
 using code_in.Views.NodalView.NodesElems.Items;
+using code_in.Views.NodalView.NodesElems.Tiles;
+using code_in.Views.NodalView.NodesElems.Tiles.Statements;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace code_in.Presenters.Nodal
 {
     public class ExecutionNodalPresenterLocal : ANodalPresenterLocal
     {
+        public ExecutionNodalModel ExecModel
+        {
+            get
+            {
+                return Model as ExecutionNodalModel;
+            }
+        }
 
-        public ExecutionNodalModel _model;
         public ExecutionNodalView ExecNodalView
         {
             get
@@ -23,18 +34,13 @@ namespace code_in.Presenters.Nodal
                 return View as ExecutionNodalView;
             }
         }
+
+        #region this
         public ExecutionNodalPresenterLocal(DeclarationsNodalPresenterLocal assocFile, INodePresenter nodePresenter) :
             base()
         {
-            _model = new ExecutionNodalModel(assocFile._model, nodePresenter.GetASTNode());
-            _model.Presenter = this;
-        }
-        public override String DocumentName
-        {
-            get
-            {
-                return "EXEC()";
-            }
+            Model = new ExecutionNodalModel(assocFile.DeclModel, nodePresenter.GetASTNode());
+            ExecModel.Presenter = this;
         }
 
         public void EditFunction(FuncDeclItem node)
@@ -76,14 +82,61 @@ namespace code_in.Presenters.Nodal
             _generateVisualASTStatements(this.ExecNodalView.RootTileContainer, access.Body);
 
         }
+        #endregion this
+        #region IContextMenu
+        public override List<Type> GetAvailableNodes()
+        {
+            List<Type> availableNodes = new List<Type>();
 
+            availableNodes = Tools.Tools.GetAllSubclassesOf(typeof(BaseTile));
+            return availableNodes;
+        }
+        #endregion IContextMenu
+        #region INodalPresenter
+        public override void User_AddNode_Callback(Type nodeTypeToAdd, Point mousePos)
+        {
+            if (nodeTypeToAdd != null)
+            {
+                Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode> types = new Dictionary<Type, code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode>();
+                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddTile");
+                MethodInfo gmi = mi.MakeGenericMethod(nodeTypeToAdd);
+
+                types.Add(typeof(BreakStmtTile), code_in.Presenters.Nodal.Nodes.NodePresenter.ECSharpNode.BREAK_STMT); // TODO not sure
+
+                var astNode = NodePresenter.InstantiateASTNode(types[nodeTypeToAdd]);
+                var nodePresenter = new NodePresenter(_viewStatic.Presenter, astNode);
+                var array = new object[1];
+                array[0] = nodePresenter;
+                BaseTile node = gmi.Invoke(_viewStatic, array) as BaseTile;
+                node.SetPosition((int)mousePos.X, (int)mousePos.Y);
+
+                //if (_viewStatic.IsDeclarative) // TODO @Seb 05/01/2017
+                //{
+                //    if (astNode != null)
+                //    {
+                //        //var thisAst = (_viewStatic._nodalPresenter as ANodalPresenterLocal)._model; // TODO uncomment this
+                //        //if (thisAst != null)
+                //        //    thisAst.AST.Members.Add(astNode);
+                //    }
+                //}
+            }
+            //_viewStatic = null;
+        }
         public override bool IsSaved
         {
-            get { return _model.IsSaved; }
+            get { return ExecModel.IsSaved; }
         }
         public override void Save()
         {
-            this._model.Save();
+            this.ExecModel.Save();
         }
+        public override String DocumentName
+        {
+            get
+            {
+                return ""; // TODO not sure if style useful
+            }
+        }
+        #endregion INodalPresenter
     }
 }

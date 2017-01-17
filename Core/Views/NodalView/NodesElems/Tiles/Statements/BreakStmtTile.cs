@@ -9,6 +9,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class BreakStmtTile : BaseTile
     {
+        public override bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
         public BreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

@@ -26,6 +26,22 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, code_in.Views.NodalView.INode
     {
+        public bool IsExpanded
+        {
+            get
+            {
+                if (this.ContentGridLayout.Visibility == System.Windows.Visibility.Collapsed)
+                    return false;
+                else if (this.ContentGridLayout.Visibility == System.Windows.Visibility.Visible)
+                    return true;
+                return false;
+            }
+            set
+            {
+                this.ContentGridLayout.Visibility = (value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed);
+                this.ContentGridLayout.IsEnabled = value;
+            }
+        }
         public INodePresenter Presenter
         {
             get;

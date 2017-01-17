@@ -14,6 +14,28 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public List<FlowTileItem> itemCases;
         public List<ExpressionItem> ExpressionCases;
 
+        public override bool IsExpanded
+        {
+            get
+            {
+                return Expression.IsExpanded;
+            }
+            set
+            {
+                Expression.IsExpanded = value;
+                if (itemCases != null)
+                {
+                    foreach (var a in itemCases)
+                        a.IsExpanded = value;
+                }
+                if (ExpressionCases != null)
+                {
+                    foreach (var a in ExpressionCases)
+                        a.IsExpanded = value;
+                }
+            }
+        }
+
         public SwitchStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

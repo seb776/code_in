@@ -103,9 +103,9 @@ namespace code_in.Views.NodalView
             AlignDeclarations();
             FileSystemWatcher w = new FileSystemWatcher();
 
-            if (this.NodalPresenterDecl._model != null)
+            if (this.NodalPresenterDecl.DeclModel != null)
             {
-                var pathFile = this.NodalPresenterDecl._model.FilePath;
+                var pathFile = this.NodalPresenterDecl.DeclModel.FilePath;
 
                 w.Path = Path.GetDirectoryName(pathFile);
                 // @ Zor (Hamham) : je t'ai mis juste le filtre quand la taille du fichier change (https://msdn.microsoft.com/fr-fr/library/system.io.notifyfilters(v=vs.110).aspx)
@@ -122,7 +122,7 @@ namespace code_in.Views.NodalView
 
         }
 
-        private static void OnChanged(object source, FileSystemEventArgs e)
+        private void OnChanged(object source, FileSystemEventArgs e)
         {
             MessageBox.Show("changed");
         }

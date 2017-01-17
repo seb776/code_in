@@ -10,6 +10,16 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class YieldBreakStmtTile : BaseTile
     {
+        public override bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
         public YieldBreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

@@ -12,7 +12,17 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     class ExprStmtTile : BaseTile
     {
         public ExpressionItem Expression;
-
+        public override bool IsExpanded
+        {
+            get
+            {
+                return Expression.IsExpanded;
+            }
+            set
+            {
+                Expression.IsExpanded = value;
+            }
+        }
         public ExprStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {

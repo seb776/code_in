@@ -23,8 +23,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
     /// <summary>
     /// Logique d'interaction pour BaseTile.xaml
     /// </summary>
-    public partial class BaseTile : UserControl, INodeElem
+    public abstract partial  class BaseTile : UserControl, INodeElem
     {
+        public abstract bool IsExpanded
+        {
+            get;
+            set;
+        }
         public INodePresenter Presenter
         {
             get;

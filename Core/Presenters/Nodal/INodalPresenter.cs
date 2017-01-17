@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using ICSharpCode.NRefactory.CSharp;
 using code_in.Views.NodalView.NodesElems.Anchors;
 using code_in.Views.NodalView;
+using System.Windows;
 
 namespace code_in.Presenters.Nodal
 {
@@ -34,6 +35,8 @@ namespace code_in.Presenters.Nodal
         {
             get;
         }
+
+        void User_AddNode_Callback(Type nodeTypeToAdd, Point mousePos);
     }
 
 

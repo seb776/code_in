@@ -12,6 +12,18 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
     class UnSupStmtTile : BaseTile
     {
         public ExpressionItem Expression = null;
+        public override bool IsExpanded
+        {
+            get
+            {
+                return Expression.IsExpanded;
+            }
+            set
+            {
+                Expression.IsExpanded = value;
+            }
+        }
+
         public UnSupStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
