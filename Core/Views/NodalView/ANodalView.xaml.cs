@@ -29,10 +29,16 @@ namespace code_in.Views.NodalView
     [ClassInterface(ClassInterfaceType.None)]
     public abstract partial class ANodalView : UserControl, INodalView, stdole.IDispatch
     {
-        static public bool NameMatch(string nameA, string nameB, bool ignoreCase)
+        private List<INodeElem> _selectedNodes = null;
+        private ResourceDictionary _themeResourceDictionary = null;
+        private Point _lastPosition;
+        public SearchBar SearchBar = null;
+        public INodalPresenter Presenter
         {
-            return String.Compare(nameA, nameB, ignoreCase) < 1;
+            get;
+            set;
         }
+
         static public INodeElem InstantiateVisualNode(NodePresenter.ECSharpNode nodeType, INodalView nodalView, ILinkContainer linkContainer)
         {
             Dictionary<NodePresenter.ECSharpNode, Type> types = new Dictionary<NodePresenter.ECSharpNode, Type>();
@@ -68,7 +74,7 @@ namespace code_in.Views.NodalView
             types.Add(NodePresenter.ECSharpNode.PROPERTY_DECL, typeof(code_in.Views.NodalView.NodesElems.Items.PropertyItem));
             //types.Add(NodePresenter.ECSharpNode.VAR_INIT, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             //types.Add(NodePresenter.ECSharpNode.UNSUP_TYPE_MEMBERS, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
-            
+
             // Statements
             types.Add(NodePresenter.ECSharpNode.BREAK_STMT, typeof(code_in.Views.NodalView.NodesElems.Tiles.Statements.BreakStmtTile));
             //types.Add(NodePresenter.ECSharpNode.CHECKED_STMT, typeof(code_in.Views.NodalView.NodesElems.Tiles.Statements.NamespaceNode));
@@ -94,7 +100,7 @@ namespace code_in.Views.NodalView
             types.Add(NodePresenter.ECSharpNode.YIELD_BREAK_STMT, typeof(code_in.Views.NodalView.NodesElems.Tiles.Statements.YieldBreakStmtTile));
             types.Add(NodePresenter.ECSharpNode.YIELD_RETURN_STMT, typeof(code_in.Views.NodalView.NodesElems.Tiles.Statements.YieldReturnStmtTile));
             types.Add(NodePresenter.ECSharpNode.UNSUP_STMT, typeof(code_in.Views.NodalView.NodesElems.Tiles.Statements.UnSupStmtTile));
-            
+
             // Expressions 
             //types.Add(NodePresenter.ECSharpNode.ANONYMOUS_METHOD_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
             //types.Add(NodePresenter.ECSharpNode.ANONYMOUS_TYPE_CREATE_EXPRESSION, typeof(code_in.Views.NodalView.NodesElems.Nodes.NamespaceNode));
@@ -154,20 +160,13 @@ namespace code_in.Views.NodalView
             }
             return null;
         }
-        public virtual Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
-        {
-            var results = new Dictionary<string, List<INodeElem>>();
+        public abstract Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, code_in.Views.NodalView.ExecutionNodalView.SearchOptions userOptions);
 
-            //    // 1 Get the nodalView
-            //    // 2 parcours les noeuds en fonction si declarations ou execution
-            //    //nodalView.RootTileContainer // For research in execution side (stmts and expr)
-            //    //toto.MainGrid // Iterate over nodes (declaration)
-            //    // 3 pour chaque noeud visuel tu compares recherche avec nom, type...
-            //    // 4 if nameFound && iter.Match(userOptions)
-            //    // 4.1 list.add();
-            //    // return list;
-            return results;
-        }
+        /// <summary>
+        /// This function focuses code_in's view on the node given.
+        /// </summary>
+        /// <param name="node">The node to focus to.</param>
+        /// <param name="fromNodalView">internal value: Used to know if we have to switch window.</param>
         public void FocusToNode(INodeElem node, bool fromNodalView = false)
         {
             if (!fromNodalView) // To avoid infinite recursion
@@ -187,12 +186,7 @@ namespace code_in.Views.NodalView
 
         }
 
-        private List<INodeElem> _selectedNodes = null;
 
-
-        private ResourceDictionary _themeResourceDictionary = null;
-        private Point _lastPosition;
-        public SearchBar SearchBar = null;
 
         public ANodalView(ResourceDictionary themeResDict)
         {
@@ -217,26 +211,7 @@ namespace code_in.Views.NodalView
 
         #region This
 
-        public void AlignDeclarations()
-        {
-            if (true)
-            {
-                int offset_x = 50;
-                int pos_x = 0;
-                foreach (var nodeUi in this.MainGrid.Children)
-                {
-                    var nodeElem = (nodeUi as INodeElem);
-                    if (nodeElem != null)
-                    {
-                        nodeElem.SetPosition(pos_x, 0);
-                        int x_size;
-                        int y_size;
-                        nodeElem.GetSize(out x_size, out y_size);
-                        pos_x += offset_x + x_size;
-                    }
-                }
-            }
-        }
+        public abstract void Align();
         static public void CreateContextMenuFromOptions(Tuple<EContextMenuOptions, Action<object[]>>[] options, ResourceDictionary themeResDict, object presenter)
         {
             var im = new HexagonalMenu(themeResDict);
@@ -344,7 +319,7 @@ namespace code_in.Views.NodalView
                 this.UpdateLayout();
             }
         }
-                private bool _movingView = false;
+        private bool _movingView = false;
         private Point _lastMousePosFromWinGrid = new Point(0, 0);
         private void ZoomPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -587,6 +562,15 @@ namespace code_in.Views.NodalView
         public void AddNode<T>(T node, int index = -1) where T : UIElement, code_in.Views.NodalView.INode
         {
             this.MainGrid.Children.Add(node as UIElement);
+            if (this is DeclarationsNodalView)
+            {
+                try
+                {
+                    (this as DeclarationsNodalView).NodalPresenterDecl.DeclModel.AST.AddChildWithExistingRole(node.Presenter.GetASTNode());
+                }
+                catch (Exception e)
+                { }
+            }
             _registeredNodes.Add(node);
         }
 
@@ -600,7 +584,7 @@ namespace code_in.Views.NodalView
 
         #endregion IVisualNodeContainer
 
-
+        #region ICode_inWindow
         public IEnvironmentWindowWrapper EnvironmentWindowWrapper
         {
             get;
@@ -617,11 +601,8 @@ namespace code_in.Views.NodalView
         {
             this.Presenter.Save();
         }
+        #endregion ICode_inWindow
 
-        public INodalPresenter Presenter
-        {
-            get;
-            set;
-        }
+
     } // Class
 } // Namespace

@@ -22,7 +22,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public BreakStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
-            this.SetName("Break");
+            this.SetName("break");
         }
         public BreakStmtTile() :
             this(Code_inApplication.MainResourceDictionary,null)
@@ -32,7 +32,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            this.SetName("Break");
+            this.SetName("break");
         }
     }
 }

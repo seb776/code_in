@@ -19,7 +19,7 @@ namespace code_in.Views.NodalView
         }
         //void RemoveLink(AIOAnchor anchor);
 
-        void AlignDeclarations();
-        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions);
+        void Align();
+        Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, code_in.Views.NodalView.ExecutionNodalView.SearchOptions userOptions);
     }
 }

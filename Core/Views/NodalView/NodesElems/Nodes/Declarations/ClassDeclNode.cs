@@ -172,5 +172,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         {
             Constraints.setConstraint(type, types);
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

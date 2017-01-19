@@ -155,7 +155,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
 
 
-        public virtual/*abstract*/ void UpdateDisplayedInfosFromPresenter() { }
+        public abstract void UpdateDisplayedInfosFromPresenter();
         public void SetName(string name)
         {
             this.NodeName.Content = name;

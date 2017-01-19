@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Presenters.Nodal
 {
-    interface IContainingGenerics
+    public interface IContainingGenerics
     {
         void setGenerics(List<Tuple<string, EGenericVariance>> tmp);
     }

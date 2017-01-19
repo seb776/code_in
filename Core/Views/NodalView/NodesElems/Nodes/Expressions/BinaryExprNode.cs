@@ -28,6 +28,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             var binaryOpExpr = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression;
             this.SetType(binaryOpExpr.OperatorToken.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            OperandA.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression).Left = e; });
+            OperandB.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.BinaryOperatorExpression).Right = e; });
+        }
     }
 
 }

@@ -143,6 +143,9 @@
     <Compile Include="Views\NodalView\NodesElems\IIOAnchorContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\ILinkContainer.cs" />
     <Compile Include="Views\NodalView\NodesElems\INodalViewElement.cs" />
+    <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemGenericConstraint.xaml.cs">
+      <DependentUpon>ItemGenericConstraint.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodalView\NodesElems\Items\Assets\ItemModifiers.xaml.cs">
       <DependentUpon>ItemModifiers.xaml</DependentUpon>
     </Compile>
@@ -318,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NodalView\NodesElems\EditNodePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NodalView\NodesElems\Items\Assets\ItemGenericConstraint.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

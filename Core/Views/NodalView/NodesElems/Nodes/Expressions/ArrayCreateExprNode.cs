@@ -17,5 +17,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             this.SetType("ArrayCreateExpr");
             ExprIn = this.CreateAndAddInput<DataFlowAnchor>();
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

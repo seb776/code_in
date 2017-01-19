@@ -16,9 +16,23 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public FuncCallExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer)
             : base(themeResDict, nodalView, linkContainer)
         {
-            this.SetType("FuncCallExpr");
+            this.SetType("Method call");
             TargetIn = this.CreateAndAddInput<DataFlowAnchor>();
-            TargetIn.SetName("MethodName");
+            TargetIn.SetName("TMP: MethodName");
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            if (!(this.Presenter.GetASTNode() is ICSharpCode.NRefactory.CSharp.InvocationExpression)) // TODO remove (quickfix)
+                return;
+            var target = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.InvocationExpression).Target;
+            if (target != null)
+                this.SetName(target.ToString() + "()");
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            TargetIn.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.InvocationExpression).Target = e; });
         }
     }
 }

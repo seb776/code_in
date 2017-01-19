@@ -8,12 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using code_in.Tools;
 
 namespace code_in.Views.NodalView
 {
-    public class ExecutionNodalView : ANodalView
+    public class ExecutionNodalView : ANodalView, ITileContainer
     {
-        public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
+        public class SearchOptions
+        {
+            private SearchOptions()
+            {}
+            public SearchOptions(bool caseSensitive)
+            {
+                CaseSensitive = caseSensitive;
+            }
+            public bool CaseSensitive;
+        };
+        public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, SearchOptions userOptions)
         {
             var localDict = new Dictionary<string, List<INodeElem>>();
             var declDict = this.ExecPresenter.ExecModel.AssociatedFile.Presenter.View.SearchMatchinNodes(name, userOptions);
@@ -27,7 +38,7 @@ namespace code_in.Views.NodalView
                 string categoryString = "";
                 var nodePresenter = nodeView.Presenter;
                 var nodeAST = nodePresenter.GetASTNode();
-                if (ANodalView.NameMatch(name, nodeView.GetName(), true))
+                if (nodeView.GetName().Contains(name, userOptions.CaseSensitive) >= 0)//ANodalView.NameMatch(name, nodeView.GetName(), true))
                 {
                     shouldAdd = true;
                     if (nodeAST is ICSharpCode.NRefactory.CSharp.InvocationExpression)
@@ -73,6 +84,15 @@ namespace code_in.Views.NodalView
                 return true;
             return false;
         }
+        public override void Align()
+        {
+            // TODO
+            //foreach (var stmt in _registeredNodes)
+            //{
+            //    if (stmt is BaseTile)
+            //        (stmt as BaseTile).Ali
+            //}
+        }
         public void EditProperty(PropertyItem node, bool isGetter)
         {
             if (isGetter)
@@ -103,5 +123,66 @@ namespace code_in.Views.NodalView
         }
 
 
+
+        public T CreateAndAddTile<T>(Presenters.Nodal.Nodes.INodePresenter presenter) where T : BaseTile
+        {
+            var visualNode = RootTileContainer.CreateAndAddTile<T>(presenter);
+            this.AddTile<T>(visualNode);
+            return visualNode;
+        }
+
+        public void AddTile<T>(T tile, int index = -1) where T : BaseTile
+        {
+            this.ExecPresenter.ExecModel.Root.AddChildWithExistingRole(tile.Presenter.GetASTNode());
+            _registeredNodes.Add(tile);
+        }
+
+        public void RemoveTile(BaseTile tile)
+        {
+            RootTileContainer.RemoveTile(tile);
+            _registeredNodes.Remove(tile);
+        }
+
+        public bool IsExpanded
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
+
+        public void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public INodalView NodalView
+        {
+            get
+            {
+                return this;
+            }
+            set
+            {
+            }
+        }
+
+        public void SelectHighLight(bool highlighetd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParentView(IContainerDragNDrop vc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerDragNDrop GetParentView()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

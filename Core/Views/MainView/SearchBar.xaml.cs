@@ -20,6 +20,7 @@ namespace code_in.Views.MainView
         private ResourceDictionary _themeResourceDictionary = null;
         private ResourceDictionary _languageResourceDictionary = null;
         public INodalView _nodalView;
+        code_in.Views.NodalView.ExecutionNodalView.SearchOptions _searchOptions;
         public SearchBar(ResourceDictionary themeResDict)
         {
             this._themeResourceDictionary = themeResDict;
@@ -28,6 +29,8 @@ namespace code_in.Views.MainView
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
             SetLanguageResources("");
+            _searchOptions = new ExecutionNodalView.SearchOptions(false);
+            CheckBoxCaseSensitive.IsChecked = _searchOptions.CaseSensitive;
         }
         public SearchBar(INodalView MainView) :
             this(Code_inApplication.MainResourceDictionary)
@@ -51,7 +54,7 @@ namespace code_in.Views.MainView
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.SearchResult.Items.Clear();
-            var searchResults = this._nodalView.SearchMatchinNodes(this.SearchBox.Text, null);
+            var searchResults = this._nodalView.SearchMatchinNodes(this.SearchBox.Text, this._searchOptions);
 
             foreach (var category in searchResults.Keys)
             {
@@ -169,6 +172,11 @@ namespace code_in.Views.MainView
         {
             this.SearchBox.SelectAll();
             e.Handled = true;
+        }
+
+        private void CheckBox_CaseSensitive_Clicked(object sender, RoutedEventArgs e)
+        {
+            _searchOptions.CaseSensitive = (sender as CheckBox).IsChecked.GetValueOrDefault();
         }
     }
 }

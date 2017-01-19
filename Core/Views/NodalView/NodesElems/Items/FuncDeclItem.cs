@@ -25,6 +25,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         ParametersList _params;
         private Image _editButton;
         public GenericItem Generics = null;
+        private ItemGenericConstraint _genericConstraints;
 
         public FuncDeclItem(ResourceDictionary themeResDict, INodalView nodalView, INodePresenter presenter) :
             base(themeResDict, nodalView, presenter)
@@ -52,6 +53,8 @@ namespace code_in.Views.NodalView.NodesElems.Items
                 Generics = new GenericItem(themeResDict);
                 this.GenericsField.Children.Add(Generics);
             }
+            _genericConstraints = new ItemGenericConstraint(themeResDict);
+            this.AfterName.Children.Add(_genericConstraints);
         }
         ExecutionNodalView _execNodalView;
         void editButton_PreviewMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
@@ -92,12 +95,16 @@ namespace code_in.Views.NodalView.NodesElems.Items
         }
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            // TODO do not use AST directly here
             Debug.Assert(MethodNode != null);
             this.SetName(MethodNode.Name);
-            setTypeFromString(MethodNode.ReturnType.ToString());
+            var genericTypes = MethodNode.TypeParameters.Select((type) => { return type.ToString(); }).ToArray(); // TODO variance...
+            _typeInfo.SetTypeFromString(MethodNode.ReturnType.ToString(), genericTypes);
             setModifiersList(MethodNode.Modifiers);
             setAccessModifiers(MethodNode.Modifiers);
+            foreach (var constraint in (Presenter.GetASTNode() as MethodDeclaration).Constraints)
+            {
+                _genericConstraints.setConstraint(constraint.TypeParameter.ToString(), constraint.BaseTypes);
+            }
         }
         #region IContainingAccessModifiers
         public void setAccessModifiers(Modifiers modifiers)

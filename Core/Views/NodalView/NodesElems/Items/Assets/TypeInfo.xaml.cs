@@ -36,9 +36,28 @@ namespace code_in.Views.NodalView.NodesElems.Items.Assets
             this(Code_inApplication.MainResourceDictionary)
         { throw new DefaultCtorVisualException(); }
 
-        public void SetTypeFromString(String type)
+        public void SetTypeFromString(String type, params string[] subTypes)
         {
-            this.TypeLabel.Content = type; ;
+            if (subTypes != null && subTypes.Count() > 0)
+            {
+                this.SubTypesGroup.Visibility = System.Windows.Visibility.Visible;
+                this.SubTypesGroup.IsEnabled = true;
+                this.SubTypes.Children.Clear();
+                foreach (var s in subTypes)
+                {
+                    Label lbl = new Label();
+                    lbl.Content = s;
+                    lbl.Foreground = new SolidColorBrush(Colors.White);
+                    this.SubTypes.Children.Add(lbl);
+                }
+            }
+            else
+            {
+                this.SubTypesGroup.Visibility = System.Windows.Visibility.Collapsed;
+                this.SubTypesGroup.IsEnabled = false;
+                this.SubTypes.Children.Clear();
+            }
+            this.TypeLabel.Content = type;
         }
 
         #region ICodeInVisual

@@ -117,9 +117,6 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         /// <summary>
         /// This is to attach AST method Attach to input ancors
         /// </summary>
-        public virtual void UpdateAnchorAttachAST()
-        {
-            throw new NotImplementedException(this.GetType().ToString());
-        }
+        public abstract void UpdateAnchorAttachAST();
     }
 }

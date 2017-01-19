@@ -14,5 +14,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             this.SetType("IdentifierExpr");
         }
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var nodePres = GetNodePresenter();
+            var astNode = nodePres.GetASTNode() as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
+            ExprOut.SetName(astNode.Identifier);
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // Not necessary we have no inputs
+        }
     }
 }

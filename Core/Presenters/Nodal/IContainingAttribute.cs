@@ -7,7 +7,7 @@ using code_in.Views.NodalView.NodesElems.Nodes.Assets;
 
 namespace code_in.Presenters.Nodal
 {
-    interface IContainingAttribute
+    public interface IContainingAttribute
     {
         void setExistingAttributes(List<KeyValuePair<string, string>> list);
         void addAttribute(string type, string arg);

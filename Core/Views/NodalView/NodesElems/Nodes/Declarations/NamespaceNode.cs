@@ -41,5 +41,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.ContentGridLayout.Children.Remove(node as UIElement);
         }
         #endregion IVisualNodeContainer
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var astNode = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
+            this.SetName(astNode.Name);
+        }
     } // Class
 } // Namespace

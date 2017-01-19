@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace code_in.Presenters.Nodal
 {
-    interface IContainingAccessModifiers
+    public interface IContainingAccessModifiers
     {
         void setAccessModifiers(Modifiers tmp);
     }

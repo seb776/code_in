@@ -129,7 +129,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <CheckBox Foreground="White">TMP: Exact match</CheckBox>
-                            <CheckBox Foreground="White">TMP: Case sensitive</CheckBox>
+                            <CheckBox x:Name="CheckBoxCaseSensitive" Foreground="White" Click="CheckBox_CaseSensitive_Clicked">TMP: Case sensitive</CheckBox>
                         </StackPanel>
                     </StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Grid.Row="5">

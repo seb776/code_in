@@ -20,9 +20,22 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
             OperandB = this.CreateAndAddInput<DataFlowAnchor>();
             OperandC = this.CreateAndAddInput<DataFlowAnchor>();
-            OperandA.SetName("A");
+            this.SetName("Ternary");
+            OperandA.SetName("Condition");
             OperandB.SetName("B");
             OperandC.SetName("C");
+        }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            // Not Needed
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            OperandA.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ConditionalExpression).Condition = e; });
+            OperandB.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ConditionalExpression).TrueExpression = e; });
+            OperandC.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ConditionalExpression).FalseExpression = e; });
         }
     }
 }

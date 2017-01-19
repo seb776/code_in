@@ -7,7 +7,7 @@ using ICSharpCode.NRefactory.CSharp;
 
 namespace code_in.Presenters.Nodal
 {
-    interface IContainingInheritance
+    public interface IContainingInheritance
     {
         void ManageInheritance(List<string> List);
     }

@@ -31,5 +31,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             this.NodeText.Text = this.GetNodePresenter().GetASTNode().ToString();
         }
         #endregion INodeElem
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // Not necessary we have no inputs
+        }
     }
 }

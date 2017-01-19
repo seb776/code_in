@@ -14,5 +14,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             this.SetType("Null");
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // Not necessary we have no inputs
+        }
     }
 }

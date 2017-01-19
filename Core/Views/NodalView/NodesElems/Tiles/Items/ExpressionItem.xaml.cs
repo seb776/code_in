@@ -28,6 +28,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
     /// </summary>
     public partial class ExpressionItem : UserControl, ITileItem, IVisualNodeContainer, IContainerDragNDrop, ICodeInTextLanguage, ILinkContainer
     {
+        static ExpressionItem _selfPassingThroughCallbackTmp = null; // TODO @Seb this is disgusting but faster to dev TODO set it to null after anycallback except add
+        BaseTile _parentTile = null;
         private Code_inLink _currentDraggingLink;
         private AIOAnchor _linkStart = null;
         private Point _lastPosition;
@@ -36,12 +38,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         public DataFlowAnchor ExprOut = null;
         private ResourceDictionary _themeResourceDictionary = null;
 
-        public INodalView NodalView
-        {
-            get;
-            set;
-        }
-        BaseTile _parentTile = null;
+
+        #region Constructors
         public ExpressionItem(ResourceDictionary themeResourceDictionary, INodalView nodalView, BaseTile parentTile)
         {
             _parentTile = parentTile;
@@ -61,37 +59,81 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             _visualNodes = new List<INodeElem>();
         }
 
-        void _aligNodesStraightRecur(List<List<AIONode>> nodes, AIONode curNode, int depth)
+        public ExpressionItem() :
+            this(Code_inApplication.MainResourceDictionary, null, null)
+        { throw new Exceptions.DefaultCtorVisualException(); }
+        #endregion Constructors
+        #region ContextMenu_callbacks
+        static void _alignNodes(object[] objects)
         {
-            if (depth >= nodes.Count)
-                nodes.Add(new List<AIONode>());
-            nodes[depth].Add(curNode);
-            foreach (var v in curNode._inputs.Children)
-            {
-                var input = v as AIOAnchor;
-                if (input._links.Count != 0)
-                    _aligNodesStraightRecur(nodes, input._links[0].Output.ParentNode, depth + 1);
-            }
+            _selfPassingThroughCallbackTmp.AlignNodes();
+            _selfPassingThroughCallbackTmp = null;
         }
-        void _alignFromArray(List<List<AIONode>> nodes)
+        static void _addNode_Callback(object[] objects)
         {
-            float vertOffset = 20.0f;
-            float horizontalOffset = 100.0f;
-            float curX = 20.0f;
-            foreach (var level in nodes)
+            ContextMenu cm = new ContextMenu();
+            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
+            List<Tuple<NodePresenter.ECSharpNode, String>> types = new List<Tuple<NodePresenter.ECSharpNode, String>>();
+
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_METHOD_EXPRESSION, "Anonymous method"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_TYPE_CREATE_EXPRESSION, "Anonymous type create"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION, "Array create"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.OBJECT_CREATE_EXPRESSION, "Object create"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION, "Array init"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BASE_REFERENCE_EXPRESSION, "Base reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CHECKED_EXPRESSION, "Checked"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CONDITIONAL_EXPRESSION, "Conditional"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DIRECTION_EXPRESSION, "Direction"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ERROR_EXPRESSION, "Error"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DEFAULT_VALUE_EXPRESSION, "Default"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION, "Primitive"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION, "Identifier"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION, "Null"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.THIS_REFERENCE_EXPRESSION, "This"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INDEXER_EXPRESSION, "Indexer"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INVOCATION_EXPRESSION, "Invocation"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, "Assignment"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION, "Unary operator"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION, "Binary operator"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IS_EXPRESSION, "Is"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.AS_EXPRESSION, "As"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CAST_EXPRESSION, "Cast"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.LAMBDA_EXPRESSION, "Lambda"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.MEMBER_REFERENCE_EXPRESSION, "Member reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_ARGUMENT_EXPRESSION, "Named argument"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_EXPRESSION, "Named"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION, "Parenthesis"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.POINTER_REFERENCE_EXPRESSION, "Pointer reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.QUERY_EXPRESSION, "Query"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.SIZEOF_EXPRESSION, "Sizeof"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_OF_EXPRESSION, "Typeof"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.STACK_ALLOC_EXPRESSION, "Stackalloc"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_REFERENCE_EXPRESSION, "Type reference"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNCHECKED_EXPRESSION, "Unchecked"));
+            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNDOCUMENTED_EXPRESSION, "Undocumented"));
+            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNSUP_EXPR, "Unsupported"));
+
+            foreach (var entry in types)
             {
-                float maxX = 0.0f;
-                float curY = 20.0f;
-                foreach (var node in level)
-                {
-                    node.SetPosition((int)curX, (int)curY);
-                    int sizeX = 0, sizeY = 0;
-                    node.GetSize(out sizeX, out sizeY);
-                    curY += sizeY + vertOffset;
-                    if (sizeX > maxX)
-                        maxX = sizeX;
-                }
-                curX += maxX + horizontalOffset;
+                MenuItem mi = new MenuItem();
+                mi.Header = entry.Item2;
+                mi.Click += mi_Click;
+                mi.DataContext = entry; // TODO beaurk
+                cm.Items.Add(mi);
+            }
+            cm.IsOpen = true;
+        }
+        #endregion ContextMenu_callbacks
+        #region Align
+        public void AlignNodes()
+        {
+            if (ExprOut != null && ExprOut._links.Count != 0)
+            {
+                var doubleArray = new List<List<AIONode>>();
+                _aligNodesStraightRecur(doubleArray, ExprOut._links[0].Output.ParentNode, 0);
+                doubleArray.Reverse();
+                _alignFromArray(doubleArray);
+                _alignFromArrayLast(doubleArray);
             }
         }
 
@@ -125,7 +167,39 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             hasChild = true;
             return yStart + ((yEnd - yStart) / 2.0f);
         }
-
+        void _aligNodesStraightRecur(List<List<AIONode>> nodes, AIONode curNode, int depth)
+        {
+            if (depth >= nodes.Count)
+                nodes.Add(new List<AIONode>());
+            nodes[depth].Add(curNode);
+            foreach (var v in curNode._inputs.Children)
+            {
+                var input = v as AIOAnchor;
+                if (input._links.Count != 0)
+                    _aligNodesStraightRecur(nodes, input._links[0].Output.ParentNode, depth + 1);
+            }
+        }
+        void _alignFromArray(List<List<AIONode>> nodes)
+        {
+            float vertOffset = 20.0f;
+            float horizontalOffset = 100.0f;
+            float curX = 20.0f;
+            foreach (var level in nodes)
+            {
+                float maxX = 0.0f;
+                float curY = 20.0f;
+                foreach (var node in level)
+                {
+                    node.SetPosition((int)curX, (int)curY);
+                    int sizeX = 0, sizeY = 0;
+                    node.GetSize(out sizeX, out sizeY);
+                    curY += sizeY + vertOffset;
+                    if (sizeX > maxX)
+                        maxX = sizeX;
+                }
+                curX += maxX + horizontalOffset;
+            }
+        }
         void _alignFromArrayLast(List<List<AIONode>> nodes)
         {
             float vertOffset = 20.0f;
@@ -153,41 +227,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                 }
             }
         }
-
-        Rect _alignNodesRecur(AIONode ioNode)
-        {
-            Rect currentRect = new Rect(0,0,0,0);
-            //float verticalOffset = 20.0f;
-            //float horizontalOffset = 50.0f;
-            //foreach (var v in ioNode._inputs.Children)
-            //{
-            //    var input = v as AIOAnchor;
-            //    if (input._links.Count != 0)
-            //    {
-            //        var prevRect = _alignNodesRecur(input._links[0].Output.ParentNode);
-            //        currentRect.Size.Height += prevRect.Size.Height + verticalOffset;
-            //    }
-
-            //}
-            
-            ////ioNode.GetSize()
-            return currentRect;
-        }
-        public void AlignNodes()
-        {
-            if (ExprOut != null && ExprOut._links.Count != 0)
-            {
-                var doubleArray = new List<List<AIONode>>();
-                _aligNodesStraightRecur(doubleArray, ExprOut._links[0].Output.ParentNode, 0);
-                doubleArray.Reverse();
-                _alignFromArray(doubleArray);
-                _alignFromArrayLast(doubleArray);
-            }
-        }
-
-        public ExpressionItem() :
-            this(Code_inApplication.MainResourceDictionary, null, null)
-        { throw new Exceptions.DefaultCtorVisualException(); }
+        #endregion Align
         #region This
         /// <summary>
         /// Gets or set the expanded state of the item.
@@ -270,7 +310,63 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
         #endregion Events
         #endregion This
+        #region Events
+        private void ExpressionsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.ExprOut.UpdateLinksPosition();
+        }
+        static void mi_Click(object sender, RoutedEventArgs e)
+        {
+            //Dictionary<Type, NodePresenter.ECSharpNode> types = new Dictionary<Type,NodePresenter.ECSharpNode>();
+            var menuItem = (sender as MenuItem);
+            var nodeType = menuItem.DataContext as Tuple<NodePresenter.ECSharpNode, String>;
 
+            //types.Add(typeof(BinaryExprNode), NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION);
+            //types.Add(typeof(UnaryExprNode), NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION);
+            //types.Add(typeof(PrimaryExprNode), NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION);
+            //types.Add(typeof(AsExprNode), NodePresenter.ECSharpNode.AS_EXPRESSION);
+            //types.Add(typeof(IsExprNode), NodePresenter.ECSharpNode.IS_EXPRESSION);
+            //types.Add(typeof(NullRefExprNode), NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION);
+            //types.Add(typeof(ParenthesizedExprNode), NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION);
+            //types.Add(typeof(IdentifierExprNode), NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION);
+            //types.Add(typeof(IndexerExprNode), NodePresenter.ECSharpNode.INDEXER_EXPRESSION);
+            //types.Add(typeof(FuncCallExprNode), NodePresenter.ECSharpNode.INVOCATION_EXPRESSION);
+            //types.Add(typeof(ArrayInitExprNode), NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION);
+            //types.Add(typeof(ArrayCreateExprNode), NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION);
+
+            ////if (!types.ContainsKey(nodeType))
+            ////    return;
+            AstNode model = NodePresenter.InstantiateASTNode(nodeType.Item1);
+            var uiElem = code_in.Views.NodalView.ANodalView.InstantiateVisualNode(nodeType.Item1, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
+            if (uiElem != null)
+            {
+                var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as ANodalView).Presenter, model);
+                presenter.SetView(uiElem as BaseNode);
+                (uiElem as BaseNode).Presenter = presenter;
+                (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
+                _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
+                _selfPassingThroughCallbackTmp = null;
+            }
+        }
+        private void ExpressionsGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _selfPassingThroughCallbackTmp = this;
+            Tuple<EContextMenuOptions, Action<object[]>>[] options = {
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, _addNode_Callback),
+                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes)//,
+                                                                         //new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, _addNode_Callback)
+                                                                     };
+            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
+            e.Handled = true;
+        }
+        #endregion Events
+        #region INodalViewElement
+        public INodalView NodalView
+        {
+            get;
+            set;
+        }
+        #endregion INodalViewElement
         #region IVisualNodeContainer
         public T CreateAndAddNode<T>(Presenters.Nodal.Nodes.INodePresenter nodePresenter) where T : UIElement, code_in.Views.NodalView.INode
         {
@@ -314,7 +410,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                     anchor._links[0].Input.RemoveLink(anchor._links[0], true);
                     anchor.RemoveLink(anchor._links[0], true);
                 }
-                
+
             }
             this.ExpressionsGrid.Children.Remove(node as UIElement);
             _expression.Remove(node as AExpressionNode);
@@ -491,7 +587,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
         }
 
         #endregion IContainerDragNDrop
-
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary()
         {
@@ -514,117 +609,5 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             throw new NotImplementedException();
         }
         #endregion ICodeInTextLanguage
-
-        private void ExpressionsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.ExprOut.UpdateLinksPosition();
-        }
-        static void _alignNodes(object[] objects)
-        {
-            _selfPassingThroughCallbackTmp.AlignNodes();
-            _selfPassingThroughCallbackTmp = null;
-        }
-        static void _addNode_Callback(object[] objects)
-        {
-            ContextMenu cm = new ContextMenu();
-            cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
-            List<Tuple<NodePresenter.ECSharpNode, String>> types = new List<Tuple<NodePresenter.ECSharpNode, String>>();
-
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_METHOD_EXPRESSION, "Anonymous method"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ANONYMOUS_TYPE_CREATE_EXPRESSION, "Anonymous type create"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION, "Array create"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.OBJECT_CREATE_EXPRESSION, "Object create"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION, "Array init"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BASE_REFERENCE_EXPRESSION, "Base reference"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CHECKED_EXPRESSION, "Checked"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CONDITIONAL_EXPRESSION, "Conditional"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DIRECTION_EXPRESSION, "Direction"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ERROR_EXPRESSION, "Error"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.DEFAULT_VALUE_EXPRESSION, "Default"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION, "Primitive"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION, "Identifier"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION, "Null"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.THIS_REFERENCE_EXPRESSION, "This"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INDEXER_EXPRESSION, "Indexer"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.INVOCATION_EXPRESSION, "Invocation"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.ASSIGNMENT_EXPRESSION, "Assignment"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION, "Unary operator"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION, "Binary operator"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.IS_EXPRESSION, "Is"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.AS_EXPRESSION, "As"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.CAST_EXPRESSION, "Cast"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.LAMBDA_EXPRESSION, "Lambda"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.MEMBER_REFERENCE_EXPRESSION, "Member reference"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_ARGUMENT_EXPRESSION, "Named argument"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.NAMED_EXPRESSION, "Named"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION, "Parenthesis"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.POINTER_REFERENCE_EXPRESSION, "Pointer reference"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.QUERY_EXPRESSION, "Query"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.SIZEOF_EXPRESSION, "Sizeof"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_OF_EXPRESSION, "Typeof"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.STACK_ALLOC_EXPRESSION, "Stackalloc"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.TYPE_REFERENCE_EXPRESSION, "Type reference"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNCHECKED_EXPRESSION, "Unchecked"));
-            //types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNDOCUMENTED_EXPRESSION, "Undocumented"));
-            types.Add(new Tuple<NodePresenter.ECSharpNode, String>(NodePresenter.ECSharpNode.UNSUP_EXPR, "Unsupported"));
-
-            foreach (var entry in types)
-            {
-                MenuItem mi = new MenuItem();
-                mi.Header = entry.Item2;
-                mi.Click += mi_Click;
-                mi.DataContext = entry; // TODO beaurk
-                cm.Items.Add(mi);
-            }
-            cm.IsOpen = true;
-        }
-
-
-        static void mi_Click(object sender, RoutedEventArgs e)
-        {
-            //Dictionary<Type, NodePresenter.ECSharpNode> types = new Dictionary<Type,NodePresenter.ECSharpNode>();
-            var menuItem = (sender as MenuItem);
-            var nodeType = menuItem.DataContext as Tuple<NodePresenter.ECSharpNode, String>;
-
-            //types.Add(typeof(BinaryExprNode), NodePresenter.ECSharpNode.BINARY_OPERATOR_EXPRESSION);
-            //types.Add(typeof(UnaryExprNode), NodePresenter.ECSharpNode.UNARY_OPERATOR_EXPRESSION);
-            //types.Add(typeof(PrimaryExprNode), NodePresenter.ECSharpNode.PRIMITIVE_EXPRESSION);
-            //types.Add(typeof(AsExprNode), NodePresenter.ECSharpNode.AS_EXPRESSION);
-            //types.Add(typeof(IsExprNode), NodePresenter.ECSharpNode.IS_EXPRESSION);
-            //types.Add(typeof(NullRefExprNode), NodePresenter.ECSharpNode.NULL_REFERENCE_EXPRESSION);
-            //types.Add(typeof(ParenthesizedExprNode), NodePresenter.ECSharpNode.PARENTHESIZED_EXPRESSION);
-            //types.Add(typeof(IdentifierExprNode), NodePresenter.ECSharpNode.IDENTIFIER_EXPRESSION);
-            //types.Add(typeof(IndexerExprNode), NodePresenter.ECSharpNode.INDEXER_EXPRESSION);
-            //types.Add(typeof(FuncCallExprNode), NodePresenter.ECSharpNode.INVOCATION_EXPRESSION);
-            //types.Add(typeof(ArrayInitExprNode), NodePresenter.ECSharpNode.ARRAY_INITIALIZER_EXPRESSION);
-            //types.Add(typeof(ArrayCreateExprNode), NodePresenter.ECSharpNode.ARRAY_CREATE_EXPRESSION);
-
-            ////if (!types.ContainsKey(nodeType))
-            ////    return;
-            AstNode model = NodePresenter.InstantiateASTNode(nodeType.Item1);
-            var uiElem = code_in.Views.NodalView.ANodalView.InstantiateVisualNode(nodeType.Item1, _selfPassingThroughCallbackTmp.NodalView, _selfPassingThroughCallbackTmp);
-            if (uiElem != null)
-            {
-                var presenter = new NodePresenter((_selfPassingThroughCallbackTmp.NodalView as ANodalView).Presenter, model);
-                presenter.SetView(uiElem as BaseNode);
-                (uiElem as BaseNode).Presenter = presenter;
-                (uiElem as BaseNode).SetParentView(_selfPassingThroughCallbackTmp);
-                _selfPassingThroughCallbackTmp.AddNode(uiElem as BaseNode);
-                _selfPassingThroughCallbackTmp = null;
-            }
-        }
-
-        static ExpressionItem _selfPassingThroughCallbackTmp = null; // TODO @Seb this is disgusting but faster to dev TODO set it to null after anycallback except add
-        private void ExpressionsGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _selfPassingThroughCallbackTmp = this;
-            Tuple<EContextMenuOptions, Action<object[]>>[] options = {
-                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ADD, _addNode_Callback),
-                                                                         new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.ALIGN, _alignNodes)//,
-                                                                         //new Tuple<EContextMenuOptions, Action<object[]>>(EContextMenuOptions.COLLAPSE, _addNode_Callback)
-                                                                     };
-            code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(options, this.GetThemeResourceDictionary(), null);
-            e.Handled = true;            
-        }
     }
 }

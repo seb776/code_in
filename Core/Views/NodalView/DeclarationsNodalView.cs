@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Security.Permissions;
+using code_in.Tools;
 
 namespace code_in.Views.NodalView
 {
@@ -23,7 +24,24 @@ namespace code_in.Views.NodalView
 
     public class DeclarationsNodalView : ANodalView
     {
-        public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, bool[] userOptions)
+        public override void Align()
+        {
+            int offset_x = 50;
+            int pos_x = 0;
+            foreach (var nodeUi in this.MainGrid.Children)
+            {
+                var nodeElem = (nodeUi as INodeElem);
+                if (nodeElem != null)
+                {
+                    nodeElem.SetPosition(pos_x, 0);
+                    int x_size;
+                    int y_size;
+                    nodeElem.GetSize(out x_size, out y_size);
+                    pos_x += offset_x + x_size;
+                }
+            }
+        }
+        public override Dictionary<string, List<INodeElem>> SearchMatchinNodes(string name, code_in.Views.NodalView.ExecutionNodalView.SearchOptions userOptions)
         {
             var results = new Dictionary<string, List<INodeElem>>();
 
@@ -37,7 +55,7 @@ namespace code_in.Views.NodalView
                 var nodePresenter = nodeView.Presenter;
                 var nodeAST = nodePresenter.GetASTNode();
 
-                if (ANodalView.NameMatch(name, nodeView.GetName(), true))
+                if (nodeView.GetName().Contains(name, userOptions.CaseSensitive) >= 0)// ANodalView.NameMatch(name, nodeView.GetName(), true))
                 {
                     if (nodeAST is ICSharpCode.NRefactory.CSharp.MethodDeclaration)
                     {
@@ -100,7 +118,7 @@ namespace code_in.Views.NodalView
         {
             // TODO Show Animation loadingFile
             this.NodalPresenterDecl.OpenFile(path);
-            AlignDeclarations();
+            Align();
             FileSystemWatcher w = new FileSystemWatcher();
 
             if (this.NodalPresenterDecl.DeclModel != null)

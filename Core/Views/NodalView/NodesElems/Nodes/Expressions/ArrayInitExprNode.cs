@@ -14,5 +14,15 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             this.SetType("ArrayInitExpr");
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

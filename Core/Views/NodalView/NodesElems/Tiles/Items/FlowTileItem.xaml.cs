@@ -37,10 +37,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             set
             {
                 _tileContainer.IsExpanded = value;
-                //if (value == false)
-                //    this.ItemGrid.Children.Remove(_tileContainer as UIElement);
-                //else
-                //    this.ItemGrid.Children.Add(_tileContainer);
             }
         }
 

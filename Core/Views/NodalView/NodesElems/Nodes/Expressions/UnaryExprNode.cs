@@ -31,5 +31,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
                 this.SetType((astNode as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression).OperatorToken.ToString());
             }
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            OperandA.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.UnaryOperatorExpression).Expression = e; });
+        }
     }
 }

@@ -21,5 +21,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            OperandA.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ParenthesizedExpression).Expression = e; });
+        }
     }
 }

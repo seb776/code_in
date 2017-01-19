@@ -13,7 +13,15 @@ namespace code_in.Views
     /// </summary>
     public interface ICodeInVisual
     {
-        ResourceDictionary GetThemeResourceDictionary(); // Each visual element of the application can be modified through a unique resource dict
-        void SetThemeResources(String keyPrefix); // Assigns the visual elements the values of the theme dictionary
+        /// <summary>
+        ///  Each visual element of the application can be modified through a unique resource dict
+        /// </summary>
+        /// <returns>The attached resource dictionary for theme management.</returns>
+        ResourceDictionary GetThemeResourceDictionary();
+        /// <summary>
+        /// Assigns the visual elements the values of the theme dictionary.
+        /// </summary>
+        /// <param name="keyPrefix">The keyPrefix used to link with the resource dictionary.</param>
+        void SetThemeResources(String keyPrefix);
     }
 }

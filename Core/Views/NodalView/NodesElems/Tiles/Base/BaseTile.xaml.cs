@@ -102,11 +102,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             Presenter = presenter;
         }
 
-        public virtual void UpdateDisplayedInfosFromPresenter()
-        {
-            // TODO @Seb uncomment this
-            //throw new NotImplementedException("A method implementation has been forgotten."); 
-        }
+        public abstract void UpdateDisplayedInfosFromPresenter();
         #endregion ITile
 
         public void SwitchBreakPoint()
@@ -164,7 +160,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public string GetName()
         {
-            return "";
+            if (this.Presenter == null || this.Presenter.GetASTNode() == null)
+                return "";
+            return this.Presenter.GetASTNode().ToString(); // TODO quickfix for searching
         }
 
         public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance) // TODO @Seb Remove

@@ -26,5 +26,14 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public IndexerExprNode() :
             this(Code_inApplication.MainResourceDictionary, null, null)
         { throw new DefaultCtorVisualException(); }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            Target.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IndexerExpression).Target = e; });
+        }
     }
 }

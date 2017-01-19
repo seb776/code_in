@@ -15,11 +15,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             this.SetType("PrimaryExpr");
         }
 
-        //public override void UpdateDisplayedInfosFromPresenter()
-        //{
-        //    var nodePres = GetNodePresenter();
-        //    var astNode = nodePres.GetASTNode() as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
-        //    ExprOut.SetName(astNode.LiteralValue);
-        //}
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            var nodePres = GetNodePresenter();
+            var astNode = nodePres.GetASTNode() as ICSharpCode.NRefactory.CSharp.PrimitiveExpression;
+            ExprOut.SetName(astNode.LiteralValue);
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // Not necessary we have no inputs
+        }
     }
 }
