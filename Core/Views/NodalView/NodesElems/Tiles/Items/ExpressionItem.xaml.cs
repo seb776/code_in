@@ -477,7 +477,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                         this.ExpressionsGrid.Children.Remove(_currentDraggingLink);
                         _linkStart = null;
                         _currentDraggingLink = null;
-                        throw except;
+                        return;
                     }
                     IOLink link = new IOLink();
                     link.Input = (_linkStart.Orientation == AIOAnchor.EOrientation.LEFT ? _linkStart : to);
@@ -499,7 +499,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
                     _linkStart.AttachNewLink(link);
                     to.AttachNewLink(link);
-                    this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode.Parent as UIElement));
+                    if (to.ParentNode != null)
+                        this.UpdateLinkDraw(to.GetAnchorPosition(to.ParentNode.Parent as UIElement));
                     _linkStart = null;
                     _currentDraggingLink = null;
                 }
