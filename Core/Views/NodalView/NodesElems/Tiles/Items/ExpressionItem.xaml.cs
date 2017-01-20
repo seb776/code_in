@@ -494,6 +494,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
                     link.Output._links.Clear();
                     if (link.Input is DataFlowAnchor && link.Output is DataFlowAnchor && !isGenerated) // To apply links creation to AST for expressions
                     {
+                        if ((link.Input as DataFlowAnchor).ParentNode != null)
+                            (link.Input as DataFlowAnchor).ParentNode.UpdateAnchorAttachAST();
                         (link.Input as DataFlowAnchor).MethodAttachASTExpr((ICSharpCode.NRefactory.CSharp.Expression)((link.Output as DataFlowAnchor).ParentNode.GetNodePresenter().GetASTNode()));
                     }
 
