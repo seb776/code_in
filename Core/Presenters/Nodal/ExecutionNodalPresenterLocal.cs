@@ -635,6 +635,12 @@ namespace code_in.Presenters.Nodal
                 BaseTile node = gmi.Invoke(_viewStatic, array) as BaseTile;
                 if (astNode == null)
                     throw new NotImplementedException(nodeTypeToAdd.ToString());
+
+                if (ExecModel.Root is MethodDeclaration)
+                {
+                    astNode.Remove();
+                    (ExecModel.Root as MethodDeclaration).Body.Add(astNode as Statement);
+                }
                 node.UpdateAnchorAttachAST();
                 //_viewStatic = null;
             }
