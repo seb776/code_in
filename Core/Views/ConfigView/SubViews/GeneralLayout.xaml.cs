@@ -144,9 +144,9 @@ namespace code_in.Views.ConfigView.SubViews
             string selectedName = (item.SelectedItem as ComboBoxItem).Name;
             string path;
             if (selectedName == "FrancaisField")
-                path = "FrenchResourcesDictionary.xaml";
+                path = "../../../core/Models/FrenchResourcesDictionary.xaml";
             else
-                path = "EnglishResourcesDictionary.xaml";
+                path = "../../../core/Models/EnglishResourcesDictionary.xaml";
             ResourceDictionary retResDict = null;
             try
             {
