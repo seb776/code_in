@@ -16,16 +16,16 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             this.SetType("ArrayCreateExpr");
             ExprIn = this.CreateAndAddInput<DataFlowAnchor>();
+            ExprIn.SetName("Type");
         }
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            throw new NotImplementedException();
         }
 
         public override void UpdateAnchorAttachAST()
         {
-            throw new NotImplementedException();
+            new NotImplementedException();
         }
     }
 }

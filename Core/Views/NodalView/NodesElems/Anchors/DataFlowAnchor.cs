@@ -10,6 +10,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 {
     public class DataFlowAnchor : AIOAnchor
     {
+
         public DataFlowAnchor(ResourceDictionary themeResDict, ILinkContainer linkContainer) :
             base(themeResDict, linkContainer)
         {

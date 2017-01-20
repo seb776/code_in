@@ -63,6 +63,7 @@
             </Border>
             <!-- Node content-->
             <Border x:Name="ContentBorder" Background="#424242" DockPanel.Dock="Bottom" CornerRadius="0,0,0,10" BorderBrush="GreenYellow" BorderThickness="2" Padding="0,0,0,5">
+                <StackPanel Orientation="Vertical">
                 <Grid>
                     <!--@Seb: The following grid is here to be able to move items in front of stack panel for drag N Drop inside the node itself-->
                     <Grid x:Name="ContentGridLayout"></Grid> 
@@ -73,21 +74,17 @@
                         <Label>machizefzefzefzef</Label>
                         <Label>machizefzefzefzef</Label>-->
                     </StackPanel>
-                    <Grid x:Name="MoveNodeGrid"></Grid>
+                    <Grid x:Name="MoveNodeGrid">
+                    </Grid>
                 </Grid>
+                    <Grid x:Name="CustomButtonsLayout"></Grid>
+                </StackPanel>
             </Border>
         </DockPanel>
 
         <Grid x:Name="ConstraintLayout" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" >
             
         </Grid>
-        <!--<Border Grid.Column="2" Grid.Row="1" Background="#212121" VerticalAlignment="Top" CornerRadius="0,5,5,0">
-                <StackPanel Orientation="Vertical">
-                    <Label Foreground="DodgerBlue">where T :</Label>
-                    <Label Foreground="White">Test</Label>
-                </StackPanel>
-            </Border>-->
-
         <!-- The border under is for the selection -->
         <Border x:Name="SelectionBorder" IsEnabled="False" Visibility="Hidden" Grid.Column="1" Grid.Row="1" CornerRadius="0,10,0,10" BorderBrush="Orange" BorderThickness="3">
             <Border.Effect>

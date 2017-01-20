@@ -294,13 +294,29 @@ namespace code_in.Presenters.Nodal.Nodes
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.NamespaceDeclaration)] = true;
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.MethodDeclaration)] = true;
             setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
+            setNameRoutines[typeof(ICSharpCode.NRefactory.CSharp.FieldDeclaration)] = true;
 
-            var routine = setNameRoutines[_model.GetType()];
-            if (routine)
-                (_model as dynamic).Name = name;
+            if (setNameRoutines.ContainsKey(_model.GetType()))
+            {
+                var routine = setNameRoutines[_model.GetType()];
+                if (routine)
+                    (_model as dynamic).Name = name;
+                else
+                    throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
+                _view.SetName(name);
+            }
             else
-                throw new InvalidOperationException("NodePresenter: Trying to set the name of a \"" + _model.GetType() + "\" node");
-            _view.SetName(name);
+            {
+                if (_model is PrimitiveExpression)
+                {
+                    (_model as PrimitiveExpression).Value = name;
+                }
+                if (_model is IdentifierExpression)
+                {
+                    (_model as IdentifierExpression).Identifier = name;
+                }
+            }
+            _view.UpdateDisplayedInfosFromPresenter();
         }
 
         #endregion Namemanagement

@@ -93,6 +93,7 @@ namespace code_in.Views.NodalView.NodesElems.Items
         {
 
         }
+
         public override void UpdateDisplayedInfosFromPresenter()
         {
             Debug.Assert(MethodNode != null);

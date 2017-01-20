@@ -15,21 +15,17 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public TypeReferenceExprNode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
             base(themeResDict, nodalView, linkContainer)
         {
-            this.SetType("This");
-            Input = this.CreateAndAddInput<DataFlowAnchor>();
+            this.SetType("TypeRef");
         }
 
         public override void UpdateAnchorAttachAST()
         {
-            if (Presenter.GetASTNode() is ICSharpCode.NRefactory.CSharp.IsExpression)
-            {
-                var isExpr = Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IsExpression;
-                Input.SetASTNodeReference((e) => { isExpr.Expression = e; });
-            }
+            // Useless here
         }
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
+            throw new NotImplementedException();
         }
     }
 }

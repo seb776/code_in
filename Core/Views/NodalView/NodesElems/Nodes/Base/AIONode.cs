@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace code_in.Views.NodalView.NodesElem.Nodes.Base
@@ -26,12 +27,55 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
     {
         public StackPanel _inputs = null;  // public tmp (ham ham)
         public StackPanel _outputs = null; // public tmp (ham ham)
-
+        public Label AddInputLabel = null;
         public AIONode(ResourceDictionary themeResDict, INodalView nodalView, ILinkContainer linkContainer) :
             base(themeResDict, nodalView)
         {
             ParentLinksContainer = linkContainer;
             this._initLayout();
+            var button = new Label();
+            AddInputLabel = button;
+            button.Content = "+";
+            button.Foreground = new SolidColorBrush(Colors.GreenYellow);
+            button.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x15, 0x15, 0x15));
+            button.MouseLeftButtonDown += button_Addinput_Clicked;
+            button.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            CustomButtonsLayout.Children.Add(button);
+            CanAddInputs = false;
+        }
+        bool _canAddInputs;
+        public bool CanAddInputs
+        {
+            get
+            {
+                return _canAddInputs;
+            }
+            set
+            {
+                _canAddInputs = value;
+                if (_canAddInputs)
+                {
+                    AddInputLabel.Visibility = System.Windows.Visibility.Visible;
+                    AddInputLabel.IsEnabled = true;
+                }
+                else
+                {
+                    AddInputLabel.Visibility = System.Windows.Visibility.Collapsed;
+                    AddInputLabel.IsEnabled = false;
+                }
+            }
+        }
+        public virtual void _addVariableParamInAST()
+        {
+
+        }
+        void button_Addinput_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            // We do not have other type of Anchor now.
+            var newInput = this.CreateAndAddInput<DataFlowAnchor>();
+            newInput.IsRemovable = true;
+            this._addVariableParamInAST();
+            this.UpdateAnchorAttachAST();
         }
         public AIONode() :
             base(Code_inApplication.MainResourceDictionary, null)
@@ -62,6 +106,18 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             subGrid.Children.Add(_inputs);
             subGrid.Children.Add(_outputs);
             this.ContentLayout.Children.Add(subGrid);
+        }
+        public virtual void RemoveRuntimeParamFromAST(int index)
+        {
+
+        }
+        public void RemoveIO(AIOAnchor anchor)
+        {
+            if (anchor._links.Count > 0)
+                anchor.RemoveLink(anchor._links[0], false);
+            this.RemoveRuntimeParamFromAST(this._inputs.Children.IndexOf(anchor));
+            this._inputs.Children.Remove(anchor);
+            this.UpdateAnchorAttachAST();
         }
         #endregion This
         #region INodeElem
@@ -98,6 +154,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this._inputs.Children.Add(inputAnchor);
             inputAnchor.SetParentNode(this);
             inputAnchor.Orientation = AIOAnchor.EOrientation.LEFT;
+            inputAnchor.SetName("TMP: param" + (_inputs.Children.Count - 1).ToString());
             return inputAnchor;
         }
 
@@ -115,7 +172,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
         #endregion IIOAnchorContainer
 
         /// <summary>
-        /// This is to attach AST method Attach to input ancors
+        /// This is to set the method used to apply user connection to the AST (attach and detach).
         /// </summary>
         public abstract void UpdateAnchorAttachAST();
     }

@@ -1,5 +1,6 @@
 ﻿using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems.Tiles.Items;
+using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,26 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
     /// </summary>
     public partial class AIOAnchor : UserControl, ICodeInVisual, ICodeInTextLanguage
     {
+        private bool _isRemovable;
+        public bool IsRemovable
+        {
+            get
+            {
+                return _isRemovable;
+            }
+            set
+            {
+                _isRemovable = value;
+                if (_isRemovable)
+                {
+                    this.RemoveButton.Visibility = System.Windows.Visibility.Hidden;
+                }
+                else
+                {
+                    this.RemoveButton.Visibility = System.Windows.Visibility.Collapsed;
+                }
+            }
+        }
         public AIONode ParentNode { get; private set; }
         private ResourceDictionary _themeResourceDictionary = null;
         private EOrientation _orientation = EOrientation.LEFT;
@@ -59,6 +80,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             this._links = new List<IOLink>();
             this.MouseLeftButtonDown += AIOAnchor_MouseLeftButtonDown;
             this.MouseLeftButtonUp += AIOAnchor_MouseLeftButtonUp;
+            IsRemovable = false;
         }
 
         #region This
@@ -95,14 +117,14 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         {
             if (Code_inApplication.RootDragNDrop.DraggingLink && Code_inApplication.RootDragNDrop.ParentLinkContainer == this.ParentLinksContainer)
             {
-                try // TODO @Seb try catch is not a really good way of doing semantic check
-                {
+                //try // TODO @Seb try catch is not a really good way of doing semantic check
+                //{
                     ParentLinksContainer.DropLink(this, false);
-                }
-                catch (Exception except)
-                {
-                    //MessageBox.Show(except.ToString());
-                }
+                //}
+                //catch (Exception except)
+                //{
+                //    //MessageBox.Show(except.ToString());
+                //}
                 e.Handled = true;
             }
         }
@@ -137,10 +159,11 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         public void RemoveLink(IOLink link, bool detachAST)
         {
             if (link.Input is DataFlowAnchor && detachAST)
-                (link.Input as DataFlowAnchor).MethodAttachASTExpr(new ICSharpCode.NRefactory.CSharp.NullReferenceExpression());
+                (link.Input as DataFlowAnchor).MethodAttachASTExpr(new IdentifierExpression(""));
             else if (link.Output is FlowNodeAnchor && (link.Output as FlowNodeAnchor).MethodDetachASTStmt != null && detachAST)
                 (link.Output as FlowNodeAnchor).MethodDetachASTStmt();
             _links.Remove(link);
+            this.ParentLinksContainer.RemoveVisualLink(link.Link);
         }
         #endregion Manage Links
         #endregion This
@@ -171,6 +194,33 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
         {
             LEFT = 0,
             RIGHT = 1,
+        }
+
+        private void RemoveButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_isRemovable)
+            {
+                this.ParentNode.RemoveIO(this);
+                e.Handled = true;
+            }
+        }
+
+        private void RemoveButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_isRemovable)
+            {
+                this.RemoveButton.Visibility = System.Windows.Visibility.Visible;
+                e.Handled = true;
+            }
+        }
+
+        private void RemoveButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_isRemovable)
+            {
+                this.RemoveButton.Visibility = System.Windows.Visibility.Hidden;
+                e.Handled = true;
+            }
         }
     }
 }

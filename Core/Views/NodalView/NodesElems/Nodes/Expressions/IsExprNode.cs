@@ -21,15 +21,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 
         public override void UpdateAnchorAttachAST()
         {
-            if (Presenter.GetASTNode() is ICSharpCode.NRefactory.CSharp.IsExpression)
-            {
-                var isExpr = Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IsExpression;
-                Input.SetASTNodeReference((e) => { isExpr.Expression = e; });
-            }
+            // useless here
         }
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
+            throw new NotImplementedException();
         }
     }
 }

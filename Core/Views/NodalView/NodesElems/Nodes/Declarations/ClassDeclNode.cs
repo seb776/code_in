@@ -175,7 +175,8 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            throw new NotImplementedException();
+            var classDeclAST = this.Presenter.GetASTNode() as TypeDeclaration;
+            this.SetName(classDeclAST.Name);
         }
     }
 }

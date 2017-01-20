@@ -20,6 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             : base(themeResDict, nodalView, linkContainer)
         {
             OperandA = this.CreateAndAddInput<DataFlowAnchor>();
+            this.SetType("Parenthesis");
         }
 
         public override void UpdateDisplayedInfosFromPresenter()
