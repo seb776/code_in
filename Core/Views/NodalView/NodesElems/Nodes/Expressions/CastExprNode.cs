@@ -27,5 +27,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
                 Input.SetASTNodeReference((e) => { isExpr.Expression = e; });
             }
         }
+
+        public override void UpdateDisplayedInfosFromPresenter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
