@@ -47,6 +47,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
             this.ConstraintLayout.Children.Add(Constraints);
             this._orderedLayout.Margin = new System.Windows.Thickness(0, 0, 0, 10);
         }
+        public override void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node)
+        {
+            var thisTypeAst = this.Presenter.GetASTNode() as TypeDeclaration;
+            thisTypeAst.Members.Add(node as EntityDeclaration);
+        }
         public ClassDeclNode() :
             this(Code_inApplication.MainResourceDictionary, null, null)
         { throw new DefaultCtorVisualException(); }

@@ -100,6 +100,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             e.Handled = true; // To avoid bubbling http://www.codeproject.com/Articles/464926/To-bubble-or-tunnel-basic-WPF-events
         }
 
+        public virtual void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node)
+        {
+
+        }
+
         private void MainLayout_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             code_in.Views.NodalView.ANodalView.CreateContextMenuFromOptions(this.Presenter.GetMenuOptions(), this.GetThemeResourceDictionary(), this.Presenter);

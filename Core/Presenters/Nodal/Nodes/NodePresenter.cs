@@ -1239,9 +1239,6 @@ namespace code_in.Presenters.Nodal.Nodes
         {
             if (((MenuItem)sender).DataContext != null)
             {
-                //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
-                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
-                MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
                 Dictionary<Type, ECSharpNode> types = new Dictionary<Type, ECSharpNode>();
                 types.Add(typeof(UsingDeclNode), ECSharpNode.USING_DECL); // TODO not sure
                 types.Add(typeof(NamespaceNode), ECSharpNode.NAMESPACE_DECL);
@@ -1249,6 +1246,10 @@ namespace code_in.Presenters.Nodal.Nodes
                 types.Add(typeof(ClassItem), ECSharpNode.FIELD_DECL);
                 if (!types.ContainsKey(((MenuItem)sender).DataContext as Type))
                     return;
+                //                (((MenuItem)sender).DataContext as NodalPresenterLocal)._view.CreateAndAddNode<_nodeCreationType>();
+                MethodInfo mi = _viewStatic.GetType().GetMethod("CreateAndAddNode");
+                MethodInfo gmi = mi.MakeGenericMethod(((MenuItem)sender).DataContext as Type);
+
                 var astNode = InstantiateASTNode(types[((MenuItem)sender).DataContext as Type]);
                 var nodePresenter = new NodePresenter(_presStatic, astNode);
                 var arrayParams = new object[1];
@@ -1262,6 +1263,7 @@ namespace code_in.Presenters.Nodal.Nodes
                 var pos = _viewStatic.GetPosition();
                 if (visualNode != null) // Fix Forum
                     visualNode.SetPosition((int)pos.X, (int)pos.Y);
+                _viewStatic.AddCreatedNodeToAST(astNode);
             }
             //_viewStatic = null;
         }
