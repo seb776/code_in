@@ -439,9 +439,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             else
             {
                 DraggingLink = true;
-                _currentDraggingLink = new Code_inLink();
+                _currentDraggingLink = new Code_inLink(_themeResourceDictionary);
                 this.ExpressionsGrid.Children.Add(_currentDraggingLink);
-                _currentDraggingLink.Stroke = new SolidColorBrush(Colors.GreenYellow);
                 _currentDraggingLink.StrokeThickness = 3;
                 _linkStart = from;
                 Code_inApplication.RootDragNDrop.ParentLinkContainer = this;
