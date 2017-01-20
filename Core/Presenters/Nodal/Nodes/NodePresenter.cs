@@ -1224,13 +1224,13 @@ namespace code_in.Presenters.Nodal.Nodes
                 else if (_model.GetType() == typeof(ObjectCreateExpression))
                     return (ENodeActions.COMMENT | ENodeActions.EXEC_TYPE);
                 else if (_model.GetType() == typeof(IdentifierExpression))
-                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                    return (ENodeActions.NAME | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(MemberReferenceExpression))
                     return (ENodeActions.TEXT | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(InvocationExpression))
                     return (ENodeActions.EXEC_PARAMETERS | ENodeActions.EXEC_GENERICS | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(PrimitiveExpression))
-                    return (ENodeActions.TEXT | ENodeActions.COMMENT);
+                    return (ENodeActions.NAME | ENodeActions.COMMENT);
                 else if (_model.GetType() == typeof(PropertyDeclaration))
                     return (ENodeActions.ACCESS_MODIFIERS | ENodeActions.COMMENT);
                 else
