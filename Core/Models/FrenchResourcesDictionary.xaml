@@ -3,12 +3,12 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="DefaultNodeType">Type de nœud</sys:String>
-    <sys:String x:Key="Update">Type de nœud</sys:String>
-    <sys:String x:Key="UpdateButton">Type de nœud</sys:String>
+    <sys:String x:Key="Update">Mettre a jour</sys:String>
+    <sys:String x:Key="UpdateButton">Mettre a jour</sys:String>
     <sys:String x:Key="ConfigFolder">Type de nœud</sys:String>
-    <sys:String x:Key="Browse">Type de nœud</sys:String>
-    <sys:String x:Key="Confirm">Type de nœud</sys:String>
-    <sys:String x:Key="Cancel">Type de nœud</sys:String>
+    <sys:String x:Key="Browse">Parcourir</sys:String>
+    <sys:String x:Key="Confirm">Valider</sys:String>
+    <sys:String x:Key="Cancel">Annuler</sys:String>
     <sys:String x:Key="Search">Rechercher</sys:String>
 
     <!-- Config panels -->
@@ -30,6 +30,8 @@
     <sys:String x:Key="ThemeNodes">Nodes</sys:String>
     <sys:String x:Key="ThemeSettings">Paramètres</sys:String>
     <sys:String x:Key="ThemePreview">Aperçu</sys:String>
+    <sys:String x:Key="CaseSensitiveKey">Respecter la casse</sys:String>
+
 
 
     <!-- Config.General tabs-->

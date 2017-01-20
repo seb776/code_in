@@ -48,6 +48,7 @@ namespace code_in.Views.MainView
         {
             this.SearchButton.SetResourceReference(Button.ContentProperty, "Search");
             this.SearchBox.SetResourceReference(TextBox.TextProperty, "Search");
+            this.CheckBoxCaseSensitive.SetResourceReference(CheckBox.ContentProperty, "CaseSensitiveKey");
         }
         #endregion ICodeInVisual
 

@@ -9,15 +9,15 @@
     <SolidColorBrush x:Key="AValueNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="AValueNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="AValueNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="AValueNodeMainColor" Color="#999966"/>
-    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="BlueViolet"/>
+    <SolidColorBrush x:Key="AValueNodeMainColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="#FF2C2C2C"/>
 
     <!-- For BaseNode color handling -->
     <SolidColorBrush x:Key="BaseNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="BaseNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="BaseNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="BaseNodeMainColor" Color="DarkGray"/>
-    <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="Green"/>
+    <SolidColorBrush x:Key="BaseNodeMainColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="#424242"/>
 
     <!-- Default statements nodes -->
     <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="White"/>
@@ -39,7 +39,7 @@
     
     <SolidColorBrush x:Key="DefaultColorLight" Color="#FFEBEBEB"/>
 
-    <SolidColorBrush x:Key="LinkColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="LinkColor" Color="DodgerBlue"/>
     <SolidColorBrush x:Key="GridBackGround" Color="#FF1D1D1D"/>
     <SolidColorBrush x:Key="GridLinesColor" Color="#FF574B50"/>
 

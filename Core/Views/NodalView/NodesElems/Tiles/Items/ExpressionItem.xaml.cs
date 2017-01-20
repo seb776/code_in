@@ -57,6 +57,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
             IsExpanded = false;
             _expression = new List<AExpressionNode>();
             _visualNodes = new List<INodeElem>();
+            this.SetThemeResources("");
         }
 
         public ExpressionItem() :
@@ -594,7 +595,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Items
 
         public void SetThemeResources(string keyPrefix)
         {
-            throw new NotImplementedException();
+            this.ItemName.SetResourceReference(Label.ForegroundProperty, "DefaultStmtNodeTypeForeGroundColor");
+            this.PreviewCode.SetResourceReference(Label.ForegroundProperty, "DefaultStmtNodeTypeForeGroundColor");
         }
         #endregion ICodeInVisual
         #region ICodeInTextLanguage

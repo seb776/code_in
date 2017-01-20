@@ -9,22 +9,22 @@
     <SolidColorBrush x:Key="AValueNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="AValueNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="AValueNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="AValueNodeMainColor" Color="#999966"/>
-    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="BlueViolet"/>
+    <SolidColorBrush x:Key="AValueNodeMainColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="#424242"/>
 
     <!-- For BaseNode color handling -->
     <SolidColorBrush x:Key="BaseNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="BaseNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="BaseNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="BaseNodeMainColor" Color="DarkGray"/>
-    <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="Green"/>
+    <SolidColorBrush x:Key="BaseNodeMainColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="#424242"/>
 
     <!-- Default statements nodes -->
-    <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="DefaultStmtNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="Black"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeSeparatorForeGroundColor" Color="Black"/>
     <SolidColorBrush x:Key="DefaultStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="DefaultStmtNodeMainColor" Color="#A5FF983D"/>
-    <SolidColorBrush x:Key="DefaultStmtNodeMainColorSelected" Color="#A5E24E42"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeMainColor" Color="#A53DA7FF"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeMainColorSelected" Color="#A5A1E242"/>
     <SolidColorBrush x:Key="DefaultStmtNodeSecondaryColor" Color="GreenYellow"/>
 
     <!-- These are the resources for the scopes -->
@@ -39,9 +39,9 @@
     
     <SolidColorBrush x:Key="DefaultColorLight" Color="#FFEBEBEB"/>
 
-    <SolidColorBrush x:Key="LinkColor" Color="GreenYellow"/>
-    <SolidColorBrush x:Key="GridBackGround" Color="#212330"/>
-    <SolidColorBrush x:Key="GridLinesColor" Color="#506871"/>
+    <SolidColorBrush x:Key="LinkColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="GridBackGround" Color="White"/>
+    <SolidColorBrush x:Key="GridLinesColor" Color="#FF191919"/>
 
 
     <!-- These are the colors for the zoom -->

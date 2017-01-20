@@ -30,6 +30,8 @@
     <sys:String x:Key="ThemeNodes">Nodes</sys:String>
     <sys:String x:Key="ThemeSettings">Settings</sys:String>
     <sys:String x:Key="ThemePreview">Preview</sys:String>
+    <sys:String x:Key="CaseSensitiveKey">Case sensitive</sys:String>
+
 
 
     <!-- Config.General tabs-->

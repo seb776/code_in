@@ -20,6 +20,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
             TextBox tb = new TextBox();
             this.NodeText = tb;
             this.ContentLayout.Children.Add(tb);
+            this.SetThemeResources("");
         }
         public UnSupExpNode() :
             this(Code_inApplication.MainResourceDictionary, null, null)
@@ -35,6 +36,18 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         public override void UpdateAnchorAttachAST()
         {
             // Not necessary we have no inputs
+        }
+        public override void SetThemeResources(string keyPrefix)
+        {
+            if (NodeText != null)
+            {
+                this.NodeText.SetResourceReference(TextBox.ForegroundProperty, "AValueNodeSeparatorForeGroundColor");
+                this.NodeText.SetResourceReference(TextBox.BackgroundProperty, "AValueNodeSecondaryColor");
+            }
+            else
+            {
+                base.SetThemeResources(keyPrefix);
+            }
         }
     }
 }

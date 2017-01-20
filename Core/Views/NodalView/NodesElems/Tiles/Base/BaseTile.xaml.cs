@@ -89,7 +89,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
             throw new NotImplementedException();
         }
 
-        public void SetThemeResources(string keyPrefix)
+        public virtual void SetThemeResources(string keyPrefix)
         {
             this.BackGrid.SetResourceReference(Grid.BackgroundProperty, "DefaultStmtNodeMainColorSelected");
         }

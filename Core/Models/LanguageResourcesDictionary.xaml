@@ -29,6 +29,7 @@
     <sys:String x:Key="ThemeNodes">RES: Nodes</sys:String>
     <sys:String x:Key="ThemeSettings">RES: Paramètres</sys:String>
     <sys:String x:Key="ThemePreview">RES: Aperçu</sys:String>
+    <sys:String x:Key="CaseSensitiveKey">RES: Case sensitive</sys:String>
 
 
     <!-- Config.General tabs-->

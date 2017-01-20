@@ -35,7 +35,18 @@ namespace code_in
                 Console.Error.WriteLine(e.Message);
             }
             LanguagePresenter.ApplyLanguage(retResDict);
-            // Code_inApplication.ThemeMgr.setMainTheme(new DefaultThemeData()); // TODO when theme management is complete and functional, load default theme
+            string defaultThemePath = "../../../core/Models/DarkThemeResourcesDictionary.xaml";
+            ResourceDictionary retResDictTheme = null;
+            try
+            {
+                var reader = new FileStream(defaultThemePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                retResDictTheme = XamlReader.Load(reader) as ResourceDictionary;
+            }
+            catch (Exception except)
+            {
+                Console.Error.WriteLine(except.Message);
+            }
+            ThemePresenter.ApplyTheme(retResDictTheme);
         }
 
         #region Accessors

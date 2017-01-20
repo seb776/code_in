@@ -60,6 +60,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             this._themeResourceDictionary = themeResDict;
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             InitializeComponent();
+            this.QuickFixSetThemeResources("BaseNode");
         }
         public BaseNode() :
             this(Code_inApplication.MainResourceDictionary, null)
@@ -73,6 +74,12 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
         }
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
+        public void QuickFixSetThemeResources(string keyPrefix)
+        {
+            this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");
+            this.ContentBorder.SetResourceReference(Border.BorderBrushProperty, keyPrefix + "MainColor");
+            this.ContentBorder.SetResourceReference(Border.BackgroundProperty, keyPrefix + "SecondaryColor");
+        }
         public virtual void SetThemeResources(string keyPrefix)
         {
             this.HeaderLayout.SetResourceReference(Border.BackgroundProperty, keyPrefix + "MainColor");

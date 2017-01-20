@@ -122,13 +122,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
                         <StackPanel Orientation="Vertical">
-                            <CheckBox Foreground="White">TMP: Current scope</CheckBox>
-                            <CheckBox Foreground="White">TMP: Upper scope</CheckBox>
-                            <CheckBox Foreground="White">TMP: Declarations</CheckBox>
-                            <CheckBox Foreground="White">TMP: Execution</CheckBox>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
-                            <CheckBox Foreground="White">TMP: Exact match</CheckBox>
                             <CheckBox x:Name="CheckBoxCaseSensitive" Foreground="White" Click="CheckBox_CaseSensitive_Clicked">TMP: Case sensitive</CheckBox>
                         </StackPanel>
                     </StackPanel>
