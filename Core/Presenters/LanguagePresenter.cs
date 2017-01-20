@@ -13,10 +13,11 @@ namespace code_in.Presenters
         {
 
             // @z0rg & yAyA TODO exception launchtime
-            //foreach (var t in resDict.Keys)
-            //{
-            //    Code_inApplication.LanguageResourcesDictionary[t as String] = resDict[t as String];
-            //}
+            if (resDict != null)
+            foreach (var t in resDict.Keys)
+            {
+                Code_inApplication.LanguageResourcesDictionary[t as String] = resDict[t as String];
+            }
         }
     }
 

@@ -17,7 +17,7 @@
                 <GroupBox.Header>
                     <Label Foreground="#ebebeb"  x:Name="LanguageSelectField" FontSize="20">TMP: Langue</Label>
                 </GroupBox.Header>
-                <ComboBox  MinWidth="200" HorizontalAlignment="Left" SelectionChanged="ComboBox_Selected">
+                <ComboBox  MinWidth="200" HorizontalAlignment="Left" SelectionChanged="ComboBox_Selected" SelectedIndex="1">
                     <ComboBoxItem x:Name="FrancaisField" Content="TMP: Francais"/>
                     <ComboBoxItem x:Name="EnglishField" Content="TMP: Anglais"/>
                 </ComboBox>
