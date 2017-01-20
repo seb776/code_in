@@ -42,5 +42,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
            this.Expression.SetName(exprStmt.ToString().Remove(exprStmt.ToString().LastIndexOf(Environment.NewLine)));
            //this.Expression.SetName(exprStmt.ToString().Replace(System.Environment.NewLine, ""));
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ExpressionStatement;
+            this.Expression.ExprOut.SetASTNodeReference((e) => { ifStmt.Expression = e; });
+        }
     }
 }

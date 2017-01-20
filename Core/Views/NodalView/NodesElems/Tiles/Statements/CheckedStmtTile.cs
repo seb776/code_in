@@ -40,5 +40,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.SetName("Checked");
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.CheckedStatement);
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

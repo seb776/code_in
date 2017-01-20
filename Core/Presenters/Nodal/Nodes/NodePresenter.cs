@@ -115,7 +115,12 @@ namespace code_in.Presenters.Nodal.Nodes
 
             AstNode result = null;
             if (types.ContainsKey(csharpNode))
-                result = Activator.CreateInstance(types[csharpNode]) as AstNode;
+            {
+                if (csharpNode == ECSharpNode.PRIMITIVE_EXPRESSION)
+                    result = new PrimitiveExpression("");
+                else
+                    result = Activator.CreateInstance(types[csharpNode]) as AstNode;
+            }
             if (csharpNode == ECSharpNode.METHOD_DECL && result != null)
             {
                 MethodDeclaration methodDecl = result as MethodDeclaration;

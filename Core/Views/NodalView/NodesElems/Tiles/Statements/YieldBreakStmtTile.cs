@@ -37,5 +37,9 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.SetName("YieldBreak");
 
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+        }
     }
 }

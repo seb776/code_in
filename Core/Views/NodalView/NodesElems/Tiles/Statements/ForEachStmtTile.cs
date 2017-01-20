@@ -48,5 +48,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             var foreachStmt = (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement);
           //  this.Condition.SetName(foreachStmt.InExpression.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ForeachStatement;
+            this.Condition.ExprOut.SetASTNodeReference((e) => { ifStmt.InExpression = e; });
+        }
     }
 }

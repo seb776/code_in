@@ -37,5 +37,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             var varDecl = Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.VariableDeclarationStatement;
             this.SetName(varDecl.Type.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

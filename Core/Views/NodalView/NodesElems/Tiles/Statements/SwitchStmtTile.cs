@@ -65,5 +65,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
                 ++i;
             }
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.SwitchStatement;
+            this.Expression.ExprOut.SetASTNodeReference((e) => { ifStmt.Expression = e; });
+            // TODO not complete
+        }
     }
 }

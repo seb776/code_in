@@ -28,6 +28,7 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
     /// </summary>
     public abstract partial class ANodeItem : UserControl, code_in.Views.NodalView.INode
     {
+
         public bool IsExpanded
         {
             get
@@ -212,6 +213,12 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
 
         public virtual void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node)
         {
+        }
+
+
+        public void UpdateAnchorAttachAST()
+        {
+            throw new NotImplementedException();
         }
     } // Class
 } // Namespace

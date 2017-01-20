@@ -26,6 +26,10 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
     /// </summary>
     public abstract partial class BaseNode : UserControl, code_in.Views.NodalView.INode
     {
+        public virtual void UpdateAnchorAttachAST()
+        {
+
+        }
         public bool IsExpanded
         {
             get

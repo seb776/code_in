@@ -39,5 +39,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.UncheckedStatement);
             this.SetName("Unchecked");
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

@@ -16,10 +16,10 @@
             <Label MouseUp="ItemName_MouseDown" Grid.Column="0" Foreground="White" x:Name="ItemName" VerticalAlignment="Top" FontWeight="ExtraBold">ExampleExpressionStatement;</Label>
         </StackPanel>
         <StackPanel x:Name="ExpressionMainGrid" Orientation="Horizontal" Grid.Column="2" MouseMove="ExpressionsGrid_MouseMove" MouseLeftButtonUp="ExpressionsGrid_MouseLeftButtonUp" Background="Transparent">
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" MinWidth="250" MinHeight="200">
+            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" MinWidth="250" MinHeight="200" MouseRightButtonDown="ExpressionsGrid_MouseRightButtonDown" Background="Transparent">
                 <StackPanel Orientation="Vertical">
                     <Label Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top">Expressions</Label>
-                    <Grid x:Name="ExpressionsGrid" Margin="5,5,50,5" SizeChanged="ExpressionsGrid_SizeChanged" MouseRightButtonDown="ExpressionsGrid_MouseRightButtonDown" Background="Transparent">
+                    <Grid x:Name="ExpressionsGrid" Margin="5,5,50,5" SizeChanged="ExpressionsGrid_SizeChanged">
                     </Grid>
                 </StackPanel>
             </Border>

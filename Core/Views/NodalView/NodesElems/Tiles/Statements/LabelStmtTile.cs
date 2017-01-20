@@ -10,23 +10,20 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class LabelStmtTile : BaseTile
     {
-        public ExpressionItem Expression = null;
         public override bool IsExpanded
         {
             get
             {
-                return Expression.IsExpanded;
+                return false;
             }
             set
             {
-                Expression.IsExpanded = value;
             }
         }
         public LabelStmtTile(ResourceDictionary themeResDict, INodalView nodalView) :
             base(themeResDict, nodalView)
         {
             this.SetName("Label");
-            Expression = this.CreateAndAddItem<ExpressionItem>(true);
         }
         public LabelStmtTile() :
             this(Code_inApplication.MainResourceDictionary,null)
@@ -38,7 +35,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         {
             this.SetName("Label");
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.LabelStatement);
-            Expression.SetName(stmt.Label);
+            this.SetName(stmt.ToString());
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
         }
     }
 }

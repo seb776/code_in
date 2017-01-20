@@ -57,5 +57,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
                 // set type and varibleName here
             }
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

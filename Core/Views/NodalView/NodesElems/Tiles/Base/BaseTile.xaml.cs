@@ -251,5 +251,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             throw new NotImplementedException();
         }
+
+
+        public abstract void UpdateAnchorAttachAST();
     }
 }

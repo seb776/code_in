@@ -10,17 +10,15 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
     class GotoStmtTile : BaseTile
     {
-        public ExpressionItem label = null;
 
         public override bool IsExpanded
         {
             get
             {
-                return label.IsExpanded;
+                return false;
             }
             set
             {
-                label.IsExpanded = value;
             }
         }
 
@@ -28,7 +26,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             base(themeResDict, nodalView)
         {
             this.SetName("Goto");
-            label = this.CreateAndAddItem<ExpressionItem>();
         }
         public GotoStmtTile() :
             base(Code_inApplication.MainResourceDictionary,null)
@@ -39,7 +36,12 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.GotoStatement);
-            label.SetName(stmt.Label);
+            this.SetName(stmt.ToString());
+        }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
         }
     }
 }

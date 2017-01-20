@@ -40,7 +40,10 @@ namespace code_in.Presenters.Nodal
             set;
         }
         void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node);
-
+        /// <summary>
+        /// This is to set the method used to apply user connection to the AST (attach and detach).
+        /// </summary>
+        void UpdateAnchorAttachAST();
     }
 
     public enum EAccessModifier

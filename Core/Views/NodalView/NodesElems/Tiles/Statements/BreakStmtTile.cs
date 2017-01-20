@@ -34,5 +34,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
         {
             this.SetName("break");
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

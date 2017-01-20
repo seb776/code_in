@@ -77,6 +77,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this._addVariableParamInAST();
             this.UpdateAnchorAttachAST();
         }
+
         public AIONode() :
             base(Code_inApplication.MainResourceDictionary, null)
         { throw new DefaultCtorVisualException(); }
@@ -119,6 +120,7 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             this._inputs.Children.Remove(anchor);
             this.UpdateAnchorAttachAST();
         }
+        public abstract void UpdateAnchorAttachAST();
         #endregion This
         #region INodeElem
         public override void SetPosition(int posX, int posY)
@@ -170,10 +172,5 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             return outputAnchor;
         }
         #endregion IIOAnchorContainer
-
-        /// <summary>
-        /// This is to set the method used to apply user connection to the AST (attach and detach).
-        /// </summary>
-        public abstract void UpdateAnchorAttachAST();
     }
 }

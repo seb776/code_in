@@ -41,5 +41,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.FixedStatement);
             //this.SetName("Fixed " + stmt.Type.ToString() + " " + stmt.Variables.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }

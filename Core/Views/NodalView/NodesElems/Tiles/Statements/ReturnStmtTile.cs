@@ -40,5 +40,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.SetName("return");
             Expression.SetName(stmt.Expression.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ReturnStatement;
+            this.Expression.ExprOut.SetASTNodeReference((e) => { ifStmt.Expression = e; });
+        }
     }
 }

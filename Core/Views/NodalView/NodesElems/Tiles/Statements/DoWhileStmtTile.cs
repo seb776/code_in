@@ -48,5 +48,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             Condition.SetName(doWhileNode.Condition.ToString());
             trueItem.SetName(doWhileNode.EmbeddedStatement.ToString());
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.DoWhileStatement;
+            this.Condition.ExprOut.SetASTNodeReference((e) => { ifStmt.Condition = e; });
+        }
     }
 }

@@ -54,5 +54,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
             
             ItemFalse.SetName("else");
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            var ifStmt = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IfElseStatement;
+            this.Condition.ExprOut.SetASTNodeReference((e) => { ifStmt.Condition = e; });
+        }
     }
 }

@@ -37,5 +37,10 @@ namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
             this.SetName("Continue");
             var stmt = (this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.ContinueStatement);
         }
+
+        public override void UpdateAnchorAttachAST()
+        {
+            // useless here
+        }
     }
 }
