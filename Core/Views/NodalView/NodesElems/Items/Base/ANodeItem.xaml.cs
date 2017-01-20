@@ -209,5 +209,9 @@ namespace code_in.Views.NodalView.NodesElems.Items.Base
         {
             ((ANodalView)this.NodalView).FocusToNode(this);
         }
+
+        public virtual void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node)
+        {
+        }
     } // Class
 } // Namespace

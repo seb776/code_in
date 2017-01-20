@@ -245,5 +245,11 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             ((ANodalView)this.NodalView).FocusToNode(this);
         }
+
+
+        public void AddCreatedNodeToAST(AstNode node)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

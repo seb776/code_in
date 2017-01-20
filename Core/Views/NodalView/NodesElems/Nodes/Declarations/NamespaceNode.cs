@@ -42,6 +42,11 @@ namespace code_in.Views.NodalView.NodesElems.Nodes
         }
         #endregion IVisualNodeContainer
 
+        public override void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node)
+        {
+            var thisTypeAst = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;
+            thisTypeAst.AddMember(thisTypeAst);
+        }
         public override void UpdateDisplayedInfosFromPresenter()
         {
             var astNode = this.Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.NamespaceDeclaration;

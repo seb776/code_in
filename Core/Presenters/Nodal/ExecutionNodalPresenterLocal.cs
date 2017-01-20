@@ -635,7 +635,6 @@ namespace code_in.Presenters.Nodal
                 BaseTile node = gmi.Invoke(_viewStatic, array) as BaseTile;
                 if (astNode == null)
                     throw new NotImplementedException(nodeTypeToAdd.ToString());
-                //this.ExecModel.Root.AddChildWithExistingRole(astNode);
                 //_viewStatic = null;
             }
         }

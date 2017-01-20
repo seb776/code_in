@@ -39,6 +39,7 @@ namespace code_in.Presenters.Nodal
             get;
             set;
         }
+        void AddCreatedNodeToAST(ICSharpCode.NRefactory.CSharp.AstNode node);
 
     }
 
