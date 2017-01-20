@@ -225,31 +225,6 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
-    <Style x:Key ="StyleTabItems" TargetType="TabItem">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Border Name="Border" Margin="2,0">
-                        <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="10,2"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#FF0097FF" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="#FF848484" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <SolidColorBrush Color="DodgerBlue" x:Key="DefaultContextMenuMainColor"/>
     <SolidColorBrush Color="Magenta" x:Key="RemoveContextMenuMainColor"/>
     <SolidColorBrush Color="Yellow" x:Key="AddContextMenuMainColor"/>
