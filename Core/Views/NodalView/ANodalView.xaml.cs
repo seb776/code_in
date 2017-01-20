@@ -198,6 +198,7 @@ namespace code_in.Views.NodalView
             this.SearchBar.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
             this.SearchBar.SetValue(WidthProperty, Double.NaN); // Width auto
             this.WinGrid.Children.Add(this.SearchBar);
+            this.SetThemeResources("");
         }
 
 
@@ -474,7 +475,8 @@ namespace code_in.Views.NodalView
         #endregion INodalView
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetThemeResources(String keyPrefix) { throw new NotImplementedException(); }
+        public void SetThemeResources(String keyPrefix) {
+        }
         #endregion ICodeInVisual
         #region IContainerDragNDrop
         public new void Drop(IEnumerable<IDragNDropItem> items)

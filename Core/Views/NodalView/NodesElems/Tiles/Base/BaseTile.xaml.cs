@@ -91,7 +91,7 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void SetThemeResources(string keyPrefix)
         {
-            throw new NotImplementedException();
+            this.BackGrid.SetResourceReference(Grid.BackgroundProperty, "DefaultStmtNodeMainColorSelected");
         }
         #endregion ICodeInVisual
 
@@ -218,9 +218,13 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         public void SelectHighLight(bool highlighetd)
         {
             if (highlighetd)
-                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xE2, 0x4E, 0x42));
+            {
+                this.BackGrid.SetResourceReference(Grid.BackgroundProperty, "DefaultStmtNodeMainColorSelected");
+            }
             else
-                this.BackGrid.Background = new SolidColorBrush(Color.FromArgb(0xA5, 0xFF, 0x98, 0x3D));
+            {
+                this.BackGrid.SetResourceReference(Grid.BackgroundProperty, "DefaultStmtNodeMainColor");
+            }
         }
 
 

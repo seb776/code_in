@@ -15,6 +15,8 @@ namespace code_in.Tools
     {
         public static int Contains(this string source, string toCheck, bool caseSensitive)
         {
+            if (source == null)
+                return -1;
             StringComparison comp = (caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
             return source.IndexOf(toCheck, comp);
         }

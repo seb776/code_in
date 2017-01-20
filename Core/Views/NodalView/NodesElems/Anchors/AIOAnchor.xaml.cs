@@ -81,6 +81,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
             this.MouseLeftButtonDown += AIOAnchor_MouseLeftButtonDown;
             this.MouseLeftButtonUp += AIOAnchor_MouseLeftButtonUp;
             IsRemovable = false;
+            this.SetThemeResources("");
         }
 
         #region This
@@ -175,7 +176,7 @@ namespace code_in.Views.NodalView.NodesElems.Anchors
 
         public void SetThemeResources(string keyPrefix)
         {
-            throw new NotImplementedException();
+            this.LinkAttach.SetResourceReference(Rectangle.FillProperty, "LinkColor");
         }
         #endregion ICodeInVisual
         #region ICodeInTextLanguage

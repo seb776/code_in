@@ -4,7 +4,14 @@
     
     <!-- These are the colors for the nodes
     Mechanism = Type + suffixe("TypeForeGroundColor", "SeparatorForeGroundColor", "NameForeGroundColor", "MainColor", "SecondaryColor") -->
-    
+
+    <!-- For AValueNode color handling -->
+    <SolidColorBrush x:Key="AValueNodeTypeForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeSeparatorForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeNameForeGroundColor" Color="White"/>
+    <SolidColorBrush x:Key="AValueNodeMainColor" Color="#999966"/>
+    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="BlueViolet"/>
+
     <!-- For BaseNode color handling -->
     <SolidColorBrush x:Key="BaseNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="BaseNodeSeparatorForeGroundColor" Color="White"/>
@@ -13,207 +20,42 @@
     <SolidColorBrush x:Key="BaseNodeSecondaryColor" Color="Green"/>
 
     <!-- Default statements nodes -->
-    <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeTypeForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="DefaultStmtNodeSeparatorForeGroundColor" Color="White"/>
     <SolidColorBrush x:Key="DefaultStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="DefaultStmtNodeMainColor" Color="#424242"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeMainColor" Color="#A5FF983D"/>
+    <SolidColorBrush x:Key="DefaultStmtNodeMainColorSelected" Color="#A5E24E42"/>
     <SolidColorBrush x:Key="DefaultStmtNodeSecondaryColor" Color="GreenYellow"/>
 
-    <!-- For context statements nodes -->
-    <SolidColorBrush x:Key="ContextStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
-    <SolidColorBrush x:Key="ContextStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ContextStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ContextStmtNodeMainColor" Color="#424242"/>
-    <SolidColorBrush x:Key="ContextStmtNodeSecondaryColor" Color="GreenYellow"/>
-
-    <!-- For block statements nodes -->
-    <SolidColorBrush x:Key="BlockStmtNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="BlockStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="BlockStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="BlockStmtNodeMainColor" Color="#52D4FF"/>
-    <SolidColorBrush x:Key="BlockStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For EnumNode color handling -->
-    <SolidColorBrush x:Key="EnumNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="EnumNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="EnumNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="EnumNodeMainColor" Color="Red"/>
-    <SolidColorBrush x:Key="EnumNodeSecondaryColor" Color="DarkGray"/>
-
-    <!-- For ClassDeclNode color handling -->
-    <SolidColorBrush x:Key="ClassDeclNodeTypeForeGroundColor" Color="white"/>
-    <SolidColorBrush x:Key="ClassDeclNodeSeparatorForeGroundColor" Color="white"/>
-    <SolidColorBrush x:Key="ClassDeclNodeNameForeGroundColor" Color="white"/>
-    <SolidColorBrush x:Key="ClassDeclNodeMainColor" Color="#FFFFA200"/>
-    <SolidColorBrush x:Key="ClassDeclNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For InterfaceDeclNode color handling -->
-    <SolidColorBrush x:Key="InterfaceDeclNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="InterfaceDeclNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="InterfaceDeclNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="InterfaceDeclNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="InterfaceDeclNodeSecondaryColor" Color="Black"/>
-
-    <!-- For NamespaceNode color handling -->
-    <SolidColorBrush x:Key="NamespaceNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="NamespaceNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="NamespaceNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="NamespaceNodeMainColor" Color="#52D4FF"/>
-    <SolidColorBrush x:Key="NamespaceNodeSecondaryColor" Color="#00424242"/>
-
-    <!-- For FuncEntryNode color handling -->
-    <SolidColorBrush x:Key="FuncEntryNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncEntryNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncEntryNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncEntryNodeMainColor" Color="#52D4FF"/>
-    <SolidColorBrush x:Key="FuncEntryNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For FuncDeclNode color handling -->
-    <SolidColorBrush x:Key="FuncDeclNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncDeclNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncDeclNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="FuncDeclNodeMainColor" Color="#FF0C90CD"/>
-    <SolidColorBrush x:Key="FuncDeclNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For ReturnStmtNode color handling -->
-    <SolidColorBrush x:Key="ReturnStmtNodeTypeForeGroundColor" Color="#FFF00036"/>
-    <SolidColorBrush x:Key="ReturnStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ReturnStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ReturnStmtNodeMainColor" Color="#FFF00036"/>
-    <SolidColorBrush x:Key="ReturnStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For VarDeclStmtNode color handling -->
-    <SolidColorBrush x:Key="VarDeclStmtNodeTypeForeGroundColor" Color="#FF8914"/>
-    <SolidColorBrush x:Key="VarDeclStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="VarDeclStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="VarDeclStmtNodeMainColor" Color="#FF8914"/>
-    <SolidColorBrush x:Key="VarDeclStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For DefaultStmtNode color handling -->
-    <SolidColorBrush x:Key="ExpressionStmtNodeTypeForeGroundColor" Color="#FFA914FF"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeMainColor" Color="#FFA914FF"/>
-    <SolidColorBrush x:Key="ExpressionStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For IfStmtNode color handling -->
-    <SolidColorBrush x:Key="IfStmtNodeTypeForeGroundColor" Color="GreenYellow"/>
-    <SolidColorBrush x:Key="IfStmtNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="IfStmtNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="IfStmtNodeMainColor" Color="GreenYellow"/>
-    <SolidColorBrush x:Key="IfStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For WhileStmtNode color handling -->
-    <SolidColorBrush x:Key="WhileStmtNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="WhileStmtNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="WhileStmtNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="WhileStmtNodeMainColor" Color="#FF3030FF"/>
-    <SolidColorBrush x:Key="WhileStmtNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For ForStmtNode color handling -->
-    <SolidColorBrush x:Key="ForStmtNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForStmtNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForStmtNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForStmtNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForStmtNodeSecondaryColor" Color="Black"/>
-
-    <!-- For DoWhileStmtNode color handling -->
-    <SolidColorBrush x:Key="DoWhileStmtNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="DoWhileStmtNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="DoWhileStmtNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="DoWhileStmtNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="DoWhileStmtNodeSecondaryColor" Color="Black"/>
-
-    <!-- For ForeachStmtNode color handling -->
-    <SolidColorBrush x:Key="ForeachStmtNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForeachStmtNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForeachStmtNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForeachStmtNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="ForeachStmtNodeSecondaryColor" Color="Black"/>
-
-    <!-- For UnaryExprNode color handling -->
-    <SolidColorBrush x:Key="UnaryExprNodeTypeForeGroundColor" Color="#FF6EAA45"/>
-    <SolidColorBrush x:Key="UnaryExprNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="UnaryExprNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="UnaryExprNodeMainColor" Color="#FF6EAA45"/>
-    <SolidColorBrush x:Key="UnaryExprNodeSecondaryColor" Color="#424242"/>
-
-    <!-- For BinaryExprNode color handling -->
-    <SolidColorBrush x:Key="BinaryExprNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="BinaryExprNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="BinaryExprNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="BinaryExprNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="BinaryExprNodeSecondaryColor" Color="Black"/>
-
-    <!-- For TernaryExpreNode color handling -->
-    <SolidColorBrush x:Key="TernaryExprNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="TernaryExprNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="TernaryExprNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="TernaryExprNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="TernaryExprNodeSecondaryColor" Color="Black"/>
-
-    <!-- For FuncExprNode color handling -->
-    <SolidColorBrush x:Key="FuncExprNodeTypeForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExprNodeSeparatorForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExprNodeNameForeGroundColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExprNodeMainColor" Color="Black"/>
-    <SolidColorBrush x:Key="FuncExprNodeSecondaryColor" Color="Black"/>
-
-    <!-- For AValueNode color handling -->
-    <SolidColorBrush x:Key="AValueNodeTypeForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="AValueNodeSeparatorForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="AValueNodeNameForeGroundColor" Color="White"/>
-    <SolidColorBrush x:Key="AValueNodeMainColor" Color="#999966"/>
-    <SolidColorBrush x:Key="AValueNodeSecondaryColor" Color="BlueViolet"/>
-    <SolidColorBrush x:Key="AValueNodeTest" Color="Red"/>
-
-
-    <!-- These are the colors for the input-output -->
-    <SolidColorBrush x:Key="IntColor" Color="DodgerBlue"/>
-    <SolidColorBrush x:Key="CharColor" Color="LightSalmon"/>
-    <SolidColorBrush x:Key="ShortColor" Color="LightSalmon"/>
-    <SolidColorBrush x:Key="BoolColor" Color="GreenYellow"/>
-    <SolidColorBrush x:Key="FloatingColor" Color="BlueViolet"/>
-    <SolidColorBrush x:Key="ObjectColor" Color="LightSalmon"/>
-    <SolidColorBrush x:Key="OtherTypesColor" Color="LightSalmon"/>
-    
     <!-- These are the resources for the scopes -->
     <SolidColorBrush x:Key="ScopePublicColor" Color="#FF0098F0"/>
     <SolidColorBrush x:Key="ScopeInternalColor" Color="#FF00DC14"/>
     <SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFF650D"/>
     <SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00037"/>
-
-    <SolidColorBrush x:Key="DefaultColorLight" Color="#FFEBEBEB"/>
-    <!--<LinearGradientBrush x:Key="ScopeInternalColor" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF4ACB00" Offset="0"/>
-        <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="ScopeProtectedColor" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFFFA200" Offset="0"/>
-        <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="ScopePrivateColor" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFF00041" Offset="0"/>
-        <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>-->
-    <!--<SolidColorBrush x:Key="ScopeInternalColor" Color="#FF4ACB00"/>-->
-    <!--<SolidColorBrush x:Key="ScopeProtectedColor" Color="#FFFFA200"/>-->
-    <!--<SolidColorBrush x:Key="ScopePrivateColor" Color="#FFF00041"/>-->
     <sys:String x:Key="ScopePublicString">+</sys:String>
     <sys:String x:Key="ScopeInternalString">~</sys:String>
     <sys:String x:Key="ScopeProtectedString">#</sys:String>
     <sys:String x:Key="ScopePrivateString">-</sys:String>
     
+    <SolidColorBrush x:Key="DefaultColorLight" Color="#FFEBEBEB"/>
+
+    <SolidColorBrush x:Key="LinkColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="GridBackGround" Color="#212330"/>
+    <SolidColorBrush x:Key="GridLinesColor" Color="#506871"/>
+
+
+    <!-- These are the colors for the zoom -->
+    <SolidColorBrush x:Key="ZoomCursorColor" Color="GreenYellow"/>
+    <SolidColorBrush x:Key="ZoomCursorOverColor" Color="#DFFFB8"/>
+    <SolidColorBrush x:Key="ZoomBarColor" Color="Black"/>
+
     <!-- These are the offset for the anchors -->
     <Thickness x:Key="AnchorOffsetLeft"  Left="-13" Bottom="0" Top="0" Right="0"/>
     <Thickness x:Key="AnchorOffsetRight"  Right="-13" Bottom="0" Top="0" Left="0"/>
 
-    <!-- These are the colors for the zoom -->
-    <SolidColorBrush x:Key="ZoomCursorColor" Color="Red"/>
-    <SolidColorBrush x:Key="ZoomBarColor" Color="Gray"/>
 
     <Rect x:Key="RectDims" X="0" Y="0" Width="30" Height="30"></Rect>
-    <DrawingBrush x:Name="GridTileBrush" x:Key="GridTile" Stretch="None" TileMode="Tile"
+    <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
               Viewport="0,0 30,30" ViewportUnits="Absolute">
         <!-- ^^^^^^^^^^^ set the size of the tile-->
         <DrawingBrush.Drawing>
@@ -233,30 +75,7 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
-    <Style x:Name="StyleTabItems" TargetType="TabItem">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Border Name="Border" Margin="2,0">
-                        <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="10,2"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#FF0097FF" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="#FF848484" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+
 
     <SolidColorBrush Color="DodgerBlue" x:Key="DefaultContextMenuMainColor"/>
     <SolidColorBrush Color="Magenta" x:Key="RemoveContextMenuMainColor"/>

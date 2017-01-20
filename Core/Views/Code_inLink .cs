@@ -11,14 +11,17 @@ using System.Windows.Shapes;
 
 namespace code_in.Views 
 {
-    public class Code_inLink : Shape
+    public class Code_inLink : Shape, ICodeInVisual
     {
-        public Code_inLink()
+        public Code_inLink(ResourceDictionary themeResDict)
         {
             this.IsHitTestVisible = false;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.Stretch = System.Windows.Media.Stretch.None;
+            _themeResDict = themeResDict;
+            this.Resources.MergedDictionaries.Add(_themeResDict);
+            SetThemeResources("");
         }
 
         public enum ELineMode {
@@ -74,5 +77,15 @@ namespace code_in.Views
             _lineMode = (_lineMode == ELineMode.LINE ? ELineMode.BEZIER : ELineMode.LINE);
         }
 
+        private ResourceDictionary _themeResDict;
+        public ResourceDictionary GetThemeResourceDictionary()
+        {
+            return _themeResDict;
+        }
+
+        public void SetThemeResources(string keyPrefix)
+        {
+            this.SetResourceReference(Shape.StrokeProperty, "LinkColor");
+        }
     }
 }

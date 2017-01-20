@@ -18,10 +18,10 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Thumb">
-                            <Polygon Name="ThumbIco" Fill="GreenYellow" Points="0,10 10,10 10,-10 5,-15 0,-10" VerticalAlignment="Bottom"/>
+                        <Polygon Name="ThumbIco" Fill="{DynamicResource ZoomCursorColor}" Points="0,10 10,10 10,-10 5,-15 0,-10" VerticalAlignment="Bottom"/>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ThumbIco" Property="Fill" Value="#DFFFB8"/>
+                                <Setter TargetName="ThumbIco" Property="Fill" Value="{DynamicResource ZoomCursorOverColor}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -46,12 +46,12 @@
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 <Border Name="PART_Border"
-                           BorderBrush="Black" BorderThickness="1"
+                           BorderBrush="{DynamicResource ZoomBarColor}" BorderThickness="1"
                            Padding="2"
                           Grid.Row="1" Grid.Column="1"
                            Width="{TemplateBinding Width}"
                            Height="5"
-                           Background="Black"
+                           Background="{DynamicResource ZoomBarColor}"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center" />
                                 <Track Name="PART_Track"
@@ -76,7 +76,8 @@
               Viewport="0,0 30,30" ViewportUnits="Absolute">
             <!-- ^^^^^^^^^^^ set the size of the tile-->
             <DrawingBrush.Drawing>
-                <GeometryDrawing Brush="#212330">
+                <!-- #212330-->
+                <GeometryDrawing Brush="{DynamicResource GridBackGround}">
                     <GeometryDrawing.Geometry>
                         <!-- draw a single X -->
                         <GeometryGroup>
@@ -85,7 +86,8 @@
                     </GeometryDrawing.Geometry>
                     <GeometryDrawing.Pen>
                         <!-- set color and thickness of lines -->
-                        <Pen Thickness="1" Brush="#506871">
+                        <!--#506871-->
+                        <Pen Thickness="1" Brush="{DynamicResource GridLinesColor}">
                         </Pen>
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
