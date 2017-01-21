@@ -86,9 +86,15 @@ namespace code_in.Views.ConfigView.SubViews
             string selectedName = (item.SelectedItem as ComboBoxItem).Name;
             string path;
             if (selectedName == "LightTheme")
+            {
                 path = "../../../core/Models/LightThemeResourcesDictionary.xaml";
+                Code_inApplication.MainResourceDictionary["linkType"] = 0;
+            }
             else
+            {
+                Code_inApplication.MainResourceDictionary["linkType"] = 1;
                 path = "../../../core/Models/DarkThemeResourcesDictionary.xaml";
+            }
             ResourceDictionary retResDict = null;
             try
             {

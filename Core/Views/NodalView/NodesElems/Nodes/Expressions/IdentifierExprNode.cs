@@ -18,7 +18,7 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
         {
             var nodePres = GetNodePresenter();
             var astNode = nodePres.GetASTNode() as ICSharpCode.NRefactory.CSharp.IdentifierExpression;
-            ExprOut.SetName(astNode.Identifier);
+            this.SetName(astNode.Identifier);
         }
 
         public override void UpdateAnchorAttachAST()

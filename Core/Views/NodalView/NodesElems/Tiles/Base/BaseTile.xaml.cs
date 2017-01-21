@@ -213,6 +213,8 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
         {
             (_parentView as ITileContainer).RemoveTile(this);
             Presenter.RemoveFromAST();
+            if (_isBreakpointActive)
+                this.SwitchBreakPoint();
         }
 
         public void SelectHighLight(bool highlighetd)

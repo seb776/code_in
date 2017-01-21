@@ -464,8 +464,10 @@ namespace code_in.Views.NodalView
         }
         #endregion Events.Mouse
         #region Events.Others
-        private void changeResourceLink(object sender, ResourcesEventArgs e)
+        public void changeResourceLink(object sender, ResourcesEventArgs e)
         {
+            if (this is ExecutionNodalView)
+                (this as ExecutionNodalView).ExecPresenter.changeResourceLink(sender, e);
             //if (this.MainGrid != null)
             //    foreach (var t in this.MainGrid.Children)
             //    {
