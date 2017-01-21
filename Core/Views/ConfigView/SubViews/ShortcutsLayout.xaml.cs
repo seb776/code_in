@@ -33,6 +33,7 @@ namespace code_in.Views.ConfigView.SubViews
             this.Resources.MergedDictionaries.Add(this._themeResourceDictionary);
             this.Resources.MergedDictionaries.Add(this._languageResourceDictionary);
             InitializeComponent();
+            this.SetLanguageResources("ConfigShortcut");
         }
         public ShortcutsLayout() :
             this(Code_inApplication.MainResourceDictionary)
@@ -48,8 +49,33 @@ namespace code_in.Views.ConfigView.SubViews
         }
         public void SetLanguageResources(String keyPrefix)
         {
-            throw new NotImplementedException();
+            SauvegardeField.SetResourceReference(Label.ContentProperty, "SauvegardeField");
+            CloseField.SetResourceReference(Label.ContentProperty, "CloseField");
         }
         #endregion ICodeInVisual
+
+        private void keySaveField_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string key = keySaveField.Text.ToUpper();
+            if (key[0] < 'A' || key[0] > 'Z')
+            {
+                key = "S";
+                keySaveField.Text = "S";
+                MessageBox.Show("Not a letter, put S by default");
+            }
+            Code_inApplication.keysave = key;
+        }
+
+        private void keyCloseField_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string key = keyCloseField.Text.ToUpper();
+            if (key[0] < 'A' || key[0] > 'Z')
+            {
+                key = "A";
+                keyCloseField.Text = "A";
+                MessageBox.Show("Not a letter, put A by default");
+            }
+            Code_inApplication.keyclose = key;
+        }
     }
 }

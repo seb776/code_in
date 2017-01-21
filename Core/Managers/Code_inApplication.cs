@@ -19,6 +19,8 @@ namespace code_in
         private static ResourceDictionary _languageResourceDictionary = null;
         private static ResourceDictionary _themePreviewResourceDictionary = null;
         private static ResourceDictionary _mainResourceDictionary = null;
+        public static string keysave = "S";
+        public static string keyclose = "A";
 
         public static void StartApplication(IEnvironmentWrapper wrapper)
         {

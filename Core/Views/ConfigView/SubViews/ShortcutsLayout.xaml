@@ -6,6 +6,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
-        <Label Foreground="#FFEBEBEB" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="24">.: WORK IN PROGRESS :.</Label>
+        <StackPanel x:Name="General_layout" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <GroupBox Width="auto" HorizontalAlignment="Left" Padding="10">
+                <GroupBox.Header>
+                    <Label Foreground="#ebebeb"  x:Name="SauvegardeField" FontSize="20">TMP: Sauvegarde</Label>
+                </GroupBox.Header>
+                <TextBox x:Name="keySaveField" MaxLength="1" Text="S" TextChanged="keySaveField_TextChanged"/>
+            </GroupBox>
+            <GroupBox Width="auto" HorizontalAlignment="Left" Padding="10">
+                <GroupBox.Header>
+                    <Label Foreground="#ebebeb"  x:Name="CloseField" FontSize="20">TMP: Fermeture</Label>
+                </GroupBox.Header>
+                <TextBox x:Name="keyCloseField" MaxLength="1" Text="A" TextChanged="keyCloseField_TextChanged"/>
+            </GroupBox>
+
+        </StackPanel>
     </Grid>
 </UserControl>
