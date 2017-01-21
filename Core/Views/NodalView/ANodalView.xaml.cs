@@ -2,6 +2,7 @@
 using code_in.Managers;
 using code_in.Presenters.Nodal;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views.ConfigView.SubViews;
 using code_in.Views.MainView;
 using code_in.Views.NodalView.NodesElem.Nodes.Base;
 using code_in.Views.NodalView.NodesElems;
@@ -401,11 +402,20 @@ namespace code_in.Views.NodalView
 
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
-            int step = 2;
-            Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
-            if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
+            //int step = 2;
+            // Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
+
+            if (Code_inApplication.keysave.Length == 1 && Code_inApplication.keysave.Length == 1)// TODO Add KeysaveForClose
             {
-                this.Presenter.Save();
+
+                if ((e.Key.ToString() == Code_inApplication.keysave) && Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.Presenter.Save();
+                }
+                if ((e.Key.ToString() == Code_inApplication.keyclose) && Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.EnvironmentWindowWrapper.CloseCode_inWindow();
+                }
             }
             /*if (e.Key == Key.Add)
             {
@@ -417,7 +427,7 @@ namespace code_in.Views.NodalView
                 tmp.Width -= step;
                 tmp.Height -= step;
             }
-
+            
             if (e.Key == Key.L)
             {
                 var lineType = Code_inApplication.MainResourceDictionary["linkType"];
@@ -486,7 +496,8 @@ namespace code_in.Views.NodalView
         #endregion INodalView
         #region ICodeInVisual
         public ResourceDictionary GetThemeResourceDictionary() { return _themeResourceDictionary; }
-        public void SetThemeResources(String keyPrefix) {
+        public void SetThemeResources(String keyPrefix)
+        {
         }
         #endregion ICodeInVisual
         #region IContainerDragNDrop

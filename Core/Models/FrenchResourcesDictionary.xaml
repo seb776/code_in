@@ -47,4 +47,8 @@
     <sys:String x:Key="OptionField">Options</sys:String>
     <sys:String x:Key="TutorialMode">Mode Tutoriel</sys:String>
     <sys:String x:Key="DropShadow">Activer les drops shadows</sys:String>
+
+    <!-- Config.Shortcut -->
+    <sys:String x:Key="SauvegardeField">Sauvegarde</sys:String>
+    <sys:String x:Key="CloseField">Fermeture</sys:String>
 </ResourceDictionary>
