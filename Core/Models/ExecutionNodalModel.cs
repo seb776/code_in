@@ -41,6 +41,7 @@ namespace code_in.Models
             Debug.Assert(assocFile != null);
             Debug.Assert(root != null);
             AssociatedFile = assocFile;
+            AssociatedFile.AssociatedChildren.Add(this);
             Root = root;
         }
 

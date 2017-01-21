@@ -12,6 +12,13 @@ namespace code_in.Models.NodalModel
 {
     public class DeclarationsNodalModel : INodalModel
     {
+        public List<ExecutionNodalModel> AssociatedChildren = new List<ExecutionNodalModel>();
+        public void CloseChildrenViews()
+        {
+            foreach (var v in AssociatedChildren)
+                v.Presenter.View.EnvironmentWindowWrapper.CloseCode_inWindow();
+            AssociatedChildren.Clear();
+        }
         private bool _isSaved;
 
         #region INodalModel

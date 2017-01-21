@@ -98,7 +98,7 @@ namespace Code_in.VSCode_in
 
         public void CloseNodalWindowPane(ANodalWindowPane wp) // TODO Beaurk API
         {
-            _takenIndexes.Remove(wp.PaneId);
+            //_takenIndexes.Remove(wp.PaneId);
             if (wp is DeclarationNodalWindowPane)
                 _openedFiles.Remove((((DeclarationNodalWindowPane)wp).Code_inView as DeclarationsNodalView).NodalPresenterDecl.DeclModel.FilePath);
         }
@@ -327,7 +327,7 @@ namespace Code_in.VSCode_in
             }
         }
 
-        public void CloseCode_inWindow()
+        public virtual void CloseCode_inWindow()
         {
             if (!this._code_inView.IsSaved)
             {
@@ -339,7 +339,7 @@ namespace Code_in.VSCode_in
                 IVsWindowFrame frame = this.Frame as IVsWindowFrame;
                 if (frame != null)
                     frame.CloseFrame((uint)Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave);
-                if (this is ANodalWindowPane)
+                if (this.GetType().IsSubclassOf(typeof(ANodalWindowPane)))
                     ((VSCode_inPackage)Code_inApplication.EnvironmentWrapper).CloseNodalWindowPane(this as ANodalWindowPane);
             }
         }
@@ -360,6 +360,17 @@ namespace Code_in.VSCode_in
 
     public class ExecutionNodalWindowPane : ANodalWindowPane
     {
+        public override void CloseCode_inWindow()
+        {
+            if (true)//!this._code_inView.IsSaved)
+            {
+                IVsWindowFrame frame = this.Frame as IVsWindowFrame;
+                if (frame != null)
+                    frame.CloseFrame((uint)Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave);
+                if (this.GetType().IsSubclassOf(typeof(ANodalWindowPane)))
+                    ((VSCode_inPackage)Code_inApplication.EnvironmentWrapper).CloseNodalWindowPane(this as ANodalWindowPane);
+            }
+        }
         public ExecutionNodalView ExecutionNodalView
         {
             get;
@@ -383,20 +394,33 @@ namespace Code_in.VSCode_in
         }
     }
 
-    public class DeclarationNodalWindowPane : ANodalWindowPane
+    public class DeclarationNodalWindowPane : ANodalWindowPane, IVsWindowFrameNotify3
     {
-
+        public override void CloseCode_inWindow()
+        {
+            if (true)//!this._code_inView.IsSaved)
+            {
+                IVsWindowFrame frame = this.Frame as IVsWindowFrame;
+                if (frame != null)
+                    frame.CloseFrame((uint)Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE.FRAMECLOSE_NoSave);
+                if (this.GetType().IsSubclassOf(typeof(ANodalWindowPane)))
+                    ((VSCode_inPackage)Code_inApplication.EnvironmentWrapper).CloseNodalWindowPane(this as ANodalWindowPane);
+                this.DeclarationsNodalView.NodalPresenterDecl.DeclModel.CloseChildrenViews();
+            }
+        }
         public DeclarationsNodalView DeclarationsNodalView
         {
             get;
             private set;
         }
+
         private void _init()
         {
             var presenter = new DeclarationsNodalPresenterLocal();
             DeclarationsNodalView = new DeclarationsNodalView(Code_inApplication.MainResourceDictionary);
             code_in.Views.NodalView.NodalViewActions.AttachNodalViewAndPresenter(DeclarationsNodalView, presenter);
             Code_inView = DeclarationsNodalView;
+            
         }
         public DeclarationNodalWindowPane(System.IServiceProvider provider) :
             base(provider)
@@ -415,10 +439,41 @@ namespace Code_in.VSCode_in
             DeclarationsNodalView.OpenFile(filePath);
             this.SetTitle(Path.GetFileName(filePath));
         }
+
+        public int OnClose(ref uint pgrfSaveOptions)
+        {
+
+            this.CloseCode_inWindow();
+            return Microsoft.VisualStudio.VSConstants.S_OK;
+        }
+
+        public int OnDockableChange(int fDockable, int x, int y, int w, int h)
+        {
+            return Microsoft.VisualStudio.VSConstants.S_OK;
+        }
+
+        public int OnMove(int x, int y, int w, int h)
+        {
+            return Microsoft.VisualStudio.VSConstants.S_OK;
+
+        }
+
+        public int OnShow(int fShow)
+        {
+            return Microsoft.VisualStudio.VSConstants.S_OK;
+
+        }
+
+        public int OnSize(int x, int y, int w, int h)
+        {
+            return Microsoft.VisualStudio.VSConstants.S_OK;
+
+        }
     }
 
-    public class ANodalWindowPane : ACode_inWindowPane
+    public abstract class ANodalWindowPane : ACode_inWindowPane
     {
+        public override abstract void CloseCode_inWindow();
         public int PaneId; // TODO init to -1
 
         private void _init()

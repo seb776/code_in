@@ -113,35 +113,66 @@ namespace code_in.Views.NodalView
             base(themeResDict)
         {
         }
+        FileSystemWatcher _fileChangedWatcher;
 
         public void OpenFile(String path)
         {
             // TODO Show Animation loadingFile
             this.NodalPresenterDecl.OpenFile(path);
             Align();
-            FileSystemWatcher w = new FileSystemWatcher();
+            _fileChangedWatcher = new FileSystemWatcher();
 
             if (this.NodalPresenterDecl.DeclModel != null)
             {
                 var pathFile = this.NodalPresenterDecl.DeclModel.FilePath;
 
-                w.Path = Path.GetDirectoryName(pathFile);
+                _fileChangedWatcher.Path = Path.GetDirectoryName(pathFile);
                 // @ Zor (Hamham) : je t'ai mis juste le filtre quand la taille du fichier change (https://msdn.microsoft.com/fr-fr/library/system.io.notifyfilters(v=vs.110).aspx)
                 /* petit truc tet un peu dérangeant, je ne sais pas si il y a un paramètre ou autre mais quand le fichier est déjà ouvert 
                  * avant que tu ne l'ouvres dans Code_in, si tu fais des changement, le callback ne sera pas appelé
                  * Tu dois obligatoirement avoir ouvert le fichier dans code_in puis l'ouvrir à l'extérieur et faire le changement pour que cela marche
                  */
-                w.NotifyFilter = NotifyFilters.Size;
-                w.Filter = Path.GetFileName(pathFile);
-                w.Changed += OnChanged;
+                _fileChangedWatcher.NotifyFilter = NotifyFilters.Size;
+                _fileChangedWatcher.Filter = Path.GetFileName(pathFile);
+                _fileChangedWatcher.Changed += OnChanged;
 
-                w.EnableRaisingEvents = true;
+                _fileChangedWatcher.EnableRaisingEvents = true;
             }
 
         }
-
+        [STAThread]
         private void OnChanged(object source, FileSystemEventArgs e)
         {
+            string sMessageBoxText = "The file you are working on has been changed fromthe outside. Do you want to reload it ?";
+            string sCaption = "My Test Application";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+
+                    this.EnvironmentWindowWrapper.CloseCode_inWindow();
+                    this.NodalPresenterDecl.DeclModel.CloseChildrenViews();
+                    this._fileChangedWatcher.Changed -= OnChanged;
+                    Application.Current.ExecOnUiThread(() =>
+                    {
+                        Code_inApplication.EnvironmentWrapper.CreateAndAddView<DeclarationsNodalView>(this.NodalPresenterDecl.DeclModel.FilePath);
+                    });
+                    break;
+
+                case MessageBoxResult.No:
+                    /* ... */
+                    break;
+
+                case MessageBoxResult.Cancel:
+                    /* ... */
+                    break;
+            }
+
         }
     }
 }
