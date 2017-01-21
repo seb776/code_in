@@ -190,7 +190,6 @@ namespace code_in.Presenters.Nodal
         }
         static void Save(object[] objects)
         {
-            MessageBox.Show("Saving file to => " + Environment.CurrentDirectory);
             System.Diagnostics.Debug.Assert(objects != null);
             System.Diagnostics.Debug.Assert(objects[0] != null);
             ANodalPresenterLocal self = objects[0] as ANodalPresenterLocal;

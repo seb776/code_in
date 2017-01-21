@@ -142,7 +142,6 @@ namespace code_in.Views.NodalView
 
         private void OnChanged(object source, FileSystemEventArgs e)
         {
-            MessageBox.Show("changed");
         }
     }
 }
