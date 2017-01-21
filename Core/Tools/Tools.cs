@@ -31,6 +31,15 @@ namespace code_in.Tools
                 }
             }
         }
+        
+		public static void ExecOnUiThread(this Application app, Action action)
+		{
+			var dispatcher = app.Dispatcher;
+			if (dispatcher.CheckAccess())
+				action();
+			else
+				dispatcher.BeginInvoke(action);
+		}
     }
     public static class StringExtensions
     {

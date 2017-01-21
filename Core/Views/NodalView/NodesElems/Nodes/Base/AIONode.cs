@@ -42,6 +42,11 @@ namespace code_in.Views.NodalView.NodesElem.Nodes.Base
             button.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             CustomButtonsLayout.Children.Add(button);
             CanAddInputs = false;
+            this.SizeChanged += AIONode_SizeChanged;
+        }
+
+        void AIONode_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
         }
         bool _canAddInputs;
         public bool CanAddInputs
