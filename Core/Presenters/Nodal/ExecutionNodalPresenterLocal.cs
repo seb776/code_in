@@ -651,8 +651,8 @@ namespace code_in.Presenters.Nodal
                 var array = new object[1];
                 array[0] = nodePresenter;
                 BaseTile node = gmi.Invoke(_viewStatic, array) as BaseTile;
-                if (astNode == null)
-                    throw new NotImplementedException(nodeTypeToAdd.ToString());
+                //if (astNode == null)
+                //    throw new NotImplementedException(nodeTypeToAdd.ToString());
 
                 if (ExecModel.Root is MethodDeclaration)
                 {

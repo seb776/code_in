@@ -170,6 +170,7 @@ namespace code_in.Views.NodalView
             {
                 ((ANodalView)node.NodalView).EnvironmentWindowWrapper.FocusCode_inWindow();
                 ((ANodalView)node.NodalView).FocusToNode(node, true);
+                
             }
 
             var middleOfScrollViewer = new Point(this.ScrollView.ActualWidth / 2.0f, this.ScrollView.ActualHeight / 2.0f);
@@ -413,7 +414,8 @@ namespace code_in.Views.NodalView
                 }
                 if ((e.Key.ToString() == Code_inApplication.keyclose) && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
-                    this.EnvironmentWindowWrapper.CloseCode_inWindow();
+                    if (this.EnvironmentWindowWrapper != null)
+                        this.EnvironmentWindowWrapper.CloseCode_inWindow();
                 }
             }
             /*if (e.Key == Key.Add)

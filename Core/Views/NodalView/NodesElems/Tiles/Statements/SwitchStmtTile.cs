@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class SwitchStmtTile : BaseTile
+    public class SwitchStmtTile : BaseTile
     {
         public ExpressionItem Expression;
         public List<FlowTileItem> itemCases;

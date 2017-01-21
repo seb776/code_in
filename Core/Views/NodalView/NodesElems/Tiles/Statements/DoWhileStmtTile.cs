@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class DoWhileStmtTile : BaseTile
+    public class DoWhileStmtTile : BaseTile
     {
         public ExpressionItem Condition = null;
         public FlowTileItem trueItem = null;
