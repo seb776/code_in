@@ -392,13 +392,21 @@ namespace code_in.Views.NodalView
         }
 
         #region Events.Keys
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            var window = Window.GetWindow(this);
+            window.KeyDown += MainView_KeyDown;
+        }
+
         void MainView_KeyDown(object sender, KeyEventArgs e)
         {
             int step = 2;
             Rect tmp = (Rect)Code_inApplication.MainResourceDictionary["RectDims"];
             if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
                 this.Presenter.Save();
-            if (e.Key == Key.Add)
+            }
+            /*if (e.Key == Key.Add)
             {
                 tmp.Width += step;
                 tmp.Height += step;
@@ -416,7 +424,7 @@ namespace code_in.Views.NodalView
                     Code_inApplication.MainResourceDictionary["linkType"] = 0;
                 else
                     Code_inApplication.MainResourceDictionary["linkType"] = ((int)(lineType) == 0 ? 1 : 0);
-            }
+            }*/
         }
         #endregion Events.Keys
         #region Events.Mouse

@@ -105,7 +105,7 @@
             <Viewbox x:Name="ZoomPanel" Stretch="Fill" MouseDown="ZoomPanel_MouseDown" MouseUp="ZoomPanel_MouseUp" MouseLeave="ZoomPanel_MouseLeave" MouseMove="ZoomPanel_MouseMove" >
                 <Grid x:Name="offsetGrid" Background="{DynamicResource LocalGridTile}">
                     <Border  BorderThickness="50" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Grid x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" PreviewKeyDown="MainView_KeyDown" MinWidth="5000" MinHeight="5000" Background="Transparent">
+                        <Grid x:Name="MainGrid" MouseMove="MainGrid_MouseMove" MouseRightButtonDown="MainGrid_MouseRightButtonDown" MouseLeftButtonUp="MainView_MouseUp" MouseLeftButtonDown="MainGrid_MouseLeftButtonDown" MouseLeave="MainGrid_MouseLeave" Loaded="UserControl_Loaded" MinWidth="5000" MinHeight="5000" Background="Transparent">
                             <!-- Do not put anything here, it would cause weird behavior with themes. Use mainView.AddNode<T>() instead. -->
                         </Grid>
                     </Border>
