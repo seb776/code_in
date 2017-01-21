@@ -57,7 +57,7 @@ namespace code_in.Views.ConfigView.SubViews
         private void keySaveField_TextChanged(object sender, TextChangedEventArgs e)
         {
             string key = keySaveField.Text.ToUpper();
-            if (key[0] < 'A' || key[0] > 'Z')
+            if (key.Length == 0 || key[0] < 'A' || key[0] > 'Z')
             {
                 key = "S";
                 keySaveField.Text = "S";
@@ -69,7 +69,7 @@ namespace code_in.Views.ConfigView.SubViews
         private void keyCloseField_TextChanged(object sender, TextChangedEventArgs e)
         {
             string key = keyCloseField.Text.ToUpper();
-            if (key[0] < 'A' || key[0] > 'Z')
+            if (key.Length == 0 || key[0] < 'A' || key[0] > 'Z')
             {
                 key = "A";
                 keyCloseField.Text = "A";
