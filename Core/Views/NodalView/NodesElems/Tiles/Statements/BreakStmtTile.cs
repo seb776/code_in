@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class BreakStmtTile : BaseTile
+    public class BreakStmtTile : BaseTile
     {
         public override bool IsExpanded
         {

@@ -169,6 +169,7 @@ namespace code_in.Views.NodalView
             {
                 ((ANodalView)node.NodalView).EnvironmentWindowWrapper.FocusCode_inWindow();
                 ((ANodalView)node.NodalView).FocusToNode(node, true);
+                
             }
 
             var middleOfScrollViewer = new Point(this.ScrollView.ActualWidth / 2.0f, this.ScrollView.ActualHeight / 2.0f);

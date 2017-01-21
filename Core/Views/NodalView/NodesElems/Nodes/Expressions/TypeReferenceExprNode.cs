@@ -25,7 +25,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 
         public override void UpdateDisplayedInfosFromPresenter()
         {
-            throw new NotImplementedException();
         }
     }
 }

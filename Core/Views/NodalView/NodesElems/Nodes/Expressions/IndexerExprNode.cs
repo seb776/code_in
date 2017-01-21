@@ -33,7 +33,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Expressions
 
         public override void UpdateAnchorAttachAST()
         {
-            throw new NotImplementedException();
             Target.SetASTNodeReference((e) => { (Presenter.GetASTNode() as ICSharpCode.NRefactory.CSharp.IndexerExpression).Target = e; });
         }
     }

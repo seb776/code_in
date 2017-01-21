@@ -167,7 +167,6 @@ namespace code_in.Views.NodalView.NodesElems.Tiles
 
         public void AddGeneric(string name, Nodes.Assets.EGenericVariance variance) // TODO @Seb Remove
         {
-            throw new NotImplementedException();
         }
         public void SetParentView(IContainerDragNDrop vc)
         {

@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace code_in.Views.NodalView.NodesElems.Tiles.Statements
 {
-    class ReturnStmtTile : BaseTile
+    public class ReturnStmtTile : BaseTile
     {
         public ExpressionItem Expression = null;
         public override bool IsExpanded

@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace code_in.Views.NodalView.NodesElems.Nodes.Statements.Block
 {
-    class IfStmtTile : BaseTile
+    public class IfStmtTile : BaseTile
     {
         public ExpressionItem Condition = null;
         public FlowTileItem ItemTrue = null;
