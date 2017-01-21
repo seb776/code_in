@@ -140,7 +140,6 @@ namespace code_in.Views.NodalView
             }
 
         }
-        [STAThread]
         private void OnChanged(object source, FileSystemEventArgs e)
         {
             string sMessageBoxText = "The file you are working on has been changed fromthe outside. Do you want to reload it ?";
