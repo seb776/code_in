@@ -143,7 +143,7 @@ namespace code_in.Views.NodalView
         private void OnChanged(object source, FileSystemEventArgs e)
         {
             string sMessageBoxText = "The file you are working on has been changed fromthe outside. Do you want to reload it ?";
-            string sCaption = "My Test Application";
+            string sCaption = "File has changed";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
