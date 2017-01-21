@@ -1,6 +1,8 @@
-﻿using code_in.Models;
+﻿using code_in.Managers;
+using code_in.Models;
 using code_in.Models.NodalModel;
 using code_in.Presenters.Nodal.Nodes;
+using code_in.Views;
 using code_in.Views.NodalView;
 using code_in.Views.NodalView.NodesElems;
 using code_in.Views.NodalView.NodesElems.Anchors;
@@ -39,7 +41,23 @@ namespace code_in.Presenters.Nodal
                 return View as ExecutionNodalView;
             }
         }
-
+        public void changeResourceLink(object sender, ResourcesEventArgs e)
+        {
+            //(this.View as ExecutionNodalView).RootTileContainer.
+            foreach (var node in Tools.Tools.FindVisualChildren<Code_inLink>((this.View as ExecutionNodalView).RootTileContainer as TileContainer))
+            {
+                node.changeLineMode();
+            }
+            //if (this.MainGrid != null)
+            //    foreach (var t in this.MainGrid.Children)
+            //    {
+            //        if (t.GetType() == typeof(Code_inLink))
+            //        {
+            //            _link = (Code_inLink)t;
+            //            _link.changeLineMode();
+            //        }
+            //    }
+        }
         #region _generateFunctions
         /// <summary>
         /// This function displays the execution code from stmtArg to the NodalView attached.

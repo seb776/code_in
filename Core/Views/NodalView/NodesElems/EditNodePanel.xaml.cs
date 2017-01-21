@@ -327,11 +327,15 @@ namespace code_in.Views.NodalView
         private void GeneralNameChanged(object sender, TextChangedEventArgs e)
         {
             if (_nodePresenter != null)
+            {
                 _nodePresenter.SetName(NodeName.Text);
+                e.Handled = true;
+            }
         }
         private void NodeName_GotFocus(object sender, RoutedEventArgs e)
         {
             NodeName.Text = "";
+            e.Handled = true;
         }
 
         #endregion NameManagement
