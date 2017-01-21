@@ -414,7 +414,8 @@ namespace code_in.Views.NodalView
                 }
                 if ((e.Key.ToString() == Code_inApplication.keyclose) && Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
-                    this.EnvironmentWindowWrapper.CloseCode_inWindow();
+                    if (this.EnvironmentWindowWrapper != null)
+                        this.EnvironmentWindowWrapper.CloseCode_inWindow();
                 }
             }
             /*if (e.Key == Key.Add)

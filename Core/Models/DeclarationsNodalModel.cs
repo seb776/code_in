@@ -1,4 +1,5 @@
 ﻿using code_in.Presenters.Nodal;
+using code_in.Views.NodalView;
 using ICSharpCode.NRefactory.CSharp;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,9 @@ namespace code_in.Models.NodalModel
         }
         public void Save()
         {
+            (this.Presenter.View as DeclarationsNodalView).IsSaving = true;
             this.Save(this.FilePath);
+            (this.Presenter.View as DeclarationsNodalView).IsSaving = false;
         }
 
         public void Save(string filePath)

@@ -140,38 +140,43 @@ namespace code_in.Views.NodalView
             }
 
         }
+
+        public bool IsSaving = false;
+
         private void OnChanged(object source, FileSystemEventArgs e)
         {
-            string sMessageBoxText = "The file you are working on has been changed fromthe outside. Do you want to reload it ?";
-            string sCaption = "File has changed";
-
-            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
-            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
-
-            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
-
-            switch (rsltMessageBox)
+            if (!IsSaving)
             {
-                case MessageBoxResult.Yes:
+                string sMessageBoxText = "The file you are working on has been changed fromthe outside. Do you want to reload it ?";
+                string sCaption = "File has changed";
 
-                    this.EnvironmentWindowWrapper.CloseCode_inWindow();
-                    this.NodalPresenterDecl.DeclModel.CloseChildrenViews();
-                    this._fileChangedWatcher.Changed -= OnChanged;
-                    Application.Current.ExecOnUiThread(() =>
-                    {
-                        Code_inApplication.EnvironmentWrapper.CreateAndAddView<DeclarationsNodalView>(this.NodalPresenterDecl.DeclModel.FilePath);
-                    });
-                    break;
+                MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+                MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
 
-                case MessageBoxResult.No:
-                    /* ... */
-                    break;
+                MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
 
-                case MessageBoxResult.Cancel:
-                    /* ... */
-                    break;
+                switch (rsltMessageBox)
+                {
+                    case MessageBoxResult.Yes:
+
+                        this.EnvironmentWindowWrapper.CloseCode_inWindow();
+                        this.NodalPresenterDecl.DeclModel.CloseChildrenViews();
+                        this._fileChangedWatcher.Changed -= OnChanged;
+                        Application.Current.ExecOnUiThread(() =>
+                        {
+                            Code_inApplication.EnvironmentWrapper.CreateAndAddView<DeclarationsNodalView>(this.NodalPresenterDecl.DeclModel.FilePath);
+                        });
+                        break;
+
+                    case MessageBoxResult.No:
+                        /* ... */
+                        break;
+
+                    case MessageBoxResult.Cancel:
+                        /* ... */
+                        break;
+                }
             }
-
         }
     }
 }
