@@ -22,7 +22,6 @@ namespace code_in.Views.NodalView.NodesElems.Nodes.Base
             : base(themeResDict, nodalView)
         {
             this.SetType("Namespace");
-            this.SetName("System.Collections.Generic.TestDeLaMuerte");
             _orderedLayout = new System.Windows.Controls.StackPanel();
             _orderedLayout.SetValue(StackPanel.HeightProperty, double.NaN);
            // _orderedLayout.SetValue(StackPanel.fi)

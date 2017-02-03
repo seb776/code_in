@@ -24,7 +24,7 @@ namespace code_in.Presenters.Nodal.Nodes
     /// NodePresenter class
     /// Used to link the visual nodes with the NRefactory AST nodes
     /// </summary>
-    public class NodePresenter : INodePresenter // TODO @z0rg NodePresenter private and INodePresenter public ?
+    public class NodePresenter : INodePresenter
     {
         private AstNode _model = null;
         private INodeElem _view = null;

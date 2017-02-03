@@ -89,12 +89,10 @@ namespace VSCode_in_UnitTests.Core.UI
                 nameSpaceNode.SetName("test");
                 nameSpaceNode.GetName();
                 nameSpaceNode.AddGeneric("test", EGenericVariance.IN);
-                //nameSpaceNode.UpdateDisplayedInfosFromPresenter();
                 SearchBar sb = new SearchBar(new ResourceDictionary());
                 nameSpaceNode.SetParentView(null);
                 nameSpaceNode.GetParentView();
                 nameSpaceNode.SetNodePresenter(null);
-                //nameSpaceNode.ShowEditMenu();
                 nameSpaceNode.SetPosition(42, 42);
                 nameSpaceNode.GetPosition();
                 int x;
